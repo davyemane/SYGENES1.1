@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <form method="post" class="row g-3">
+        {{ form_start(form) }}
+    
+        <div class="col-md-6">
+            {{ form_row(form.studentID, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    
+        <div class="col-md-6">
+            {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    
+        <div class="col-md-6">
+            {{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    
+        <div class="col-md-6">
+            {{ form_row(form.phoneNumber, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    
+        <div class="col-md-6">
+            {{ form_row(form.dateOfBirth, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    
+        <div class="col-md-6">
+            {{ form_row(form.placeOfBirth, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    
+        <div class="col-md-6">
+            {{ form_row(form.Certificate, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    
+        <div class="col-md-6">
+            {{ form_row(form.photoBac, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    
+        <div class="col-md-6">
+            {{ form_row(form.field, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    
+        <div class="col-md-6">
+            {{ form_row(form.level, {'attr': {'class': 'form-control'}}) }}
+        </div>
+    
+        <div class="col-12">
+            {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+        </div>
+    
+        {{ form_end(form) }}
+    </form>
+    {% endblock %}
+
+{% block title %}
+   Student Registration
+{% endblock %}
+
+{% block stylesheets %}
+    https://getbootstrap.com/docs/5.0/getting-started/introduction/#css
+{% endblock %}
+{% block javascripts %}
+    https://getbootstrap.com/docs/5.0/getting-started/introduction/#js
+{% endblock %}

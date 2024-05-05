@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choose{% endblock %}
+
+{% block body %}
+    <br>
+    <br>
+    <div class="container-fluid">
+         <div class="container-fluid p-auto m-auto d-flex justify-content-center" style="height:500px">
+            <div class="container p-5 m-auto">
+                <div class="">
+                    <h1 class="h1 text-left">Way to go now choose your <span class="text-primary">registration</span> method</h1>
+                    <h4 class="text-left">Register as Student</h4>
+                    <p class="text-left">If you are a new student click here to register</p>
+                    <div class="w-25">
+                        <a href="{{ path('add_student') }}">
+                            <button class="btn btn-primary btn-lg w-100 py-2 px-1">Register as Student</button>
+                        </a>
+                    </div>
+
+                    <br>
+                    <br>
+                    <br>
+
+                    <h4 class="text-left">Register as Administration Member</h4>
+                    <p class="text-left">If you are a new administration member click here to register</p>
+                    <div class="w-25">
+                        <a href="{{ path('add_student') }}">
+                            <button class="btn btn-primary btn-lg w-100 py-2 px-1">Register as Administration</button>
+                        </a>
+                    </div>
+            </div>
+        </div>
+    </div>
+            
+        </div>
+{% endblock %}

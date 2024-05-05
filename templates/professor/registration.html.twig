@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% form_theme form '' %}
+
+{% block body %}
+   <div class="container">
+        <div class="container align-content-center mt-5" style="height:100px">
+        <h1 class="text-left "><span class="text-primary">Professor Registration</span></h1>
+        <br>
+        </div>
+
+        <div class="container">
+         {{ form(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block title %}
+   Add Professor 
+{% endblock %}
