@@ -189,6 +189,6 @@ class UE
     public function __toString():string
     {
         return $this->name;
-}
+    }
 
 }

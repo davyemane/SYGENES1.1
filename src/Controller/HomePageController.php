@@ -44,7 +44,7 @@ class HomePageController extends AbstractController
         ]);
     }
 
-    #[Route('/register', name: 'app_register_page')]
+    #[Route('/register1', name: 'app_register_page')]
     public function register(){
         return $this->render('home_page/index.html.twig', [
             'controller_name' => 'HomePageController',
