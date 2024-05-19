@@ -2,9 +2,13 @@
 
 namespace App\Form;
 
+use App\Entity\Responsable;
 use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,6 +22,24 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('username')
+            ->add('email')
+            ->add('student')
+
+            ->add('Responsable')
+            ->add('roles', ChoiceType::class, [
+                'label' => 'Roles',
+                'choices'  => [ // Define your available roles here
+                    'ROLE_USER' => 'User',
+                    'ROLE_ADMIN' => 'Admin',
+                    'ROLE_TEACHER' => 'Teacher',
+                    'ROLE_CEP' => 'CEP',
+                    'ROLE_SA' => 'Sa',
+                    // ... other roles
+                ],
+                'expanded' => true, // Allows selecting multiple roles (checkbox style)
+                'multiple' => true, // Allows selecting multiple roles
+            ])
+        
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [

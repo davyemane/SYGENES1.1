@@ -56,9 +56,19 @@ class Student
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $admissionCertificate = null;
 
+    #[ORM\OneToOne(mappedBy: 'student', cascade: ['persist', 'remove'])]
+    private ?User $userAccount = null;
+
+    /**
+     * @var Collection<int, Note>
+     */
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'student')]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->takeUes = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -219,6 +229,58 @@ class Student
     public function __toString():string
     {
         return $this->name;
+    }
+
+    public function getUserAccount(): ?User
+    {
+        return $this->userAccount;
+    }
+
+    public function setUserAccount(?User $userAccount): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($userAccount === null && $this->userAccount !== null) {
+            $this->userAccount->setStudent(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($userAccount !== null && $userAccount->getStudent() !== $this) {
+            $userAccount->setStudent($this);
+        }
+
+        $this->userAccount = $userAccount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getStudent() === $this) {
+                $note->setStudent(null);
+            }
+        }
+
+        return $this;
     }
 
 }

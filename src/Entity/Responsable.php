@@ -22,6 +22,9 @@ class Responsable
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
+    #[ORM\OneToOne(mappedBy: 'Responsable', cascade: ['persist', 'remove'])]
+    private ?User $userAccount = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,4 +65,32 @@ class Responsable
 
         return $this;
     }
+
+    public function getUserAccount(): ?User
+    {
+        return $this->userAccount;
+    }
+
+    public function setUserAccount(?User $userAccount): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($userAccount === null && $this->userAccount !== null) {
+            $this->userAccount->setResponsable(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($userAccount !== null && $userAccount->getResponsable() !== $this) {
+            $userAccount->setResponsable($this);
+        }
+
+        $this->userAccount = $userAccount;
+
+        return $this;
+    }
+
+    public function __toString():string
+    {
+        return $this->name;
+    }
+
 }

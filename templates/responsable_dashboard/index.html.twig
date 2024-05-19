@@ -1,12 +1,40 @@
-{% extends 'base_dashboard.html.twig' %}
+{% extends 'base.html.twig' %}
 
+{% block title %}Home{% endblock %}
 
-{% block title %}Dashboard{% endblock %}
 
 {% block body %}
-
-
-
-
-
+   
+    <div class="container-fluid">
+    <div class="container-fluid p-auto m-auto d-flex justify-content-center" style="height:500px">
+        <div class="container p-5 m-auto">
+                <div class="">
+                    <h1 class="h1 text-left">Welcome to <span class="text-primary">SYGENES,</span></h1>
+                    <p class="text-left">Your all in one Grade Management System, made for and by the,<br>
+                    International Advanced School of Digital Engineering
+                    </p>
+                    <div class="w-25">
+                        <a href="{{path('app_register_temp_page')}}">
+                            <button class="btn btn-primary btn-lg w-100 py-3 px-3">Get Started</button>
+                        </a>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="container-fluid p-auto m-auto bg-light d-flex justify-content-center" style="height:500px">
+         <div class="container p-5 m-auto d-flex justify-content-center">
+        
+            <div class="">
+                <h3 class="h3 text-center">Just passed the <span class="text-primary">competitive</span> entrance exam?</h3>
+                <p class="text-center">Congratulations!!!, you will be accompanied by the country’s very best professors and engineers<br>
+                on your marvelous journey towards the very roof the world. Want to get in? click on the buttton <br>
+                International Advanced School of Digital Engineering
+                </p>
+                <div class="d-flex justify-content-center ">
+                    <a href="#">
+                        <button class="btn btn-primary btn-lg w-100 py-2 px-5    text-center">Register</button>
+                    </a>
+        </div>
+    </div>
+</div>
 {% endblock %}

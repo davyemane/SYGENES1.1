@@ -32,8 +32,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\OneToOne(inversedBy: 'userAccount', cascade: ['persist', 'remove'])]
+    private ?Student $student = null;
+
+    #[ORM\OneToOne(inversedBy: 'userAccount', cascade: ['persist', 'remove'])]
+    private ?Responsable $Responsable = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
+
 
     public function getId(): ?int
     {
@@ -110,15 +117,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    public function setStudent(?Student $student): static
+    {
+        $this->student = $student;
+
+        return $this;
+    }
+
+    public function getResponsable(): ?Responsable
+    {
+        return $this->Responsable;
+    }
+
+    public function setResponsable(?Responsable $Responsable): static
+    {
+        $this->Responsable = $Responsable;
+
+        return $this;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(?string $email): static
     {
         $this->email = $email;
 
         return $this;
     }
+
 }

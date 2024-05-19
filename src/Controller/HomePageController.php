@@ -3,16 +3,19 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class HomePageController extends AbstractController
 {
     #[Route('/', name: 'app_home_page')]
     public function index(): Response
     {
+        $user = $this->getUser();
         return $this->render('home_page/index.html.twig', [
-            'controller_name' => 'HomePageController',
+            'controller_name' => 'HomePageController', 'user'=>$user
         ]);
     }
 
@@ -37,12 +40,28 @@ class HomePageController extends AbstractController
         ]);
     }
 
-    #[Route('/login', name: 'app_login_page')]
+    #[Route('/test', name: 'app_login_page')]
     public function login(){
         return $this->render('home_page/index.html.twig', [
             'controller_name' => 'HomePageController',
         ]);
     }
+
+    #[Route('/admin', name: 'app_dashAdmin'),
+    IsGranted('ROLE_ADMIN')
+    ]
+    public function dashboard(){
+        return $this->render('responsable_dashboard/dashboardAdmin.html.twig',) ;  
+    }
+
+    #[Route('/student/dashboard', name: 'app_dashStudent'),
+    IsGranted('ROLE_USER')
+    ]
+    public function StudentDashboard(){
+            return $this->render('home_page/index.html.twig') ;  
+    }
+
+
 
     #[Route('/register1', name: 'app_register_page')]
     public function register(){
