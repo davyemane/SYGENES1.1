@@ -18,12 +18,40 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class UeController extends AbstractController
 {
 
-    #[Route('/add/ec', name: 'add_ec')]
-    public function addEc(): Response
+    #[Route('/add/ec/{id?0}', name: 'add_ec'),
+    IsGranted('ROLE_ADMIN')]
+    public function AddEc($id, ManagerRegistry $doctrine, Request $request): Response
     {
-        $ec = new EC();
-        $form =$this->createForm(EcType::class, $ec);
-        return $this->render('ue/createEC.html.twig', ['form' => $form->createView()]);
+        $entityManager = $doctrine->getManager();
+    
+        // Vérifier si un ID de l'ue a été fourni
+        if ($id) {
+            $ec = $entityManager->getRepository(EC::class)->find($id);
+        } else {
+            $ec = new EC();
+        }
+    
+        $form = $this->createForm(EcType::class, $ec);
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $entityManager->persist($ec);
+                $entityManager->flush();
+    
+                $message = $id ? 'mis à jour' : 'ajouté';
+                $this->addFlash('success', $ec->getName() . " a été $message avec succès !");
+    
+                return $this->redirectToRoute("app_home_page");
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Une erreur s\'est produite.');
+                error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3, 'chemin/vers/votre/error.log');
+                return $this->redirectToRoute('app_home_page');
+            }
+        }
+    
+        return $this->render('ue/createEc.html.twig', ['form' => $form->createView()]);
     }
 
 

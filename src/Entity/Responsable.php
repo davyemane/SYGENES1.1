@@ -25,6 +25,12 @@ class Responsable
     #[ORM\OneToOne(mappedBy: 'Responsable', cascade: ['persist', 'remove'])]
     private ?User $userAccount = null;
 
+    #[ORM\ManyToOne]
+    private ?User $created_by = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $created_at = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +97,30 @@ class Responsable
     public function __toString():string
     {
         return $this->name;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->created_by;
+    }
+
+    public function setCreatedBy(?User $created_by): static
+    {
+        $this->created_by = $created_by;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?string
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(?string $created_at): static
+    {
+        $this->created_at = $created_at;
+
+        return $this;
     }
 
 }
