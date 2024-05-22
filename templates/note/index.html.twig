@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UE{% endblock %}
+
+{% block body %}
+<form method="post" class="row g-3">
+    {{ form_start(form) }}
+
+    <div class="col-md-6">
+        {{ form_row(form.cc, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="col-md-6">
+        {{ form_row(form.tp, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="col-12">
+        {{ form_row(form.sn, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="col-md-6">
+        {{ form_row(form.rattrapage, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="col-md-6">
+        {{ form_row(form.semester, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="col-md-6">
+        {{ form_row(form.ec, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="col-md-6">
+        {{ form_row(form.student, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="col-12">
+        {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+    </div>
+
+    {{ form_end(form) }}
+</form>{% endblock %}

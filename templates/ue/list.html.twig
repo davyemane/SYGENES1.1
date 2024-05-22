@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+   <div class="row">
+   {% for ue in ues %}
+    
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">
+                {{ue.name}}
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted">Code Ue: {{ue.codeUe}}</h6> 
+            <p class="card-text">credit: {{ue.credit}}</p>
+            <p class="card-text">Field: {{ue.fields}}</p>
+            <p class="card-text">Description: {{ue.description}}</p>
+
+            <a href="{{ path('add_ue', {id: ue.id}) }}" class="card-link">edit</a>
+
+            <a href="{{ path('detail_ue', {id: ue.id}) }}" class="card-link">detail</a>
+
+        </div>
+    </div>
+
+  {% endfor %}
+
+   </div>
+
+{# pagination #}
+{% if isPaginated %}
+<div class="row mt-2">
+    <div class="col Page navigation example">
+        <nav aria-label="...">
+            <ul class="pagination">
+            {# previous page #}
+            {% if page != 1 %}
+                
+              <li class="page-item disabled">
+                <a href="{{ path('list_ue', {page: page -1, nbre: nbre}) }}" class="page-link">
+                    Previous
+                </a>
+              </li>
+              <li class="page-item">
+            {% endif %}
+
+            {# actual page #}
+              {% for i in range(1, nbPage) %}
+                  <li class="page-item"><a class="page-link" href="{{ path('list_ue', {page: i, nbre: nbre}) }}">{{i}}</a></li>                
+              {% endfor %}
+
+              {# page next #}
+            {% if page != nbPage %}
+                
+              <li class="page-item">
+                <a href="{{ path('list_ue', {page: page +1, nbre: nbre}) }}" class="page-link">
+                    Next  
+                </a>
+              </li>
+              <li class="page-item ">
+            {% endif %}
+            </ul>
+          </nav>          
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+ 
+{% block title %}
+   List of Students
+{% endblock %}
+

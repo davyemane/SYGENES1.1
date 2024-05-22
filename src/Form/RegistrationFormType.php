@@ -29,11 +29,12 @@ class RegistrationFormType extends AbstractType
             ->add('roles', ChoiceType::class, [
                 'label' => 'Roles',
                 'choices'  => [ // Define your available roles here
-                    'ROLE_USER' => 'User',
-                    'ROLE_ADMIN' => 'Admin',
-                    'ROLE_TEACHER' => 'Teacher',
-                    'ROLE_CEP' => 'CEP',
-                    'ROLE_SA' => 'Sa',
+                    'ROLE_USER' => 'ROLE_USER',
+                    'ROLE_ADMIN' => 'ROLE_ADMIN',
+                    'ROLE_TEACHER' => 'ROLE_TEACHER',
+                    'ROLE_CEP' => 'ROLE_CEP',
+                    'ROLE_SA' => 'ROLE_SA',
+                    'ROLE_SUPER_ADMIN'=>'ROLE_SUPER_ADMIN'
                     // ... other roles
                 ],
                 'expanded' => true, // Allows selecting multiple roles (checkbox style)

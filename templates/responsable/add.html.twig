@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UE{% endblock %}
+
+{% block body %}
+<form method="post" class="row g-3">
+    {{ form_start(form) }}
+
+    <div class="col-md-6">
+        {{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="col-md-6">
+        {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+    <div class="col-12">
+        {{ form_row(form.phoneNumber, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+
+    {{ form_end(form) }}
+</form>{% endblock %}
