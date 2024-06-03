@@ -48,7 +48,9 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
         // Retourner directement le RedirectResponse
-        return new RedirectResponse($this->urlGenerator->generate('list_student'));
+        return new RedirectResponse($this->urlGenerator->generate('app_dashAdmin'));
+
+
     }
     
     protected function getLoginUrl(Request $request): string

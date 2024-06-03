@@ -1,8 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_AdminDashboard.html.twig' %}
 
-{% block title %}UE{% endblock %}
+{% block title %}Notes{% endblock %}
 
 {% block body %}
+
+<div class="container">
+<h5 class="h5"> Add the grades of the students</h5>
 <form method="post" class="row g-3">
     {{ form_start(form) }}
 
@@ -34,9 +37,14 @@
         {{ form_row(form.student, {'attr': {'class': 'form-control'}}) }}
     </div>
 
+    <div class="container" style="height:30px">
+
+    </div>
     <div class="col-12">
-        {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+        {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary w-100'}}) }}
     </div>
 
     {{ form_end(form) }}
-</form>{% endblock %}
+</form>
+ </div>
+{% endblock %}
