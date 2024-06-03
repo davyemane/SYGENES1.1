@@ -36,7 +36,10 @@
   <div class="container justify-content-center" id="navbarSupportedContent"> 
     <ul class="navbar-nav mr-auto text-white ">
       <li class="nav-link">
-        <a class="navbar-brand text-white" href="#">Sygenes</a>
+        <a class="navbar-brand text-white" href="{{ path('app_dashAdmin')}}">
+          <img src="/icons/uiecc_logo.png" width="30" height="30" alt="" class="mr-auto">
+        Sygenes
+        </a>
       </li>
       <li class="nav-item active">
         <a class="nav-link text-white" href="{{ path('add_note') }}">Add Student notes</a>
@@ -48,7 +51,7 @@
         <a class="nav-link text-white" href="{{ path('list_student') }}">List Students</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-white" href="#">Import Excel File</a>
+        <a class="nav-link text-white" href="{{ path('import') }}">Import Excel File</a>
       </li>
       <li class="nav-item">
         <a class="nav-link text-white" href="#">Generer PV</a>
@@ -76,18 +79,6 @@
       </li>
       <li class="nav-item">
         <a class="nav-link text-white" href="#">Statistics</a>
-      </li>
-
-      <li class="nav-item dropright">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
       </li>
 
 
