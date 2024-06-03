@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_AdminDashboard.html.twig' %}
 
 {% block title %}EC{% endblock %}
 
@@ -23,7 +23,7 @@
     </div>
 
     <div class="col-12">
-        {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+        {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary w-100'}}) }}
     </div>
 
     {{ form_end(form) }}
