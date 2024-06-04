@@ -7,6 +7,7 @@ use App\Form\StudentType;
 use App\Repository\LevelRepository;
 use App\Repository\NoteRepository;
 use App\Repository\StudentRepository;
+use App\Repository\UERepository;
 use App\services\PdfService;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -164,7 +165,7 @@ public function generatePdf($id, PdfService $pdf, ManagerRegistry $doctrine)
 }
 
 #[Route('/{id}/notes', name: 'student_notes')]
-public function studentNotes(Request $request, StudentRepository $studentRepository, NoteRepository $noteRepository, $id, LevelRepository $levelRepository)
+public function studentNotes(Request $request, StudentRepository $studentRepository, NoteRepository $noteRepository, $id, LevelRepository $levelRepository, UERepository $ueRepository)
 {
     $student = $studentRepository->find($id);
     if (!$student) {
@@ -173,20 +174,34 @@ public function studentNotes(Request $request, StudentRepository $studentReposit
 
     $notes = $noteRepository->findBy(['student' => $student]);
 
-    $notesByLevel = [];
+    $notesByUe = []; // Changed to notesByUe for clarity
     foreach ($notes as $note) {
-        $level = $note->getEc()->getUe()->getLevel(); // Assuming relationships are set correctly
+        $ue = $note->getEc()->getUe(); // Assuming relationships are set correctly
 
-        $notesByLevel[$level->getId()][] = $note;
+        $notesByUe[$ue->getId()][] = $note;
     }
-    
 
     $levels = $levelRepository->findAll();
 
+    // Process notesByUe to group by level, UE, and add validation status
+    $processedNotes = [];
+    foreach ($notesByUe as $ueId => $ueNotes) {
+        $levelId = $ue->getLevel()->getId();
+        foreach ($ueNotes as $note) {
+            $totalScore = $note->getCc() + $note->getTp() + $note->getSn();
+            $validated = $totalScore >= 50 && $totalScore <= 100;
+            $processedNotes[$levelId][$ueId][] = [
+                'note' => $note,
+                'validated' => $validated,
+            ];
+        }
+    }
+
     return $this->render('student/notes.html.twig', [
         'student' => $student,
-        'notesByLevel' => $notesByLevel,
+        'processedNotes' => $processedNotes,
         'levels' => $levels,
+        'ueRepository' => $ueRepository, // Pass ueRepository to the template
     ]);
 }
 

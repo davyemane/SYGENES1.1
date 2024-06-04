@@ -1,70 +1,83 @@
 {% extends 'base_StudentDashboard.html.twig' %}
 
 {% block title %}
-    Notes de {{ student.name }}
+Notes de {{ student.name }}
 {% endblock %}
 
 {% block body %}
-    <h1>Notes de {{ student.name }}</h1>
+<h1>Profile academic de {{ student.name }}</h1>
 
-    {% if notesByLevel is empty %}
-        <p>Aucune note trouvée pour cet étudiant.</p>
-    {% else %}
-    
-        <div class="accordion" id="accordionNotes">
-            {% for level in levels %}
-            
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading-{{ level.id }}">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ level.id }}" aria-expanded="false" aria-controls="collapse-{{ level.id }}">
-                            {{ level.name }}
-                        </button>
-                    </h2>
-                    <div id="collapse-{{ level.id }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ level.id }}" data-bs-parent="#accordionNotes">
-                        <div class="accordion-body">
-                            {% if notesByLevel[level.id] is defined %}
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>EC</th>
-                                            <th>CC</th>
-                                            <th>TP</th>
-                                            <th>SN</th>
-                                            <th>Rattrapage</th>
-                                            <th>Semestre</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for note in notesByLevel[level.id] %}
-                                            <tr>
-                                                <td>{{ note.ec.codeEc }} - {{ note.ec.name }}</td>
-                                                <td>{{ note.cc }}</td>
-                                                <td>{{ note.tp }}</td>
-                                                <td>{{ note.sn }}</td>
-                                                <td>{{ note.rattrapage }}</td>
-                                                <td>{{ note.semester }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            {% else %}
-                                <p>Aucune note trouvée pour ce niveau.</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+{% if processedNotes is empty %}
+<p>Aucune note trouvée pour cet étudiant.</p>
+{% else %}
+
+<div class="accordion" id="accordionNotes">
+    {% for level in levels %}
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="heading-{{ level.id }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#collapse-{{ level.id }}" aria-expanded="false" aria-controls="collapse-{{ level.id }}">
+                {{ level.name }}
+            </button>
+        </h2>
+        <div id="collapse-{{ level.id }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ level.id }}"
+            data-bs-parent="#accordionNotes">
+            <div class="accordion-body">
+                {% if processedNotes[level.id] is defined %} <h3>UEs</h3> {% for ueId, ueNotes in
+                processedNotes[level.id] %}
+                <h4>{{ ueRepository.find(ueId).name }}</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>EC</th>
+                            <th>CC</th>
+                            <th>TP</th>
+                            <th>SN</th>
+                            <th>Validé</th>
+                            <th>Rattrapage</th>
+                            <th>Semestre</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for processedNote in ueNotes %}
+                        <tr>
+                            <td>{{ processedNote['note'].ec.codeEc }} - {{ processedNote['note'].ec.name }}</td>
+                            <td>{{ processedNote['note'].cc }}</td>
+                            <td>{{ processedNote['note'].tp }}</td>
+                            <td>{{ processedNote['note'].sn }}</td>
+                            <td>
+                                {% if processedNote['validated'] %}
+                                <i class="bi bi-check-circle-fill text-success"> yes</i>
+                                {% else %}
+                                <i class="bi bi-check-circle text-muted">no</i>
+                                {% endif %}
+                            </td>
+                            <td>{{ processedNote['note'].rattrapage }}</td>
+                            <td>{{ processedNote['note'].semester }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endfor %}
+                {% else %}
+                <p>Aucune note trouvée pour ce niveau.</p>
+                {% endif %}
+            </div>
         </div>
-    {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Collapse all accordion items by default
-            var collapseElementList = document.querySelectorAll('.collapse');
-            var collapseList = [].slice.call(collapseElementList);
-            collapseList.forEach(function (collapseEl) {
-                collapseEl.classList.add('collapse');
-            });
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Collapse all accordion items by default
+        var collapseElementList = document.querySelectorAll('.collapse');
+        var collapseList = [].slice.call(collapseElementList);
+        collapseList.forEach(function (collapseEl) {
+            collapseEl.classList.add('collapse');
         });
-    </script>
+    });
+</script>
 {% endblock %}
