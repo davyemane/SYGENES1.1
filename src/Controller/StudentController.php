@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Student;
 use App\Form\StudentType;
+use App\Repository\LevelRepository;
+use App\Repository\NoteRepository;
+use App\Repository\StudentRepository;
 use App\services\PdfService;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -146,6 +149,7 @@ public function academicInscription($id, ManagerRegistry $doctrine, Request $req
     return $this->render('student/accademicInscription.html.twig', ['form' => $form->createView()]);
 }
 
+//generer un pdf 
 #[Route('/pdf/{id}',name:"pdf_student")]
 public function generatePdf($id, PdfService $pdf, ManagerRegistry $doctrine)
 {
@@ -158,5 +162,33 @@ public function generatePdf($id, PdfService $pdf, ManagerRegistry $doctrine)
     $pdf->ShowPdfFile($html);
 
 }
+
+#[Route('/{id}/notes', name: 'student_notes')]
+public function studentNotes(Request $request, StudentRepository $studentRepository, NoteRepository $noteRepository, $id, LevelRepository $levelRepository)
+{
+    $student = $studentRepository->find($id);
+    if (!$student) {
+        throw $this->createNotFoundException('Student not found.');
+    }
+
+    $notes = $noteRepository->findBy(['student' => $student]);
+
+    $notesByLevel = [];
+    foreach ($notes as $note) {
+        $level = $note->getEc()->getUe()->getLevel(); // Assuming relationships are set correctly
+
+        $notesByLevel[$level->getId()][] = $note;
+    }
+    
+
+    $levels = $levelRepository->findAll();
+
+    return $this->render('student/notes.html.twig', [
+        'student' => $student,
+        'notesByLevel' => $notesByLevel,
+        'levels' => $levels,
+    ]);
+}
+
 
 }
