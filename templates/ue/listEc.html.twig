@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    EC
+{% endblock %}
+
+{% block body %}
+    <h1>Liste des ECs par UE</h1>
+
+<form action="{{ path('choix_ec') }}" method="get">
+    <label for="ue">Sélectionner une UE:</label>
+    <select id="ue" name="ue">
+        <option value="">Toutes les UEs</option>
+        {% for ueName in data|keys %}
+            <option value="{{ ueName }}">{{ ueName }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filtrer</button>
+</form>
+
+{% if data is empty %}
+  <p>Aucune UE trouvée.</p>
+{% else %}
+  {% set selectedUe = app.request.query.get('ue') %}
+  <ul>
+    {% for ueName, ecs in data %}
+      <li class="{{ (selectedUe == ueName) ? 'active' : '' }}">
+        <h2>{{ ueName }}</h2>
+        <ul>
+          {% for ec in ecs %}
+          <a href="{{ path('list_student_notes', { page: 1, nbre: 12, ec: ec.id }) }}" class="card-link">{{ ec.codeEc }} - {{ ec.name }}</a>
+            <li>{{ ec.codeEc }} - {{ ec.name }}</li>
+          {% endfor %}
+        </ul>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{% endblock %}

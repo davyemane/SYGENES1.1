@@ -1,0 +1,82 @@
+{% extends 'base_AdminDashboard.html.twig' %}
+
+{% block body %}
+<div class="row">
+  {% for student in students %}
+
+  <div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">
+        {{student.name}}
+      </h5>
+      <h6 class="card-subtitle mb-2 text-muted">studentID: {{student.studentID}}</h6>
+      <p class="card-text">field: {{student.field}}</p>
+      <p class="card-text">Level: {{student.level}}</p>
+      <ul>
+        {% if student.notes is not empty %}
+        <ul>
+          {% for note in student.notes %}
+          <li>
+            CC: {{ note.cc }} | TP: {{ note.tp }} | SN: {{ note.sn }}
+            <a href="{{ path('add_note', {id: note.id}) }}" class="card-link">edit</a>
+
+          </li> {% endfor %}
+        </ul>
+        {% else %}
+        <p class="card-text">Aucune note disponible pour cet étudiant.</p>
+        {% endif %}
+
+      </ul>
+
+
+
+    </div>
+  </div>
+
+  {% endfor %}
+
+</div>
+
+{# pagination #}
+{% if isPaginated %}
+<div class="row mt-2">
+  <div class="col Page navigation example">
+    <nav aria-label="...">
+      <ul class="pagination">
+        {# previous page #}
+        {% if page != 1 %}
+
+        <li class="page-item disabled">
+          <a href="{{ path('list_student_notes', {page: page -1, nbre: nbre}) }}" class="page-link">
+            Previous
+          </a>
+        </li>
+        <li class="page-item disabled">
+          {% endif %}
+
+          {# actual page #}
+          {% for i in range(1, nbPage) %}
+        <li class="page-item"><a class="page-link" href="{{ path('list_student_notes', {page: i, nbre: nbre}) }}">{{i}}</a>
+        </li>
+        {% endfor %}
+
+        {# page next #}
+        {% if page != nbPage %}
+
+        <li class="page-item disabled">
+          <a href="{{ path('list_student_notes', {page: page +1, nbre: nbre}) }}" class="page-link">
+            Next
+          </a>
+        </li>
+        <li class="page-item disabled">
+          {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block title %}
+List of Students
+{% endblock %}

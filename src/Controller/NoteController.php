@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Note;
 use App\Form\NoteType;
+use App\services\SystemNotation;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class NoteController extends AbstractController
 {
     #[Route('/add/note/{id?0}', name: 'add_note')]
-    public function AddNote($id, ManagerRegistry $doctrine, Request $request): Response
+    public function AddNote($id, ManagerRegistry $doctrine, Request $request, SystemNotation $systemNotation): Response
     {
         $entityManager = $doctrine->getManager();
     
@@ -27,13 +28,13 @@ class NoteController extends AbstractController
         }
 
         $form = $this->createForm(NoteType::class, $note);
-    
+        $users = $this->getUser();
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $note->setCreatedAt(date('d-m-y'));
-                $note->setCreatebBy($this->getUser());
+                $note->setCreatebBy($users);
                 $entityManager->persist($note);
                 $entityManager->flush();
     
