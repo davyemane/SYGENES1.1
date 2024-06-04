@@ -3,11 +3,13 @@
 {% block title %}Log in{% endblock %}
 
 {% block body %}
-<form class="" method="post">
+<div class="container-fluid d-flex" style="height:700px">
+<form class="container-fluid" style="height:100px"  method="post">
     
-    <div class="container" style="height:50px"> </div>
+    <div class="container fluid" style="height:180px"> </div>
     <div class="container">
         <h1 class="h1">Sign In</h1>
+        <p class="p">Enter your informations to login to SYGENES</p>
     </div>
 
 
@@ -15,14 +17,14 @@
 
     <div class="form-group container">
     <label for="inputUsername">Username</label>
-    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control w-75" autocomplete="username" required autofocus>
     </div>
 
     <div class="container" style="height:30px"> </div>
 
     <div class="form-group container">
     <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+    <input type="password" name="password" id="inputPassword" class="form-control w-75" autocomplete="current-password" required>
     </div>
 
     <div class="container" style="height:30px"> </div>
@@ -37,7 +39,7 @@
         </label>
     </div>
 
-    <button class="btn btn-primary w-25 py-2 px-5" type="submit">
+    <button class="btn btn-primary w-50 py-2 px-5" type="submit">
         Sign in
     </button>
     </div>
@@ -51,4 +53,8 @@
         </div>
     {% endif %}
 </form>
+<div class="container-fluid h-100" >
+    <img src="/images/water-tank.JPG" style="height: 100%; width: 100%"  alt="inter-state building">
+</div>
+</div>
 {% endblock %}

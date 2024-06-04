@@ -1,14 +1,21 @@
 {# templates/import_excel.html.twig #}
 
-{% extends 'base.html.twig' %}
+{% extends 'base_AdminDashboard.html.twig' %}
 
 {% block title %}Import Excel{% endblock %}
 
 {% block body %}
-    <h1>Import Excel</h1>
-
+<div class="container">
+    <h3>Import Excel</h3>
+    <p class="p"> Click Below to import an excel file</p>
     {{ form_start(form) }}
-        {{ form_row(form.file) }}
-        <button type="submit">Importer</button>
+        
+        
+        <div class="col-md-6">
+            {{ form_row(form.file, {'attr': {'class': 'btn btn-secondary w-50'}}) }}
+        </div>
+        <div class="container" style="height:20px"> </div>
+        <button type="submit" class="btn btn-primary">Importer</button>
     {{ form_end(form) }}
+</div>
 {% endblock %}

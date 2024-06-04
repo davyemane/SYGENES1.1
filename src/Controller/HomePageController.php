@@ -19,6 +19,7 @@ class HomePageController extends AbstractController
         ]);
     }
 
+
     #[Route('/about', name: 'app_about_page')]
     public function about(){
         return $this->render('home_page/about.html.twig', [

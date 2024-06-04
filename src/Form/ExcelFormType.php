@@ -12,7 +12,7 @@ class ExcelFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('file', FileType::class, ['label' => 'Fichier Excel'])
+        ->add('file', FileType::class, ['label' => ' '])
     ;
     }
 
