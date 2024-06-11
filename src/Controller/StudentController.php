@@ -3,24 +3,44 @@
 namespace App\Controller;
 
 use App\Entity\Student;
+use App\Entity\User;
+use App\Event\AddStudentEvent;
 use App\Form\StudentType;
 use App\Repository\LevelRepository;
 use App\Repository\NoteRepository;
 use App\Repository\StudentRepository;
 use App\Repository\UERepository;
+use App\Security\LoginAuthenticator;
 use App\services\PdfService;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use PhpParser\Node\Expr\Cast\String_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
 #[Route('/student')]
 class StudentController extends AbstractController
 {
+
+    public function __construct(private EventDispatcherInterface $dispacher)
+    {
+        
+    }
+
     // List of all students with error handling
     #[Route('/list/{page?1}/{nbre?12}', name: 'list_student')]
     public function home(ManagerRegistry $doctrine, $page, $nbre): Response
@@ -150,23 +170,52 @@ public function academicInscription($id, ManagerRegistry $doctrine, Request $req
     return $this->render('student/accademicInscription.html.twig', ['form' => $form->createView()]);
 }
 
-//generer un pdf 
-#[Route('/pdf/{id}',name:"pdf_student")]
-public function generatePdf($id, PdfService $pdf, ManagerRegistry $doctrine)
+#[Route('/pdf/{id}', name: "pdf_student")]
+public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
 {
     $repository = $doctrine->getRepository(Student::class);
     
-    // Fetch student details (handle potential exceptions)
     $student = $repository->find($id);
 
-    $html = $this->render('student/detail.html.twig', ['student' => $student]);
-    $pdf->ShowPdfFile($html);
+    $html = $this->renderView('note/releve_notes.html.twig', ['student' => $student]);
 
+    $options = new Options();
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isPhpEnabled', true);
+
+    $domPdf->setOptions($options);
+    $domPdf->loadHtml($html);
+    $domPdf->render();
+    
+    // Output the generated PDF
+    $domPdf->stream("releve_notes.pdf", [
+        "Attachment" => false // Change to true if you want to force download
+    ]);
 }
+
+
 
 #[Route('/{id}/notes', name: 'student_notes')]
 public function studentNotes(Request $request, StudentRepository $studentRepository, NoteRepository $noteRepository, $id, LevelRepository $levelRepository, UERepository $ueRepository)
 {
+
+    // Récupérer l'étudiant connecté
+    $currentUser = $this->getUser();
+    $message = '';
+        
+    
+    // Vérifier si l'utilisateur connecté est autorisé à accéder aux notes demandées
+    if ($currentUser->getStudent()->getId() != $id) {
+
+        $message = 'acces refusé';
+
+        return $this->render('student/error.html.twig', ['message'=>$message]);
+        // L'utilisateur connecté n'est pas autorisé à accéder à ces notes
+        // Rediriger vers une page d'erreur ou afficher un message approprié
+        // par exemple : throw $this->createAccessDeniedException('You are not allowed to access these notes.');
+    }
+    
+
     $student = $studentRepository->find($id);
     if (!$student) {
         throw $this->createNotFoundException('Student not found.');
@@ -205,5 +254,84 @@ public function studentNotes(Request $request, StudentRepository $studentReposit
     ]);
 }
 
+
+
+//creer automatiquement un compte a un etudiant 
+#[Route('/create-account/{studentId}', name: 'create_student_account')]
+    public function createAccountForStudent(
+        int $studentId,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface $entityManager,
+        UserAuthenticatorInterface $userAuthenticator,
+        LoginAuthenticator $authenticator,
+        Request $request,
+        MailerInterface $mailer
+    ): Response 
+    {
+        $new = true;
+        // Récupérer l'étudiant par son ID
+        $student = $entityManager->getRepository(Student::class)->find($studentId);
+
+        if (!$student) {
+            throw $this->createNotFoundException('Student not found');
+            $new = false;
+        }
+
+        // Vérifier si l'étudiant a déjà un compte utilisateur
+        if ($student->getUserAccount()) {
+            $new = false;
+            $this->addFlash('error', 'Student already has an account');
+            return $this->redirectToRoute('list_student_2'); // Rediriger vers une page appropriée
+        }
+
+        // Créer un nouvel utilisateur et lier avec l'étudiant
+        $user = new User();
+        $user->setUsername($student->getEmail());  // Utiliser l'email de l'étudiant comme nom d'utilisateur
+        $user->setEmail($student->getEmail());
+        $user->setStudent($student);
+        $user->setRoles(['ROLE_USER']);
+
+        // Utiliser l'email comme mot de passe
+        $user->setPassword(
+            $userPasswordHasher->hashPassword(
+                $user,
+                $student->getEmail()
+            )
+        );
+
+        // Persister et sauvegarder le nouvel utilisateur
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        // // Envoyer une notification par email
+        // $email = (new Email())
+        //     ->from('davyemane1@gmail.com')
+        //     ->to($student->getEmail())
+        //     ->subject('Account Created')
+        //     ->html('<p>Your account has been created. Your username and password is your email address.</p>');
+
+        // $mailer->send($email);
+
+        // Ajouter un message flash de succès
+        $this->addFlash('success', 'Account created successfully');
+
+
+//j'ai créé un evennement 
+        if ($new) 
+        {
+            $addStudentEvent = new AddStudentEvent(
+                $student
+            );
+
+            $this->dispacher->dispatch($addStudentEvent, AddStudentEvent::ADD_STUDENT_EVENT);
+        }
+
+        // Rediriger vers une autre page
+        return $userAuthenticator->authenticateUser(
+            $user,
+            $authenticator,
+            $request
+        );
+    }
 
 }

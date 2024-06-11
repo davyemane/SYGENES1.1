@@ -1,0 +1,105 @@
+<!-- releve_notes.html.twig -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relevé de notes</title>
+    <style>
+        /* Styles Bootstrap nécessaires */
+        body {
+            font-family: Arial, sans-serif;
+            color: #000;
+            background-color: #fff;
+        }
+        h1 {
+            color: #007BFF;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .logo {
+            text-align: center;
+        }
+        .signature {
+            margin-top: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- En-tête de l'établissement -->
+    <div class="logo">
+        <img src="path/to/logo.png" alt="Logo de l'établissement" width="200">
+        <h3>Nom de l'établissement</h3>
+        <p>Adresse de l'établissement</p>
+    </div>
+
+    <h1>Relevé de notes</h1>
+    <p>Nom de l'étudiant : {{ student.name }}</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Matière</th>
+                <th>Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Informatique</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td>Informatique</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td>Informatique</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td>Informatique</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td>Informatique</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td>Informatique</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td>Informatique</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td>Informatique</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td>Informatique</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td>Informatique</td>
+                <td>A</td>
+            </tr>
+
+
+        </tbody>
+    </table>
+
+    <!-- Signature du directeur de l'école -->
+    <div class="signature">
+        <p>Signature du directeur de l'école :</p>
+    </div>
+</body>
+</html>

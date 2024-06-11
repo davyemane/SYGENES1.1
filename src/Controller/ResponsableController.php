@@ -26,7 +26,7 @@ class ResponsableController extends AbstractController
         ]);
     }
 
-
+//ajouter un responsable
     #[Route('/add/resp/{id?0}', name: 'add_responsable')]
     public function academicInscription($id, ManagerRegistry $doctrine, Request $request): Response
     {
@@ -104,7 +104,7 @@ class ResponsableController extends AbstractController
             ->leftJoin('n.ec', 'ec')  // Join with the EC (subject) entity
             ->addSelect('n') // Select the notes entity
             ->addSelect('ec') // Select the EC (subject) entity
-            ->where('ec.id = :subjectId')
+            ->where('ec.id = :subjectId' )
             ->setParameter('subjectId', $ec)
             ->setMaxResults($nbre)
             ->setFirstResult(($page - 1) * $nbre);
@@ -134,4 +134,52 @@ class ResponsableController extends AbstractController
             return $this->redirectToRoute('list_student', ['page' => 1]);
         }
     }
-}
+
+
+
+    //list des etudiants en attente de validation d'inscription 
+
+    #[Route('/list_student/{page?1}/{nbre?12}', name: 'list_student_2')]
+    public function ListStudent(ManagerRegistry $doctrine, $page, $nbre): Response
+    {
+        try {
+            $repository = $doctrine->getRepository(Student::class);
+    
+            // Calculate total students and number of pages
+            $nbStudent = $repository->count([]);
+            $nbPage = ceil($nbStudent / $nbre);
+    
+            // Fetch students without user accounts with pagination
+            $qb = $repository->createQueryBuilder('s')
+                ->leftJoin('s.userAccount', 'u')
+                ->where('u.id IS NULL')
+                ->orderBy('s.id', 'ASC') // Sort by student ID (optional)
+                ->setFirstResult(($page - 1) * $nbre) // Apply pagination offset
+                ->setMaxResults($nbre); // Set limit per page
+    
+            $students = $qb->getQuery()->getResult();
+    
+            if (!$students) {
+                // Handle case where no students are found
+                throw new NotFoundHttpException('No students found.');
+            }
+    
+            return $this->render('responsable/list_student.html.twig', [
+                'students' => $students,
+                'isPaginated' => true,
+                'nbPage' => $nbPage,
+                'page' => $page,
+                'nbre' => $nbre,
+            ]);
+        } catch (NotFoundHttpException $e) {
+            // Handle the specific case of not finding students
+            $this->addFlash('error', 'No students found.');
+            return $this->redirectToRoute('list_student_2', ['page' => 1]); // Redirect to first page
+        } catch (\Exception $e) {
+            // Catch other unexpected exceptions for broader error handling
+            $this->addFlash('error', 'An error occurred.'); // Generic error message
+            // Log the error for further investigation
+            error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3, 'path/to/your/error.log'); // Replace with your log path
+            return $this->redirectToRoute('list_student_2', ['page' => 1]); // Redirect to first page
+        }
+    }    }
