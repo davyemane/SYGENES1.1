@@ -18,9 +18,15 @@ class ResponsableType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('phoneNumber', TelType::class)
-            ->add('name')
+            ->add('email',null, [
+                'label' => ' ',
+            ], EmailType::class)
+            ->add('phoneNumber', null, [
+                'label' => ' ',
+            ], TelType::class)
+            ->add('name', null, [
+                'label' => ' ',
+            ],)
             ->add('created_by', HiddenType::class)
             // ->add('userAccount', EntityType::class, [
             //     'class' => User::class,

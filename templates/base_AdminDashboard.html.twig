@@ -1,187 +1,126 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-  <link rel="stylesheet" href="css/homePage.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-
-  <!-- <script src="/JS/functions.js"></script> -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
-
-  <style>
-    html,
-    body {
-      font-family: "Monserrat", "Lexend", "Arial";
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-  </style>
-  <title>
-    {% block title %}
-    {% endblock %}
-  </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    {{ encore_entry_script_tags('app') }}
 </head>
-
-<body>
-  <div class="d-flex justify-content-center">
-    <nav class="navbar navbar-expand-lg flex-column navbar-light bg-light w-25 "
-      style=" height:100vh;">
-      <div class="container justify-content-center" id="navbarSupportedContent">
-        <ul class="nav nav-pills mr-auto  ">
-          <div class="mt-5 mb-5">
-            <li class="nav-link m-auto">
-              <a class="navbar-brand mx-5" href="{{ path('app_dashAdmin')}}">
-                <img src="/icons/uiecc_logo.png" width="30" height="30" alt="" class="mr-auto">
-                SYGENES
-              </a>
-            </li>
-          </div>
-        
-          <div class="justify-content-center "> 
-          <div class="container dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img src="/icons/students.png" width="30" height="30" alt="" class="mr-auto">
-              Students
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <a class="nav-link " href="{{ path('add_note') }}">
-                Add Student notes</a>
-                <li class="nav-item">
-                  <a class="nav-link " href="{{ path('list_student') }}">
-                    List Students</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="{{ path('import') }}">
-                    Import Excel File</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="#">       
-                    Generer PV</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="#">                  
-                    Generer Releves de Notes</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link " href="#">                
-                    Verifier Inscriptions</a>
-                </li>
-            </div>
-          </div>
-
-          <div></div>
-          <div class="container dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img src="/icons/ue_ec.png" width="30" height="30" alt="" class="mr-auto">
-              UE & EC
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <li class="nav-item">
-                <a class="nav-link " href="{{ path('add_ue') }}">
-                  
-                  Add UE</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="{{ path('add_ec') }}">
-                  
-                  Add EC</a>
-              </li>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </div>
-
-          <div class="container dropright">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img src="/icons/responsable.png" width="30" height="30" alt="" class="mr-auto">
-              Responsable
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <li class="nav-item">
-                <a class="nav-link " href="{{ path('add_responsable') }}">
-                  
-                  Add Responsable</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="#">
-                 
-                  List Responsable</a>
-              </li>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </div>
-
-
-          
-                        
-            <li class="nav-item">
-              <a class="nav-link " href="#">
-                <img src="/icons/uiecc_logo.png" width="30" height="30" alt="" class="mr-auto">
-                Statistics</a>
-            </li>
-
-          </div>
-
-          <div class="container dropright">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown button
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </div>
-          
-
-
-
-          <li class="nav-item mb-5 mt-5">
-            <a class="nav-link" href="{{ path('app_logout') }}">
-              <button class="btn btn-outline-primary w-100 py-2 px-5">Logout</button>
+<body class="flex h-screen bg-white-500">
+    <div class="fixed inset-y-0 left-0 flex flex-col w-64 bg-blue-500 text-white">
+        <div class="flex items-center justify-center h-16">
+        <!-- Add an image here if you want to illustrate the company logo -->
+           
+        </div>
+        <nav class="flex-1 px-4 space-y-1">
+            <a href="{{ path('app_dashAdmin')}}" class="nav-link flex items-center px-2 py-2 text-lg font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <img class="h-5 w-auto mr-3 " src="/icons/home.png" alt="home icon">
+                Dashboard  
             </a>
-          </li>
+            <a href="#" class="nav-link flex items-center px-2 py-2 text-lg font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <img class="h-5 w-auto mr-3 " src="/icons/students.png" alt="students icon">
+                Students
+                
+            </a>
+            <a href="{{ path('add_note') }}" class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <img class="h-5 w-auto mr-3 " src="/icons/students.png" alt="students icon">
+                Add Students notes
+                 <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+            </a>
+
+            <a href="{{ path('list_student') }}" class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <img class="h-5 w-auto mr-3 " src="/icons/students.png" alt="students icon">
+                List Students
+                 <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+            </a>
+
+             <a href="{{ path('import') }}" class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <img class="h-5 w-auto mr-3 " src="/icons/students.png" alt="students icon">
+                Import Excel File
+                 <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+            </a>
+            
+            
+            <a href="#" class="nav-link flex items-center px-2 py-2 text-lg font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <img class="h-5 w-auto mr-3 " src="/icons/ue_ec.png" alt="ue and ec icon">
+                UE & EC
+                 
+            </a>
+
+             <a href="{{ path('add_ue') }}" class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <img class="h-5 w-auto mr-3 " src="/icons/ue_ec.png" alt="ue and ec icon">
+                Add UE
+                 <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+            </a>
 
 
-        </ul>
+             <a href="{{ path('add_ec') }}" class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <img class="h-5 w-auto mr-3 " src="/icons/ue_ec.png" alt="ue and ec icon">
+                Add EC
+                 <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+            </a>
+            <a href="#" class="nav-link flex items-center px-2 py-2 text-lg font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <img class="h-5 w-auto mr-3 " src="/icons/responsable.png" alt="responsable icon">
+                Responsable 
+                 
+            </a>
 
-      </div>
-    </nav>
 
-    <div class="container w-100">
-      <h1 class="h1 text-left m-3 text-primary">Admin Dashboard</h1>
-
-      {% block body %}
-      {% endblock %}
-
-
+            <a href="{{ path('add_responsable') }}" class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <img class="h-5 w-auto mr-3 " src="/icons/responsable.png" alt="responsable icon">
+                Add Responsable 
+                 <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+            </a>
+            <a href="#" class="nav-link flex items-center px-2 py-2 text-lg font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <img class="h-5 w-auto mr-3 " src="/icons/grades.png" alt="home icon">
+                Marks
+                
+            </a>
+            <a href="#" class="nav-link flex items-center px-2 py-2 text-lg font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <img class="h-5 w-auto mr-3 " src="/icons/statistics.png" alt="statistics icon">
+                Statistics
+            </a>
+        </nav>
+        <!-- 
+        <div class="px-4 py-4">
+            <div class="text-sm font-medium text-gray-400">Your teams</div>
+            <a href="#" class="flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <span class="flex items-center justify-center w-8 h-8 bg-blue-500 rounded-full">H</span>
+                <span class="ml-3">Heroicons</span>
+            </a>
+            <a href="#" class="flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <span class="flex items-center justify-center w-8 h-8 bg-blue-500 rounded-full">T</span>
+                <span class="ml-3">Tailwind Labs</span>
+            </a>
+            <a href="#" class="flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
+                <span class="flex items-center justify-center w-8 h-8 bg-blue-500 rounded-full">W</span>
+                <span class="ml-3">Workcation</span>
+            </a>
+        </div>
+        -->
+        <div class="flex items-center px-4 py-4 bg-blue-700">
+            <img class="w-10 h-10 rounded-full" src="/images/green_view.jpg" alt="Profile picture">
+            <div class="ml-3">
+                <div class="text-sm font-medium">Tom Cook</div>
+            </div>
+        </div>
     </div>
-  </div>
-
+    <main class="flex-1">
+        {% block body %}
+        {% endblock %}
+    </main>
 </body>
-<div class="mt-auto" style=" display:flex; flex-direction:column">
-  <footer class="footer py-3 my-4 mt-auto">
-    <ul class="nav justify-content-center border-bottom pb-3 mb-3 mt-auto">
-      <li class="nav-item"> <a class="nav-link px-2 text-muted" href="{{ path('app_home_page') }}">Home</a> </li>
-      <li class="nav-item"> <a class="nav-link px-2 text-muted" href="{{ path('app_about_page') }}">About</a> </li>
-      <li class="nav-item"> <a class="nav-link px-2 text-muted" href="{{ path('app_contact_us_page') }}">Contact Us</a>
-      </li>
-      <li class="nav-item"> <a class="nav-link px-2 text-muted"
-          href="{{ path('app_documentation_page') }}">Documentation</a> </li>
-    </ul>
-    <p class="text-center text-muted"> © 2024 SYGENES, UIECC.</p>
-  </footer>
-</div>
-
 </html>

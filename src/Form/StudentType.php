@@ -20,13 +20,23 @@ class StudentType extends AbstractType
         $builder
 
             ->add('studentID', HiddenType::class)
-            ->add('name')
-            ->add('email', EmailType::class)
-            ->add('phoneNumber', TelType::class)
-            ->add('dateOfBirth', DateType::class)
-            ->add('placeOfBirth')
+            ->add('name', null, [
+                'label' => ' ',
+            ])
+            ->add('email', null, [
+                'label' => ' ',
+            ], EmailType::class)
+            ->add('phoneNumber', null, [
+                'label' => ' ',
+            ], TelType::class)
+            ->add('dateOfBirth', null, [
+                'label' => ' ',
+            ], DateType::class)
+            ->add('placeOfBirth', null, [
+                'label' => ' ',
+            ])
             ->add('Certificate', FileType::class, [
-                'label' => 'Photo of your certificate (Image files only)',
+                'label' => ' ',
 
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
@@ -51,7 +61,7 @@ class StudentType extends AbstractType
             ])
 
             ->add('photoBac', FileType::class, [
-                'label' => 'Photo of your diploma (Image files only)',
+                'label' => ' ',
 
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
@@ -74,8 +84,12 @@ class StudentType extends AbstractType
                     ])
                 ],
             ])
-            ->add('field')
-            ->add('level')
+            ->add('field', null, [
+                'label' => ' ',
+            ])
+            ->add('level', null, [
+                'label' => ' ',
+            ])
             ->add('submit', SubmitType::class)
         ;
     }

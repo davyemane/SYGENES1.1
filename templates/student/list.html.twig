@@ -1,66 +1,47 @@
 {% extends 'base_AdminDashboard.html.twig' %}
 
 {% block body %}
-   <div class="row">
-   {% for student in students %}
-    
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">
-                {{student.name}}
-            </h5>
-            <h6 class="card-subtitle mb-2 text-muted">studentID: {{student.studentID}}</h6> 
-            <p class="card-text">field: {{student.field}}</p>
-            <p class="card-text">Level: {{student.level}}</p> 
-
-            <a href="{{ path('add_student', {id: student.id}) }}" class="card-link">edit</a>
-
-            <a href="{{ path('detail_student', {id: student.id}) }}" class="card-link">detail</a>
-
-        </div>
+   <div class="flex flex-wrap -mx-2 ml-64 overflow-y-auto mb-10">
+  {% for student in students %}
+  <div class="max-w-sm rounded overflow-hidden shadow-lg">
+    <div class="px-6 py-4">
+      <h5 class="font-bold text-xl mb-2">{{ student.name }}</h5>
+      <h6 class="text-gray-600 text-base mb-2">studentID: {{ student.studentID }}</h6>
+      <p class="text-gray-700 text-base">Field: {{ student.field }}</p>
+      <p class="text-gray-700 text-base">Level: {{ student.level }}</p>
+      <div class="flex space-x-4 mt-2">
+        <a href="{{ path('add_student', {id: student.id}) }}" class="text-blue-500 hover:text-blue-700">Edit</a>
+        <a href="{{ path('detail_student', {id: student.id}) }}" class="text-blue-500 hover:text-blue-700">Detail</a>
+      </div>
     </div>
+  </div>
+  {% endfor %}
+</div>
 
-       {% endfor %}
-
-   </div>
-
-{# pagination #}
 {% if isPaginated %}
-<div class="row mt-2">
-    <div class="col Page navigation example">
-        <nav aria-label="...">
-            <ul class="pagination">
-            {# previous page #}
-            {% if page != 1 %}
-                
-              <li class="page-item disabled">
-                <a href="{{ path('list_student', {page: page -1, nbre: nbre}) }}" class="page-link">
-                    Previous
-                </a>
-              </li>
-              <li class="page-item disabled">
-            {% endif %}
-
-            {# actual page #}
-              {% for i in range(1, nbPage) %}
-                  <li class="page-item"><a class="page-link" href="{{ path('list_student', {page: i, nbre: nbre}) }}">{{i}}</a></li>                
-              {% endfor %}
-
-              {# page next #}
-            {% if page != nbPage %}
-                
-              <li class="page-item disabled">
-                <a href="{{ path('list_student', {page: page +1, nbre: nbre}) }}" class="page-link">
-                    Next  
-                </a>
-              </li>
-              <li class="page-item disabled">
-            {% endif %}
-            </ul>
-          </nav>          
-    </div>
+<div class="flex justify-center mt-4">
+  <nav aria-label="Page navigation">
+    <ul class="inline-flex -space-x-px mb-4">
+      {% if page != 1 %}
+      <li>
+        <a href="{{ path('list_student', {page: page - 1, nbre: nbre}) }}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Previous</a>
+      </li>
+      {% endif %}
+      {% for i in range(1, nbPage) %}
+      <li>
+        <a href="{{ path('list_student', {page: i, nbre: nbre}) }}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">{{ i }}</a>
+      </li>
+      {% endfor %}
+      {% if page != nbPage %}
+      <li>
+        <a href="{{ path('list_student', {page: page + 1, nbre: nbre}) }}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Next</a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
 </div>
 {% endif %}
+
 {% endblock %}
  
 {% block title %}
