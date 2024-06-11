@@ -147,31 +147,24 @@ class ResponsableController extends AbstractController
         try {
             $entityManager = $doctrine->getManager();
     
-            // Subquery to select student IDs with user accounts
-            $subQuery = $entityManager->createQueryBuilder('user')
-                ->select('user.student.id')  // Select student ID from User entity
-                ->from(User::class, 'user')
-                ->where('user.student IS NOT NULL')  // Ensure user has a linked student
-                ->getQuery();
-    
-            // Main query to fetch student entities without user accounts
-            $qb = $entityManager->createQueryBuilder('student')
-                ->select('student')  // Select student entity directly
-                ->from(Student::class, 'student')
-                ->where('student.id NOT IN (:subquery)')
-                ->setParameter('subquery', $subQuery->getDQL())  // Use DQL for subquery
-                ->orderBy('student.id', 'ASC') // Sort by student ID (optional)
+            // Fetch students without user accounts with pagination
+            $qb = $entityManager->createQueryBuilder()
+                ->select('s')
+                ->from(Student::class, 's')
+                ->leftJoin('s.userAccount', 'u')
+                ->where('u.id IS NULL')
+                ->orderBy('s.id', 'ASC') // Sort by student ID (optional)
                 ->setFirstResult(($page - 1) * $nbre) // Apply pagination offset
                 ->setMaxResults($nbre);
     
             $students = $qb->getQuery()->getResult();
     
             // Calculate total students without user accounts
-            $countQueryBuilder = $entityManager->createQueryBuilder('student')
-                ->select('COUNT(student)')
-                ->from(Student::class, 'student')
-                ->where('student.id NOT IN (:subquery)')
-                ->setParameter('subquery', $subQuery->getDQL());
+            $countQueryBuilder = $entityManager->createQueryBuilder()
+                ->select('COUNT(s)')
+                ->from(Student::class, 's')
+                ->leftJoin('s.userAccount', 'u')
+                ->where('u.id IS NULL');
     
             $nbStudent = $countQueryBuilder->getQuery()->getSingleScalarResult();
             $nbPage = ceil($nbStudent / $nbre);
@@ -192,7 +185,8 @@ class ResponsableController extends AbstractController
             // Handle the specific case of not finding students without user accounts
             $this->addFlash('error', 'No students without user accounts found.');
             return $this->redirectToRoute('list_student_2', ['page' => 1]); // Redirect to first page
-        } catch (\Exception $e) {
+        } 
+        catch (\Exception $e) {
             // Catch other unexpected exceptions for broader error handling
             $this->addFlash('error', 'An error occurred.'); // Generic error message
             // Log the error for further investigation
@@ -200,4 +194,4 @@ class ResponsableController extends AbstractController
             return $this->redirectToRoute('list_student_2', ['page' => 1]); // Redirect to first page
         }
     }
-     }
+             }
