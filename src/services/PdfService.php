@@ -14,7 +14,7 @@ class PdfService
 
         $pdfOptions = new Options();
 
-        $pdfOptions->set('defaultFont', 'Garamond');
+        $pdfOptions->set('A4', 'lnandscape');
 
         $this->domPdf->setOptions($pdfOptions);
     }
@@ -23,17 +23,10 @@ class PdfService
     {
         $this->domPdf->loadHtml($html);
         $this->domPdf->render();
-        $this->domPdf->stream("details.pdf", [
-            'Attachement'=>false
-        ]);
+        $this->domPdf->stream("new file", array('Attachement'=>0));
     }
 
-    public function generateBinaryPdf($html)
-    {
-        $this->domPdf->loadHtml($html);
-        $this->domPdf->render();
-        $this->domPdf->output();
-    }
+
 
 }
     
