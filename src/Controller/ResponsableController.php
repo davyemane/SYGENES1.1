@@ -6,6 +6,7 @@ use App\Entity\EC;
 use App\Entity\Responsable;
 use App\Entity\Student;
 use App\Entity\UE;
+use App\Entity\User;
 use App\Form\ResponsableType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -136,6 +137,7 @@ class ResponsableController extends AbstractController
     }
 
 
+    
 
     //list des etudiants en attente de validation d'inscription 
 
@@ -143,25 +145,40 @@ class ResponsableController extends AbstractController
     public function ListStudent(ManagerRegistry $doctrine, $page, $nbre): Response
     {
         try {
-            $repository = $doctrine->getRepository(Student::class);
+            $entityManager = $doctrine->getManager();
     
-            // Calculate total students and number of pages
-            $nbStudent = $repository->count([]);
-            $nbPage = ceil($nbStudent / $nbre);
+            // Subquery to select student IDs with user accounts
+            $subQuery = $entityManager->createQueryBuilder('user')
+                ->select('user.student.id')  // Select student ID from User entity
+                ->from(User::class, 'user')
+                ->where('user.student IS NOT NULL')  // Ensure user has a linked student
+                ->getQuery();
     
-            // Fetch students without user accounts with pagination
-            $qb = $repository->createQueryBuilder('s')
-                ->leftJoin('s.userAccount', 'u')
-                ->where('u.id IS NULL')
-                ->orderBy('s.id', 'ASC') // Sort by student ID (optional)
+            // Main query to fetch student entities without user accounts
+            $qb = $entityManager->createQueryBuilder('student')
+                ->select('student')  // Select student entity directly
+                ->from(Student::class, 'student')
+                ->where('student.id NOT IN (:subquery)')
+                ->setParameter('subquery', $subQuery->getDQL())  // Use DQL for subquery
+                ->orderBy('student.id', 'ASC') // Sort by student ID (optional)
                 ->setFirstResult(($page - 1) * $nbre) // Apply pagination offset
-                ->setMaxResults($nbre); // Set limit per page
+                ->setMaxResults($nbre);
     
             $students = $qb->getQuery()->getResult();
     
+            // Calculate total students without user accounts
+            $countQueryBuilder = $entityManager->createQueryBuilder('student')
+                ->select('COUNT(student)')
+                ->from(Student::class, 'student')
+                ->where('student.id NOT IN (:subquery)')
+                ->setParameter('subquery', $subQuery->getDQL());
+    
+            $nbStudent = $countQueryBuilder->getQuery()->getSingleScalarResult();
+            $nbPage = ceil($nbStudent / $nbre);
+    
             if (!$students) {
-                // Handle case where no students are found
-                throw new NotFoundHttpException('No students found.');
+                // Handle case where no students without user accounts are found
+                throw new NotFoundHttpException('No students without user accounts found.');
             }
     
             return $this->render('responsable/list_student.html.twig', [
@@ -172,8 +189,8 @@ class ResponsableController extends AbstractController
                 'nbre' => $nbre,
             ]);
         } catch (NotFoundHttpException $e) {
-            // Handle the specific case of not finding students
-            $this->addFlash('error', 'No students found.');
+            // Handle the specific case of not finding students without user accounts
+            $this->addFlash('error', 'No students without user accounts found.');
             return $this->redirectToRoute('list_student_2', ['page' => 1]); // Redirect to first page
         } catch (\Exception $e) {
             // Catch other unexpected exceptions for broader error handling
@@ -182,4 +199,5 @@ class ResponsableController extends AbstractController
             error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3, 'path/to/your/error.log'); // Replace with your log path
             return $this->redirectToRoute('list_student_2', ['page' => 1]); // Redirect to first page
         }
-    }    }
+    }
+     }
