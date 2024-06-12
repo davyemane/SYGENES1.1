@@ -1,68 +1,59 @@
 {% extends 'base_AdminDashboard.html.twig' %}
 {% block body %}
-   <div class="row">
-   {% for student in students %}
-    
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">
-                {{student.name}}
-            </h5>
-            <h6 class="card-subtitle mb-2 text-muted">studentID: {{student.studentID}}</h6> 
-            <p class="card-text">field: {{student.field}}</p>
-            <p class="card-text">Level: {{student.level}}</p> 
+    <div class="row">
+        <h2>Field: {{ field.name }}</h2>
+        {% for student in students %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {{ student.name }}
+                    </h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Student ID: {{ student.studentID }}</h6> 
+                    <p class="card-text">Field: {{ student.field.name }}</p>
+                    <p class="card-text">Level: {{ student.level }}</p> 
 
-            <a href="{{ path('create_student_account', {studentId: student.id}) }}" class="card-link">Valider</a>
+                    <a href="{{ path('create_student_account', { studentId: student.id }) }}" class="card-link">Valider</a>
+                    <a href="#" class="card-link">Detail</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
-            <a href="#" class="card-link">detail</a>
+    {# pagination #}
+    {% if isPaginated %}
+        <div class="row mt-2">
+            <div class="col Page navigation example">
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        {# previous page #}
+                        {% if page != 1 %}
+                            <li class="page-item">
+                                <a href="{{ path('list_student_2', { fieldId: field.id, page: page - 1, nbre: nbre }) }}" class="page-link">
+                                    Previous
+                                </a>
+                            </li>
+                        {% endif %}
 
+                        {# actual page #}
+                        {% for i in range(1, nbPage) %}
+                            <li class="page-item"><a class="page-link" href="{{ path('list_student_2', { fieldId: field.id, page: i, nbre: nbre }) }}">{{ i }}</a></li>                
+                        {% endfor %}
+
+                        {# next page #}
+                        {% if page != nbPage %}
+                            <li class="page-item">
+                                <a href="{{ path('list_student_2', { fieldId: field.id, page: page + 1, nbre: nbre }) }}" class="page-link">
+                                    Next  
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>          
+            </div>
         </div>
-    </div>
-
-       {% endfor %}
-
-   </div>
-
-{# pagination #}
-{% if isPaginated %}
-<div class="row mt-2">
-    <div class="col Page navigation example">
-        <nav aria-label="...">
-            <ul class="pagination">
-            {# previous page #}
-            {% if page != 1 %}
-                
-              <li class="page-item disabled">
-                <a href="{{ path('list_student_2', {page: page -1, nbre: nbre}) }}" class="page-link">
-                    Previous
-                </a>
-              </li>
-              <li class="page-item disabled">
-            {% endif %}
-
-            {# actual page #}
-              {% for i in range(1, nbPage) %}
-                  <li class="page-item"><a class="page-link" href="{{ path('list_student_2', {page: i, nbre: nbre}) }}">{{i}}</a></li>                
-              {% endfor %}
-
-              {# page next #}
-            {% if page != nbPage %}
-                
-              <li class="page-item disabled">
-                <a href="{{ path('list_student_2', {page: page +1, nbre: nbre}) }}" class="page-link">
-                    Next  
-                </a>
-              </li>
-              <li class="page-item disabled">
-            {% endif %}
-            </ul>
-          </nav>          
-    </div>
-</div>
-{% endif %}
+    {% endif %}
 {% endblock %}
  
 {% block title %}
-   List of Students
+    List of Students in {{ field.name }}
 {% endblock %}
-
