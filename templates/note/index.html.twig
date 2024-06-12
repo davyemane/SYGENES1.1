@@ -4,81 +4,94 @@
 
 {% block body %}
 
-<div class="min-h-screen bg-white flex justify-center items-center">
-  <form class="bg-white  rounded-lg px-8 py-8 mt-10" method="post" id="grades-form">
-  {{ form_start(form) }}
+<div class="bg-white flex flex-col justify-start items-start ml-64">
+  <form class="bg-white rounded-lg px-8 py-8 w-full" method="post" id="grades-form">
+    {{ form_start(form) }}
     <div class="space-y-6">
       <!-- Profile Section -->
-      <div>
-      <h1 class="text-4xl font-semibold text-blue-600">Add Student Grades</h1>
-        <p class="text-sm text-gray-600 mb-4">This is where you add the student's grade per subject.</p>
+      <div class="">
 
-    <div class="border-b border-gray-900/10 pb-12">
+        {% block page_header %}
+        <div class="container">
+          <h1 class="text-4xl font-semibold text-blue-600">Add Student Grades</h1>
+          <p class="text-sm text-gray-600 mt-1">This is where you add the student's grade per subject.</p>
+        </div>
+        {% endblock %}
+        <div class="border-b border-gray-900/10 pb-12">
+          <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div class="sm:col-span-3">
+              <label for="cc" class="block text-sm font-medium leading-6 text-gray-900">CC mark</label>
+              <div class="mt-2">
+                {{ form_row(form.cc, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 '}})
+                }}
+              </div>
+            </div>
 
-      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-        <div class="sm:col-span-3">
-          <label for="cc" class="block text-sm font-medium leading-6 text-gray-900">CC mark</label>
-          <div class="mt-2">
-           {{ form_row(form.cc, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 '}}) }}
+            <div class="sm:col-span-3">
+              <label for="tp" class="block text-sm font-medium leading-6 text-gray-900">TP mark</label>
+              <div class="mt-2">
+                {{ form_row(form.tp, {'attr': {'class': 'form-input  block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 '}})
+                }}
+              </div>
+            </div>
+
+            <div class="sm:col-span-4">
+              <label for="sn" class="block text-sm font-medium leading-6 text-gray-900">SN mark</label>
+              <div class="mt-2">
+                {{ form_row(form.sn, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}})
+                }}
+              </div>
+            </div>
+
+            <div class="sm:col-span-4">
+              <label for="rattrapage" class="block text-sm font-medium leading-6 text-gray-900">Rattrapage mark</label>
+              <div class="mt-2">
+                {{ form_row(form.rattrapage, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}})
+                }}
+              </div>
+            </div>
+
+            <div class="sm:col-span-4">
+              <label for="student" class="block text-sm font-medium leading-6 text-gray-900">Student</label>
+              <div class="mt-2">
+                {{ form_row(form.student, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}})
+                }}
+              </div>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label for="semester" class="block text-sm font-medium leading-6 text-gray-900">Semester</label>
+              <div class="mt-2">
+                {{ form_row(form.semester, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 '}})
+                }}
+              </div>
+            </div>
+
+            <div class="sm:col-span-4">
+              <label for="ec" class="block text-sm font-medium leading-6 text-gray-900">Element Constitutif</label>
+              <div class="mt-2">
+                {{ form_row(form.ec, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 '}})
+                }}
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <div class="sm:col-span-3">
-          <label for="tp" class="block text-sm font-medium leading-6 text-gray-900">TP mark</label>
-          <div class="mt-2">
-            {{ form_row(form.tp, {'attr': {'class': 'form-input  block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 '}}) }}
-          </div>
+        <div class="mt-6 flex justify-end">
+          <button type="button"
+            class="mr-4 py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            onclick="resetForm()">Cancel</button>
+          {{ form_row(form.submit, {'attr': {'class': 'py-2 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}})
+          }}
         </div>
-
-        <div class="sm:col-span-4">
-          <label for="sn" class="block text-sm font-medium leading-6 text-gray-900">SN mark</label>
-          <div class="mt-2">
-           {{ form_row(form.sn, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
-          </div>
-        </div>
-
-         <div class="sm:col-span-4">
-          <label for="rattrapage" class="block text-sm font-medium leading-6 text-gray-900">Rattrapage mark</label>
-          <div class="mt-2">
-           {{ form_row(form.rattrapage, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
-          </div>
-        </div>
-        
-        <div class="sm:col-span-4">
-          <label for="student" class="block text-sm font-medium leading-6 text-gray-900">Student</label>
-          <div class="mt-2">
-           {{ form_row(form.student, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
-          </div>
-        </div>
-
-        <div class="sm:col-span-2">
-          <label for="semester" class="block text-sm font-medium leading-6 text-gray-900">Semester</label>
-          <div class="mt-2">
-           {{ form_row(form.semester, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 '}}) }}
-          </div>
-        </div>
-
-        <div class="sm:col-span-4">
-          <label for="ec" class="block text-sm font-medium leading-6 text-gray-900">Element Constitutif</label>
-          <div class="mt-2">
-           {{ form_row(form.ec, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 '}}) }}
-          </div>
-        </div>
-
+        <!-- Add more fields here -->
       </div>
     </div>
-
-     <div class="mt-6 flex justify-end">
-      <button type="button" class="mr-4 py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" onclick="resetForm()">Cancel</button>
-      {{ form_row(form.submit, {'attr': {'class': 'py-2 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}
-    </div>
-          <!-- Add more fields here -->
-        </div>
-      </div>
-      <!-- Add more sections here -->
-    </div>
-   {{ form_end(form) }}
-  </form>
+    <!-- Add more sections here -->
+</div>
+{{ form_end(form) }}
+</form>
 </div>
 
 <script>
