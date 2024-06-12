@@ -13,20 +13,22 @@
   {% endblock %}
   <div class="flex flex-wrap gap-4 ml-8">
     {% for student in students %}
-    <div class="max-w-sm rounded overflow-hidden shadow-lg">
-      <div class="px-8 py-8 ">
-        <h5 class="font-bold text-xl mb-2">{{ student.name }}</h5>
-        <h6 class="text-gray-600 text-base mb-2">studentID: {{ student.studentID }}</h6>
-        <p class="text-gray-700 text-base">Field: {{ student.field }}</p>
-        <p class="text-gray-700 text-base">Level: {{ student.level }}</p>
-        <div class="flex space-x-4 mt-2">
-          <a href="{{ path('add_student', {id: student.id}) }}" class="text-blue-500 hover:text-blue-700">Edit</a>
-          <a href="{{ path('detail_student', {id: student.id}) }}" class="text-blue-500 hover:text-blue-700">Detail</a>
+    <div class="w-96 h-64 max-w-sm rounded overflow-hidden shadow-lg bg-white p-4">
+      <div class="px-6 py-6">
+        <h5 class="font-bold text-xl mb-2 overflow-hidden overflow-ellipsis whitespace-nowrap">{{ student.name }}</h5>
+        <h6 class="text-gray-600 text-base mb-2 overflow-hidden overflow-ellipsis whitespace-nowrap">studentID: {{ student.studentID }}</h6>
+        <p class="text-gray-700 text-base overflow-hidden overflow-ellipsis whitespace-nowrap">Field: {{ student.field }}</p>
+        <p class="text-gray-700 text-base overflow-hidden overflow-ellipsis whitespace-nowrap">Level: {{ student.level }}</p>
+        <div class="flex space-x-4">
+          <a href="{{ path('add_student', {id: student.id}) }}" class="mt-8 block w-1/2 mx-auto rounded-md border border-orange-600 bg-orange px-3 py-2 text-center text-sm font-semibold text-orange-600 shadow-sm hover:bg-orange-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Edit</a>
+
+          <a href="{{ path('detail_student', {id: student.id}) }}" class="mt-8 block w-1/2 mx-auto rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Detail</a>
         </div>
       </div>
     </div>
     {% endfor %}
-  </div>
+</div>
+
 </div>
 
 {% if isPaginated %}
