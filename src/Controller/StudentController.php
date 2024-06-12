@@ -32,7 +32,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
-#[Route('/student')]
+#[Route('/student'), IsGranted('ROLE_USER')]
 class StudentController extends AbstractController
 {
 
@@ -327,11 +327,7 @@ public function studentNotes(Request $request, StudentRepository $studentReposit
         }
 
         // Rediriger vers une autre page
-        return $userAuthenticator->authenticateUser(
-            $user,
-            $authenticator,
-            $request
-        );
+        return $this->redirectToRoute('list_student_2');
     }
 
 }

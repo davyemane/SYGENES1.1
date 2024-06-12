@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\EC;
+use App\Entity\Field;
 use App\Entity\Responsable;
 use App\Entity\Student;
 use App\Entity\UE;
+use App\Entity\User;
 use App\Form\ResponsableType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -136,50 +138,73 @@ class ResponsableController extends AbstractController
     }
 
 
+    
 
     //list des etudiants en attente de validation d'inscription 
 
-    #[Route('/list_student/{page?1}/{nbre?12}', name: 'list_student_2')]
-    public function ListStudent(ManagerRegistry $doctrine, $page, $nbre): Response
+    #[Route('/list_student/{fieldId?1}/{page?1}/{nbre?12}', name: 'list_student_2')]
+    public function ListStudent(ManagerRegistry $doctrine, $fieldId, $page, $nbre): Response
     {
         try {
-            $repository = $doctrine->getRepository(Student::class);
+            $entityManager = $doctrine->getManager();
     
-            // Calculate total students and number of pages
-            $nbStudent = $repository->count([]);
-            $nbPage = ceil($nbStudent / $nbre);
+            // Fetch the selected field
+            $field = $entityManager->getRepository(Field::class)->find($fieldId);
     
-            // Fetch students without user accounts with pagination
-            $qb = $repository->createQueryBuilder('s')
+            if (!$field) {
+                throw new NotFoundHttpException('Field not found.');
+            }
+    
+            // Fetch students without user accounts in the specified field with pagination
+            $qb = $entityManager->createQueryBuilder()
+                ->select('s')
+                ->from(Student::class, 's')
                 ->leftJoin('s.userAccount', 'u')
                 ->where('u.id IS NULL')
+                ->andWhere('s.field = :fieldId')
+                ->setParameter('fieldId', $fieldId)
                 ->orderBy('s.id', 'ASC') // Sort by student ID (optional)
                 ->setFirstResult(($page - 1) * $nbre) // Apply pagination offset
-                ->setMaxResults($nbre); // Set limit per page
+                ->setMaxResults($nbre);
     
             $students = $qb->getQuery()->getResult();
     
+            // Calculate total students without user accounts in the specified field
+            $countQueryBuilder = $entityManager->createQueryBuilder()
+                ->select('COUNT(s)')
+                ->from(Student::class, 's')
+                ->leftJoin('s.userAccount', 'u')
+                ->where('u.id IS NULL')
+                ->andWhere('s.field = :fieldId')
+                ->setParameter('fieldId', $fieldId);
+    
+            $nbStudent = $countQueryBuilder->getQuery()->getSingleScalarResult();
+            $nbPage = ceil($nbStudent / $nbre);
+    
             if (!$students) {
-                // Handle case where no students are found
-                throw new NotFoundHttpException('No students found.');
+                // Handle case where no students without user accounts are found
+                throw new NotFoundHttpException('No students without user accounts found.');
             }
     
             return $this->render('responsable/list_student.html.twig', [
                 'students' => $students,
+                'field' => $field,
                 'isPaginated' => true,
                 'nbPage' => $nbPage,
                 'page' => $page,
                 'nbre' => $nbre,
             ]);
         } catch (NotFoundHttpException $e) {
-            // Handle the specific case of not finding students
-            $this->addFlash('error', 'No students found.');
-            return $this->redirectToRoute('list_student_2', ['page' => 1]); // Redirect to first page
-        } catch (\Exception $e) {
-            // Catch other unexpected exceptions for broader error handling
-            $this->addFlash('error', 'An error occurred.'); // Generic error message
-            // Log the error for further investigation
-            error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3, 'path/to/your/error.log'); // Replace with your log path
-            return $this->redirectToRoute('list_student_2', ['page' => 1]); // Redirect to first page
+            // Handle the specific case of not finding students without user accounts
+            $this->addFlash('error', 'No students without user accounts found.');
+            return $this->redirectToRoute('list_student_2', ['fieldId' => $fieldId, 'page' => 1]); // Redirect to first page
         }
-    }    }
+        // catch (\Exception $e) {
+        //     // Catch other unexpected exceptions for broader error handling
+        //     $this->addFlash('error', 'An error occurred.'); // Generic error message
+        //     // Log the error for further investigation
+        //     error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3, 'path/to/your/error.log'); // Replace with your log path
+        //     return $this->redirectToRoute('list_student_2', ['fieldId' => $fieldId, 'page' => 1]); // Redirect to first page
+        // }
+    }
+                     }

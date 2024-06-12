@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\User;
@@ -10,11 +9,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
@@ -24,41 +27,67 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            // Handle file upload
+            /** @var UploadedFile $profilePictureFile */
+            $profilePictureFile = $form->get('profilePicture')->getData();
+    
+            if ($profilePictureFile) {
+                $originalFilename = pathinfo($profilePictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$profilePictureFile->guessExtension();
+    
+                try {
+                    $profilePictureFile->move(
+                        $this->getParameter('profile_pictures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Handle exception if something happens during file upload
+                }
+    
+                // Set the profilePicture property to the filename
+                $user->setProfilePicture($newFilename);
+            }
+    
+            // Encode the plain password
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
-
             );
-
+    
             $entityManager->persist($user);
             $entityManager->flush();
-
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('davyemane1@gmail.com', 'UIECC ESIGN SYGENES'))
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
-
-            // do anything else you need here, like send an email
-
+    
+            // Generate a signed url and email it to the user
+            // $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            // (new TemplatedEmail())
+            //         ->from(new Address('SYGENES@sandbox6b1bc277a71d4f37b6fdeed52fdeeebe.mailgun.org', 'SYGENES'))
+            //         ->to($user->getEmail())
+            //         ->subject('Hi! Please confirm your email!')
+            //         ->htmlTemplate('registration/confirmation_email.html.twig')
+            //         ->context([
+            //             'user' => $user,
+            //             'signedUrl' => 'URL_GENERATED', // Replace with the actual signed URL
+            //             'expiresAtMessageKey' => 'EXPIRES_AT_MESSAGE_KEY', // Replace with the actual message key
+            //             'expiresAtMessageData' => 'EXPIRES_AT_MESSAGE_DATA' // Replace with the actual message data
+            //         ])
+            // );
+    
+            // Log the user in
             return $security->login($user, LoginAuthenticator::class, 'main');
         }
-
+    
         return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form,
+            'registrationForm' => $form->createView(),
         ]);
     }
 
@@ -81,4 +110,5 @@ class RegistrationController extends AbstractController
 
         return $this->redirectToRoute('list_student');
     }
+
 }
