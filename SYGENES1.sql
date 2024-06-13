@@ -36,7 +36,7 @@ CREATE TABLE `doctrine_migration_versions` (
 
 LOCK TABLES `doctrine_migration_versions` WRITE;
 /*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
-INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20240429015815','2024-04-29 02:59:52',49389),('DoctrineMigrations\\Version20240429023640','2024-04-29 03:37:00',3691),('DoctrineMigrations\\Version20240429034714','2024-04-29 04:51:16',10871),('DoctrineMigrations\\Version20240430102751','2024-04-30 10:29:42',6797),('DoctrineMigrations\\Version20240505193412','2024-05-05 19:35:19',46915),('DoctrineMigrations\\Version20240505204843','2024-05-05 20:50:58',2243),('DoctrineMigrations\\Version20240505205702','2024-05-05 20:57:06',2240),('DoctrineMigrations\\Version20240505205752','2024-05-05 20:57:56',941),('DoctrineMigrations\\Version20240505210748','2024-05-05 21:07:50',663),('DoctrineMigrations\\Version20240513172646','2024-05-13 17:27:56',1766),('DoctrineMigrations\\Version20240513183939','2024-05-13 18:39:50',387),('DoctrineMigrations\\Version20240513184108','2024-05-13 18:41:14',403),('DoctrineMigrations\\Version20240513225009','2024-05-13 22:50:49',8796),('DoctrineMigrations\\Version20240516234457','2024-05-16 23:45:18',2550),('DoctrineMigrations\\Version20240517000821','2024-05-17 00:08:45',720),('DoctrineMigrations\\Version20240517090132','2024-05-17 09:01:47',4116),('DoctrineMigrations\\Version20240519205658','2024-05-19 20:57:14',7896),('DoctrineMigrations\\Version20240519205818','2024-05-19 20:58:24',1067),('DoctrineMigrations\\Version20240519211229','2024-05-19 21:12:32',2685),('DoctrineMigrations\\Version20240519211350','2024-05-19 21:13:56',474),('DoctrineMigrations\\Version20240519211848','2024-05-19 21:18:53',3850),('DoctrineMigrations\\Version20240519212045','2024-05-19 21:20:48',528);
+INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20240612082311','2024-06-12 08:23:17',39153);
 /*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -50,14 +50,14 @@ DROP TABLE IF EXISTS `ec`;
 CREATE TABLE `ec` (
   `id` int NOT NULL AUTO_INCREMENT,
   `ue_id` int DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `code_ec` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `credit` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_8DE8BDFF62E883B1` (`ue_id`),
   CONSTRAINT `FK_8DE8BDFF62E883B1` FOREIGN KEY (`ue_id`) REFERENCES `ue` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,7 @@ CREATE TABLE `ec` (
 
 LOCK TABLES `ec` WRITE;
 /*!40000 ALTER TABLE `ec` DISABLE KEYS */;
-INSERT INTO `ec` VALUES (1,3,'java','m1234',NULL,2);
+INSERT INTO `ec` VALUES (1,1,'sna1254','info',NULL,3),(2,2,'alg2345','math',NULL,3);
 /*!40000 ALTER TABLE `ec` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,7 +92,7 @@ CREATE TABLE `field` (
 
 LOCK TABLES `field` WRITE;
 /*!40000 ALTER TABLE `field` DISABLE KEYS */;
-INSERT INTO `field` VALUES (1,'ISN','Ingenierie des systemes numeriques',NULL),(2,'INS','Igenierie Numerique Sociotechnique',NULL),(3,'CDN','Creation et Design Numerique',NULL);
+INSERT INTO `field` VALUES (1,'ISN','Ingenierie des Systèmes Numerique','filiere'),(2,'INS','Ingenierie Numerique Sociotechnique',NULL),(3,'CDN','Creation et Disign Numerique',NULL);
 /*!40000 ALTER TABLE `field` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +172,7 @@ CREATE TABLE `note` (
   CONSTRAINT `FK_CFBDFA1427634BEF` FOREIGN KEY (`ec_id`) REFERENCES `ec` (`id`),
   CONSTRAINT `FK_CFBDFA14CB944F1A` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
   CONSTRAINT `FK_CFBDFA14D3EAB6BC` FOREIGN KEY (`createb_by_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,7 +181,7 @@ CREATE TABLE `note` (
 
 LOCK TABLES `note` WRITE;
 /*!40000 ALTER TABLE `note` DISABLE KEYS */;
-INSERT INTO `note` VALUES (1,1,6,1,'12','10','15',NULL,'19-05-24','6'),(2,1,6,1,'12','10','15',NULL,'19-05-24','6');
+INSERT INTO `note` VALUES (1,13,1,2,'12','10','48',NULL,'12-06-24','1');
 /*!40000 ALTER TABLE `note` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,15 +194,15 @@ DROP TABLE IF EXISTS `responsable`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `responsable` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `created_by_id` int DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phone_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_by_id` int DEFAULT NULL,
   `created_at` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_52520D07B03A8386` (`created_by_id`),
   CONSTRAINT `FK_52520D07B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -211,7 +211,6 @@ CREATE TABLE `responsable` (
 
 LOCK TABLES `responsable` WRITE;
 /*!40000 ALTER TABLE `responsable` DISABLE KEYS */;
-INSERT INTO `responsable` VALUES (1,'amougou@gmail.com','666666666','amougou ngoumou',NULL,NULL),(2,'leso@gmail.com','697379517','Emane Bile Félicien Davy',NULL,NULL),(3,'leo@gmail.com','697379517','mendo desire',NULL,NULL),(4,'eyenga@gmail.com','676469014','Eyenga',1,'19-05-24');
 /*!40000 ALTER TABLE `responsable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -262,7 +261,7 @@ CREATE TABLE `student` (
   KEY `IDX_B723AF335FB14BA7` (`level_id`),
   CONSTRAINT `FK_B723AF33443707B0` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`),
   CONSTRAINT `FK_B723AF335FB14BA7` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -271,7 +270,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (6,2,3,NULL,'Emane Bile Félicien','davyemane2@gmail.com','697379517','2019-01-01','ndjom-yekombo',NULL,NULL),(7,1,1,NULL,'tapiba','tapiba2@gmail.com','676469014','2019-01-01','df',NULL,NULL),(8,1,1,NULL,'Emane Bile Félicien Davy','tapiba2@gmail.com','697379517','2019-01-01','fgwgw',NULL,NULL),(9,1,1,NULL,'Emane Bile Félicien Davy','tapiba2@gmail.com','697379517','2019-01-01','fgwgw',NULL,NULL),(10,1,3,NULL,'akono akono','tapiba2@gmail.com','697379517','2019-01-01','fgwgw',NULL,NULL),(11,1,1,NULL,'brinda','brinda@gmail.com','697379517','2023-04-06','dfg',NULL,NULL),(12,1,1,NULL,'b','tapiba2@gmail.com','676469014','2019-01-01',',ml',NULL,NULL),(13,1,1,NULL,'paulo','paulo2@gmail.com','676469014','2019-01-01','rfe',NULL,NULL),(14,1,1,NULL,'paulo','paulo2@gmail.com','676469014','2019-01-01','rfe',NULL,NULL),(15,1,4,NULL,'desire','desire2@gmail.com','697379517','2019-01-01','wwe',NULL,NULL),(16,1,5,NULL,'feuwo','feuwo@gmail.com','676469014','2020-01-01','3r','7d84485c6b054bae91fa2f4b665e86c7-6637f13e05514.jpg','8bb8f9f9f5fe4210a7709d40137a9c9a-6637f13e052a9.jpg'),(17,1,5,NULL,'Evina Franky','evina2@gmail.com','697379517','2019-01-01','yaoundé','3273a7fd0d02404086fa0640d52c9a83-6638bffd70ce7.jpg','7dd184ec9e98470db6d9f24f1afd6a85-6638bffd6d25b.jpg'),(18,2,3,NULL,'mavaïwa désiré désiré','desire2@gmail.com','697379517','2019-01-01','efe','57f6dc924c724f75a3e5b9743e235d9f-6638c0707ee79.jpg','IMG-20231025-WA0010-6638c0707eb37.jpg'),(19,2,4,NULL,'evina francky','tapiba3@gmail.com','697379517','2019-01-01','sfw','156897357-710991476266291-6386398823986896558-n-66432537a5973.jpg','380047086-1379603389435986-2948504245511140514-n-66432537a4b71.jpg');
+INSERT INTO `student` VALUES (1,1,1,NULL,'Tapiba ','tapiba@gmail.com','666666666',NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -313,15 +312,15 @@ DROP TABLE IF EXISTS `ue`;
 CREATE TABLE `ue` (
   `id` int NOT NULL AUTO_INCREMENT,
   `level_id` int DEFAULT NULL,
+  `code_ue` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `credit` int DEFAULT NULL,
-  `code_ue` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci,
   `semester` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_2E490A9B5FB14BA7` (`level_id`),
   CONSTRAINT `FK_2E490A9B5FB14BA7` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -330,7 +329,7 @@ CREATE TABLE `ue` (
 
 LOCK TABLES `ue` WRITE;
 /*!40000 ALTER TABLE `ue` DISABLE KEYS */;
-INSERT INTO `ue` VALUES (1,2,'maths',5,NULL,NULL,NULL),(2,2,'maths',5,NULL,NULL,NULL),(3,5,'Algo',5,'m124','vfvfg','1');
+INSERT INTO `ue` VALUES (1,1,'sna124','Algo1',5,NULL,'1'),(2,5,'Math134','Algoritmique',6,NULL,'2');
 /*!40000 ALTER TABLE `ue` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -349,13 +348,14 @@ CREATE TABLE `user` (
   `student_id` int DEFAULT NULL,
   `responsable_id` int DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `profile_picture` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_IDENTIFIER_USERNAME` (`username`),
   UNIQUE KEY `UNIQ_8D93D649CB944F1A` (`student_id`),
   UNIQUE KEY `UNIQ_8D93D64953C59D72` (`responsable_id`),
   CONSTRAINT `FK_8D93D64953C59D72` FOREIGN KEY (`responsable_id`) REFERENCES `responsable` (`id`),
   CONSTRAINT `FK_8D93D649CB944F1A` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -364,7 +364,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'davyEmane','[\"ROLE_ADMIN\"]','$2y$13$v3sw/wzbYeRMRHh4rn5xCuV/wWGYMdO3HvgHLFRmZWSed/QU/G0JG',NULL,NULL,NULL),(2,'Emane','[\"ROLE_ADMIN\"]','$2y$13$c0PthKV5rA0BgidQtuknEO7K9FL/O5r5XJ.7A4RTKRD4n0Nb53iKu',NULL,NULL,NULL),(3,'bile0','[]','$2y$13$6y3OwWjue1Hckhk1dPiv8.Sq/ZI93Uer2LGsO6PZQ8LZs4soBmZWW',NULL,NULL,NULL),(4,'bile1','[]','$2y$13$jQaXkipO4SWkPq6cTcxCieNyt9b1G9ZDAN2FIxmn1it2GWf7eT7C6',NULL,NULL,NULL),(5,'bile2','[]','$2y$13$lbn7VQ75xiVmRnDrdJHpYulj/nt/GiS9Rf1eqfQF8xgfxrBK6X09q',NULL,NULL,NULL),(6,'bile3','[]','$2y$13$2sSVqrHtS84mKyroF/YzmOwqcWA/so.a9wNWwIizbqWxXjIiGo4ou',NULL,NULL,NULL),(7,'bile4','[]','$2y$13$uGQzdzkOCBwTwluyStQvlOo5/ryYeImm6pLDRqu0hksjZsYpVilPu',NULL,NULL,NULL),(8,'bile5','[]','$2y$13$/KM8Wj9PnPQPLy9b4OmGoe/z6Upb7HctkBJJ2U9xtSiUORQMxcIEm',NULL,NULL,NULL),(9,'davy emane bile','[]','$2y$13$dDIA/xAAlayVtD0cm3W.pudjws35//XOuzUJIxoR/IWBUgRw2EQE2',NULL,NULL,NULL),(10,'davy emane bile1','[]','$2y$13$sKhMTfPWBGGybnEpGC6/GeWGITnNB17QfKgRFWc/sOsvvbbnNQa.u',NULL,NULL,'davyemane2@gmail.com'),(11,'davy emane bile2','[]','$2y$13$lvEXwGaC1yohuSS0K6Nxauom/9A2iXWfTXPz.5nWfqWpguBACi8VK',NULL,NULL,NULL),(12,'davy emane bile5','[]','$2y$13$BloFA9lUHfptOTpdzy9Ga.qEoXPbM8DHbtKfWajIwCHxA1SIZCeeS',NULL,NULL,'davyemane2@gmail.com'),(13,'davy f0','[]','$2y$13$bQyR0j1obfKiCSEPz0eQpeF4lMAZ4xqdMMWUlh60gUl1omHZsr9F2',NULL,NULL,'davyemane1@gmail.com'),(27,'EYENGA','[\"ROLE_CEP\"]','$2y$13$dHFVULHjBn1c82/DZEadJeKy5lA.JMvDdSpn4lpAmA45HD8Ize.mi',NULL,4,'amougou@gmail.com');
+INSERT INTO `user` VALUES (13,'davyEmane','[\"ROLE_ADMIN\"]','$2y$13$oMWFueqB4Vz4STn34Abb6uYgyVMZ2OcrsarOZjo5isQhoB3z8WPU2',NULL,NULL,NULL,NULL),(14,'Emane','[\"ROLE_ADMIN\"]','$2y$13$e9.7ocoSG/hsdXjdXk0uDef2UvWLTE1mUgVrw7ca5HE1PXGKEWS3q',NULL,NULL,NULL,NULL),(15,'bile0','[]','$2y$13$94bvm/YO.pAsgrIfAJybau669yUXtsWi0lFUhXYf4pAsnO6KN/2Bq',NULL,NULL,NULL,NULL),(16,'bile1','[]','$2y$13$jhLYWTaFXlnjS7wXeGphiudluicMu91mNSF/fi3gnpFgrISd7Lzyy',NULL,NULL,NULL,NULL),(17,'bile2','[]','$2y$13$2flcrkdtKWhXAnGVNLUR2eWQUR3IeuqGXnORke6el6pMIbcTRl.Pq',NULL,NULL,NULL,NULL),(18,'bile3','[]','$2y$13$6jM7.gVYZp1QxjiALesgz.xJ.BKgcY4LPJrpV0X9tP9zs6Q8iNT6a',NULL,NULL,NULL,NULL),(19,'bile4','[]','$2y$13$8PtFEuMXuhn9JRqy0mVbhOQ5eUz42YjHKD0JVEIkLxRt3XHeng782',NULL,NULL,NULL,NULL),(20,'bile5','[]','$2y$13$cXDSBP7/YJBzofQAEG4IJun.BJ4JRowxH3D6YD2oyMUO3RnRRaPEO',NULL,NULL,NULL,NULL),(21,'tapiba','[]','$2y$13$xX300.D2ihXMx9On4VrAT.YzNffG.bsMAEwLkBJGRitViclTaueFm',1,NULL,'tapiba@gmail.com','6cea65d9ede546fcb8ca8616e86203ff-6669cf41ee76f.jpg');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -377,4 +377,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-25 22:35:39
+-- Dump completed on 2024-06-13  9:44:35
