@@ -26,7 +26,7 @@ class RegistrationFormType extends AbstractType
       
         // ... other fields
         ->add('profilePicture', FileType::class, [
-            'label' => 'Profile Picture (JPG/PNG file)',
+            'label' => ' ',
             'mapped' => false,
             'required' => false,
             'constraints' => [
@@ -41,13 +41,17 @@ class RegistrationFormType extends AbstractType
             ],
         ])
 
-            ->add('username')
-            ->add('email')
-            ->add('student')
+            ->add('username', null, [
+                'label' => ' ',])
+            ->add('email',  null, [
+                'label' => ' ',])
+            ->add('student',  null, [
+                'label' => ' ',])
 
-            ->add('Responsable')
+            ->add('Responsable', null, [
+                'label' => ' ',])
             ->add('roles', ChoiceType::class, [
-                'label' => 'Roles',
+                'label' => ' ',
                 'choices'  => [ // Define your available roles here
                     'ROLE_USER' => 'ROLE_USER',
                     'ROLE_ADMIN' => 'ROLE_ADMIN',
@@ -62,6 +66,7 @@ class RegistrationFormType extends AbstractType
             ])
         
             ->add('agreeTerms', CheckboxType::class, [
+                'label' => ' ',
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
@@ -72,6 +77,7 @@ class RegistrationFormType extends AbstractType
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
+                'label' => ' ',
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [

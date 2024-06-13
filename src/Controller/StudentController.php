@@ -218,7 +218,9 @@ public function studentNotes(Request $request, StudentRepository $studentReposit
 
     $student = $studentRepository->find($id);
     if (!$student) {
-        throw $this->createNotFoundException('Student not found.');
+        $message = "Pas d'etudiant avec cet identifiant";
+
+        return $this->render('student/error.html.twig', ['message'=>$message]);
     }
 
     $notes = $noteRepository->findBy(['student' => $student]);

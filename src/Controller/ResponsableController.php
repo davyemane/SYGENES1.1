@@ -129,12 +129,17 @@ class ResponsableController extends AbstractController
             ]);
         } catch (NotFoundHttpException $e) {
             $this->addFlash('error', 'No students found.');
-            return $this->redirectToRoute('list_student', ['page' => 1]);
-        } catch (\Exception $e) {
-            $this->addFlash('error', 'An error occurred.');
-            //error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3,'path/to/your/error.log');
-            return $this->redirectToRoute('list_student', ['page' => 1]);
-        }
+            $message = 'acces refusé';
+
+            return $this->render('student/error.html.twig', ['message'=>$message]);
+            } 
+            // catch (\Exception $e) {
+            // $this->addFlash('error', 'An error occurred.');
+            // //error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3,'path/to/your/error.log');
+            // $message = 'acces refusé';
+
+            // return $this->render('student/error.html.twig', ['message'=>$message]);
+            // }
     }
 
 
@@ -196,9 +201,10 @@ class ResponsableController extends AbstractController
             ]);
         } catch (NotFoundHttpException $e) {
             // Handle the specific case of not finding students without user accounts
-            $this->addFlash('error', 'No students without user accounts found.');
-            return $this->redirectToRoute('list_student_2', ['fieldId' => $fieldId, 'page' => 1]); // Redirect to first page
-        }
+            $message = 'acces refusé';
+
+            return $this->render('student/error.html.twig', ['message'=>$message]);
+            }
         // catch (\Exception $e) {
         //     // Catch other unexpected exceptions for broader error handling
         //     $this->addFlash('error', 'An error occurred.'); // Generic error message

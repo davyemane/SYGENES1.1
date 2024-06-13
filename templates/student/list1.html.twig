@@ -1,78 +1,83 @@
 {% extends 'base_AdminDashboard.html.twig' %}
 
 {% block body %}
-<div class="row">
+<div class="bg-white flex flex-col justify-start items-start ml-64 ml-64 mr-10">
+
+ {% block page_header %}
+        <div class="container mt-6 ml-3">
+          <h1 class="text-4xl font-semibold text-blue-600">List of students and their marks</h1>
+          <p class="text-sm text-gray-600 mt-1">This is where you can find the list of students and marks</p>
+        </div>
+  {% endblock %}
+
+<div class="flex flex-wrap mx-2 mt-4">
   {% for student in students %}
-
-  <div class="card" style="width: 18rem;">
-    <div class="card-body">
-      <h5 class="card-title">
-        {{student.name}}
-      </h5>
-      <h6 class="card-subtitle mb-2 text-muted">studentID: {{student.studentID}}</h6>
-      <p class="card-text">field: {{student.field}}</p>
-      <p class="card-text">Level: {{student.level}}</p>
-      <ul>
-        {% if student.notes is not empty %}
-        <ul>
-          {% for note in student.notes %}
-          <li>
-            CC: {{ note.cc }} | TP: {{ note.tp }} | SN: {{ note.sn }}
-            <a href="{{ path('add_note', {id: note.id}) }}" class="card-link">edit</a>
-
-          </li> {% endfor %}
-        </ul>
-        {% else %}
-        <p class="card-text">Aucune note disponible pour cet étudiant.</p>
-        {% endif %}
-
-      </ul>
-
+  <div class="w-full px-2 mb-4 w-96 h-64">
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+      <div class="p-6 h-full flex flex-col justify-between">
+        <div>
+          <h5 class="text-xl font-semibold mb-2">
+            {{ student.name }}
+          </h5>
+          <h6 class="text-sm text-gray-600 mb-2">StudentID: {{ student.studentID }}</h6>
+          <p class="text-gray-700 mb-2">Field: {{ student.field }}</p>
+          <p class="text-gray-700 mb-4">Level: {{ student.level }}</p>
+          <ul class="list-disc pl-3">
+            {% if student.notes is not empty %}
+              {% for note in student.notes %}
+                <li class="mb-2">
+                  CC: {{ note.cc }} | TP: {{ note.tp }} | SN: {{ note.sn }}
+                </li>
+                <a href="{{ path('add_note', {id: note.id}) }}" class="block py-2 px-3 border border-orange-500 text-orange-500 rounded-md text-sm hover:bg-orange-500 hover:text-white mt-2">
+                Edit marks
+              </a>
+              {% endfor %}
+            {% else %}
+              <li class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">Aucune note disponible pour cet étudiant.</li>
+            {% endif %}
+          </ul>
+        </div>
+        {# Additional content or actions can be added here #}
+      </div>
     </div>
   </div>
-
   {% endfor %}
-
 </div>
 
-{# pagination #}
 {% if isPaginated %}
-<div class="row mt-2">
-  <div class="col Page navigation example">
-    <nav aria-label="...">
-      <ul class="pagination">
-        {# previous page #}
-        {% if page != 1 %}
+<div class="flex justify-center mt-4 w-full">
+  <nav aria-label="Page navigation">
+    <ul class="inline-flex -space-x-px mb-4">
+      {% if page != 1 %}
+      <li>
+        <a href="{{ path('list_student_notes', {page: page -1, nbre: nbre}) }}" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+          Previous
+        </a>
+      </li>
+      {% endif %}
 
-        <li class="page-item disabled">
-          <a href="{{ path('list_student_notes', {page: page -1, nbre: nbre}) }}" class="page-link">
-            Previous
-          </a>
-        </li>
-        <li class="page-item disabled">
-          {% endif %}
+      {% for i in range(1, nbPage) %}
+      <li>
+        <a href="{{ path('list_student_notes', {page: i, nbre: nbre}) }}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+          {{ i }}
+        </a>
+      </li>
+      {% endfor %}
 
-          {# actual page #}
-          {% for i in range(1, nbPage) %}
-        <li class="page-item"><a class="page-link" href="{{ path('list_student_notes', {page: i, nbre: nbre}) }}">{{i}}</a>
-        </li>
-        {% endfor %}
-
-        {# page next #}
-        {% if page != nbPage %}
-
-        <li class="page-item disabled">
-          <a href="{{ path('list_student_notes', {page: page +1, nbre: nbre}) }}" class="page-link">
-            Next
-          </a>
-        </li>
-        <li class="page-item disabled">
-          {% endif %}
-      </ul>
-    </nav>
-  </div>
+      {% if page != nbPage %}
+      <li>
+        <a href="{{ path('list_student_notes', {page: page +1, nbre: nbre}) }}" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+          Next
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
 </div>
 {% endif %}
+
+
+<div>
 {% endblock %}
 
 {% block title %}
