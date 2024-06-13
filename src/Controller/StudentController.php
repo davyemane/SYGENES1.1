@@ -329,7 +329,7 @@ public function studentNotes(Request $request, StudentRepository $studentReposit
         }
 
         // Rediriger vers une autre page
-        return $this->redirectToRoute('list_student_2');
+        return $this->redirectToRoute('app_home_page');
     }
 
 }

@@ -1,0 +1,15 @@
+{# templates/field/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Fields{% endblock %}
+
+{% block body %}
+    <h1>Fields</h1>
+    <div class="field-buttons">
+        {% for field in fields %}
+            <button onclick="location.href='{{ path('list_student_2', { 'fieldId': field.id , 'page':1, 'nbre':12}) }}'">
+                {{ field.name }}
+            </button>
+        {% endfor %}
+    </div>
+{% endblock %}

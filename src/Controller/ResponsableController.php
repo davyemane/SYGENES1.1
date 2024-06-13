@@ -9,6 +9,7 @@ use App\Entity\Student;
 use App\Entity\UE;
 use App\Entity\User;
 use App\Form\ResponsableType;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -151,13 +152,15 @@ class ResponsableController extends AbstractController
     public function ListStudent(ManagerRegistry $doctrine, $fieldId, $page, $nbre): Response
     {
         try {
+            $message = "";
             $entityManager = $doctrine->getManager();
     
             // Fetch the selected field
             $field = $entityManager->getRepository(Field::class)->find($fieldId);
     
             if (!$field) {
-                throw new NotFoundHttpException('Field not found.');
+                $message= "Cette filiere n'existe pas !";
+                return $this->render('student/error.html.twig', ['message'=>$message]);
             }
     
             // Fetch students without user accounts in the specified field with pagination
@@ -188,7 +191,8 @@ class ResponsableController extends AbstractController
     
             if (!$students) {
                 // Handle case where no students without user accounts are found
-                throw new NotFoundHttpException('No students without user accounts found.');
+                $message= "Aucun etudiant trouvé !";
+                return $this->render('student/error.html.twig', ['message'=>$message]);
             }
     
             return $this->render('responsable/list_student.html.twig', [
