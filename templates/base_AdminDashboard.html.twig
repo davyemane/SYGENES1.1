@@ -7,115 +7,191 @@
     <title>{% block title %}Dashboard{% endblock %}</title>
     <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     {{ encore_entry_script_tags('app') }}
+    <style>
+        .transition {
+            transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+        }
+
+        .dropdown-menu {
+            display: none;
+        }
+
+        .dropdown-active .dropdown-menu {
+            display: block;
+        }
+
+        .rotate-0 {
+            transform: rotate(0deg);
+        }
+
+        .rotate-90 {
+            transform: rotate(90deg);
+        }
+
+        .rotate-120 {
+            transform: rotate(120deg);
+        }
+
+        .rotate-180 {
+            transform: rotate(190deg);
+        }
+
+        .-rotate-90 {
+            transform: rotate(-90deg);
+        }
+
+        .-rotate-120 {
+            transform: rotate(-120deg);
+        }
+
+        .-rotate-180 {
+            transform: rotate(-190deg);
+        }
+    </style>
 </head>
 
 <body class="font-sans antialiased leading-none h-screen w-screen bg-white-500">
     <div class="flex h-full">
 
         <!-- Sidebar -->
-        <aside class="fixed inset-y-0 left-0 w-64 bg-blue-500 text-white flex flex-col">
+        <aside class="fixed inset-y-0 left-0 w-64 bg-blue-500 text-white flex flex-col ">
             <div class="p-4">
                 <h1 class="text-2xl font-semibold">SYGENES</h1>
             </div>
-            <nav class="flex-grow p-4">
-                <ul class="space-y-4">
+
+
+            <nav class="flex-grow p-4 items-center ">
+                <ul class="space-y-7  items-center">
+
                     <li>
                         <a href="{{ path('app_dashAdmin')}}"
                             class="nav-link flex items-center px-2 py-2 text-md font-medium rounded-md hover:bg-blue-700 hover:text-white">
                             <img class="h-5 w-auto mr-3 " src="/icons/home.png" alt="home icon">
-                            Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="nav-link flex items-center px-2 py-2 text-md font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/students.png" alt="students icon">
-                            Students
-                            <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('add_note') }}"
-                            class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/students.png" alt="students icon">
-                            Add Students notes
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('list_student') }}"
-                            class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/students.png" alt="students icon">
-                            List Students
-
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('import') }}"
-                            class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/students.png" alt="students icon">
-                            Import Excel File
-
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="nav-link flex items-center px-2 py-2 text-md font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/ue_ec.png" alt="ue and ec icon">
-                            UE & EC
-                            <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                    clip-rule="evenodd" />
-                            </svg>
+                            Home
                         </a>
                     </li>
 
-                    <li>
-                        <a href="{{ path('add_ue') }}"
-                            class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/ue_ec.png" alt="ue and ec icon">
-                            Add UE
 
-                        </a>
+                    <li>
+                        <!-- Student  Dropdown -->
+                        <div id="dropdown-container" class="relative w-full">
+                            <div>
+                                <button type="button"
+                                    class=" nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
+                                    id="menu-button" aria-expanded="false" aria-haspopup="true">
+                                    <img class="h-5 w-auto" src="/icons/students.png" alt="students icon">
+                                    Students
+                                    <svg id="dropdown-arrow"
+                                        class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto"
+                                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div id="dropdown-menu"
+                                class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95"
+                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                                <div class="py-1" role="none">
+                                    <a href="{{ path('add_note') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
+                                        role="menuitem" tabindex="-1" id="menu-item-0">Add Students Marks</a>
+                                    <a href="{{ path('import') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
+                                        role="menuitem" tabindex="-1" id="menu-item-1">Import Excel File</a>
+                                    <a href="{{ path('list_student') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
+                                        role="menuitem" tabindex="-1" id="menu-item-2">List Students</a>
+                                    {# <form method="POST" action="#" role="none">
+                                        <button type="submit"
+                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+                                    </form> #}
+                                </div>
+                            </div>
+                        </div>
+
+                         <!-- end of the dropdown -->
+                    </li>
+
+
+
+                    
+                    <li>
+                         <!-- UE & EC  Dropdown -->
+                        <div id="dropdown-container-1" class="relative w-full">
+                            <div>
+                                <button type="button"
+                                    class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
+                                    id="menu-button-1" aria-expanded="false" aria-haspopup="true">
+                                    <img class="h-5 w-auto" src="/icons/ue_ec.png" alt="ue_ec icon">
+                                    UE & EC
+                                    <svg id="dropdown-arrow-1"
+                                        class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto"
+                                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div id="dropdown-menu-1"
+                                class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95"
+                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                                <div class="py-1" role="none">
+                                    <a href="{{ path('add_ue') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
+                                        role="menuitem" tabindex="-1" id="menu-item-0">Add UE</a>
+                                    <a href="{{ path('add_ec') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
+                                        role="menuitem" tabindex="-1" id="menu-item-1">Add EC</a>
+                                    {# <form method="POST" action="#" role="none">
+                                        <button type="submit"
+                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+                                    </form> #}
+                                </div>
+                            </div>
+                        </div>
+
+                        
                     </li>
 
                     <li>
-                        <a href="{{ path('add_ec') }}"
-                            class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/ue_ec.png" alt="ue and ec icon">
-                            Add EC
+                         <!-- UE & EC  Dropdown -->
+                        <div id="dropdown-container-2" class="relative w-full">
+                            <div>
+                                <button type="button"
+                                    class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
+                                    id="menu-button-2" aria-expanded="false" aria-haspopup="true">
+                                    <img class="h-5 w-auto" src="/icons/ue_ec.png" alt="ue_ec icon">
+                                    Authorities
+                                    <svg id="dropdown-arrow-2"
+                                        class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto"
+                                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
 
-                        </a>
+                            <div id="dropdown-menu-2"
+                                class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95"
+                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                                <div class="py-1" role="none">
+                                    <a href="{{ path('add_responsable') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
+                                        role="menuitem" tabindex="-1" id="menu-item-0">Add Authorities</a>
+                                    {# <form method="POST" action="#" role="none">
+                                        <button type="submit"
+                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+                                    </form> #}
+                                </div>
+                            </div>
+                        </div>
+
+                        
                     </li>
 
-                    <li>
-                        <a href="#"
-                            class="nav-link flex items-center px-2 py-2 text-lg font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/responsable.png" alt="responsable icon">
-                            Responsable
-                            <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ path('add_responsable') }}"
-                            class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/responsable.png" alt="responsable icon">
-                            Add Responsable
-
-                        </a>
-                    </li>
                     <li>
                         <a href="#"
                             class="nav-link flex items-center px-2 py-2 text-lg font-medium rounded-md hover:bg-blue-700 hover:text-white">
@@ -134,12 +210,7 @@
                             class="nav-link flex items-center px-2 py-2 text-md font-medium rounded-md hover:bg-blue-700 hover:text-white">
                             <img class="h-5 w-auto mr-3 " src="/icons/statistics.png" alt="statistics icon">
                             Statistics
-                            <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                    clip-rule="evenodd" />
-                            </svg>
+                         
                         </a>
                     </li>
 
@@ -150,11 +221,11 @@
                         class="flex items-center space-x-2 text-white hover:bg-blue-700 hover:text-white p-2 rounded-md mt-4">
                         <img class="h-5 w-auto mr-3 " src="/icons/settings.png" alt="statistics icon">
                         <span>Settings</span>
-                    </a>
+                    </a>  
                 </div>
 
                 <!-- Logout -->
-                <div class="mt-auto">
+                <div class="mt-16 ">
                     <a href="{{ path('app_logout') }}"
                         class="flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-700 hover:bg-blue-100 hover:text-black">
                         <span class="ml-3">Log out</span>
@@ -190,6 +261,109 @@
             </main>
         </div>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const dropdownContainer = document.getElementById('dropdown-container');
+                const menu = document.getElementById('dropdown-menu');
+                const arrow = document.getElementById('dropdown-arrow');
+                const button = document.getElementById('menu-button');
+
+                const dropdownContainer1 = document.getElementById('dropdown-container-1');
+                const menu1 = document.getElementById('dropdown-menu-1');
+                const arrow1 = document.getElementById('dropdown-arrow-1');
+                const button1 = document.getElementById('menu-button-1');
+
+                const dropdownContainer2 = document.getElementById('dropdown-container-2');
+                const menu2 = document.getElementById('dropdown-menu-2');
+                const arrow2 = document.getElementById('dropdown-arrow-2');
+                const button2 = document.getElementById('menu-button-2');
+
+
+                button.addEventListener('click', function (event) {
+                    event.stopPropagation();
+                    const isOpen = dropdownContainer.classList.toggle('dropdown-active');
+                    if (isOpen) {
+                        arrow.classList.add('rotate-180');
+                        arrow.classList.remove('rotate-0');
+                        menu.classList.remove('opacity-0', 'scale-95');
+                        menu.classList.add('opacity-100', 'scale-100');
+                    } else {
+                        arrow.classList.remove('rotate-180');
+                        arrow.classList.add('rotate-0');
+                        menu.classList.add('opacity-0', 'scale-95');
+                        menu.classList.remove('opacity-100', 'scale-100');
+                    }
+                });
+
+                document.addEventListener('click', function (event) {
+                    if (!dropdownContainer.contains(event.target)) {
+                        dropdownContainer.classList.remove('dropdown-active');
+                        arrow.classList.remove('rotate-180');
+                        arrow.classList.add('rotate-0');
+                        menu.classList.add('opacity-0', 'scale-95');
+                        menu.classList.remove('opacity-100', 'scale-100');
+                    }
+                });
+
+
+
+
+             button1.addEventListener('click', function (event) {
+                    event.stopPropagation();
+                    const isOpen = dropdownContainer1.classList.toggle('dropdown-active');
+                    if (isOpen) {
+                        arrow1.classList.add('rotate-180');
+                        arrow1.classList.remove('rotate-0');
+                        menu1.classList.remove('opacity-0', 'scale-95');
+                        menu1.classList.add('opacity-100', 'scale-100');
+                    } else {
+                        arrow1.classList.remove('rotate-180');
+                        arrow1.classList.add('rotate-0');
+                        menu1.classList.add('opacity-0', 'scale-95');
+                        menu1.classList.remove('opacity-100', 'scale-100');
+                    }
+                });
+
+                document.addEventListener('click', function (event) {
+                    if (!dropdownContainer1.contains(event.target)) {
+                        dropdownContainer1.classList.remove('dropdown-active');
+                        arrow1.classList.remove('rotate-180');
+                        arrow1.classList.add('rotate-0');
+                        menu1.classList.add('opacity-0', 'scale-95');
+                        menu1.classList.remove('opacity-100', 'scale-100');
+                    }
+                });
+
+
+
+
+                button2.addEventListener('click', function (event) {
+                    event.stopPropagation();
+                    const isOpen = dropdownContainer2.classList.toggle('dropdown-active');
+                    if (isOpen) {
+                        arrow2.classList.add('rotate-180');
+                        arrow2.classList.remove('rotate-0');
+                        menu2.classList.remove('opacity-0', 'scale-95');
+                        menu2.classList.add('opacity-100', 'scale-100');
+                    } else {
+                        arrow2.classList.remove('rotate-180');
+                        arrow2.classList.add('rotate-0');
+                        menu2.classList.add('opacity-0', 'scale-95');
+                        menu2.classList.remove('opacity-100', 'scale-100');
+                    }
+                });
+
+                document.addEventListener('click', function (event) {
+                    if (!dropdownContainer2.contains(event.target)) {
+                        dropdownContainer2.classList.remove('dropdown-active');
+                        arrow2.classList.remove('rotate-180');
+                        arrow2.classList.add('rotate-0');
+                        menu2.classList.add('opacity-0', 'scale-95');
+                        menu2.classList.remove('opacity-100', 'scale-100');
+                    }
+                });
+            });
+        </script>
 </body>
 
 </html>

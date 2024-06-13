@@ -143,7 +143,15 @@ class ResponsableController extends AbstractController
             // }
     }
 
+    #[Route('/fields', name: 'fields_index')]
+    public function fields(EntityManagerInterface $entityManager): Response
+    {
+        $fields = $entityManager->getRepository(Field::class)->findAll();
 
+        return $this->render('responsable/field.html.twig', [
+            'fields' => $fields,
+        ]);
+    }
     
 
     //list des etudiants en attente de validation d'inscription 
