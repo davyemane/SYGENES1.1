@@ -7,25 +7,47 @@
     {{ encore_entry_link_tags('app') }}
   {% endblock %}
   {{ encore_entry_script_tags('app') }}
- {% block title %}{% endblock %}
-
+  {% block title %}{% endblock %}
 </head>
 
-<body class="h-full" >
-<header class="bg-white navbar">
-  <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 navbar" aria-label="Global">
-    <div class="flex lg:flex-1">
-      <a href="{{ path('app_dashAdmin') }}" class="-m-1.5 p-1.5 nav-link">
-        
+<body class="h-full">
+<header class="bg-white">
+  <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+    <div class="flex items-center lg:flex-1">
+      <a href="{{ path('app_dashAdmin') }}" class="-m-1.5 p-1.5">
         <img class="h-12 w-auto" src="/images/uiecc_logo.png" alt="UIECC Logo">
         <span class="sr-only">SYGENES</span>
       </a>
     </div>
-    
+    <div class="flex lg:hidden">
+      <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600" aria-controls="mobile-menu" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="hidden lg:flex lg:gap-x-12">
+      <!-- Add your navigation links here -->
+    </div>
   </nav>
   
-   
+  <!-- Mobile menu, show/hide based on menu state -->
+  <div class="lg:hidden" id="mobile-menu">
+    <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
+      <!-- Add your mobile navigation links here -->
+    </div>
+  </div>
 </header>
+
+{% block body %}{% endblock %}
+
+</body>
+</html>
+
 
 
 

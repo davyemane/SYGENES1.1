@@ -1,69 +1,86 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{% endblock %}
+  {% block body %}
 
-{% block body %}
-
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-white h-full">
-  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <h2 class="mt-10 text-center text-4xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
-  </div>
-
-  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form class="space-y-6" method="post" action="{{path("app_login")}}">
-      <div>
-        <label for="inputUsername" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
-        <div class="mt-2">
-          <input id="inputUsername" name="username" value="{{ last_username }}" type="text" autocomplete="username" required autofocus class="block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
-        </div>
-      </div>
-
-      <div>
-        <div class="flex items-center justify-between">
-          <label for="inputPassword" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
-          <div class="text-sm">
-            <a href="#" class="font-semibold text-blue-600 hover:text-blue-500">Forgot password?</a>
-          </div>
-        </div>
-        <div class="mt-2">
-          <input id="inputPassword" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
-        </div>
-      </div>
-
-    
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}">
-
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" name="_remember_me"> Remember me
-        </label>
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-white h-full">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <img class="h-18 w-auto" fill="none" src="/images/uiecc_logo.png" alt="uiecc logo">
+      <h2 class="mt-10 text-center text-4xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
     </div>
 
-      <div>
-        <button type="submit" class="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Sign in</button>
-      </div>
-
-    {% if error %}
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-        <span class="block sm:inline">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
-      </div>
-
-    {% endif %}
-
-    {% if app.user %}
-        <div class="m-1 h6 text-sm">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{path('app_logout')}}" class="font-semibold leading-6 text-sm text-blue-600 hover:text-blue-500">Log out</a>
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <form class="space-y-6" method="post" action="{{ path('app_login') }}">
+        <div>
+          <label for="inputUsername" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
+          <div class="mt-2">
+            <input id="inputUsername" name="username" value="{{ last_username }}" type="text" autocomplete="username" required autofocus class="block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+          </div>
         </div>
-    {% endif %}
-    
-    </form>
 
-    <p class="mt-10 text-center text-sm text-gray-500">
-      Have no account?
-      <a href="#" class="font-semibold leading-6 text-blue-600 hover:text-blue-500">Sign Up</a>
-    </p>
+        <div>
+          <div class="flex items-center justify-between">
+            <label for="inputPassword" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+            <div class="text-sm">
+              <a href="#" class="font-semibold text-blue-600 hover:text-blue-500">Forgot password?</a>
+            </div>
+          </div>
+          <div class="mt-2 relative">
+            <input id="inputPassword" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
+            <span id="toggle-password" class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
+            <img class="h-5 w-5 text-gray-500" fill="none" id="eye-icon" src="/icons/view.png" alt="eye icon">
+            <img class="hidden h-5 w-5 text-gray-500" fill="none" id="eye-off-icon" src="/icons/hide.png" alt="eye off icon">  
+            </span>
+          </div>
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <div class="checkbox mb-3">
+          <label>
+            <input type="checkbox" name="_remember_me"> Remember me
+          </label>
+        </div>
+
+        <div>
+          <button type="submit" class="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Sign in</button>
+        </div>
+
+        {% if error %}
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+          </div>
+        {% endif %}
+
+        {% if app.user %}
+          <div class="m-1 h6 text-sm">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}" class="font-semibold leading-6 text-sm text-blue-600 hover:text-blue-500">Log out</a>
+          </div>
+        {% endif %}
+      </form>
+
+      <p class="mt-10 text-center text-sm text-gray-500">
+        Have no account?
+        <a href="#" class="font-semibold leading-6 text-blue-600 hover:text-blue-500">Sign Up</a>
+      </p>
+    </div>
   </div>
-</div>
 
-{% endblock %}
+  <script>
+    document.getElementById('toggle-password').addEventListener('click', function() {
+      var passwordInput = document.getElementById('inputPassword');
+      var eyeIcon = document.getElementById('eye-icon');
+      var eyeOffIcon = document.getElementById('eye-off-icon');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.classList.add('hidden');
+        eyeOffIcon.classList.remove('hidden');
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.classList.remove('hidden');
+        eyeOffIcon.classList.add('hidden');
+      }
+    });
+  </script>
+
+  {% endblock %}
