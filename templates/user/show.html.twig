@@ -1,0 +1,29 @@
+{# templates/user/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Mon Profil</h1>
+
+    <div class="profile">
+        <div class="profile-picture">
+            {% if user.profilePicture %}
+                <img src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture">
+            {% else %}
+                <img src="{{ asset('images/default_profile_picture.png') }}" alt="Default Profile Picture">
+            {% endif %}
+        </div>
+
+        <div class="profile-details">
+            <p><strong>Nom d'utilisateur:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            {% if user.student %}
+                <p><strong>Étudiant:</strong> {{ user.student }}</p>
+            {% endif %}
+            {% if user.Responsable %}
+                <p><strong>Responsable:</strong> {{ user.Responsable }}</p>
+            {% endif %}
+        </div>
+
+        <a href="{{ path('app_profile_edit') }}" class="btn btn-primary">Modifier mon profil</a>
+    </div>
+{% endblock %}

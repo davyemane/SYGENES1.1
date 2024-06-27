@@ -7,7 +7,7 @@
 {% block body %}
 
 <div class="min-h-screen bg-white flex flex-col items-start px-4 md:px-8 lg:ml-48 overflow-y-auto mb-16">
-  <form class="bg-white rounded-lg px-4 md:px-8 py-8 mt-10 w-full max-w-4xl" method="post" id="registration-form">
+  <form class="bg-white rounded-lg px-4 md:px-8 py-8  w-full max-w-4xl" method="post" id="registration-form">
     {{ form_start(form) }}
     <div class="space-y-6">
       <!-- Profile Section -->
@@ -84,7 +84,7 @@
         </div>
 
         <div class="mt-6 flex justify-end">
-          <button type="button" class="mr-4 py-2 px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" onclick="resetForm()">Cancel</button>
+          <button type="button" class="mr-4 py-2 px-4 border border-orange-600 bg-orange text-orange-600  rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-orange-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" onclick="resetForm()">Cancel</button>
           {{ form_row(form.submit, {'attr': {'class': 'py-2 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}
         </div>
 

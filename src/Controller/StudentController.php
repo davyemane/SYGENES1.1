@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Field;
 use App\Entity\Student;
 use App\Entity\User;
 use App\Event\AddStudentEvent;
@@ -29,53 +30,67 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
-#[Route('/student')]
+
+#[Route('student')]
 class StudentController extends AbstractController
 {
 
-    public function __construct(private EventDispatcherInterface $dispacher)
+    public function __construct(private EventDispatcherInterface $dispatcher)
     {
-        
     }
 
-    // List of all students with error handling
     #[Route('/list/{page?1}/{nbre?12}', name: 'list_student')]
-    public function home(ManagerRegistry $doctrine, $page, $nbre): Response
+    public function home(Request $request, ManagerRegistry $doctrine, $page, $nbre): Response
     {
         try {
             $repository = $doctrine->getRepository(Student::class);
+            $queryBuilder = $repository->createQueryBuilder('s');
 
-            // Calculate total students and number of pages
-            $nbStudent = $repository->count([]);
+            // Fetch all students initially without filters
+            $queryBuilderTotal = clone $queryBuilder;
+            $nbStudent = $queryBuilderTotal->select('COUNT(s.id)')->getQuery()->getSingleScalarResult();
             $nbPage = ceil($nbStudent / $nbre);
 
-            // Fetch students with pagination (handle potential errors)
-            $student = $repository->findBy([], [], $nbre, ($page - 1) * $nbre);
-            if (!$student) {
-                // Handle case where no students are found
-                throw new NotFoundHttpException('No students found.');
+            // Retrieve search parameters from request
+            $name = $request->query->get('name');
+            $fieldId = $request->query->get('field');
+
+            // Apply filters if provided
+            if ($name) {
+                $queryBuilder->andWhere('s.name LIKE :name')->setParameter('name', '%' . $name . '%');
+            }
+            if ($fieldId) {
+                $queryBuilder->andWhere('s.field = :field')->setParameter('field', $fieldId);
             }
 
+            // Fetch filtered students with pagination
+            $students = $queryBuilder->setMaxResults($nbre)
+                ->setFirstResult(($page - 1) * $nbre)
+                ->getQuery()
+                ->getResult();
+
+            if (empty($students)) {
+                return $this->render('student/error.html.twig', ['message' => 'Aucun étudiant trouvé']);
+            }
+
+            // Retrieve all fields for filtering options
+            $fields = $doctrine->getRepository(Field::class)->findAll();
+
             return $this->render('student/list.html.twig', [
-                'students' => $student,
+                'students' => $students,
                 'isPaginated' => true,
                 'nbPage' => $nbPage,
                 'page' => $page,
                 'nbre' => $nbre,
+                'currentName' => $name,
+                'currentField' => $fieldId,
+                'fields' => $fields,
             ]);
         } catch (NotFoundHttpException $e) {
-            // Handle the specific case of not finding students
             $this->addFlash('error', 'No students found.');
-            return $this->redirectToRoute('list_student', ['page' => 1]); // Redirect to first page
-        } catch (\Exception $e) {
-            // Catch other unexpected exceptions for broader error handling
-            $this->addFlash('error', 'An error occurred.'); // Generic error message
-            // Log the error for further investigation
-            error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3, 'path/to/your/error.log'); // Replace with your log path
-            return $this->redirectToRoute('list_student', ['page' => 1]); // Redirect to first page
+            return $this->redirectToRoute('list_student', ['page' => 1]);
         }
     }
-
 
     //detail of one student
     #[Route('/listDetail/{id<\d+>}', name: 'detail_student')]
@@ -83,14 +98,14 @@ class StudentController extends AbstractController
     {
         try {
             $repository = $doctrine->getRepository(Student::class);
-    
+
             // Fetch student details (handle potential exceptions)
             $student = $repository->find($id);
             if (!$student) {
                 // Handle case where student is not found
                 throw new NotFoundHttpException('Student with ID ' . $id . ' not found.');
             }
-    
+
             return $this->render('student/detail.html.twig', ['student' => $student]);
         } catch (NotFoundHttpException $e) {
             // Handle specific case of student not found
@@ -104,160 +119,163 @@ class StudentController extends AbstractController
             return $this->redirectToRoute('list_student');
         }
     }
-    
 
-//update or add student
-#[Route('/add/{id?0}', name: 'add_student')]
-#[IsGranted('ROLE_ADMIN')]
-public function academicInscription($id, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
-{
-    $studentDirectory = 'student_directory';
-    $entityManager = $doctrine->getManager();
 
-    // Vérifier si un ID d'étudiant a été fourni
-    if ($id) {
-        $student = $entityManager->getRepository(Student::class)->find($id);
-    } else {
-        $student = new Student();
-    }
+    //update or add student
+    #[Route('/add/{id?0}', name: 'add_student')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function academicInscription($id, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
+    {
+        $studentDirectory = 'student_directory';
+        $entityManager = $doctrine->getManager();
 
-    $form = $this->createForm(StudentType::class, $student);
-
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-
-        // Handle file uploads with try-catch blocks
-        try {
-
-            // Photo de Bac
-            $photoBac = $form->get('photoBac')->getData();
-            if ($photoBac) {
-                $originalFilename = pathinfo($photoBac->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $photoBac->guessExtension();
-                $photoBac->move($studentDirectory, $newFilename);
-                $student->setAdmissionCertificate($newFilename);
-            }
-
-            // Acte de Naissance
-            $Certificate = $form->get('Certificate')->getData();
-            if ($Certificate) {
-                $originalFilename = pathinfo($Certificate->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $Certificate->guessExtension();
-                $Certificate->move($studentDirectory, $newFilename);
-                $student->setBirthCertificate($newFilename);
-            }
-
-        } catch (FileException $e) {
-            // Handle file upload exceptions (e.g., disk space issues, invalid file types)
-            $this->addFlash('error', 'An error occurred while uploading files: ' . $e->getMessage());
-            // Consider logging the error for further investigation
+        // Vérifier si un ID d'étudiant a été fourni
+        if ($id) {
+            $student = $entityManager->getRepository(Student::class)->find($id);
+        } else {
+            $student = new Student();
         }
 
-        $entityManager->persist($student);
-        $entityManager->flush();
+        $form = $this->createForm(StudentType::class, $student);
 
-        $message = $id ? 'mis à jour' : 'ajouté';
-        $this->addFlash('success', $student->getName() . " a été $message avec succès !");
+        $form->handleRequest($request);
 
-        return $this->redirectToRoute("list_student");
-    }
+        if ($form->isSubmitted() && $form->isValid()) {
 
-    return $this->render('student/accademicInscription.html.twig', ['form' => $form->createView()]);
-}
+            // Handle file uploads with try-catch blocks
+            try {
 
-#[Route('/pdf/{id}', name: "pdf_student")]
-public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
-{
-    $repository = $doctrine->getRepository(Student::class);
-    
-    $student = $repository->find($id);
+                // Photo de Bac
+                $photoBac = $form->get('photoBac')->getData();
+                if ($photoBac) {
+                    $originalFilename = pathinfo($photoBac->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $photoBac->guessExtension();
+                    $photoBac->move($studentDirectory, $newFilename);
+                    $student->setAdmissionCertificate($newFilename);
+                }
 
-    $html = $this->renderView('note/releve_notes.html.twig', ['student' => $student]);
+                // Acte de Naissance
+                $Certificate = $form->get('Certificate')->getData();
+                if ($Certificate) {
+                    $originalFilename = pathinfo($Certificate->getClientOriginalName(), PATHINFO_FILENAME);
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $Certificate->guessExtension();
+                    $Certificate->move($studentDirectory, $newFilename);
+                    $student->setBirthCertificate($newFilename);
+                }
+            } catch (FileException $e) {
+                // Handle file upload exceptions (e.g., disk space issues, invalid file types)
+                $this->addFlash('error', 'An error occurred while uploading files: ' . $e->getMessage());
+                // Consider logging the error for further investigation
+            }
 
-    $options = new Options();
-    $options->set('isHtml5ParserEnabled', true);
-    $options->set('isPhpEnabled', true);
+            $entityManager->persist($student);
+            $entityManager->flush();
 
-    $domPdf->setOptions($options);
-    $domPdf->loadHtml($html);
-    $domPdf->render();
-    
-    // Output the generated PDF
-    $domPdf->stream("releve_notes.pdf", [
-        "Attachment" => false // Change to true if you want to force download
-    ]);
-}
+            $message = $id ? 'mis à jour' : 'ajouté';
+            $this->addFlash('success', $student->getName() . " a été $message avec succès !");
 
-
-
-#[Route('/{id}/notes', name: 'student_notes')]
-public function studentNotes(Request $request, StudentRepository $studentRepository, NoteRepository $noteRepository, $id, LevelRepository $levelRepository, UERepository $ueRepository)
-{
-
-    // Récupérer l'étudiant connecté
-    $currentUser = $this->getUser();
-    $message = '';
-        
-    
-    // Vérifier si l'utilisateur connecté est autorisé à accéder aux notes demandées
-    if ($currentUser->getStudent()->getId() != $id) {
-
-        $message = 'acces refusé';
-
-        return $this->render('student/error.html.twig', ['message'=>$message]);
-        // L'utilisateur connecté n'est pas autorisé à accéder à ces notes
-        // Rediriger vers une page d'erreur ou afficher un message approprié
-        // par exemple : throw $this->createAccessDeniedException('You are not allowed to access these notes.');
-    }
-    
-
-    $student = $studentRepository->find($id);
-    if (!$student) {
-        $message = "Pas d'etudiant avec cet identifiant";
-
-        return $this->render('student/error.html.twig', ['message'=>$message]);
-    }
-
-    $notes = $noteRepository->findBy(['student' => $student]);
-
-    $notesByUe = []; // Changed to notesByUe for clarity
-    foreach ($notes as $note) {
-        $ue = $note->getEc()->getUe(); // Assuming relationships are set correctly
-
-        $notesByUe[$ue->getId()][] = $note;
-    }
-
-    $levels = $levelRepository->findAll();
-
-    // Process notesByUe to group by level, UE, and add validation status
-    $processedNotes = [];
-    foreach ($notesByUe as $ueId => $ueNotes) {
-        $levelId = $ue->getLevel()->getId();
-        foreach ($ueNotes as $note) {
-            $totalScore = $note->getCc() + $note->getTp() + $note->getSn();
-            $validated = $totalScore >= 50 && $totalScore <= 100;
-            $processedNotes[$levelId][$ueId][] = [
-                'note' => $note,
-                'validated' => $validated,
-            ];
+            return $this->redirectToRoute("list_student");
         }
+
+        return $this->render('student/accademicInscription.html.twig', ['form' => $form->createView()]);
     }
 
-    return $this->render('student/notes.html.twig', [
-        'student' => $student,
-        'processedNotes' => $processedNotes,
-        'levels' => $levels,
-        'ueRepository' => $ueRepository, // Pass ueRepository to the template
-    ]);
-}
+    #[Route('/pdf/{id}', name: "pdf_student")]
+    public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
+    {
+        $repository = $doctrine->getRepository(Student::class);
+
+        $student = $repository->find($id);
+
+        $html = $this->renderView('note/releve_notes.html.twig', ['student' => $student]);
+
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+
+        $domPdf->setOptions($options);
+        $domPdf->loadHtml($html);
+        $domPdf->render();
+
+        // Output the generated PDF
+        $domPdf->stream("releve_notes.pdf", [
+            "Attachment" => false // Change to true if you want to force download
+        ]);
+    }
 
 
 
-//creer automatiquement un compte a un etudiant 
-#[Route('/create-account/{studentId}', name: 'create_student_account')]
+    #[Route('/{id}/notes', name: 'student_notes')]
+    public function studentNotes(Request $request, StudentRepository $studentRepository, NoteRepository $noteRepository, $id, LevelRepository $levelRepository, UERepository $ueRepository)
+    {
+
+        // Récupérer l'étudiant connecté
+        $currentUser = $this->getUser();
+        $message = '';
+
+
+        // Vérifier si l'utilisateur connecté est autorisé à accéder aux notes demandées
+        if ($currentUser->getStudent()->getId() != $id) {
+
+            $message = 'acces refusé';
+
+            return $this->render('student/error.html.twig', ['message' => $message]);
+            // L'utilisateur connecté n'est pas autorisé à accéder à ces notes
+            // Rediriger vers une page d'erreur ou afficher un message approprié
+            // par exemple : throw $this->createAccessDeniedException('You are not allowed to access these notes.');
+        }
+
+
+        $student = $studentRepository->find($id);
+        if (!$student) {
+            throw $this->createNotFoundException('Student not found.');
+        }
+        $student = $studentRepository->find($id);
+        if (!$student) {
+            $message = "Pas d'etudiant avec cet identifiant";
+
+            return $this->render('student/error.html.twig', ['message' => $message]);
+        }
+
+        $notes = $noteRepository->findBy(['student' => $student]);
+
+        $notesByUe = []; // Changed to notesByUe for clarity
+        foreach ($notes as $note) {
+            $ue = $note->getEc()->getUe(); // Assuming relationships are set correctly
+
+            $notesByUe[$ue->getId()][] = $note;
+        }
+
+        $levels = $levelRepository->findAll();
+
+        // Process notesByUe to group by level, UE, and add validation status
+        $processedNotes = [];
+        foreach ($notesByUe as $ueId => $ueNotes) {
+            $levelId = $ue->getLevel()->getId();
+            foreach ($ueNotes as $note) {
+                $totalScore = $note->getCc() + $note->getTp() + $note->getSn();
+                $validated = $totalScore >= 50 && $totalScore <= 100;
+                $processedNotes[$levelId][$ueId][] = [
+                    'note' => $note,
+                    'validated' => $validated,
+                ];
+            }
+        }
+
+        return $this->render('student/notes.html.twig', [
+            'student' => $student,
+            'processedNotes' => $processedNotes,
+            'levels' => $levels,
+            'ueRepository' => $ueRepository, // Pass ueRepository to the template
+        ]);
+    }
+
+
+
+    //creer automatiquement un compte a un etudiant 
+    #[Route('/create-account/{studentId}', name: 'create_student_account')]
     public function createAccountForStudent(
         int $studentId,
         UserPasswordHasherInterface $userPasswordHasher,
@@ -266,8 +284,7 @@ public function studentNotes(Request $request, StudentRepository $studentReposit
         LoginAuthenticator $authenticator,
         Request $request,
         MailerInterface $mailer
-    ): Response 
-    {
+    ): Response {
         $new = true;
         // Récupérer l'étudiant par son ID
         $student = $entityManager->getRepository(Student::class)->find($studentId);
@@ -316,18 +333,16 @@ public function studentNotes(Request $request, StudentRepository $studentReposit
         $this->addFlash('success', 'Account created successfully');
 
 
-//j'ai créé un evennement 
-        if ($new) 
-        {
-            $addStudentEvent = new AddStudentEvent(
-                $student
-            );
+        // //j'ai créé un evennement 
+        // if ($new) {
+        //     $addStudentEvent = new AddStudentEvent(
+        //         $student
+        //     );
 
-            $this->dispacher->dispatch($addStudentEvent, AddStudentEvent::ADD_STUDENT_EVENT);
-        }
+        //     $this->dispacher->dispatch($addStudentEvent, AddStudentEvent::ADD_STUDENT_EVENT);
+        // }
 
         // Rediriger vers une autre page
         return $this->redirectToRoute('app_home_page');
     }
-
 }
