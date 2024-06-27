@@ -18,6 +18,14 @@
         </div>
 
         <div class="profile-details">
+            <p><strong>Nom d'utilisateur:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            {% if student %}
+                <p><strong>Étudiant:</strong> {{ student.name }}</p>
+                <p><strong>studentID:</strong> {{ student.studentID }}</p>
+                <p><strong>level:</strong> {{ student.level }}</p>
+                <p><strong>phoneNumber:</strong> {{ student.phoneNumber }}</p>
+                <p><strong>dateOfBirth:</strong> {{ student.dateOfBirth }}</p>
             <p class="text-lg"><strong>Nom d'utilisateur:</strong> {{ user.username }}</p>
             <p class="text-lg"><strong>Email:</strong> {{ user.email }}</p>
             {% if user.student %}
