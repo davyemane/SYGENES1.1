@@ -32,7 +32,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 
-#[Route('/student'), IsGranted('ROLE_USER')]
+#[Route('/student')]
 class StudentController extends AbstractController
 {
 
@@ -111,6 +111,7 @@ class StudentController extends AbstractController
 
 //update or add student
 #[Route('/add/{id?0}', name: 'add_student')]
+#[IsGranted('ROLE_ADMIN')]
 public function academicInscription($id, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
 {
     $studentDirectory = 'student_directory';

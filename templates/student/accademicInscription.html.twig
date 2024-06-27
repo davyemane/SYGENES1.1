@@ -1,8 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_login.html.twig' %}
+
+
+{% block head %}
+{% block title %} <title> Student Registration </title> {% endblock %}
+{% endblock %}
+
 
 {% block body %}
  
-<div class="min-h-screen bg-white flex justify-center items-center">
+<div class="min-h-screen bg-white flex flex flex-col items-start -mx-2 ml-48 overflow-y-auto mb-16">
   <form class="bg-white rounded-lg px-8 py-8 mt-10" method="post" id="registration-form">
   {{ form_start(form) }}
     <div class="space-y-6">
@@ -13,22 +19,22 @@
 
     <div class="border-b border-gray-900/10 pb-12">
 
-      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-        <div class="sm:col-span-2">
+      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-12">
+        <div class="sm:col-span-10">
           <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Enter your fullname</label>
           <div class="mt-2">
            {{ form_row(form.name, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 '}}) }}
           </div>
         </div>
 
-        <div class="sm:col-span-5">
+        <div class="sm:col-span-10">
           <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
           <div class="mt-2">
             {{ form_row(form.email, {'attr': {'class': 'form-input  block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 '}}) }}
           </div>
         </div>
 
-        <div class="sm:col-span-5">
+        <div class="sm:col-span-10">
           <label for="sn" class="block text-sm font-medium leading-6 text-gray-900">Phone Number</label>
           <div class="mt-2">
            {{ form_row(form.phoneNumber, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
@@ -42,35 +48,35 @@
           </div>
         </div>
 
-         <div class="sm:col-span-5">
+         <div class="sm:col-span-10">
           <label for="sn" class="block text-sm font-medium leading-6 text-gray-900">Place of Birth</label>
           <div class="mt-2">
            {{ form_row(form.placeOfBirth, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
           </div>
         </div>
 
-         <div class="sm:col-span-5">
+         <div class="sm:col-span-10">
           <label for="sn" class="block text-sm font-medium leading-6 text-gray-900">Photo of your certificate (Image files only)</label>
           <div class="mt-2">
            {{ form_row(form.Certificate, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
           </div>
         </div>
 
-         <div class="sm:col-span-5">
+         <div class="sm:col-span-10">
           <label for="sn" class="block text-sm font-medium leading-6 text-gray-900">Photo of your diploma (Image files only)</label>
           <div class="mt-2">
            {{ form_row(form.photoBac, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
           </div>
         </div>
 
-         <div class="sm:col-span-5">
+         <div class="sm:col-span-7">
           <label for="sn" class="block text-sm font-medium leading-6 text-gray-900">Enter your field</label>
           <div class="mt-2">
            {{ form_row(form.field, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
           </div>
         </div>
 
-        <div class="sm:col-span-5">
+        <div class="sm:col-span-3">
           <label for="sn" class="block text-sm font-medium leading-6 text-gray-900">Enter your level</label>
           <div class="mt-2">
            {{ form_row(form.level, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
