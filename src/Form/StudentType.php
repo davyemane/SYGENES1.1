@@ -20,15 +20,22 @@ class StudentType extends AbstractType
         $builder
 
             ->add('studentID', HiddenType::class)
-            ->add('name')
-            ->add('email', EmailType::class)
-            ->add('phoneNumber', TelType::class)
+            ->add('name',null,[
+                'label' => ' ',
+            ])
+            ->add('email', EmailType::class, [
+                'label' => ' ',
+            ])
+            ->add('phoneNumber', TelType::class, [
+                'label' => ' ',
+            ])
             ->add('dateOfBirth', DateType::class, [
+                'label' => ' ',
                 'widget' => 'single_text',
                 'years' => range(1990, 2020),
                 'attr' => ['placeholder' => 'Select a date of birth between 1990 and 2020']
             ])
-            ->add('placeOfBirth')
+            ->add('placeOfBirth', null, ['label' => ' ',] )
             ->add('Certificate', FileType::class, [
                 'label' => ' ',
 
