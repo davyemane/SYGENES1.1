@@ -1,5 +1,9 @@
 {# templates/user/show.html.twig #}
-{% extends 'base.html.twig' %}
+{% extends 'base_login.html.twig' %}
+
+{% block head %}
+  {% block title %} <title> Show Profile </title> {% endblock %}
+{% endblock %}
 
 {% block body %}
     <h1>Mon Profil</h1>
