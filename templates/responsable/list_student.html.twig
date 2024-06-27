@@ -59,6 +59,7 @@
     </div>
 {% endblock %}
 
-{% block title %}
-    List of Students in {{ field.name }}
+
+{% block head %}
+  {% block title %}<title> List of Students in {{ field.name }} </title>{% endblock %}
 {% endblock %}

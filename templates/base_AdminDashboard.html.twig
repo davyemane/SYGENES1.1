@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Dashboard{% endblock %}</title>
+    {% block head %}{% block title %}<title>Dashboard</title>{% endblock %}{% endblock %}
     <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     <link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
+
     {{ encore_entry_script_tags('app') }}
     <style>
         .transition {

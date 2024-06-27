@@ -1,8 +1,9 @@
 {% extends 'base_StudentDashboard.html.twig' %}
 
-{% block title %}
-Notes de {{ student.name }}
+{% block head %}
+  {% block title %}<title> Notes de {{ student.name }}</title>{% endblock %}
 {% endblock %}
+
 
 {% block body %}
 <div class="bg-white flex flex-col justify-start items-start ml-64 mr-10">
