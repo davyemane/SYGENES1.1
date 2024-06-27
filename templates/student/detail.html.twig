@@ -6,6 +6,7 @@
     </div>
 {% endblock %}
 
-{% block title %}
-    {{student.name}}
+
+{% block head %}
+  {% block title %}<title> {{student.name}}</title>{% endblock %}
 {% endblock %}
