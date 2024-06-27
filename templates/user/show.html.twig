@@ -16,11 +16,12 @@
         <div class="profile-details">
             <p><strong>Nom d'utilisateur:</strong> {{ user.username }}</p>
             <p><strong>Email:</strong> {{ user.email }}</p>
-            {% if user.student %}
-                <p><strong>Étudiant:</strong> {{ user.student }}</p>
-            {% endif %}
-            {% if user.Responsable %}
-                <p><strong>Responsable:</strong> {{ user.Responsable }}</p>
+            {% if student %}
+                <p><strong>Étudiant:</strong> {{ student.name }}</p>
+                <p><strong>studentID:</strong> {{ student.studentID }}</p>
+                <p><strong>level:</strong> {{ student.level }}</p>
+                <p><strong>phoneNumber:</strong> {{ student.phoneNumber }}</p>
+                <p><strong>dateOfBirth:</strong> {{ student.dateOfBirth }}</p>
             {% endif %}
         </div>
 

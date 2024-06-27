@@ -261,7 +261,7 @@ CREATE TABLE `student` (
   KEY `IDX_B723AF335FB14BA7` (`level_id`),
   CONSTRAINT `FK_B723AF33443707B0` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`),
   CONSTRAINT `FK_B723AF335FB14BA7` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +270,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (1,1,1,NULL,'Tapiba ','tapiba@gmail.com','666666666',NULL,NULL,NULL,NULL);
+INSERT INTO `student` VALUES (1,1,1,NULL,'Tapiba ','tapiba@gmail.com','666666666',NULL,NULL,NULL,NULL),(2,2,2,NULL,'EMANE bile','davyemane1@gmail.com','655020154','2002-01-08','ndjom',NULL,NULL);
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -364,7 +364,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (13,'davyEmane','[\"ROLE_ADMIN\"]','$2y$13$oMWFueqB4Vz4STn34Abb6uYgyVMZ2OcrsarOZjo5isQhoB3z8WPU2',NULL,NULL,NULL,NULL),(14,'Emane','[\"ROLE_ADMIN\"]','$2y$13$e9.7ocoSG/hsdXjdXk0uDef2UvWLTE1mUgVrw7ca5HE1PXGKEWS3q',NULL,NULL,NULL,NULL),(15,'bile0','[]','$2y$13$94bvm/YO.pAsgrIfAJybau669yUXtsWi0lFUhXYf4pAsnO6KN/2Bq',NULL,NULL,NULL,NULL),(16,'bile1','[]','$2y$13$jhLYWTaFXlnjS7wXeGphiudluicMu91mNSF/fi3gnpFgrISd7Lzyy',NULL,NULL,NULL,NULL),(17,'bile2','[]','$2y$13$2flcrkdtKWhXAnGVNLUR2eWQUR3IeuqGXnORke6el6pMIbcTRl.Pq',NULL,NULL,NULL,NULL),(18,'bile3','[]','$2y$13$6jM7.gVYZp1QxjiALesgz.xJ.BKgcY4LPJrpV0X9tP9zs6Q8iNT6a',NULL,NULL,NULL,NULL),(19,'bile4','[]','$2y$13$8PtFEuMXuhn9JRqy0mVbhOQ5eUz42YjHKD0JVEIkLxRt3XHeng782',NULL,NULL,NULL,NULL),(20,'bile5','[]','$2y$13$cXDSBP7/YJBzofQAEG4IJun.BJ4JRowxH3D6YD2oyMUO3RnRRaPEO',NULL,NULL,NULL,NULL),(21,'tapiba','[]','$2y$13$xX300.D2ihXMx9On4VrAT.YzNffG.bsMAEwLkBJGRitViclTaueFm',1,NULL,'tapiba@gmail.com','6cea65d9ede546fcb8ca8616e86203ff-6669cf41ee76f.jpg');
+INSERT INTO `user` VALUES (13,'davyEmanes','[\"ROLE_ADMIN\"]','$2y$13$oMWFueqB4Vz4STn34Abb6uYgyVMZ2OcrsarOZjo5isQhoB3z8WPU2',NULL,NULL,'davyemane3@gmail.com','667d3c8bdd4c8.jpg'),(14,'Emane','[\"ROLE_ADMIN\"]','$2y$13$e9.7ocoSG/hsdXjdXk0uDef2UvWLTE1mUgVrw7ca5HE1PXGKEWS3q',NULL,NULL,NULL,NULL),(15,'bile0','[]','$2y$13$94bvm/YO.pAsgrIfAJybau669yUXtsWi0lFUhXYf4pAsnO6KN/2Bq',NULL,NULL,NULL,NULL),(16,'bile1','[]','$2y$13$jhLYWTaFXlnjS7wXeGphiudluicMu91mNSF/fi3gnpFgrISd7Lzyy',NULL,NULL,NULL,NULL),(17,'bile2','[]','$2y$13$2flcrkdtKWhXAnGVNLUR2eWQUR3IeuqGXnORke6el6pMIbcTRl.Pq',NULL,NULL,NULL,NULL),(18,'bile3','[]','$2y$13$6jM7.gVYZp1QxjiALesgz.xJ.BKgcY4LPJrpV0X9tP9zs6Q8iNT6a',NULL,NULL,NULL,NULL),(19,'bile4','[]','$2y$13$8PtFEuMXuhn9JRqy0mVbhOQ5eUz42YjHKD0JVEIkLxRt3XHeng782',NULL,NULL,NULL,NULL),(20,'bile5','[]','$2y$13$cXDSBP7/YJBzofQAEG4IJun.BJ4JRowxH3D6YD2oyMUO3RnRRaPEO',NULL,NULL,NULL,NULL),(21,'tapiba','[]','$2y$13$xX300.D2ihXMx9On4VrAT.YzNffG.bsMAEwLkBJGRitViclTaueFm',1,NULL,'tapiba@gmail.com','6cea65d9ede546fcb8ca8616e86203ff-6669cf41ee76f.jpg');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -377,4 +377,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-13  9:44:35
+-- Dump completed on 2024-06-27 17:26:40

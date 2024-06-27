@@ -82,14 +82,23 @@ class UserController extends AbstractController
 
 
 
-    #[Route('/profile', name: 'app_profile_show')]
+    #[Route('user/profile', name: 'app_profile_show')]
     #[IsGranted('ROLE_USER')]
     public function show(): Response
     {
+        /** @var User|null $user */
         $user = $this->getUser();
-
+    
+        if (!$user) {
+            throw $this->createNotFoundException('User not found');
+        }
+    
+        // Load the Student entity if it exists
+        $student = $user->getStudent();
+        
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'student' => $student, // Pass the student entity to the Twig template
         ]);
     }
 }
