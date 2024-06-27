@@ -1,35 +1,48 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_AdminDashboard.html.twig' %}
 
 {% block title %}
     EC
 {% endblock %}
 
 {% block body %}
-    <h1>Liste des ECs par UE</h1>
 
-<form action="{{ path('choix_ec') }}" method="get">
-    <label for="ue">Sélectionner une UE:</label>
-    <select id="ue" name="ue">
-        <option value="">Toutes les UEs</option>
+<div class="bg-white flex flex-col justify-start items-start ml-64 ml-64 mr-10">
+  {% block page_header %}
+        <div class="container mt-6 ml-3">
+          <h1 class="text-4xl font-semibold text-blue-600">List of ECs per UE</h1>
+          <p class="text-sm text-gray-600 mt-1">This is where you can find the ECs per UE</p>
+        </div>
+  {% endblock %}
+
+<form action="{{ path('choix_ec') }}" method="get" class="mb-4 ml-3 w-96">
+    <label for="ue" class="block text-sm font-medium text-gray-700 mb-2 mt-4 pr-3">Sélectionner une UE:</label>
+    <select id="ue" name="ue" class="block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+        <option value="">All the UEs</option>
         {% for ueName in data|keys %}
             <option value="{{ ueName }}">{{ ueName }}</option>
         {% endfor %}
     </select>
-    <button type="submit">Filtrer</button>
+    <button type="submit" class=" w-auto mt-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        Filter
+    </button>
 </form>
 
 {% if data is empty %}
-  <p>Aucune UE trouvée.</p>
+  <p class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">Aucune UE trouvée.</p>
 {% else %}
   {% set selectedUe = app.request.query.get('ue') %}
-  <ul>
+  <ul class="space-y-6 ml-3 gap-4 w-full">
     {% for ueName, ecs in data %}
-      <li class="{{ (selectedUe == ueName) ? 'active' : '' }}">
-        <h2>{{ ueName }}</h2>
-        <ul>
+      <li class="border border-gray-200 p-4 rounded-md {{ (selectedUe == ueName) ? 'bg-white-100 ' : '' }}">
+        <h2 class="text-lg font-semibold">{{ ueName }}</h2>
+        <ul class="mt-2 space-y-2">
           {% for ec in ecs %}
-          <a href="{{ path('list_student_notes', { page: 1, nbre: 12, ec: ec.id }) }}" class="card-link">{{ ec.codeEc }} - {{ ec.name }}</a>
-            <li>{{ ec.codeEc }} - {{ ec.name }}</li>
+          <li>
+            <a href="{{ path('list_student_notes', { page: 1, nbre: 12, ec: ec.id }) }}" class="inline-flex items-center px-4 py-2 border border-orange-500 rounded-md text-sm font-medium text-orange-500 bg-white hover:bg-orange-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+             {{ ec.codeEc }} - {{ ec.name }}
+            </a>
+
+          </li>
           {% endfor %}
         </ul>
       </li>
@@ -37,4 +50,5 @@
   </ul>
 {% endif %}
 
+</div>
 {% endblock %}

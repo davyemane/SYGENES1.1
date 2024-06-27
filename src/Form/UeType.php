@@ -15,13 +15,27 @@ class UeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('codeUE')
-            ->add('name')
-            ->add('description', TextType::class)
-            ->add('credit', NumberType::class)
-            ->add('semester')
-            ->add('level')
-            ->add('fields')
+            ->add('codeUE', null,[
+                'label' => ' ',
+            ])
+            ->add('name', null,[
+                'label' => ' ',
+            ])
+            ->add('description', null,[
+                'label' => ' ',
+            ], TextType::class)
+            ->add('credit', null,[
+                'label' => ' ',
+            ], NumberType::class)
+            ->add('semester', null,[
+                'label' => ' ',
+            ])
+            ->add('level', null,[
+                'label' => ' ',
+            ])
+            ->add('fields', null,[
+                'label' => ' ',
+            ])
             ->add('submit', SubmitType::class)
             
 

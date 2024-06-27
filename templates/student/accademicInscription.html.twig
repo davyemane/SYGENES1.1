@@ -1,65 +1,104 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_login.html.twig' %}
+
+{% block head %}
+{% block title %} <title> Student Registration </title> {% endblock %}
+{% endblock %}
 
 {% block body %}
+
+<div class="min-h-screen bg-white flex flex-col items-start px-4 md:px-8 lg:ml-48 overflow-y-auto mb-16">
+  <form class="bg-white rounded-lg px-4 md:px-8 py-8  w-full max-w-4xl" method="post" id="registration-form">
     {{ form_start(form) }}
-    <form method="post" class="g-3">
-        {{ form_start(form) }}
-    
-        <div class="col-md-6">
-            {{ form_row(form.studentID, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    
-        <div class="col-md-6">
-            {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    
-        <div class="col-md-6">
-              {{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    
-        <div class="col-md-6">
-            {{ form_row(form.phoneNumber, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    
-        <div class="col-md-6">
-            {{ form_row(form.dateOfBirth, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    
-        <div class="col-md-6">
-            {{ form_row(form.placeOfBirth, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    
-        <div class="col-md-6">
-            {{ form_row(form.Certificate, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    
-        <div class="col-md-6">
-            {{ form_row(form.photoBac, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    
-        <div class="col-md-6">
-            {{ form_row(form.field, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    
-        <div class="col-md-6">
-            {{ form_row(form.level, {'attr': {'class': 'form-control'}}) }}
-        </div>
-    
-        <div class="col-12">
-            {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary w-50'}}) }}
-        </div>
-    
-        {{ form_end(form) }}
-    </form>
-    {% endblock %}
+    <div class="space-y-6">
+      <!-- Profile Section -->
+      <div>
+        <h1 class="text-4xl font-semibold text-blue-600">Student Registration</h1>
+        <p class="text-sm text-gray-600 mb-4">This is where new students get registered.</p>
 
-{% block title %}
-   Student Registration
-{% endblock %}
+        <div class="border-b border-gray-900/10 pb-12">
+          <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
+            <div class="sm:col-span-1">
+              <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Enter your fullname</label>
+              <div class="mt-2">
+                {{ form_row(form.name, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
+              </div>
+            </div>
 
-{% block stylesheets %}
-    https://getbootstrap.com/docs/5.0/getting-started/introduction/#css
-{% endblock %}
-{% block javascripts %}
-    https://getbootstrap.com/docs/5.0/getting-started/introduction/#js
+            <div class="sm:col-span-1">
+              <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
+              <div class="mt-2">
+                {{ form_row(form.email, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
+              </div>
+            </div>
+
+            <div class="sm:col-span-1">
+              <label for="phoneNumber" class="block text-sm font-medium leading-6 text-gray-900">Phone Number</label>
+              <div class="mt-2">
+                {{ form_row(form.phoneNumber, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
+              </div>
+            </div>
+
+            <div class="sm:col-span-1">
+              <label for="dateOfBirth" class="block text-sm font-medium leading-6 text-gray-900">Date of Birth</label>
+              <div class="mt-2">
+                {{ form_row(form.dateOfBirth, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
+              </div>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label for="placeOfBirth" class="block text-sm font-medium leading-6 text-gray-900">Place of Birth</label>
+              <div class="mt-2">
+                {{ form_row(form.placeOfBirth, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
+              </div>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label for="certificate" class="block text-sm font-medium leading-6 text-gray-900">Photo of your certificate (Image files only)</label>
+              <div class="mt-2">
+                {{ form_row(form.Certificate, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
+              </div>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label for="photoBac" class="block text-sm font-medium leading-6 text-gray-900">Photo of your diploma (Image files only)</label>
+              <div class="mt-2">
+                {{ form_row(form.photoBac, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
+              </div>
+            </div>
+
+            <div class="sm:col-span-2 lg:col-span-1">
+              <label for="field" class="block text-sm font-medium leading-6 text-gray-900">Enter your field</label>
+              <div class="mt-2">
+                {{ form_row(form.field, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
+              </div>
+            </div>
+
+            <div class="sm:col-span-2 lg:col-span-1">
+              <label for="level" class="block text-sm font-medium leading-6 text-gray-900">Enter your level</label>
+              <div class="mt-2">
+                {{ form_row(form.level, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+          <button type="button" class="mr-4 py-2 px-4 border border-orange-600 bg-orange text-orange-600  rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-orange-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" onclick="resetForm()">Cancel</button>
+          {{ form_row(form.submit, {'attr': {'class': 'py-2 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}
+        </div>
+
+      </div>
+      <!-- Add more sections here -->
+    </div>
+    {{ form_end(form) }}
+  </form>
+</div>
+
+<script>
+  function resetForm() {
+    document.getElementById('registration-form').reset();
+  }
+</script>
+
 {% endblock %}

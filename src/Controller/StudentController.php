@@ -17,9 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Dompdf\Dompdf;
 use Dompdf\Options;
-use PhpParser\Node\Expr\Cast\String_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,10 +26,11 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+
+
 #[Route('student')]
 class StudentController extends AbstractController
 {
@@ -124,6 +123,7 @@ class StudentController extends AbstractController
 
     //update or add student
     #[Route('/add/{id?0}', name: 'add_student')]
+    #[IsGranted('ROLE_ADMIN')]
     public function academicInscription($id, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
         $studentDirectory = 'student_directory';
@@ -232,6 +232,12 @@ class StudentController extends AbstractController
         if (!$student) {
             throw $this->createNotFoundException('Student not found.');
         }
+        $student = $studentRepository->find($id);
+        if (!$student) {
+            $message = "Pas d'etudiant avec cet identifiant";
+
+            return $this->render('student/error.html.twig', ['message' => $message]);
+        }
 
         $notes = $noteRepository->findBy(['student' => $student]);
 
@@ -327,14 +333,14 @@ class StudentController extends AbstractController
         $this->addFlash('success', 'Account created successfully');
 
 
-        //j'ai créé un evennement 
-        if ($new) {
-            $addStudentEvent = new AddStudentEvent(
-                $student
-            );
+        // //j'ai créé un evennement 
+        // if ($new) {
+        //     $addStudentEvent = new AddStudentEvent(
+        //         $student
+        //     );
 
-            $this->dispacher->dispatch($addStudentEvent, AddStudentEvent::ADD_STUDENT_EVENT);
-        }
+        //     $this->dispacher->dispatch($addStudentEvent, AddStudentEvent::ADD_STUDENT_EVENT);
+        // }
 
         // Rediriger vers une autre page
         return $this->redirectToRoute('app_home_page');

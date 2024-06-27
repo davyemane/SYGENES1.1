@@ -30,7 +30,7 @@ class StudentType extends AbstractType
             ])
             ->add('placeOfBirth')
             ->add('Certificate', FileType::class, [
-                'label' => 'Photo of your certificate (Image files only)',
+                'label' => ' ',
 
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
@@ -55,7 +55,7 @@ class StudentType extends AbstractType
             ])
 
             ->add('photoBac', FileType::class, [
-                'label' => 'Photo of your diploma (Image files only)',
+                'label' => ' ',
 
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
@@ -78,8 +78,12 @@ class StudentType extends AbstractType
                     ])
                 ],
             ])
-            ->add('field')
-            ->add('level')
+            ->add('field', null, [
+                'label' => ' ',
+            ])
+            ->add('level', null, [
+                'label' => ' ',
+            ])
             ->add('submit', SubmitType::class)
         ;
     }

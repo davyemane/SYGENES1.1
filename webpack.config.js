@@ -7,6 +7,10 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
+
+    // tailwind
+    .enablePostCssLoader()
+    
     // directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
@@ -55,6 +59,9 @@ Encore
 
     // enables Sass/SCSS support
     //.enableSassLoader()
+
+    // enables tailwind css
+    
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()

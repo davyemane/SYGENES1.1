@@ -3,29 +3,71 @@
 {% block title %}EC{% endblock %}
 
 {% block body %}
-<form method="post" class="row g-3">
-    {{ form_start(form) }}
 
-    <div class="col-md-6">
-        {{ form_row(form.codeEc, {'attr': {'class': 'form-control'}}) }}
+  <div class=" bg-white flex justify-start items-start ml-64">
+  <form class="bg-white rounded-lg px-8 py-8 w-full" method="post" id="ec-form">
+  {{ form_start(form) }}
+    <div class="space-y-6">
+      <!-- Profile Section -->
+      <div class="w-full">
+      <h1 class="text-4xl font-semibold text-blue-600">Add EC</h1>
+        <p class="text-sm text-gray-600 mb-4">This is where you add the various ECs.</p>
+
+    <div class="border-b border-gray-900/10 pb-12">
+
+      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+        <div class="sm:col-span-2">
+          <label for="codeUE" class="block text-sm font-medium leading-6 text-gray-900">Code EC</label>
+          <div class="mt-2">
+           {{ form_row(form.codeEc, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 '}}) }}
+          </div>
+        </div>
+
+        <div class="sm:col-span-4">
+          <label for="tp" class="block text-sm font-medium leading-6 text-gray-900">EC Name</label>
+          <div class="mt-2">
+            {{ form_row(form.name, {'attr': {'class': 'form-input  block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 '}}) }}
+          </div>
+        </div>
+
+
+         <div class="sm:col-span-2">
+          <label for="rattrapage" class="block text-sm font-medium leading-6 text-gray-900">Credit</label>
+          <div class="mt-2">
+           {{ form_row(form.credit, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
+          </div>
+        </div>
+        
+        <div class="sm:col-span-2">
+          <label for="student" class="block text-sm font-medium leading-6 text-gray-900">UE Name</label>
+          <div class="mt-2">
+           {{ form_row(form.ue, {'attr': {'class': 'form-input block w-full rounded-md border-0 py-1.5 pl-3  text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6'}}) }}
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <div class="col-md-6">
-        {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
-    </div>
+     <div class="mt-6 flex justify-end">
+      <button type="button"
+        class="mr-4 py-2 px-4 border border-orange-500 rounded-md text-sm font-medium text-orange-500 bg-white hover:bg-orange-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+        onclick="resetForm()">Cancel</button>
 
-    <div class="col-md-6">
-        {{ form_row(form.credit, {'attr': {'class': 'form-control'}}) }}
+      {{ form_row(form.submit, {'attr': {'class': 'py-2 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'}}) }}
     </div>
-
-    <div class="col-md-6">
-        {{ form_row(form.ue, {'attr': {'class': 'form-control'}}) }}
+          <!-- Add more fields here -->
+        </div>
+      </div>
+      <!-- Add more sections here -->
     </div>
+   {{ form_end(form) }}
+  </form>
+</div>
 
-    <div class="col-12">
-        {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary w-100'}}) }}
-    </div>
-
-    {{ form_end(form) }}
+<script>
+  function resetForm() {
+    document.getElementById('ec-form').reset();
+  }
+</script>
 </form>{% endblock %}
 

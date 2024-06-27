@@ -1,74 +1,88 @@
-{% extends 'base_AdminDashboard.html.twig' %}
+{% extends 'base_login.html.twig' %}
 
-{% block body %}
-   <div class="row">
-      <div class="col-md-6 mb-3">
-         <form action="{{ path('list_student') }}" method="get">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Rechercher par nom" name="name" value="{{ currentName is defined ? currentName : '' }}">
-              <select class="form-control" name="field">
-                 <option value="" {% if not currentField is defined %}selected{% endif %}>Tous les domaines</option>
-                 {% for field in fields %}
-                     <option value="{{ field.id }}" {% if currentField is defined and currentField == field.id %}selected{% endif %}>{{ field.name }}</option>
-                 {% endfor %}
-              </select>
-              <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" type="submit">Rechercher</button>
-               </div>
-            </div>
-         </form>
-      </div>
-   </div>
-
-   <div class="row">
-      {% for student in students %}
-         <div class="card" style="width: 18rem;">
-            <div class="card-body">
-               <h5 class="card-title">{{ student.name }}</h5>
-               <h6 class="card-subtitle mb-2 text-muted">ID étudiant : {{ student.studentID }}</h6> 
-               <p class="card-text">Domaine : {{ student.field.name }}</p>
-               <p class="card-text">Niveau : {{ student.level }}</p> 
-
-               <a href="{{ path('add_student', {id: student.id}) }}" class="card-link">Modifier</a>
-               <a href="{{ path('detail_student', {id: student.id}) }}" class="card-link">Détails</a>
-            </div>
-         </div>
-      {% endfor %}
-   </div>
-
-   {% if isPaginated %}
-   <div class="row mt-2">
-      <div class="col Page navigation example">
-         <nav aria-label="...">
-            <ul class="pagination">
-               {% if page != 1 %}
-                  <li class="page-item disabled">
-                     <a href="{{ path('list_student', {page: page - 1, nbre: nbre, name: currentName, field: currentField}) }}" class="page-link">
-                        Précédent
-                     </a>
-                  </li>
-               {% endif %}
-
-               {% for i in range(1, nbPage + 1) %}
-                  <li class="page-item {% if i == page %}active{% endif %}">
-                     <a class="page-link" href="{{ path('list_student', {page: i, nbre: nbre, name: currentName, field: currentField}) }}">{{ i }}</a>
-                  </li>
-               {% endfor %}
-
-               {% if page != nbPage %}
-                  <li class="page-item disabled">
-                     <a href="{{ path('list_student', {page: page + 1, nbre: nbre, name: currentName, field: currentField}) }}" class="page-link">
-                        Suivant
-                     </a>
-                  </li>
-               {% endif %}
-            </ul>
-         </nav>          
-      </div>
-   </div>
-   {% endif %}
+{% block head %}
+  {% block title %}<title>List of Students</title>{% endblock %}
 {% endblock %}
 
-{% block title %}
-   Liste des étudiants
+{% block body %}
+<div class="flex flex-col items-start md:items-center -mx-2 md:mx-0 mb-16 px-4 md:px-8">
+
+  {% block page_header %}
+  <div class="w-full lg:ml-72">
+    <h1 class="text-4xl font-semibold text-blue-600 mb-4">List of Students</h1>
+    <p class="text-sm text-gray-600">Search below to find your name and fill your data.</p>
+
+    <!-- Search Bar -->
+    <header class="bg-white mt-2 flex flex-col md:flex-row justify-between items-center w-full mb-10">
+      <div class="flex w-full flex-col md:flex-row items-start justify-between">
+        <form action="{{ path('list_student') }}" method="get" class="w-full flex-col md:w-2/3 md:mr-5 flex md:flex-row ">
+          <input type="search" placeholder="Search by name..." class="border rounded-md p-2 pl-3 w-full md:w-2/3 mb-2 md:mb-0 mr-6" value="{{ currentName is defined ? currentName : '' }}">
+          <select class="w-full form-control mr-6 border rounded-md md:w-4/6 " name="field">
+            <option value="" {% if not currentField is defined %}selected{% endif %}>All fields</option>
+            {% for field in fields %}
+            <option value="{{ field.id }}" {% if currentField is defined and currentField == field.id %}selected{% endif %}>{{ field.name }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit"
+            class="block w-full md:w-4/6 lg:w-1/6 xl:w-4/12 rounded-md border bg-orange-600 px-4 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-700 hover:text-white-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:px-5">Search</button>
+        </form>
+      </div>
+    </header>
+    <!-- End of First Search Bar -->
+
+  </div>
+  {% endblock %}
+
+  <div class="flex flex-wrap gap-4 justify-start">
+    {% for student in students %}
+    <div class="w-full md:w-96 h-64 max-w-sm rounded overflow-hidden shadow-lg bg-white p-3">
+      <div class="px-6 py-6">
+        <h5 class="font-bold text-xl mb-2 overflow-hidden overflow-ellipsis whitespace-nowrap">{{ student.name }}</h5>
+        <h6 class="text-gray-600 text-base mb-2 overflow-hidden overflow-ellipsis whitespace-nowrap">Student ID:
+          {{ student.studentID }}</h6>
+        <p class="text-gray-700 text-base overflow-hidden overflow-ellipsis whitespace-nowrap">Field:
+          {{ student.field }}</p>
+        <p class="text-gray-700 text-base overflow-hidden overflow-ellipsis whitespace-nowrap">Level:
+          {{ student.level }}</p>
+        <div class="flex space-x-4">
+          <a href="{{ path('add_student', {id: student.id}) }}"
+            class="mt-8 block w-1/2 mx-auto rounded-md border border-orange-600 bg-orange px-3 py-2 text-center text-sm font-semibold text-orange-600 shadow-sm hover:bg-orange-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Edit</a>
+
+          <a href="{{ path('detail_student', {id: student.id}) }}"
+            class="mt-8 block w-1/2 mx-auto rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Detail</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+{% if isPaginated %}
+<div class="flex justify-center">
+  <nav aria-label="Page navigation">
+    <ul class="inline-flex -space-x-px mb-4">
+      {% if page != 1 %}
+      <li>
+        <a href="{{ path('list_student', {page: page - 1, nbre: nbre}) }}"
+          class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Previous</a>
+      </li>
+      {% endif %}
+      {% for i in range(1, nbPage) %}
+      <li>
+        <a href="{{ path('list_student', {page: i, nbre: nbre}) }}"
+          class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">{{ i }}</a>
+      </li>
+      {% endfor %}
+      {% if page != nbPage %}
+      <li>
+        <a href="{{ path('list_student', {page: page + 1, nbre: nbre}) }}"
+          class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">Next</a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+</div>
+{% endif %}
+
 {% endblock %}
