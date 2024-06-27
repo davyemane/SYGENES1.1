@@ -23,7 +23,11 @@ class StudentType extends AbstractType
             ->add('name')
             ->add('email', EmailType::class)
             ->add('phoneNumber', TelType::class)
-            ->add('dateOfBirth', DateType::class)
+            ->add('dateOfBirth', DateType::class, [
+                'widget' => 'single_text',
+                'years' => range(1990, 2020),
+                'attr' => ['placeholder' => 'Select a date of birth between 1990 and 2020']
+            ])
             ->add('placeOfBirth')
             ->add('Certificate', FileType::class, [
                 'label' => 'Photo of your certificate (Image files only)',
