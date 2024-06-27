@@ -6,28 +6,28 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Mon Profil</h1>
+    <h1 class="text-2xl font-semibold mb-4">Mon Profil</h1>
 
-    <div class="profile">
+    <div class="profile flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-8">
         <div class="profile-picture">
             {% if user.profilePicture %}
-                <img src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture">
+                <img class="w-32 h-32 rounded-full border" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture">
             {% else %}
-                <img src="{{ asset('images/default_profile_picture.png') }}" alt="Default Profile Picture">
+                <img class="w-32 h-32 rounded-full border" src="{{ asset('images/default_profile_picture.png') }}" alt="Default Profile Picture">
             {% endif %}
         </div>
 
         <div class="profile-details">
-            <p><strong>Nom d'utilisateur:</strong> {{ user.username }}</p>
-            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p class="text-lg"><strong>Nom d'utilisateur:</strong> {{ user.username }}</p>
+            <p class="text-lg"><strong>Email:</strong> {{ user.email }}</p>
             {% if user.student %}
-                <p><strong>Étudiant:</strong> {{ user.student }}</p>
+                <p class="text-lg"><strong>Étudiant:</strong> {{ user.student }}</p>
             {% endif %}
             {% if user.Responsable %}
-                <p><strong>Responsable:</strong> {{ user.Responsable }}</p>
+                <p class="text-lg"><strong>Responsable:</strong> {{ user.Responsable }}</p>
             {% endif %}
         </div>
-
-        <a href="{{ path('app_profile_edit') }}" class="btn btn-primary">Modifier mon profil</a>
     </div>
+
+    <a href="{{ path('app_profile_edit') }}" class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Modifier mon profil</a>
 {% endblock %}
