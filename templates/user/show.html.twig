@@ -1,11 +1,11 @@
 {# templates/user/show.html.twig #}
-{% extends 'base_login.html.twig' %}
+{% extends 'base_AdminDashboard.html.twig' %}
 {%block head %} {% block title %} <title>Show Profile</title> {% endblock %}
 {%endblock %} {% block body %}
 <h1 class="text-2xl font-semibold mb-4">Mon Profil</h1>
 
-<div class="profile flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-8">
-    <div class="profile-picture">
+<div class="profile flex flex-col md:flex-row md:items-start space-y-4 md:space-y-0 md:space-x-8 justify-start items-start ml-64">
+    <div class="profile-picture ">
         {% if user.profilePicture %}
         <img class="w-32 h-32 rounded-full border" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}"
             alt="Profile Picture" />
@@ -16,8 +16,8 @@
     </div>
 
     <div class="profile-details">
-        <p><strong>Nom d'utilisateur:</strong> {{ user.username }}</p>
-        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p clas=""><strong>Nom d'utilisateur:</strong> {{ user.username }}</p>
+        <p class=""><strong>Email:</strong> {{ user.email }}</p>
         {% if student %}
         <p><strong>Étudiant:</strong> {{ student.name }}</p>
         <p><strong>studentID:</strong> {{ student.studentID }}</p>
@@ -35,6 +35,6 @@
 </div>
 
 <a href="{{ path('app_profile_edit') }}"
-    class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Modifier
+    class="justify-start items-start ml-64 mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Modifier
     mon profil</a>
 {% endblock %}
