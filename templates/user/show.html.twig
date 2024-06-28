@@ -10,9 +10,9 @@
 
     <div class="flex justify-center w-full ">
         {% if user.profilePicture %}
-        <img class="w-auto h-72 rounded-full border mb-4" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture" />
+        <img class="w-72 h-72 rounded-full border mb-4" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture" />
         {% else %}
-        <img class="w-auto h-72 rounded-full border mb-4" src="{{ asset('images/user.png') }}" alt="Default Profile Picture" />
+        <img class="w-72 h-72 rounded-full border mb-4" src="{{ asset('images/user.png') }}" alt="Default Profile Picture" />
         {% endif %}
     </div>
 
