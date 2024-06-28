@@ -11,12 +11,26 @@
 <div class="bg-white flex justify-start items-start ml-64">
 
   {% for label, messages in app.flashes %}
-    {% for message in messages %}
-      <div class="alert {{ label == 'success' ? 'alert-success' : 'alert-danger' }}">
-        {{ message }}
+  {% for message in messages %}
+    <div class="fixed inset-0 flex items-center justify-center z-50">
+      <div class="bg-white border border-gray-300 shadow-lg rounded-lg p-4 max-w-sm w-full mx-4 md:mx-auto">
+        <div class="flex items-center">
+          <div class="rounded-full p-2 bg-green-500">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
+          <div class="ml-2">
+            <p class="text-sm text-gray-800 font-semibold">{{ label == 'success' ? 'Success!' : 'Error!' }}</p>
+          </div>
+        </div>
+        <p class="text-sm text-gray-600 mt-2">{{ message }}</p>
       </div>
-    {% endfor %}
+    </div>
   {% endfor %}
+{% endfor %}
 
   <form class="bg-white rounded-lg px-8 py-8 mt-2 w-full" method="post" id="excel-form" enctype="multipart/form-data">
   {{ form_start(form) }}

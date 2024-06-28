@@ -196,6 +196,7 @@
                         
                     </li>
 
+                    <!-- Marks Tab -->
                     <li>
                         <a href="#"
                             class="nav-link flex items-center px-2 py-2 text-lg font-medium rounded-md hover:bg-blue-700 hover:text-white">
@@ -209,6 +210,9 @@
                             </svg>
                         </a>
                     </li>
+
+
+                    <!-- Statistics Tab-->
                     <li>
                         <a href="#"
                             class="nav-link flex items-center px-2 py-2 text-md font-medium rounded-md hover:bg-blue-700 hover:text-white">
@@ -219,14 +223,30 @@
                     </li>
 
 
+                    <!-- Settings Tab -->
+                    <li>
+                        <div id="dropdown-container-3" class="relative w-full">
+                            <div>
+                                <a type="button" href="{{path('app_profile_show')}}"
+                                    class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
+                                    id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+                                    <img class="h-5 w-auto" src="/icons/settings.png" alt="settings icon">
+                                    Profile
+                                   
+                                </a>
+                            </div>
+                            <a href="{{path('app_profile_show')}}"
+                                class="flex items-center space-x-2 text-white hover:bg-blue-700 hover:text-white p-2 rounded-md mt-4">
+                                <img class="h-5 w-auto mr-3 " src="/icons/settings.png" alt="statistics icon">
+                                <span>Settings</span>
+                            </a>  
+                        </div>
+
+                    </li>
+
+
                 </ul>
-                <div class="mt-auto">
-                    <a href="#"
-                        class="flex items-center space-x-2 text-white hover:bg-blue-700 hover:text-white p-2 rounded-md mt-4">
-                        <img class="h-5 w-auto mr-3 " src="/icons/settings.png" alt="statistics icon">
-                        <span>Settings</span>
-                    </a>  
-                </div>
+                
 
                 <!-- Logout -->
                 <div class="mt-16 ">
