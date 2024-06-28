@@ -1,40 +1,35 @@
 {# templates/user/show.html.twig #}
 {% extends 'base_AdminDashboard.html.twig' %}
-{%block head %} {% block title %} <title>Show Profile</title> {% endblock %}
-{%endblock %} {% block body %}
-<h1 class="text-2xl font-semibold mb-4">Mon Profil</h1>
+{% block head %}
+  {% block title %}<title>Show Profile</title>{% endblock %}
+{% endblock %}
 
-<div class="profile flex flex-col md:flex-row md:items-start space-y-4 md:space-y-0 md:space-x-8 justify-start items-start ml-64">
-    <div class="profile-picture ">
+{% block body %}
+<div class="profile flex flex-col items-start ml-64 space-y-4">
+    <h1 class="flex justify-center w-full mt-16 mb-5 text-4xl font-semibold text-blue-600">Mon Profil</h1>
+
+    <div class="flex justify-center w-full ">
         {% if user.profilePicture %}
-        <img class="w-32 h-32 rounded-full border" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}"
-            alt="Profile Picture" />
+        <img class="w-auto h-72 rounded-full border mb-4" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture" />
         {% else %}
-        <img class="w-32 h-32 rounded-full border" src="{{ asset('images/default_profile_picture.png') }}"
-            alt="Default Profile Picture" />
+        <img class="w-auto h-72 rounded-full border mb-4" src="{{ asset('images/user.png') }}" alt="Default Profile Picture" />
         {% endif %}
     </div>
 
-    <div class="profile-details">
-        <p clas=""><strong>Nom d'utilisateur:</strong> {{ user.username }}</p>
-        <p class=""><strong>Email:</strong> {{ user.email }}</p>
+    <div class="profile-details space-y-2 w-full flex flex-col items-center gap-2">
+        <p class="text-lg flex justify-center"><strong class="mr-2">Nom d'utilisateur: </strong> {{ user.username }}</p>
+        <p class="text-lg flex justify-center"><strong class="mr-2">Email: </strong> {{ user.email }}</p>
         {% if student %}
-        <p><strong>Étudiant:</strong> {{ student.name }}</p>
-        <p><strong>studentID:</strong> {{ student.studentID }}</p>
-        <p><strong>level:</strong> {{ student.level }}</p>
-        <p><strong>phoneNumber:</strong> {{ student.phoneNumber }}</p>
-        <p><strong>dateOfBirth:</strong> {{ student.dateOfBirth }}</p>
-        <p class="text-lg">
-            <strong>Nom d'utilisateur:</strong> {{ user.username }}
-        </p>
-        <p class="text-lg"><strong>Email:</strong> {{ user.email }}</p>
-        {% endif %} {% if user.Responsable %}
-        <p class="text-lg"><strong>Responsable:</strong> {{ user.Responsable }}</p>
+        <p class="text-lg flex justify-center"><strong class="mr-2">Étudiant:</strong> {{ student.name }}</p>
+        <p class="text-lg flex justify-center"><strong class="mr-2">Student ID:</strong> {{ student.studentID }}</p>
+        <p class="text-lg flex justify-center"><strong class="mr-2">Level:</strong> {{ student.level }}</p>
+        <p class="text-lg flex justify-center"><strong class="mr-2">Phone Number:</strong> {{ student.phoneNumber }}</p>
+        <p class="text-lg flex justify-center"><strong class="mr-2">Date of Birth:</strong> {{ student.dateOfBirth }}</p>
         {% endif %}
+        {% if user.Responsable %}
+        <p class="text-lg flex justify-center"><strong class="mr-2">Responsable:</strong> {{ user.Responsable }}</p>
+        {% endif %}
+        <a href="{{ path('app_profile_edit') }}" class="block w-full md:w-4/6 lg:w-1/6 xl:w-4/12 rounded-md border bg-orange-600 px-4 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-700 hover:text-white-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:px-5">Modify my profile</a>
     </div>
 </div>
-
-<a href="{{ path('app_profile_edit') }}"
-    class="justify-start items-start ml-64 mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Modifier
-    mon profil</a>
 {% endblock %}

@@ -24,8 +24,10 @@ class ResponsableController extends AbstractController
     #[Route('/responsable', name: 'app_responsable')]
     public function index(): Response
     {
+        $user = $this->getUser();
         return $this->render('responsable/index.html.twig', [
             'controller_name' => 'ResponsableController',
+            'user' => $user
         ]);
     }
 
@@ -33,6 +35,7 @@ class ResponsableController extends AbstractController
     #[Route('/add/resp/{id?0}', name: 'add_responsable')]
     public function academicInscription($id, ManagerRegistry $doctrine, Request $request): Response
     {
+        $user = $this->getUser();
         $entityManager = $doctrine->getManager();
 
         // Vérifier si un ID d'étudiant a été fourni
@@ -66,12 +69,14 @@ class ResponsableController extends AbstractController
             }
         }
 
-        return $this->render('responsable/add.html.twig', ['form' => $form->createView()]);
+        return $this->render('responsable/add.html.twig', ['form' => $form->createView(), 
+    'user' => $user]);
     }
 
     #[Route("/list/ec/", name:"choix_ec")]
     public function Ec(ManagerRegistry $doctrine): Response
     {
+        $user = $this->getUser();
         $entityManager = $doctrine->getManager();
     
         // Retrieve all UEs
@@ -85,7 +90,8 @@ class ResponsableController extends AbstractController
             $data[$ue->getName()] = $ecs; // Group ECs by UE name
         }
     
-        return $this->render('ue/listEc.html.twig', ['data' => $data]);
+        return $this->render('ue/listEc.html.twig', ['data' => $data, 'user' => $user]
+        );
     }
     
 
@@ -93,6 +99,7 @@ class ResponsableController extends AbstractController
     #[Route('/list/{page?1}/{nbre?12}/{ec?1}', name: 'list_student_notes')]
     public function home(ManagerRegistry $doctrine, $page, $nbre, $ec): Response
     {
+        $user = $this->getUser();
         try {
             $repository = $doctrine->getRepository(Student::class);
 
@@ -132,17 +139,20 @@ class ResponsableController extends AbstractController
             $this->addFlash('error', 'No students found.');
             $message = 'acces refusé';
 
-            return $this->render('student/error.html.twig', ['message'=>$message]);
+            return $this->render('student/error.html.twig', ['message'=>$message,
+            'user' => $user]);
             } 
     }
 
     #[Route('/fields', name: 'fields_index')]
     public function fields(EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $fields = $entityManager->getRepository(Field::class)->findAll();
 
         return $this->render('responsable/field.html.twig', [
             'fields' => $fields,
+            'user' => $user
         ]);
     }
     
@@ -152,6 +162,7 @@ class ResponsableController extends AbstractController
     #[Route('/list_student/{fieldId?1}/{page?1}/{nbre?12}', name: 'list_student_2')]
     public function ListStudent(Request $request, ManagerRegistry $doctrine, $fieldId, $page, $nbre): Response
     {
+        $user = $this->getUser();
         try {
             $entityManager = $doctrine->getManager();
     
@@ -220,6 +231,7 @@ class ResponsableController extends AbstractController
             $fields = $entityManager->getRepository(Field::class)->findAll();
     
             return $this->render('responsable/list_student.html.twig', [
+                'user' => $user,
                 'students' => $students,
                 'field' => $field,
                 'fields' => $fields,

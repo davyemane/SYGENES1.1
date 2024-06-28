@@ -22,6 +22,7 @@ class UeController extends AbstractController
     IsGranted('ROLE_ADMIN')]
     public function AddEc($id, ManagerRegistry $doctrine, Request $request): Response
     {
+        $user = $this->getUser();
         $entityManager = $doctrine->getManager();
     
         // Vérifier si un ID de l'ue a été fourni
@@ -51,7 +52,8 @@ class UeController extends AbstractController
             }
         }
     
-        return $this->render('ue/createEC.html.twig', ['form' => $form->createView()]);
+        return $this->render('ue/createEC.html.twig', ['form' => $form->createView(),
+    'user' => $user]);
     }
 
 
@@ -60,6 +62,7 @@ class UeController extends AbstractController
     IsGranted('ROLE_ADMIN')]
     public function AddUe($id, ManagerRegistry $doctrine, Request $request): Response
     {
+        $user = $this->getUser();
         $entityManager = $doctrine->getManager();
     
         // Vérifier si un ID de l'ue a été fourni
@@ -89,7 +92,7 @@ class UeController extends AbstractController
             }
         }
     
-        return $this->render('ue/createUe.html.twig', ['form' => $form->createView()]);
+        return $this->render('ue/createUe.html.twig', ['form' => $form->createView(), 'user' => $user]);
     }
 
 
