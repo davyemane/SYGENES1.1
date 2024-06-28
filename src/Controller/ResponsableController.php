@@ -96,54 +96,81 @@ class ResponsableController extends AbstractController
     
 
 //liste des etudiants avec leurs notes dans une matiere spécifique 
-    #[Route('/list/{page?1}/{nbre?12}/{ec?1}', name: 'list_student_notes')]
-    public function home(ManagerRegistry $doctrine, $page, $nbre, $ec): Response
-    {
-        $user = $this->getUser();
-        try {
-            $repository = $doctrine->getRepository(Student::class);
+#[Route('/list', name: 'list_student_notes')]
+public function home(Request $request, ManagerRegistry $doctrine): Response
+{
+    try {
+        $repository = $doctrine->getRepository(Student::class);
 
-            // Calculate total students and number of pages
-            $nbStudent = $repository->count([]);
-            $nbPage = ceil($nbStudent / $nbre);
-
-
-            // Fetch students with pagination and include their associated notes
-            $queryBuilder = $repository->createQueryBuilder('s')
+        // Calculate total students and number of pages
+        $qb = $repository->createQueryBuilder('s')
             ->leftJoin('s.notes', 'n') // Join with the notes entity
             ->leftJoin('n.ec', 'ec')  // Join with the EC (subject) entity
             ->addSelect('n') // Select the notes entity
-            ->addSelect('ec') // Select the EC (subject) entity
-            ->where('ec.id = :subjectId' )
-            ->setParameter('subjectId', $ec)
-            ->setMaxResults($nbre)
-            ->setFirstResult(($page - 1) * $nbre);
+            ->addSelect('ec'); // Select the EC (subject) entity
 
-            $students = $queryBuilder->getQuery()->getResult();
+        // Fetch all fields for filtering options
+        $fields = $doctrine->getRepository(Field::class)->findAll();
 
-            if (!$students) {
-                throw new NotFoundHttpException('No students found.');
-            }
+        // Retrieve search parameters from request
+        $fieldId = $request->query->get('field');
+        $name = $request->query->get('name');
 
-            $students = $queryBuilder->getQuery()->getResult();
+        // Apply filters if provided
+        if ($fieldId) {
+            $qb->andWhere('s.field = :field')
+                ->setParameter('field', $fieldId);
+        }
+        if ($name) {
+            $qb->andWhere('s.name LIKE :name')
+                ->setParameter('name', '%' . $name . '%');
+        }
 
+        // Fetch filtered students with pagination
+        $students = $qb->getQuery()->getResult();
 
-            return $this->render('student/list1.html.twig', [
-                'students' => $students,
-                'isPaginated' => true,
-                'nbPage' => $nbPage,
-                'page' => $page,
-                'nbre' => $nbre,
-            ]);
-        } catch (NotFoundHttpException $e) {
-            $this->addFlash('error', 'No students found.');
-            $message = 'acces refusé';
+        // Pagination logic
+        $nbre = $request->query->get('nbre', 12); // Default to 12 students per page
+        $page = $request->query->get('page', 1); // Default to page 1
 
-            return $this->render('student/error.html.twig', ['message'=>$message,
-            'user' => $user]);
-            } 
+        $nbStudent = count($students);
+        $nbPage = ceil($nbStudent / $nbre);
+        $user = $this->getUser();
+        // Apply pagination
+        $students = $qb->setMaxResults($nbre)
+            ->setFirstResult(($page - 1) * $nbre)
+            ->getQuery()
+            ->getResult();
+
+        if (empty($students)) {
+            throw new NotFoundHttpException('No students found.');
+        }
+
+        return $this->render('student/list1.html.twig', [
+            'user'=>$user,
+            'students' => $students,
+            'isPaginated' => true,
+            'nbPage' => $nbPage,
+            'page' => $page,
+            'nbre' => $nbre,
+            'currentName' => $name,
+            'currentField' => $fieldId,
+            'fields' => $fields,
+        ]);
+    } catch (NotFoundHttpException $e) {
+        $this->addFlash('error', 'No students found.');
+        return $this->redirectToRoute('list_student_notes', [
+            'page' => 1,
+            'nbre' => $nbre,
+        ]);
     }
+}
 
+
+
+
+
+    //afficher la listes des filieres 
     #[Route('/fields', name: 'fields_index')]
     public function fields(EntityManagerInterface $entityManager): Response
     {
@@ -229,6 +256,7 @@ class ResponsableController extends AbstractController
     
             // Retrieve all fields for filtering options
             $fields = $entityManager->getRepository(Field::class)->findAll();
+            
     
             return $this->render('responsable/list_student.html.twig', [
                 'user' => $user,
