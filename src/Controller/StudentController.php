@@ -42,56 +42,50 @@ class StudentController extends AbstractController
     #[Route('/list/{page?1}/{nbre?12}', name: 'list_student')]
     public function home(Request $request, ManagerRegistry $doctrine, $page, $nbre): Response
     {
-        try {
-            $repository = $doctrine->getRepository(Student::class);
-            $queryBuilder = $repository->createQueryBuilder('s');
+        $repository = $doctrine->getRepository(Student::class);
+        $queryBuilder = $repository->createQueryBuilder('s');
 
-            // Fetch all students initially without filters
-            $queryBuilderTotal = clone $queryBuilder;
-            $nbStudent = $queryBuilderTotal->select('COUNT(s.id)')->getQuery()->getSingleScalarResult();
-            $nbPage = ceil($nbStudent / $nbre);
+        // Fetch all students initially without filters
+        $queryBuilderTotal = clone $queryBuilder;
+        $nbStudent = $queryBuilderTotal->select('COUNT(s.id)')->getQuery()->getSingleScalarResult();
+        $nbPage = ceil($nbStudent / $nbre);
 
-            // Retrieve search parameters from request
-            $name = $request->query->get('name');
-            $fieldId = $request->query->get('field');
+        // Retrieve search parameters from request
+        $name = $request->query->get('name');
+        $fieldId = $request->query->get('field');
 
-            // Apply filters if provided
-            if ($name) {
-                $queryBuilder->andWhere('s.name LIKE :name')->setParameter('name', '%' . $name . '%');
-            }
-            if ($fieldId) {
-                $queryBuilder->andWhere('s.field = :field')->setParameter('field', $fieldId);
-            }
-
-            // Fetch filtered students with pagination
-            $students = $queryBuilder->setMaxResults($nbre)
-                ->setFirstResult(($page - 1) * $nbre)
-                ->getQuery()
-                ->getResult();
-
-            if (empty($students)) {
-                return $this->render('student/error.html.twig', ['message' => 'Aucun étudiant trouvé']);
-            }
-
-            // Retrieve all fields for filtering options
-            $fields = $doctrine->getRepository(Field::class)->findAll();
-
-            return $this->render('student/list.html.twig', [
-                'students' => $students,
-                'isPaginated' => true,
-                'nbPage' => $nbPage,
-                'page' => $page,
-                'nbre' => $nbre,
-                'currentName' => $name,
-                'currentField' => $fieldId,
-                'fields' => $fields,
-            ]);
-        } catch (NotFoundHttpException $e) {
-            $this->addFlash('error', 'No students found.');
-            return $this->redirectToRoute('list_student', ['page' => 1]);
+        // Apply filters if provided
+        if ($name) {
+            $queryBuilder->andWhere('s.name LIKE :name')->setParameter('name', '%' . $name . '%');
         }
-    }
+        if ($fieldId) {
+            $queryBuilder->andWhere('s.field = :field')->setParameter('field', $fieldId);
+        }
 
+        // Fetch filtered students with pagination
+        $students = $queryBuilder->setMaxResults($nbre)
+            ->setFirstResult(($page - 1) * $nbre)
+            ->getQuery()
+            ->getResult();
+
+        if (empty($students)) {
+            return $this->render('student/error.html.twig', ['message' => 'Aucun étudiant trouvé']);
+        }
+
+        // Retrieve all fields for filtering options
+        $fields = $doctrine->getRepository(Field::class)->findAll();
+
+        return $this->render('student/list.html.twig', [
+            'students' => $students,
+            'isPaginated' => true,
+            'nbPage' => $nbPage,
+            'page' => $page,
+            'nbre' => $nbre,
+            'currentName' => $name,
+            'currentField' => $fieldId,
+            'fields' => $fields,
+        ]);
+    }
     //detail of one student
     #[Route('/listDetail/{id<\d+>}', name: 'detail_student')]
     public function details(ManagerRegistry $doctrine, $id): Response

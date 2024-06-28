@@ -16,7 +16,7 @@
     <header class="bg-white mt-2 flex flex-col md:flex-row justify-between items-center w-full mb-10">
       <div class="flex w-full flex-col md:flex-row items-start justify-between">
         <form action="{{ path('list_student') }}" method="get" class="w-full flex-col md:w-2/3 md:mr-5 flex md:flex-row ">
-          <input type="search" placeholder="Search by name..." class="border rounded-md p-2 pl-3 w-full md:w-2/3 mb-2 md:mb-0 mr-6" value="{{ currentName is defined ? currentName : '' }}">
+          <input type="search" name='name' placeholder="Search by name..." class="border rounded-md p-2 pl-3 w-full md:w-2/3 mb-2 md:mb-0 mr-6" value="{{ currentName is defined ? currentName : '' }}">
           <select class="w-full form-control mr-6 border rounded-md md:w-4/6 " name="field">
             <option value="" {% if not currentField is defined %}selected{% endif %}>All fields</option>
             {% for field in fields %}
