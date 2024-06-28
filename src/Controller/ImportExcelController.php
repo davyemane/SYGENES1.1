@@ -2,29 +2,23 @@
 
 namespace App\Controller;
 
-use App\Entity\ExcelData;
+use App\Entity\Field;
+use App\Entity\Level;
 use App\Entity\Student;
-use App\Entity\User;
 use App\Form\ExcelFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Reader;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
-;
 #[Route('/admin')]
-
-
 class ImportExcelController extends AbstractController
 {
     #[Route('/import', name: 'import')]
-
-    public function importExcel(Request $request, EntityManagerInterface $entityManager)
+    public function importExcel(Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ExcelFormType::class);
         $form->handleRequest($request);
@@ -33,35 +27,103 @@ class ImportExcelController extends AbstractController
             $file = $form['file']->getData();
 
             if ($file) {
-                $filePath = $file->getClientOriginalName(); // Chemin vers le fichier Excel temporairement stocké
-                
-                $reader = IOFactory::createReader('Xlsx'); // Sélectionne le type de fichier
-                $spreadsheet = $reader->load($filePath); // Charge le fichier Excel
+                $filePath = $file->getPathname();
 
-                $sheet = $spreadsheet->getActiveSheet(); // Récupère la première feuille du fichier Excel
+                try {
+                    $reader = IOFactory::createReader('Xlsx');
+                    $spreadsheet = $reader->load($filePath);
 
-                foreach ($sheet->getRowIterator() as $index => $row) {
-                    $userData = [];
-                    foreach ($row->getCellIterator() as $cell) {
-                        $userData[] = $cell->getValue(); // Récupère la valeur de chaque cellule
+                    $sheet = $spreadsheet->getActiveSheet();
+
+                    foreach ($sheet->getRowIterator() as $row) {
+                        $userData = [];
+                        foreach ($row->getCellIterator() as $cell) {
+                            $userData[] = $cell->getValue();
+                        }
+
+                        // Recherche ou création de l'entité Field
+                        $fieldName = $userData[0]; // Assumption: Field name is in the first column of Excel
+                        $field = $entityManager->getRepository(Field::class)->findOneBy(['code' => $fieldName]);
+
+                        if (!$field) {
+                            $field = new Field();
+                            $field->setCode($fieldName);
+                            // Définir d'autres propriétés de Field si nécessaire
+                            $entityManager->persist($field);
+                        }
+
+                        // Recherche ou création de l'entité Level
+                        $levelName = $userData[1]; // Assumption: Level name is in the second column of Excel
+                        $level = $entityManager->getRepository(Level::class)->findOneBy(['name' => $levelName]);
+
+                        if (!$level) {
+                            $level = new Level();
+                            $level->setName($levelName);
+                            // Définir d'autres propriétés de Level si nécessaire
+                            $entityManager->persist($level);
+                        }
+
+                        // Conversion de la date de naissance
+                        $dateOfBirth = $this->convertToDate($userData[5]); // Assumption: Date of birth is in the sixth column of Excel
+
+                        // Création d'un nouvel étudiant et assignation des entités Field et Level
+                        $student = new Student();
+                        $student->setField($field); // Assignation de l'entité Field
+                        $student->setLevel($level); // Assignation de l'entité Level
+                        $student->setName($userData[2]);
+                        $student->setEmail($userData[3]);
+                        $student->setPhoneNumber($userData[4]);
+                        $student->setDateOfBirth($dateOfBirth); // Assignation de la date de naissance convertie
+                        $student->setPlaceOfBirth($userData[6]);
+                        $student->setSexe($userData[7]);
+                        $student->setCni($userData[8]);
+                        $student->setCountry($userData[9]);
+
+                        $entityManager->persist($student);
                     }
 
-                    $student = new Student();
-                    $student->setName($userData[0]);
-                    $student->setEmail($userData[1]);
-                    $student->setPhoneNumber($userData[2]);
+                    $entityManager->flush();
 
-                    $entityManager->persist($student);
+                    $this->addFlash('success', 'Importation réussie et insertion dans la base de données des étudiants !');
+                    return $this->redirectToRoute('import');
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Erreur lors du téléchargement du fichier : ' . $e->getMessage());
+                } catch (\PhpOffice\PhpSpreadsheet\Exception $e) {
+                    $this->addFlash('error', 'Erreur lors de la lecture du fichier Excel : ' . $e->getMessage());
+                } catch (\Exception $e) {
+                    $this->addFlash('error', 'Une erreur est survenue lors de l\'importation : ' . $e->getMessage());
                 }
-
-                $entityManager->flush(); // Enregistrer les utilisateurs dans la base de données
-
-                return new Response('Importation réussie et insertion dans la base de données des étudiants !');
             }
         }
 
         return $this->render('student/import_excel.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * Convertit une chaîne de caractères en objet DateTimeInterface.
+     *
+     * @param string|null $dateString La chaîne de caractères représentant la date.
+     * @return \DateTimeInterface|null L'objet DateTimeInterface ou null si la chaîne est vide.
+     * @throws \Exception Si la chaîne de caractères ne peut pas être convertie en objet DateTimeInterface.
+     */
+    private function convertToDate(?string $dateString): ?\DateTimeInterface
+    {
+        if (!$dateString) {
+            return null;
+        }
+    
+        try {
+            $date = \DateTime::createFromFormat('d/m/y', $dateString);
+            
+            if (!$date) {
+                return null; // Retourne null si la conversion échoue
+            }
+    
+            return $date->setTime(0, 0);
+        } catch (\Exception $e) {
+            throw new \Exception("Erreur lors de la conversion de la date : " . $e->getMessage());
+        }
     }
     }
