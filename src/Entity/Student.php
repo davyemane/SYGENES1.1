@@ -65,6 +65,15 @@ class Student
     #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'student')]
     private Collection $notes;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $sexe = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cni = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $country = null;
+
     public function __construct()
     {
         $this->takeUes = new ArrayCollection();
@@ -279,6 +288,42 @@ class Student
                 $note->setStudent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSexe(): ?string
+    {
+        return $this->sexe;
+    }
+
+    public function setSexe(?string $sexe): static
+    {
+        $this->sexe = $sexe;
+
+        return $this;
+    }
+
+    public function getCni(): ?string
+    {
+        return $this->cni;
+    }
+
+    public function setCni(?string $cni): static
+    {
+        $this->cni = $cni;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): static
+    {
+        $this->country = $country;
 
         return $this;
     }

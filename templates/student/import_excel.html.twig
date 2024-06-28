@@ -10,10 +10,17 @@
 
 <div class="bg-white flex justify-start items-start ml-64">
 
-  <form class="bg-white rounded-lg px-8 py-8 mt-2 w-full" method="post" id="excel-form">
+  {% for label, messages in app.flashes %}
+    {% for message in messages %}
+      <div class="alert {{ label == 'success' ? 'alert-success' : 'alert-danger' }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endfor %}
+
+  <form class="bg-white rounded-lg px-8 py-8 mt-2 w-full" method="post" id="excel-form" enctype="multipart/form-data">
   {{ form_start(form) }}
     <div class="space-y-6">
-      <!-- Profile Section -->
       <div class="container ">
       <h1 class="text-4xl font-semibold text-blue-600">Import Excel File</h1>
         <p class="text-sm text-gray-600 mb-4">This is where you import an excel file.</p>
@@ -37,8 +44,6 @@
 
        <button type="submit" class="py-2 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Submit</button>
     </div>
-          <!-- Add more fields here -->
-      <!-- Add more sections here -->
     </div>
    {{ form_end(form) }}
   </form>
