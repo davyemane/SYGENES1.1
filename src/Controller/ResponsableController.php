@@ -134,13 +134,6 @@ class ResponsableController extends AbstractController
 
             return $this->render('student/error.html.twig', ['message'=>$message]);
             } 
-            // catch (\Exception $e) {
-            // $this->addFlash('error', 'An error occurred.');
-            // //error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3,'path/to/your/error.log');
-            // $message = 'acces refusé';
-
-            // return $this->render('student/error.html.twig', ['message'=>$message]);
-            // }
     }
 
     #[Route('/fields', name: 'fields_index')]
@@ -157,29 +150,42 @@ class ResponsableController extends AbstractController
     //list des etudiants en attente de validation d'inscription 
 
     #[Route('/list_student/{fieldId?1}/{page?1}/{nbre?12}', name: 'list_student_2')]
-    public function ListStudent(ManagerRegistry $doctrine, $fieldId, $page, $nbre): Response
+    public function ListStudent(Request $request, ManagerRegistry $doctrine, $fieldId, $page, $nbre): Response
     {
         try {
-            $message = "";
             $entityManager = $doctrine->getManager();
     
             // Fetch the selected field
-            $field = $entityManager->getRepository(Field::class)->find($fieldId);
-    
-            if (!$field) {
-                $message= "Cette filiere n'existe pas !";
-                return $this->render('student/error.html.twig', ['message'=>$message]);
+            $field = null;
+            if ($fieldId) {
+                $field = $entityManager->getRepository(Field::class)->find($fieldId);
+                if (!$field) {
+                    return $this->render('student/error.html.twig', ['message' => 'Cette filière n\'existe pas !']);
+                }
             }
+    
+            // Fetch search parameters from request
+            $name = $request->query->get('name');
     
             // Fetch students without user accounts in the specified field with pagination
             $qb = $entityManager->createQueryBuilder()
                 ->select('s')
                 ->from(Student::class, 's')
                 ->leftJoin('s.userAccount', 'u')
-                ->where('u.id IS NULL')
-                ->andWhere('s.field = :fieldId')
-                ->setParameter('fieldId', $fieldId)
-                ->orderBy('s.id', 'ASC') // Sort by student ID (optional)
+                ->where('u.id IS NULL');
+    
+            if ($field) {
+                $qb->andWhere('s.field = :fieldId')
+                    ->setParameter('fieldId', $fieldId);
+            }
+    
+            if ($name) {
+                $qb->andWhere('s.name LIKE :name')
+                    ->setParameter('name', '%' . $name . '%');
+            }
+    
+            // Apply pagination
+            $qb->orderBy('s.id', 'ASC') // Sort by student ID (optional)
                 ->setFirstResult(($page - 1) * $nbre) // Apply pagination offset
                 ->setMaxResults($nbre);
     
@@ -190,39 +196,43 @@ class ResponsableController extends AbstractController
                 ->select('COUNT(s)')
                 ->from(Student::class, 's')
                 ->leftJoin('s.userAccount', 'u')
-                ->where('u.id IS NULL')
-                ->andWhere('s.field = :fieldId')
-                ->setParameter('fieldId', $fieldId);
+                ->where('u.id IS NULL');
+    
+            if ($field) {
+                $countQueryBuilder->andWhere('s.field = :fieldId')
+                    ->setParameter('fieldId', $fieldId);
+            }
+    
+            if ($name) {
+                $countQueryBuilder->andWhere('s.name LIKE :name')
+                    ->setParameter('name', '%' . $name . '%');
+            }
     
             $nbStudent = $countQueryBuilder->getQuery()->getSingleScalarResult();
             $nbPage = ceil($nbStudent / $nbre);
     
             if (!$students) {
                 // Handle case where no students without user accounts are found
-                $message= "Aucun etudiant trouvé !";
-                return $this->render('student/error.html.twig', ['message'=>$message]);
+                return $this->render('student/error.html.twig', ['message' => 'Aucun étudiant trouvé !']);
             }
+    
+            // Retrieve all fields for filtering options
+            $fields = $entityManager->getRepository(Field::class)->findAll();
     
             return $this->render('responsable/list_student.html.twig', [
                 'students' => $students,
                 'field' => $field,
+                'fields' => $fields,
                 'isPaginated' => true,
                 'nbPage' => $nbPage,
                 'page' => $page,
                 'nbre' => $nbre,
+                'currentName' => $name,
+                'currentField' => $fieldId,
             ]);
-        } catch (NotFoundHttpException $e) {
+        } catch (\Exception $e) {
             // Handle the specific case of not finding students without user accounts
-            $message = 'acces refusé';
-
-            return $this->render('student/error.html.twig', ['message'=>$message]);
-            }
-        // catch (\Exception $e) {
-        //     // Catch other unexpected exceptions for broader error handling
-        //     $this->addFlash('error', 'An error occurred.'); // Generic error message
-        //     // Log the error for further investigation
-        //     error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3, 'path/to/your/error.log'); // Replace with your log path
-        //     return $this->redirectToRoute('list_student_2', ['fieldId' => $fieldId, 'page' => 1]); // Redirect to first page
-        // }
+            return $this->render('student/error.html.twig', ['message' => $e]);
+        }
     }
-                     }
+                         }
