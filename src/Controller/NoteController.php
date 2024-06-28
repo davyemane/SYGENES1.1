@@ -18,6 +18,7 @@ class NoteController extends AbstractController
     #[Route('/add/note/{id?0}', name: 'add_note')]
     public function AddNote($id, ManagerRegistry $doctrine, Request $request, SystemNotation $systemNotation): Response
     {
+        $user = $this->getUser();
         $entityManager = $doctrine->getManager();
     
         // Vérifier si un ID de l'ue a été fourni
@@ -48,6 +49,7 @@ class NoteController extends AbstractController
             }
         }
     
-        return $this->render('note/index.html.twig', ['form' => $form->createView()]);
+        return $this->render('note/index.html.twig', ['form' => $form->createView(), 
+        'user' => $user]);
     }
 }

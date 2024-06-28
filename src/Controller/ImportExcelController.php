@@ -20,6 +20,7 @@ class ImportExcelController extends AbstractController
     #[Route('/import', name: 'import')]
     public function importExcel(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $form = $this->createForm(ExcelFormType::class);
         $form->handleRequest($request);
 
@@ -98,6 +99,7 @@ class ImportExcelController extends AbstractController
 
         return $this->render('student/import_excel.html.twig', [
             'form' => $form->createView(),
+            'user' => $user
         ]);
     }
 

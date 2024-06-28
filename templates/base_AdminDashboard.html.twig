@@ -65,17 +65,24 @@
             <nav class="flex-grow p-4 items-center ">
                 <ul class="space-y-7  items-center">
 
+                    <!-- Home Tab -->
                     <li>
-                        <a href="{{ path('app_dashAdmin')}}"
-                            class="nav-link flex items-center px-2 py-2 text-md font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/home.png" alt="home icon">
-                            Home
-                        </a>
+                        <div id="dropdown-container-3" class="relative w-full">
+                            <div>
+                                <a type="button" href="{{ path('app_dashAdmin')}}"
+                                    class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
+                                    id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+                                    <img class="h-5 w-auto" src="/icons/home.png" alt="home icon">
+                                    Home
+                                   
+                                </a>
+                            </div>
+                        </div>
+
                     </li>
 
-
-                    <li>
-                        <!-- Student  Dropdown -->
+                      <!-- Student  Dropdown -->
+                    <li>  
                         <div id="dropdown-container" class="relative w-full">
                             <div>
                                 <button type="button"
@@ -119,9 +126,9 @@
 
 
 
-                    
+                    <!-- UE & EC  Dropdown -->
                     <li>
-                         <!-- UE & EC  Dropdown -->
+                         
                         <div id="dropdown-container-1" class="relative w-full">
                             <div>
                                 <button type="button"
@@ -147,6 +154,7 @@
                                         role="menuitem" tabindex="-1" id="menu-item-0">Add UE</a>
                                     <a href="{{ path('add_ec') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
                                         role="menuitem" tabindex="-1" id="menu-item-1">Add EC</a>
+                                        
                                     {# <form method="POST" action="#" role="none">
                                         <button type="submit"
                                             class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
@@ -160,7 +168,7 @@
                     </li>
 
                     <li>
-                         <!-- UE & EC  Dropdown -->
+                         <!-- Authorities Dropdown -->
                         <div id="dropdown-container-2" class="relative w-full">
                             <div>
                                 <button type="button"
@@ -197,49 +205,67 @@
                     </li>
 
                     <!-- Marks Tab -->
-                    <li>
-                        <a href="#"
-                            class="nav-link flex items-center px-2 py-2 text-lg font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/grades.png" alt="home icon">
-                            Marks
-                            <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </li>
-
-
-                    <!-- Statistics Tab-->
-                    <li>
-                        <a href="#"
-                            class="nav-link flex items-center px-2 py-2 text-md font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/statistics.png" alt="statistics icon">
-                            Statistics
-                         
-                        </a>
-                    </li>
-
-
-                    <!-- Settings Tab -->
+                   
                     <li>
                         <div id="dropdown-container-3" class="relative w-full">
                             <div>
-                                <a type="button" href="{{path('app_profile_show')}}"
+                                <a href="{{ path('fields_index') }}" type="button"
                                     class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
                                     id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+                                    <img class="h-5 w-auto" src="/icons/grades.png" alt="settings icon">
+                                    Marks 
+                                    <svg id="dropdown-arrow-3"
+                                        class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto"
+                                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                                            clip-rule="evenodd" />
+                                    </svg> 
+                                </a>
+                            </div> 
+                             <div id="dropdown-menu-3"
+                                class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95"
+                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                                <div class="py-1" role="none">
+                                    <a href="{{ path('fields_index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
+                                        role="menuitem" tabindex="-1" id="menu-item-0">List of Fields</a>
+                                    {# <form method="POST" action="#" role="none">
+                                        <button type="submit"
+                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+                                    </form> #}
+                                </div>
+                            </div>
+                        </div>
+
+                    </li>
+
+                    <!-- Statistics Tab-->
+                    <li>
+                        <div id="dropdown-container-4" class="relative w-full">
+                            <div>
+                                <a type="button" href="#"
+                                    class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
+                                    id="menu-button-4" aria-expanded="false" aria-haspopup="true">
+                                    <img class="h-5 w-auto" src="/icons/statistics.png" alt="settings icon">
+                                    Statistics  
+                                </a>
+                            </div> 
+                        </div>
+                    </li>
+
+
+                    <!-- Profile Tab -->
+                    <li>
+                        <div id="dropdown-container-5" class="relative w-full">
+                            <div>
+                                <a type="button" href="{{path('app_profile_show')}}"
+                                    class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
+                                    id="menu-button-5" aria-expanded="false" aria-haspopup="true">
                                     <img class="h-5 w-auto" src="/icons/settings.png" alt="settings icon">
                                     Profile
-                                   
                                 </a>
                             </div>
-                            <a href="{{path('app_profile_show')}}"
-                                class="flex items-center space-x-2 text-white hover:bg-blue-700 hover:text-white p-2 rounded-md mt-4">
-                                <img class="h-5 w-auto mr-3 " src="/icons/settings.png" alt="statistics icon">
-                                <span>Settings</span>
-                            </a>  
                         </div>
 
                     </li>
@@ -251,7 +277,7 @@
                 <!-- Logout -->
                 <div class="mt-16 ">
                     <a href="{{ path('app_logout') }}"
-                        class="flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-700 hover:bg-blue-100 hover:text-black">
+                        class=" flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-700 hover:bg-blue-100 hover:text-black">
                         <span class="ml-3">Log out</span>
                     </a>
                 </div>
@@ -270,8 +296,10 @@
                         class="block w-1/5 rounded-md border bg-orange-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-700 hover:text-white-600 hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">Search</button>
                 </div>
                 <div class="flex items-center space-x-4 mr-8">
-                    <div class="text-gray-500">Davy Emane</div>
-                    <img class="w-8 h-8 rounded-full" src="/images/green_view.jpg" alt="Profile picture">
+                 <a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
+                    <div class="text-gray-500">{{ user.username }}</div>
+                    <img class="w-8 h-8 rounded-full" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture">
+                 </a>
                 </div>
             </header>
 
@@ -302,6 +330,39 @@
                 const menu2 = document.getElementById('dropdown-menu-2');
                 const arrow2 = document.getElementById('dropdown-arrow-2');
                 const button2 = document.getElementById('menu-button-2');
+
+                const dropdownContainer3 = document.getElementById('dropdown-container-3');
+                const menu3 = document.getElementById('dropdown-menu-3');
+                const arrow3 = document.getElementById('dropdown-arrow-3');
+                const button3 = document.getElementById('menu-button-3');
+
+
+               button3.addEventListener('click', function (event) {
+                    event.stopPropagation();
+                    const isOpen = dropdownContainer3.classList.toggle('dropdown-active');
+                    if (isOpen) {
+                        arrow3.classList.add('rotate-180');
+                        arrow3.classList.remove('rotate-0');
+                        menu3.classList.remove('opacity-0', 'scale-95');
+                        menu3.classList.add('opacity-100', 'scale-100');
+                    } else {
+                        arrow3.classList.remove('rotate-180');
+                        arrow3.classList.add('rotate-0');
+                        menu3.classList.add('opacity-0', 'scale-95');
+                        menu3.classList.remove('opacity-100', 'scale-100');
+                    }
+                });
+
+                document.addEventListener('click', function (event) {
+                    if (!dropdownContainer3.contains(event.target)) {
+                        dropdownContainer3.classList.remove('dropdown-active');
+                        arrow3.classList.remove('rotate-180');
+                        arrow3.classList.add('rotate-0');
+                        menu3.classList.add('opacity-0', 'scale-95');
+                        menu3.classList.remove('opacity-100', 'scale-100');
+                    }
+                });
+
 
 
                 button.addEventListener('click', function (event) {
@@ -387,6 +448,7 @@
                         menu2.classList.remove('opacity-100', 'scale-100');
                     }
                 });
+
             });
         </script>
 </body>

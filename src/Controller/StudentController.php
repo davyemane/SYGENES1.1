@@ -225,7 +225,8 @@ class StudentController extends AbstractController
         if (!$student) {
             $message = "Pas d'etudiant avec cet identifiant";
 
-            return $this->render('student/error.html.twig', ['message' => $message]);
+            return $this->render('student/error.html.twig', ['message' => $message,
+        'user' => $currentUser]);
         }
 
         $notes = $noteRepository->findBy(['student' => $student]);
@@ -254,6 +255,7 @@ class StudentController extends AbstractController
         }
 
         return $this->render('student/notes.html.twig', [
+            'user' => $currentUser,
             'student' => $student,
             'processedNotes' => $processedNotes,
             'levels' => $levels,

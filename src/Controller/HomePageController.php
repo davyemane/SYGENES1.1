@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,16 +53,21 @@ class HomePageController extends AbstractController
     IsGranted('ROLE_ADMIN')
     ]
     public function dashboard(){
-        return $this->render('responsable_dashboard/dashboardAdmin.html.twig',) ;  
+        $user = $this->getUser();
+        return $this->render('responsable_dashboard/dashboardAdmin.html.twig',[
+            "user" => $user
+        ]) ;  
     }
 
     #[Route('/student/dashboard', name: 'app_dashStudent'),
     IsGranted('ROLE_USER')
     ]
     public function StudentDashboard(){
-            return $this->render('home_page/index.html.twig') ;  
+            $user = $this->getUser();
+            return $this->render('home_page/index.html.twig',[
+                "user" => $user
+            ]) ;  
     }
-
 
 
     #[Route('/register1', name: 'app_register_page')]

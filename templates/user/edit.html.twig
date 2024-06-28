@@ -5,25 +5,25 @@
 {% endblock %}
 
 {% block body %}
-<div class="bg-white flex justify-start items-start ml-64 p-4">
-    <h1 class="text-2xl font-semibold mb-4">Modifier mon profil</h1>
+<div class="bg-white flex flex-col items-start ml-64 p-4 w-full md:w-3/4 lg:w-1/2 xl:w-1/3 mx-auto">
+    <h1 class="text-4xl font-semibold text-blue-600 mb-4">Modifier mon profil</h1>
 
-    {{ form_start(form, {'attr': {'class': 'w-full md:w-1/2'}}) }}
-        <div class="mb-4">
-            {{ form_label(form.username, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+    {{ form_start(form, {'attr': {'class': 'w-full'}}) }}
+        <div class="mb-6">
+            {{ form_label(form.username, null, {'label_attr': {'class': 'block text-sm font-medium leading-6 text-gray-900'}}) }}
             {{ form_widget(form.username, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'}}) }}
             {{ form_errors(form.username, {'attr': {'class': 'text-red-600 text-sm mt-1'}}) }}
         </div>
 
-        <div class="mb-4">
-            {{ form_label(form.email, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+        <div class="mb-6">
+            {{ form_label(form.email, null, {'label_attr': {'class': 'block text-sm font-medium leading-6 text-gray-900'}}) }}
             {{ form_widget(form.email, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'}}) }}
             {{ form_errors(form.email, {'attr': {'class': 'text-red-600 text-sm mt-1'}}) }}
         </div>
 
-        <div class="mb-4">
-            {{ form_label(form.profilePicture, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-            {{ form_widget(form.profilePicture, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm'}}) }}
+        <div class="mb-6">
+            {{ form_label(form.profilePicture, null, {'label_attr': {'class': 'block text-sm font-medium leading-6 text-gray-900'}}) }}
+            {{ form_widget(form.profilePicture, {'attr': {'class': 'block w-full text-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'}}) }}
             {{ form_errors(form.profilePicture, {'attr': {'class': 'text-red-600 text-sm mt-1'}}) }}
         </div>
 
@@ -32,11 +32,11 @@
         </button>
     {{ form_end(form) }}
 
-    <button id="toggle-password-change" class="w-full inline-flex justify-center mt-3 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+    <button id="toggle-password-change" class="w-full inline-flex justify-center mt-4 py-2 px-4 border border-orange-500 rounded-md shadow-sm text-sm font-medium text-orange-600 bg-white hover:bg-orange-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
         Changer le mot de passe
     </button>
 
-    <div id="password-change-form" class="mt-4 hidden w-full md:w-1/2">
+    <div id="password-change-form" class="mt-4 hidden w-full">
         {{ form_start(passwordChangeForm, {'attr': {'class': 'w-full'}}) }}
             <div class="mb-4">
                 {{ form_label(passwordChangeForm.currentPassword, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
