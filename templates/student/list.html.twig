@@ -33,10 +33,10 @@
   </div>
   {% endblock %}
 
-  <div class="flex flex-wrap justify-between items-center gap-y-3 md:ml-40">
+  <div class="flex flex-wrap justify-center ">
     {% for student in students %}
-    <div class="w-full lg:ml-40 md:w-72 h-64 max-w-sm rounded overflow-hidden shadow-lg bg-white p-2">
-      <div class="px-3 py-3">
+    <div class="md:w-72 mx-4 mb-8 max-w-sm rounded overflow-hidden shadow-lg bg-white p-2">
+      <div class="p-4">
         <h5 class="font-bold text-xl mb-2 overflow-hidden overflow-ellipsis whitespace-nowrap">{{ student.name }}</h5>
         <h6 class="text-gray-600 text-base mb-2 overflow-hidden overflow-ellipsis whitespace-nowrap">Student ID:
           {{ student.studentID }}</h6>
@@ -44,6 +44,7 @@
           {{ student.field }}</p>
         <p class="text-gray-700 text-base overflow-hidden overflow-ellipsis whitespace-nowrap">Level:
           {{ student.level }}</p>
+
         <div class="flex space-x-4">
           <a href="{{ path('add_student', {id: student.id}) }}"
             class="mt-8 block w-1/2 mx-auto rounded-md border border-orange-600 bg-orange px-3 py-2 text-center text-sm font-semibold text-orange-600 shadow-sm hover:bg-orange-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Edit</a>
