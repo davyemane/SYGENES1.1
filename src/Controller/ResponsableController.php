@@ -96,14 +96,6 @@ class ResponsableController extends AbstractController
     
 
 //liste des etudiants avec leurs notes dans une matiere spécifique 
-    #[Route('/list/{page?1}/{nbre?12}/{ec?1}', name: 'list_student_notes')]
-    public function home(ManagerRegistry $doctrine, $page, $nbre, $ec): Response
-    {
-        $user = $this->getUser();
-        try {
-            $repository = $doctrine->getRepository(Student::class);
-
-
 #[Route('/list', name: 'list_student_notes')]
 public function home(Request $request, ManagerRegistry $doctrine): Response
 {
@@ -143,7 +135,7 @@ public function home(Request $request, ManagerRegistry $doctrine): Response
 
         $nbStudent = count($students);
         $nbPage = ceil($nbStudent / $nbre);
-
+        $user = $this->getUser();
         // Apply pagination
         $students = $qb->setMaxResults($nbre)
             ->setFirstResult(($page - 1) * $nbre)
@@ -154,21 +146,8 @@ public function home(Request $request, ManagerRegistry $doctrine): Response
             throw new NotFoundHttpException('No students found.');
         }
 
-            return $this->render('student/list1.html.twig', [
-                'students' => $students,
-                'isPaginated' => true,
-                'nbPage' => $nbPage,
-                'page' => $page,
-                'nbre' => $nbre,
-            ]);
-        } catch (NotFoundHttpException $e) {
-            $this->addFlash('error', 'No students found.');
-            $message = 'acces refusé';
-
-            return $this->render('student/error.html.twig', ['message'=>$message,
-            'user' => $user]);
-            } 
         return $this->render('student/list1.html.twig', [
+            'user'=>$user,
             'students' => $students,
             'isPaginated' => true,
             'nbPage' => $nbPage,
@@ -186,6 +165,7 @@ public function home(Request $request, ManagerRegistry $doctrine): Response
         ]);
     }
 }
+
 
 
 
@@ -276,6 +256,7 @@ public function home(Request $request, ManagerRegistry $doctrine): Response
     
             // Retrieve all fields for filtering options
             $fields = $entityManager->getRepository(Field::class)->findAll();
+            
     
             return $this->render('responsable/list_student.html.twig', [
                 'user' => $user,
