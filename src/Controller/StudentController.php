@@ -86,6 +86,7 @@ class StudentController extends AbstractController
             'fields' => $fields,
         ]);
     }
+    
     //detail of one student
     #[Route('/listDetail/{id<\d+>}', name: 'detail_student')]
     public function details(ManagerRegistry $doctrine, $id): Response
@@ -105,13 +106,7 @@ class StudentController extends AbstractController
             // Handle specific case of student not found
             $this->addFlash('error', 'Student not found.'); // More user-friendly message
             return $this->redirectToRoute('list_student');
-        } catch (\Exception $e) {
-            // Catch other unexpected exceptions for broader error handling
-            $this->addFlash('error', 'An error occurred.'); // Generic error message
-            // Log the error for further investigation
-            error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3, 'path/to/your/error.log'); // Replace with your log path
-            return $this->redirectToRoute('list_student');
-        }
+        } 
     }
 
 

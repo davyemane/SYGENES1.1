@@ -1,12 +1,34 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="alert alert-success">
-        {{student.name}}{{student.studentID}}
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h2 class="text-xl font-bold mb-4">{{ student.name }}</h2>
+        
+        <div class="flex mb-4">
+            <div class="w-1/2">
+                <p><strong>Student ID:</strong> {{ student.studentID }}</p>
+                <p><strong>Email:</strong> {{ student.email }}</p>
+                <p><strong>Phone Number:</strong> {{ student.phoneNumber }}</p>
+                <p><strong>Date of Birth:</strong> {{ student.dateOfBirth ? student.dateOfBirth.format('Y-m-d') : 'N/A' }}</p>
+                <p><strong>Place of Birth:</strong> {{ student.placeOfBirth ?: 'N/A' }}</p>
+            </div>
+            <div class="w-1/2">
+                <p><strong>Sexe:</strong> {{ student.sexe ?: 'N/A' }}</p>
+                <p><strong>CNI:</strong> {{ student.cni ?: 'N/A' }}</p>
+                <p><strong>Country:</strong> {{ student.country ?: 'N/A' }}</p>
+                <p><strong>Field:</strong> {{ student.field ? student.field.name : 'N/A' }}</p>
+                <p><strong>Level:</strong> {{ student.level ? student.level.name : 'N/A' }}</p>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <a href="{{ path('list_student') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Back to Student List
+            </a>
+        </div>
     </div>
 {% endblock %}
 
-
 {% block head %}
-  {% block title %}<title> {{student.name}}</title>{% endblock %}
+    {% block title %}<title>{{ student.name }}</title>{% endblock %}
 {% endblock %}
