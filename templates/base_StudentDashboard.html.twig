@@ -20,8 +20,17 @@
 
 			<!-- Sidebar -->
 			<aside class="fixed inset-y-0 left-0 w-64 bg-blue-600 text-white flex flex-col">
-				<div class="p-4">
-					<h1 class="text-2xl font-semibold">SYGENES</h1>
+				<div class="p-4 flex items-center justify-between">
+					<a href="#" class="flex items-center">
+						<img class="h-10 w-auto" src="/images/uiecc_logo.png" alt="SYGENES logo">
+						<h1 class="text-2xl font-semibold ml-2">SYGENES</h1>
+					</a>
+					<!--<button id="sidebar-collapse-toggle" class="hidden lg:inline-block">
+					                    <img class="h-6 w-6" src="/icons/collapse.png" alt="Toggle sidebar">
+					                </button>
+					                 <button id="sidebar-toggle" class="lg:hidden">
+					                    <img class="h-6 w-6" src="/icons/menu.png" alt="Toggle sidebar">
+					                </button> -->
 				</div>
 				<nav class="flex-grow  flex justify-center items-center ">
 					<ul
@@ -81,16 +90,21 @@
 
 						</li>
 
+						<li>
+							<!-- Logout -->
+					<div class="mt-auto mb-4">
+						<a href="{{ path('app_logout') }}" class=" flex items-center px-2 py-2 mt-2 font-medium rounded-md bg-blue-600 hover:bg-blue-700 text-md">
+							<img class="h-5 w-auto mr-4" src="/icons/logout.png" alt="logout icon">
+							<span class="text-md">Log out</span>
+						</a>
+					</div>
+						</li>
+
 
 					</ul>
 
 
-					<!-- Logout -->
-					<div class="mt-60 mb-4">
-						<a href="{{ path('app_logout') }}" class="flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-600 hover:bg-blue-700 hover:text-black">
-							<span class="">Log out</span>
-						</a>
-					</div>
+					
 				</nav>
 
 			</aside>
