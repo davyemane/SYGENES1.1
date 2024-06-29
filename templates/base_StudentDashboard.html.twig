@@ -1,194 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block head %}{% block title %}<title>Student Dashboard</title>{% endblock %}{% endblock %}
-    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
-    {{ encore_entry_script_tags('app') }}
-</head>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		{% block head %}
+			{% block title %}
+				<title>Student Dashboard</title>
+			{% endblock %}
+		{% endblock %}
+		<link rel="stylesheet" href="{{ asset('build/app.css') }}">
+		<link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
+		{{ encore_entry_script_tags('app') }}
+	</head>
 
-<body class="font-sans antialiased leading-none h-screen w-screen bg-white-500">
-    <div class="flex h-full">
+	<body class="font-sans antialiased leading-none h-screen w-screen bg-white-500">
+		<div
+			class="flex h-full">
 
-        <!-- Sidebar -->
-        <aside class="fixed inset-y-0 left-0 w-64 bg-blue-500 text-white flex flex-col">
-            <div class="p-4">
-                <h1 class="text-2xl font-semibold">SYGENES</h1>
-            </div>
-            <nav class="flex-grow p-4">
-                <ul class="space-y-4">
-                    <li>
-                        <a href="{{ path('app_dashAdmin')}}"
-                            class="nav-link flex items-center px-2 py-2 text-md font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/home.png" alt="home icon">
-                            Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="nav-link flex items-center px-2 py-2 text-md font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/students.png" alt="students icon">
-                            Students
-                            <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('add_note') }}"
-                            class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/students.png" alt="students icon">
-                            Add Students notes
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('list_student') }}"
-                            class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/students.png" alt="students icon">
-                            List Students
+			<!-- Sidebar -->
+			<aside class="fixed inset-y-0 left-0 w-64 bg-blue-500 text-white flex flex-col">
+				<div class="p-4">
+					<h1 class="text-2xl font-semibold">SYGENES</h1>
+				</div>
+				<nav class="flex-grow  flex justify-center items-center ">
+					<ul
+						class="space-y-7  items-center">
 
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ path('import') }}"
-                            class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/students.png" alt="students icon">
-                            Import Excel File
+						<!-- Home Tab -->
+						<li class="">
+							<div id="dropdown-container " class="relative w-full">
+								<div class="">
+									<a type="button" href="{{ path('app_dashStudent')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+										<img class="h-5 w-auto" src="/icons/home.png" alt="home icon">
+										Home
+									</a>
+								</div>
+							</div>
 
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="nav-link flex items-center px-2 py-2 text-md font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/ue_ec.png" alt="ue and ec icon">
-                            UE & EC
-                            <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ path('add_ue') }}"
-                            class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/ue_ec.png" alt="ue and ec icon">
-                            Add UE
-
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ path('add_ec') }}"
-                            class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/ue_ec.png" alt="ue and ec icon">
-                            Add EC
-
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#"
-                            class="nav-link flex items-center px-2 py-2 text-lg font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/responsable.png" alt="responsable icon">
-                            Responsable
-                            <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="{{ path('add_responsable') }}"
-                            class="nav-link flex items-center px-2 py-2 text-sm font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/responsable.png" alt="responsable icon">
-                            Add Responsable
-
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="nav-link flex items-center px-2 py-2 text-lg font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/grades.png" alt="home icon">
-                            Marks
-                            <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="nav-link flex items-center px-2 py-2 text-md font-medium rounded-md hover:bg-blue-700 hover:text-white">
-                            <img class="h-5 w-auto mr-3 " src="/icons/statistics.png" alt="statistics icon">
-                            Statistics
-                            <svg class="h-5 w-5 flex-none text-white transform -rotate-90 ml-5" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </li>
+						</li>
 
 
-                </ul>
-                <div class="mt-auto">
-                    <a href="#"
-                        class="flex items-center space-x-2 text-white hover:bg-blue-700 hover:text-white p-2 rounded-md mt-4">
-                        <img class="h-5 w-auto mr-3 " src="/icons/settings.png" alt="statistics icon">
-                        <span>Settings</span>
-                    </a>
-                </div>
+						<!-- Grades Tab -->
+						<li>
+							<div id="dropdown-container-1" class="relative w-full">
+								<div>
+									<a type="button" href="#" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+										<img class="h-5 w-auto" src="/icons/grades.png" alt="home icon">
+										View marks
 
-                <!-- Logout -->
-                <div class="mt-auto">
-                    <a href="{{ path('app_logout') }}"
-                        class="flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-700 hover:bg-blue-100 hover:text-black">
-                        <span class="ml-3">Log out</span>
-                    </a>
-                </div>
-            </nav>
-
-        </aside>
+									</a>
+								</div>
+							</div>
+						</li>
 
 
-        <!-- Main content -->
-        <div class=" flex-grow flex flex-col">
-            <!-- Top Navigation -->
-            <header class="ml-64 bg-white shadow p-4 flex justify-between items-center">
-                <div class="flex">
-                    <input type="search" placeholder="Search..." class="border rounded-md p-2 pl-3 mr-5 w-96">
-                    <button type="submit"
-                        class="block w-1/5 rounded-md border bg-orange-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-700 hover:text-white-600 hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">Search</button>
-                </div>
-                <div class="flex items-center space-x-4 mr-8">
-                    <div class="text-gray-500">{{user.username}}</div>
-                    <img class="w-8 h-8 rounded-full" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile picture">
-                </div>
-            </header>
+						<!-- Statistics Tab -->
+						<li>
+							<div id="dropdown-container-2" class="relative w-full">
+								<div>
+									<a type="button" href="#" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+										<img class="h-5 w-auto" src="/icons/statistics.png" alt="home icon">
+										Statistics
 
-            <!-- Main Content Area -->
-            <main class="flex-grow p-4">
-                <div class="bg-white-500 rounded-lg h-full">
-                    {% block body %}
-                    {% block page_header %}{% endblock %}
-                    {% endblock %}
-                </div>
-            </main>
-        </div>
+									</a>
+								</div>
+							</div>
 
-</body>
+						</li>
+
+
+						<!-- Profile Tab -->
+						<li>
+							<div id="dropdown-container-3" class="relative w-full">
+								<div>
+									<a type="button" href="{{path('app_profile_show')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+										<img class="h-5 w-auto" src="/icons/user_white_2.png" alt="home icon">
+										Profile
+									</a>
+								</div>
+							</div>
+
+						</li>
+
+
+					</ul>
+
+
+					<!-- Logout -->
+					<div class="mt-auto mb-4">
+						<a href="{{ path('app_logout') }}" class="flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-700 hover:bg-blue-100 hover:text-black">
+							<span class="">Log out</span>
+						</a>
+					</div>
+				</nav>
+
+			</aside>
+
+
+			<!-- Main content -->
+			<div
+				class=" flex-grow flex flex-col">
+				<!-- Top Navigation -->
+				<header class="ml-64 bg-white shadow p-4 flex justify-end items-center">
+					
+					<div class="flex items-end space-x-4 mr-8">
+						<a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
+							<div class="text-gray-500">{{ user.username }}</div>
+							{% if user.profilePicture %}
+								<img class="w-8 h-8 rounded-full" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture"/>
+							{% else %}
+								<img class="w-8 h-8 rounded-full" src="{{ asset('images/user.png') }}" alt="Default Profile Picture"/>
+							{% endif %}
+						</a>
+					</div>
+				</header>
+
+				<!-- Main Content Area -->
+				<main class="flex-grow p-4">
+					<div class="bg-white-500 rounded-lg h-full">
+						{% block body %}
+							{% block page_header %}{% endblock %}
+						{% endblock %}
+					</div>
+				</main>
+			</div>
+		</body>
+	</body>
 </html>

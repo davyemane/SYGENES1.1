@@ -3,28 +3,27 @@
   {% block title %}<title> Student Dashboard </title>{% endblock %}
 {% endblock %}
 
-
 {% block body %}
-<div class="relative isolate ml-32 px-6  lg:px-8 ">
-    
-    <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56 z-10">
-      <div class="hidden sm:mb-8 sm:flex sm:justify-center">
-        <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-          Consult our documentation if you are lost. <a href="{{ path('app_documentation_page') }}" class="font-semibold text-blue-500"><span class="absolute inset-0" aria-hidden="true"></span>Read more <span aria-hidden="true">&rarr;</span></a>
-        </div>
-      </div>
-      <div class="text-center">
-        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Welcome, <span class="text-orange-500">{{ user.username }}</span></h1>
-        <p class="mt-6 text-lg leading-8 text-gray-600">What would you like to do today?</p>
-        <div class="mt-10 flex items-center justify-center gap-x-6">
-          <a href="#" class="rounded-md bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Sign Up</a>
-          <a href="#" class="text-sm font-semibold leading-6 text-gray-900 hover:text-blue-500">Log in <span aria-hidden="true">→</span></a>
-        </div> 
+<div class="relative isolate ml-8 px-6 lg:px-8">
+  <div class="mx-auto max-w-2xl py-24 sm:py-32 lg:py-40 z-10">
+    <div class="hidden sm:mb-8 sm:flex sm:justify-start">
+      <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+        Consult our documentation if you are lost. <a href="{{ path('app_documentation_page') }}" class="font-semibold text-blue-500"><span class="absolute inset-0" aria-hidden="true"></span>Read more <span aria-hidden="true">&rarr;</span></a>
       </div>
     </div>
-  
-
-
+    <div class="text-left">
+      {% set hour = "now"|date("H") %}
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+        Good {% if hour < 12 %}Morning{% elseif hour < 18 %}Afternoon{% else %}Evening{% endif %}, <span class="text-orange-500">{{ user.username }}</span>
+      </h1>
+      <p class="mt-4 text-lg leading-8 text-gray-600">What would you like to do today?</p>
+      <div class="mt-6 flex flex-wrap gap-4 justify-start">
+        <a href="#" class="rounded-md bg-blue-500 px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Check your grades</a>
+        <a href="#" class="rounded-md bg-blue-500 px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">View your profile</a>
+        <a href="#" class="rounded-md bg-blue-500 px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Modify your information</a>
+        <a href="#" class="rounded-md bg-blue-500 px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">See your stats</a>
+      </div>
+    </div>
   </div>
-
+</div>
 {% endblock %}

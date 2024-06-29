@@ -1,478 +1,416 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block head %}{% block title %}<title>Dashboard</title>{% endblock %}{% endblock %}
-    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
-    <link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		{% block head %}
+			{% block title %}
+				<title>Dashboard</title>
+			{% endblock %}
+		{% endblock %}
+		<link rel="stylesheet" href="{{ asset('build/app.css') }}">
+		<link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
 
-    {{ encore_entry_script_tags('app') }}
-    <style>
-        .transition {
-            transition: transform 0.2s ease-out, opacity 0.2s ease-out;
-        }
+		{{ encore_entry_script_tags('app') }}
+		<style>
+			.transition {
+				transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+			}
 
-        .dropdown-menu {
-            display: none;
-        }
+			.dropdown-menu {
+				display: none;
+			}
 
-        .dropdown-active .dropdown-menu {
-            display: block;
-        }
+			.dropdown-active .dropdown-menu {
+				display: block;
+			}
 
-        .rotate-0 {
-            transform: rotate(0deg);
-        }
+			.rotate-0 {
+				transform: rotate(0deg);
+			}
 
-        .rotate-90 {
-            transform: rotate(90deg);
-        }
+			.rotate-90 {
+				transform: rotate(90deg);
+			}
 
-        .rotate-120 {
-            transform: rotate(120deg);
-        }
+			.rotate-120 {
+				transform: rotate(120deg);
+			}
 
-        .rotate-180 {
-            transform: rotate(190deg);
-        }
+			.rotate-180 {
+				transform: rotate(190deg);
+			}
 
-        .-rotate-90 {
-            transform: rotate(-90deg);
-        }
+			.-rotate-90 {
+				transform: rotate(-90deg);
+			}
 
-        .-rotate-120 {
-            transform: rotate(-120deg);
-        }
+			.-rotate-120 {
+				transform: rotate(-120deg);
+			}
 
-        .-rotate-180 {
-            transform: rotate(-190deg);
-        }
-    </style>
-</head>
+			.-rotate-180 {
+				transform: rotate(-190deg);
+			}
+		</style>
+	</head>
 
-<body class="font-sans antialiased leading-none h-screen w-screen bg-white-500">
-    <div class="flex h-full">
+	<body class="font-sans antialiased leading-none h-screen w-screen bg-white-500">
+		<div
+			class="flex h-full">
 
-        <!-- Sidebar -->
-        <aside class="fixed inset-y-0 left-0 w-64 bg-blue-500 text-white flex flex-col ">
-            <div class="p-4">
-                <h1 class="text-2xl font-semibold">SYGENES</h1>
-            </div>
-
-
-            <nav class="flex-grow p-4 items-center ">
-                <ul class="space-y-7  items-center">
-
-                    <!-- Home Tab -->
-                    <li>
-                        <div id="dropdown-container-3" class="relative w-full">
-                            <div>
-                                <a type="button" href="{{ path('app_dashAdmin')}}"
-                                    class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
-                                    id="menu-button-3" aria-expanded="false" aria-haspopup="true">
-                                    <img class="h-5 w-auto" src="/icons/home.png" alt="home icon">
-                                    Home
-                                   
-                                </a>
-                            </div>
-                        </div>
-
-                    </li>
-
-                      <!-- Student  Dropdown -->
-                    <li>  
-                        <div id="dropdown-container" class="relative w-full">
-                            <div>
-                                <button type="button"
-                                    class=" nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
-                                    id="menu-button" aria-expanded="false" aria-haspopup="true">
-                                    <img class="h-5 w-auto" src="/icons/students.png" alt="students icon">
-                                    Students
-                                    <svg id="dropdown-arrow"
-                                        class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto"
-                                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd"
-                                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            </div>
-
-                            <div id="dropdown-menu"
-                                class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95"
-                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                                <div class="py-1" role="none">
-                                    <a href="{{ path('add_note') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
-                                        role="menuitem" tabindex="-1" id="menu-item-0">Add Students Marks</a>
-                                    <a href="{{ path('import') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
-                                        role="menuitem" tabindex="-1" id="menu-item-1">Import Excel File</a>
-                                    <a href="{{ path('list_student_2') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
-                                        role="menuitem" tabindex="-1" id="menu-item-2">List Students</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
-                                        role="menuitem" tabindex="-1" id="menu-item-2">Generate PV</a>
-                                    {# <form method="POST" action="#" role="none">
-                                        <button type="submit"
-                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
-                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
-                                    </form> #}
-                                </div>
-                            </div>
-                        </div>
-
-                         <!-- end of the dropdown -->
-                    </li>
+			<!-- Sidebar -->
+			<aside class="fixed inset-y-0 left-0 w-64 bg-blue-500 text-white flex flex-col ">
+				<div class="p-4">
+					<h1 class="text-2xl font-semibold">SYGENES</h1>
+				</div>
 
 
+				<nav class="flex-grow p-4 items-center ">
+					<ul
+						class="space-y-7  items-center">
 
-                    <!-- UE & EC  Dropdown -->
-                    <li>
-                         
-                        <div id="dropdown-container-1" class="relative w-full">
-                            <div>
-                                <button type="button"
-                                    class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
-                                    id="menu-button-1" aria-expanded="false" aria-haspopup="true">
-                                    <img class="h-5 w-auto" src="/icons/ue_ec.png" alt="ue_ec icon">
-                                    UE & EC
-                                    <svg id="dropdown-arrow-1"
-                                        class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto"
-                                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd"
-                                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            </div>
+						<!-- Home Tab -->
+						<li>
+							<div id="dropdown-container-3" class="relative w-full">
+								<div>
+									<a type="button" href="{{ path('app_dashAdmin')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+										<img class="h-5 w-auto" src="/icons/home.png" alt="home icon">
+										Home
 
-                            <div id="dropdown-menu-1"
-                                class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95"
-                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                                <div class="py-1" role="none">
-                                    <a href="{{ path('add_ue') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
-                                        role="menuitem" tabindex="-1" id="menu-item-0">Add UE</a>
-                                    <a href="{{ path('add_ec') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
-                                        role="menuitem" tabindex="-1" id="menu-item-1">Add EC</a>
-                                        
-                                    {# <form method="POST" action="#" role="none">
-                                        <button type="submit"
-                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
-                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
-                                    </form> #}
-                                </div>
-                            </div>
-                        </div>
+									</a>
+								</div>
+							</div>
 
-                        
-                    </li>
+						</li>
 
-                    <li>
-                         <!-- Authorities Dropdown -->
-                        <div id="dropdown-container-2" class="relative w-full">
-                            <div>
-                                <button type="button"
-                                    class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
-                                    id="menu-button-2" aria-expanded="false" aria-haspopup="true">
-                                    <img class="h-5 w-auto" src="/icons/responsable.png" alt="ue_ec icon">
-                                    Authorities
-                                    <svg id="dropdown-arrow-2"
-                                        class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto"
-                                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd"
-                                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            </div>
+						<!-- Student  Dropdown -->
+						<li>
+							<div id="dropdown-container" class="relative w-full">
+								<div>
+									<button type="button" class=" nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button" aria-expanded="false" aria-haspopup="true">
+										<img class="h-5 w-auto" src="/icons/students.png" alt="students icon">
+										Students
+										<svg id="dropdown-arrow" class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
+											<path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+										</svg>
+									</button>
+								</div>
 
-                            <div id="dropdown-menu-2"
-                                class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95"
-                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                                <div class="py-1" role="none">
-                                    <a href="{{ path('add_responsable') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
-                                        role="menuitem" tabindex="-1" id="menu-item-0">Add Authorities</a>
-                                    {# <form method="POST" action="#" role="none">
-                                        <button type="submit"
-                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
-                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
-                                    </form> #}
-                                </div>
-                            </div>
-                        </div>
+								<div id="dropdown-menu" class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+									<div class="py-1" role="none">
+										<a href="{{ path('add_note') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">Add Students Marks</a>
+										<a href="{{ path('import') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-1">Import Excel File</a>
+										<a href="{{ path('list_student_2') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">List Students</a>
+										<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">Generate PV</a>
+										{# <form method="POST" action="#" role="none">
+																														                                        <button type="submit"
+																														                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+																														                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+																														                                    </form> #}
+									</div>
+								</div>
+							</div>
 
-                        
-                    </li>
-
-                    <!-- Marks Tab -->
-                   
-                    <li>
-                        <div id="dropdown-container-3" class="relative w-full">
-                            <div>
-                                <a href="{{ path('fields_index') }}" type="button"
-                                    class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
-                                    id="menu-button-3" aria-expanded="false" aria-haspopup="true">
-                                    <img class="h-5 w-auto" src="/icons/grades.png" alt="settings icon">
-                                    Marks 
-                                    <svg id="dropdown-arrow-3"
-                                        class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto"
-                                        viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path fill-rule="evenodd"
-                                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                                            clip-rule="evenodd" />
-                                    </svg> 
-                                </a>
-                            </div> 
-                             <div id="dropdown-menu-3"
-                                class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95"
-                                role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                                <div class="py-1" role="none">
-                                    <a href="{{ path('fields_index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300"
-                                        role="menuitem" tabindex="-1" id="menu-item-0">List of Fields</a>
-                                    {# <form method="POST" action="#" role="none">
-                                        <button type="submit"
-                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
-                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
-                                    </form> #}
-                                </div>
-                            </div>
-                        </div>
-
-                    </li>
-
-                    <!-- Statistics Tab-->
-                    <li>
-                        <div id="dropdown-container-4" class="relative w-full">
-                            <div>
-                                <a type="button" href="#"
-                                    class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
-                                    id="menu-button-4" aria-expanded="false" aria-haspopup="true">
-                                    <img class="h-5 w-auto" src="/icons/statistics.png" alt="settings icon">
-                                    Statistics  
-                                </a>
-                            </div> 
-                        </div>
-                    </li>
+							<!-- end of the dropdown -->
+						</li>
 
 
-                    <!-- Profile Tab -->
-                    <li>
-                        <div id="dropdown-container-5" class="relative w-full">
-                            <div>
-                                <a type="button" href="{{path('app_profile_show')}}"
-                                    class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700"
-                                    id="menu-button-5" aria-expanded="false" aria-haspopup="true">
-                                    <img class="h-5 w-auto" src="/icons/settings.png" alt="settings icon">
-                                    Profile
-                                </a>
-                            </div>
-                        </div>
+						<!-- UE & EC  Dropdown -->
+						<li>
 
-                    </li>
+							<div id="dropdown-container-1" class="relative w-full">
+								<div>
+									<button type="button" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-1" aria-expanded="false" aria-haspopup="true">
+										<img class="h-5 w-auto" src="/icons/ue_ec.png" alt="ue_ec icon">
+										UE & EC
+										<svg id="dropdown-arrow-1" class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
+											<path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+										</svg>
+									</button>
+								</div>
 
+								<div id="dropdown-menu-1" class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+									<div class="py-1" role="none">
+										<a href="{{ path('add_ue') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">Add UE</a>
+										<a href="{{ path('add_ec') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-1">Add EC</a>
 
-                </ul>
-                
-
-                <!-- Logout -->
-                <div class="mt-16 ">
-                    <a href="{{ path('app_logout') }}"
-                        class=" flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-700 hover:bg-blue-100 hover:text-black">
-                        <span class="ml-3">Log out</span>
-                    </a>
-                </div>
-            </nav>
-
-        </aside>
+										{# <form method="POST" action="#" role="none">
+																														                                        <button type="submit"
+																														                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+																														                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+																														                                    </form> #}
+									</div>
+								</div>
+							</div>
 
 
-        <!-- Main content -->
-        <div class=" flex-grow flex flex-col">
-            <!-- Top Navigation -->
-            <header class="ml-64 bg-white shadow p-4 flex justify-between items-center">
-                <div class="flex">
-                    <input type="search" placeholder="Search..." class="border rounded-md p-2 pl-3 mr-5 w-96">
-                    <button type="submit"
-                        class="block w-1/5 rounded-md border bg-orange-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-700 hover:text-white-600 hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">Search</button>
-                </div>
-                <div class="flex items-center space-x-4 mr-8">
-                 <a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
-                    <div class="text-gray-500">{{ user.username }}</div>
-                    <img class="w-8 h-8 rounded-full" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture">
-                 </a>
-                </div>
-            </header>
+						</li>
 
-            <!-- Main Content Area -->
-            <main class="flex-grow p-4">
-                <div class="bg-white-500 rounded-lg h-full">
-                    {% block body %}
-                    {% block page_header %}{% endblock %}
-                    {% endblock %}
-                </div>
-            </main>
-        </div>
+						<li>
+							<!-- Authorities Dropdown -->
+							<div id="dropdown-container-2" class="relative w-full">
+								<div>
+									<button type="button" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-2" aria-expanded="false" aria-haspopup="true">
+										<img class="h-5 w-auto" src="/icons/responsable.png" alt="ue_ec icon">
+										Authorities
+										<svg id="dropdown-arrow-2" class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
+											<path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+										</svg>
+									</button>
+								</div>
 
-        <script>
-        
-            document.addEventListener('DOMContentLoaded', function () {
-                const dropdownContainer = document.getElementById('dropdown-container');
-                const menu = document.getElementById('dropdown-menu');
-                const arrow = document.getElementById('dropdown-arrow');
-                const button = document.getElementById('menu-button');
-
-                const dropdownContainer1 = document.getElementById('dropdown-container-1');
-                const menu1 = document.getElementById('dropdown-menu-1');
-                const arrow1 = document.getElementById('dropdown-arrow-1');
-                const button1 = document.getElementById('menu-button-1');
-
-                const dropdownContainer2 = document.getElementById('dropdown-container-2');
-                const menu2 = document.getElementById('dropdown-menu-2');
-                const arrow2 = document.getElementById('dropdown-arrow-2');
-                const button2 = document.getElementById('menu-button-2');
-
-                const dropdownContainer3 = document.getElementById('dropdown-container-3');
-                const menu3 = document.getElementById('dropdown-menu-3');
-                const arrow3 = document.getElementById('dropdown-arrow-3');
-                const button3 = document.getElementById('menu-button-3');
+								<div id="dropdown-menu-2" class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+									<div class="py-1" role="none">
+										<a href="{{ path('add_responsable') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">Add Authorities</a>
+										{# <form method="POST" action="#" role="none">
+																														                                        <button type="submit"
+																														                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+																														                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+																														                                    </form> #}
+									</div>
+								</div>
+							</div>
 
 
-               button3.addEventListener('click', function (event) {
-                    event.stopPropagation();
-                    const isOpen = dropdownContainer3.classList.toggle('dropdown-active');
-                    if (isOpen) {
-                        arrow3.classList.add('rotate-180');
-                        arrow3.classList.remove('rotate-0');
-                        menu3.classList.remove('opacity-0', 'scale-95');
-                        menu3.classList.add('opacity-100', 'scale-100');
-                    } else {
-                        arrow3.classList.remove('rotate-180');
-                        arrow3.classList.add('rotate-0');
-                        menu3.classList.add('opacity-0', 'scale-95');
-                        menu3.classList.remove('opacity-100', 'scale-100');
-                    }
-                });
+						</li>
 
-                document.addEventListener('click', function (event) {
-                    if (!dropdownContainer3.contains(event.target)) {
-                        dropdownContainer3.classList.remove('dropdown-active');
-                        arrow3.classList.remove('rotate-180');
-                        arrow3.classList.add('rotate-0');
-                        menu3.classList.add('opacity-0', 'scale-95');
-                        menu3.classList.remove('opacity-100', 'scale-100');
-                    }
-                });
+						<!-- Marks Tab -->
 
+						<li>
+							<div id="dropdown-container-3" class="relative w-full">
+								<div>
+									<a href="{{ path('fields_index') }}" type="button" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+										<img class="h-5 w-auto" src="/icons/grades.png" alt="settings icon">
+										Marks
+										<svg id="dropdown-arrow-3" class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
+											<path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+										</svg>
+									</a>
+								</div>
+								<div id="dropdown-menu-3" class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+									<div class="py-1" role="none">
+										<a href="{{ path('fields_index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">List of Fields</a>
+										{# <form method="POST" action="#" role="none">
+																														                                        <button type="submit"
+																														                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+																														                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+																														                                    </form> #}
+									</div>
+								</div>
+							</div>
 
+						</li>
 
-                button.addEventListener('click', function (event) {
-                    event.stopPropagation();
-                    const isOpen = dropdownContainer.classList.toggle('dropdown-active');
-                    if (isOpen) {
-                        arrow.classList.add('rotate-180');
-                        arrow.classList.remove('rotate-0');
-                        menu.classList.remove('opacity-0', 'scale-95');
-                        menu.classList.add('opacity-100', 'scale-100');
-                    } else {
-                        arrow.classList.remove('rotate-180');
-                        arrow.classList.add('rotate-0');
-                        menu.classList.add('opacity-0', 'scale-95');
-                        menu.classList.remove('opacity-100', 'scale-100');
-                    }
-                });
-
-                document.addEventListener('click', function (event) {
-                    if (!dropdownContainer.contains(event.target)) {
-                        dropdownContainer.classList.remove('dropdown-active');
-                        arrow.classList.remove('rotate-180');
-                        arrow.classList.add('rotate-0');
-                        menu.classList.add('opacity-0', 'scale-95');
-                        menu.classList.remove('opacity-100', 'scale-100');
-                    }
-                });
+						<!-- Statistics Tab-->
+						<li>
+							<div id="dropdown-container-4" class="relative w-full">
+								<div>
+									<a type="button" href="#" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-4" aria-expanded="false" aria-haspopup="true">
+										<img class="h-5 w-auto" src="/icons/statistics.png" alt="settings icon">
+										Statistics
+									</a>
+								</div>
+							</div>
+						</li>
 
 
+						<!-- Profile Tab -->
+						<li>
+							<div id="dropdown-container-5" class="relative w-full">
+								<div>
+									<a type="button" href="{{path('app_profile_show')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-5" aria-expanded="false" aria-haspopup="true">
+										<img class="h-5 w-auto" src="/icons/settings.png" alt="settings icon">
+										Profile
+									</a>
+								</div>
+							</div>
+
+						</li>
 
 
-             button1.addEventListener('click', function (event) {
-                    event.stopPropagation();
-                    const isOpen = dropdownContainer1.classList.toggle('dropdown-active');
-                    if (isOpen) {
-                        arrow1.classList.add('rotate-180');
-                        arrow1.classList.remove('rotate-0');
-                        menu1.classList.remove('opacity-0', 'scale-95');
-                        menu1.classList.add('opacity-100', 'scale-100');
-                    } else {
-                        arrow1.classList.remove('rotate-180');
-                        arrow1.classList.add('rotate-0');
-                        menu1.classList.add('opacity-0', 'scale-95');
-                        menu1.classList.remove('opacity-100', 'scale-100');
-                    }
-                });
-
-                document.addEventListener('click', function (event) {
-                    if (!dropdownContainer1.contains(event.target)) {
-                        dropdownContainer1.classList.remove('dropdown-active');
-                        arrow1.classList.remove('rotate-180');
-                        arrow1.classList.add('rotate-0');
-                        menu1.classList.add('opacity-0', 'scale-95');
-                        menu1.classList.remove('opacity-100', 'scale-100');
-                    }
-                });
+					</ul>
 
 
+					<!-- Logout -->
+					<div class="mt-16 ">
+						<a href="{{ path('app_logout') }}" class=" flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-700 hover:bg-blue-100 hover:text-black">
+							<span class="ml-3">Log out</span>
+						</a>
+					</div>
+				</nav>
+
+			</aside>
 
 
-                button2.addEventListener('click', function (event) {
-                    event.stopPropagation();
-                    const isOpen = dropdownContainer2.classList.toggle('dropdown-active');
-                    if (isOpen) {
-                        arrow2.classList.add('rotate-180');
-                        arrow2.classList.remove('rotate-0');
-                        menu2.classList.remove('opacity-0', 'scale-95');
-                        menu2.classList.add('opacity-100', 'scale-100');
-                    } else {
-                        arrow2.classList.remove('rotate-180');
-                        arrow2.classList.add('rotate-0');
-                        menu2.classList.add('opacity-0', 'scale-95');
-                        menu2.classList.remove('opacity-100', 'scale-100');
-                    }
-                });
+			<!-- Main content -->
+			<div
+				class=" flex-grow flex flex-col">
+				<!-- Top Navigation -->
+				<header class="ml-64 bg-white shadow p-4 flex justify-between items-center">
+					<div class="flex">
+						<input type="search" placeholder="Search..." class="border rounded-md p-2 pl-3 mr-5 w-96">
+						<button type="submit" class="block w-1/5 rounded-md border bg-orange-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-700 hover:text-white-600 hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">Search</button>
+					</div>
+					<div class="flex items-center space-x-4 mr-8">
+						<a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
+							<div class="text-gray-500">{{ user.username }}</div>
+							{% if user.profilePicture %}
+								<img class="w-8 h-8 rounded-full" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture"/>
+							{% else %}
+								<img class="w-8 h-8 rounded-full" src="{{ asset('images/user.png') }}" alt="Default Profile Picture"/>
+							{% endif %}
+						</a>
+					</div>
+				</header>
 
-                document.addEventListener('click', function (event) {
-                    if (!dropdownContainer2.contains(event.target)) {
-                        dropdownContainer2.classList.remove('dropdown-active');
-                        arrow2.classList.remove('rotate-180');
-                        arrow2.classList.add('rotate-0');
-                        menu2.classList.add('opacity-0', 'scale-95');
-                        menu2.classList.remove('opacity-100', 'scale-100');
-                    }
-                });
+				<!-- Main Content Area -->
+				<main class="flex-grow p-4">
+					<div class="bg-white-500 rounded-lg h-full">
+						{% block body %}
+							{% block page_header %}{% endblock %}
+						{% endblock %}
+					</div>
+				</main>
+			</div>
 
-            });
-        </script>
-</body>
+			<script>
 
+				document.addEventListener('DOMContentLoaded', function () {
+const dropdownContainer = document.getElementById('dropdown-container');
+const menu = document.getElementById('dropdown-menu');
+const arrow = document.getElementById('dropdown-arrow');
+const button = document.getElementById('menu-button');
+
+const dropdownContainer1 = document.getElementById('dropdown-container-1');
+const menu1 = document.getElementById('dropdown-menu-1');
+const arrow1 = document.getElementById('dropdown-arrow-1');
+const button1 = document.getElementById('menu-button-1');
+
+const dropdownContainer2 = document.getElementById('dropdown-container-2');
+const menu2 = document.getElementById('dropdown-menu-2');
+const arrow2 = document.getElementById('dropdown-arrow-2');
+const button2 = document.getElementById('menu-button-2');
+
+const dropdownContainer3 = document.getElementById('dropdown-container-3');
+const menu3 = document.getElementById('dropdown-menu-3');
+const arrow3 = document.getElementById('dropdown-arrow-3');
+const button3 = document.getElementById('menu-button-3');
+
+
+button3.addEventListener('click', function (event) {
+event.stopPropagation();
+const isOpen = dropdownContainer3.classList.toggle('dropdown-active');
+if (isOpen) {
+arrow3.classList.add('rotate-180');
+arrow3.classList.remove('rotate-0');
+menu3.classList.remove('opacity-0', 'scale-95');
+menu3.classList.add('opacity-100', 'scale-100');
+} else {
+arrow3.classList.remove('rotate-180');
+arrow3.classList.add('rotate-0');
+menu3.classList.add('opacity-0', 'scale-95');
+menu3.classList.remove('opacity-100', 'scale-100');
+}
+});
+
+document.addEventListener('click', function (event) {
+if (! dropdownContainer3.contains(event.target)) {
+dropdownContainer3.classList.remove('dropdown-active');
+arrow3.classList.remove('rotate-180');
+arrow3.classList.add('rotate-0');
+menu3.classList.add('opacity-0', 'scale-95');
+menu3.classList.remove('opacity-100', 'scale-100');
+}
+});
+
+
+button.addEventListener('click', function (event) {
+event.stopPropagation();
+const isOpen = dropdownContainer.classList.toggle('dropdown-active');
+if (isOpen) {
+arrow.classList.add('rotate-180');
+arrow.classList.remove('rotate-0');
+menu.classList.remove('opacity-0', 'scale-95');
+menu.classList.add('opacity-100', 'scale-100');
+} else {
+arrow.classList.remove('rotate-180');
+arrow.classList.add('rotate-0');
+menu.classList.add('opacity-0', 'scale-95');
+menu.classList.remove('opacity-100', 'scale-100');
+}
+});
+
+document.addEventListener('click', function (event) {
+if (! dropdownContainer.contains(event.target)) {
+dropdownContainer.classList.remove('dropdown-active');
+arrow.classList.remove('rotate-180');
+arrow.classList.add('rotate-0');
+menu.classList.add('opacity-0', 'scale-95');
+menu.classList.remove('opacity-100', 'scale-100');
+}
+});
+
+
+button1.addEventListener('click', function (event) {
+event.stopPropagation();
+const isOpen = dropdownContainer1.classList.toggle('dropdown-active');
+if (isOpen) {
+arrow1.classList.add('rotate-180');
+arrow1.classList.remove('rotate-0');
+menu1.classList.remove('opacity-0', 'scale-95');
+menu1.classList.add('opacity-100', 'scale-100');
+} else {
+arrow1.classList.remove('rotate-180');
+arrow1.classList.add('rotate-0');
+menu1.classList.add('opacity-0', 'scale-95');
+menu1.classList.remove('opacity-100', 'scale-100');
+}
+});
+
+document.addEventListener('click', function (event) {
+if (! dropdownContainer1.contains(event.target)) {
+dropdownContainer1.classList.remove('dropdown-active');
+arrow1.classList.remove('rotate-180');
+arrow1.classList.add('rotate-0');
+menu1.classList.add('opacity-0', 'scale-95');
+menu1.classList.remove('opacity-100', 'scale-100');
+}
+});
+
+
+button2.addEventListener('click', function (event) {
+event.stopPropagation();
+const isOpen = dropdownContainer2.classList.toggle('dropdown-active');
+if (isOpen) {
+arrow2.classList.add('rotate-180');
+arrow2.classList.remove('rotate-0');
+menu2.classList.remove('opacity-0', 'scale-95');
+menu2.classList.add('opacity-100', 'scale-100');
+} else {
+arrow2.classList.remove('rotate-180');
+arrow2.classList.add('rotate-0');
+menu2.classList.add('opacity-0', 'scale-95');
+menu2.classList.remove('opacity-100', 'scale-100');
+}
+});
+
+document.addEventListener('click', function (event) {
+if (! dropdownContainer2.contains(event.target)) {
+dropdownContainer2.classList.remove('dropdown-active');
+arrow2.classList.remove('rotate-180');
+arrow2.classList.add('rotate-0');
+menu2.classList.add('opacity-0', 'scale-95');
+menu2.classList.remove('opacity-100', 'scale-100');
+}
+});
+
+});
+			</script>
+		</body>
+	</body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!-- content -->
