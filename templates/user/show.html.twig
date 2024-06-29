@@ -1,9 +1,5 @@
 {# templates/user/show.html.twig #}
-{% if app.user.student %}
-    {% extends 'base_StudentDashboard.html.twig' %}
-{% else %}
-    {% extends 'base_AdminDashboard.html.twig' %}
-{% endif %}
+{% extends layout_template %}
 
 {% block head %}
   {% block title %}<title>Show Profile</title>{% endblock %}
