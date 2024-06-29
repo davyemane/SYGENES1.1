@@ -5,14 +5,22 @@
 {% endblock %}
 
 {% block body %}
+<style>
+.profile-picture {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%; /* Ensures a circular shape for the image */
+    border: 2px solid #ddd; /* Example border styling */
+}
+</style>
 <div class="profile flex flex-col items-start ml-64 space-y-4">
     <h1 class="flex justify-center w-full mt-16 mb-5 text-4xl font-semibold text-blue-600">Mon Profil</h1>
 
     <div class="flex justify-center w-full ">
         {% if user.profilePicture %}
-        <img class="w-72 h-72 rounded-full border mb-4" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture" />
+        <img class="profile-picture w-auto h-72 rounded-full border mb-4 shadow" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture" />
         {% else %}
-        <img class="w-72 h-72 rounded-full border mb-4" src="{{ asset('images/user.png') }}" alt="Default Profile Picture" />
+        <img class="profile-picture w-auto h-72 rounded-full border mb-4 shadow" src="{{ asset('images/user.png') }}" alt="Default Profile Picture" />
         {% endif %}
     </div>
 

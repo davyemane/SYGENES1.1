@@ -64,7 +64,7 @@ class HomePageController extends AbstractController
     ]
     public function StudentDashboard(){
             $user = $this->getUser();
-            return $this->render('home_page/index.html.twig',[
+            return $this->render('student_dashboard/index.html.twig',[
                 "user" => $user
             ]) ;  
     }

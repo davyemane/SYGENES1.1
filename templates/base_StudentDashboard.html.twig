@@ -175,8 +175,8 @@
                         class="block w-1/5 rounded-md border bg-orange-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-700 hover:text-white-600 hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">Search</button>
                 </div>
                 <div class="flex items-center space-x-4 mr-8">
-                    <div class="text-gray-500">Davy Emane</div>
-                    <img class="w-8 h-8 rounded-full" src="/images/green_view.jpg" alt="Profile picture">
+                    <div class="text-gray-500">{{user.username}}</div>
+                    <img class="w-8 h-8 rounded-full" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile picture">
                 </div>
             </header>
 
