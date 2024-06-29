@@ -39,6 +39,16 @@ class StudentController extends AbstractController
     {
     }
 
+    #[Route('/student_statistics', name: 'student_stats')]
+    public function statistics(Request $request, ManagerRegistry $doctrine): Response
+    {
+        $user = $this->getUser();
+        return $this->render('student_dashboard/statistics.html.twig',[
+            "user" => $user
+        ]) ; 
+    }
+
+
     #[Route('/list/{page?1}/{nbre?12}', name: 'list_student')]
     public function home(Request $request, ManagerRegistry $doctrine, $page, $nbre): Response
     {
