@@ -19,7 +19,7 @@
 			class="flex h-full">
 
 			<!-- Sidebar -->
-			<aside class="fixed inset-y-0 left-0 w-64 bg-blue-500 text-white flex flex-col">
+			<aside class="fixed inset-y-0 left-0 w-64 bg-blue-600 text-white flex flex-col">
 				<div class="p-4">
 					<h1 class="text-2xl font-semibold">SYGENES</h1>
 				</div>
@@ -31,7 +31,7 @@
 						<li class="">
 							<div id="dropdown-container " class="relative w-full">
 								<div class="">
-									<a type="button" href="{{ path('app_dashStudent')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+									<a type="button" href="{{ path('app_dashStudent')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-600 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
 										<img class="h-5 w-auto" src="/icons/home.png" alt="home icon">
 										Home
 									</a>
@@ -45,7 +45,7 @@
 						<li>
 							<div id="dropdown-container-1" class="relative w-full">
 								<div>
-									<a type="button" href="{{ path('student_notes', {id: student.id} )}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+									<a type="button" href="{{ path('student_notes', {id: student.id} )}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-600 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
 										<img class="h-5 w-auto" src="/icons/grades.png" alt="home icon">
 										View marks
 									</a>
@@ -58,7 +58,7 @@
 						<li>
 							<div id="dropdown-container-2" class="relative w-full">
 								<div>
-									<a type="button" href="{{path('student_stats', {id: student.id} )}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+									<a type="button" href="{{path('student_stats', {id: student.id} )}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-600 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
 										<img class="h-5 w-auto" src="/icons/statistics.png" alt="home icon">
 										Statistics
 									</a>
@@ -72,7 +72,7 @@
 						<li>
 							<div id="dropdown-container-3" class="relative w-full">
 								<div>
-									<a type="button" href="{{path('app_profile_show')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+									<a type="button" href="{{path('app_profile_show')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-600 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
 										<img class="h-5 w-auto" src="/icons/user_white_2.png" alt="home icon">
 										Profile
 									</a>
@@ -86,8 +86,8 @@
 
 
 					<!-- Logout -->
-					<div class="mt-auto mb-4">
-						<a href="{{ path('app_logout') }}" class="flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-700 hover:bg-blue-100 hover:text-black">
+					<div class="mt-60 mb-4">
+						<a href="{{ path('app_logout') }}" class="flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-600 hover:bg-blue-700 hover:text-black">
 							<span class="">Log out</span>
 						</a>
 					</div>

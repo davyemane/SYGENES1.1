@@ -123,7 +123,7 @@ public function home(Request $request, ManagerRegistry $doctrine): Response
 
         // Fetch all fields for filtering options
         $fields = $doctrine->getRepository(Field::class)->findAll();
-
+        
         // Retrieve search parameters from request
         $fieldId = $request->query->get('field');
         $name = $request->query->get('name');

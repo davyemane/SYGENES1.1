@@ -1,33 +1,42 @@
 {% extends 'base_AdminDashboard.html.twig' %}
 
 {% block head %}
-  {% block title %}<title> Admin Home</title>{% endblock %}
+	{% block title %}
+		<title>Admin Home</title>
+	{% endblock %}
 {% endblock %}
 
 {% block body %}
-<div class="ml-8 px-6 lg:px-8">
-  <div class="mx-auto max-w-2xl py-24 sm:py-32 lg:py-40 ">
-    <div class="hidden sm:mb-8 sm:flex sm:justify-start">
-      <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-        Consult our documentation if you are lost. <a href="{{ path('app_documentation_page') }}" class="font-semibold text-blue-500"><span class="absolute inset-0" aria-hidden="true"></span>Read more <span aria-hidden="true">&rarr;</span></a>
-      </div>
-    </div>
-    <div class="text-left">
-      {% set hour = "now"|date("H") %}
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-        Good {% if hour < 12 %}Morning{% elseif hour < 18 %}Afternoon{% else %}Evening{% endif %}, <span class="text-orange-500">{{ user.username }}</span>
-      </h1>
-      <p class="mt-4 text-lg leading-8 text-gray-600">What would you like to do today?</p>
-      <div class="mt-6 flex flex-wrap gap-4 justify-start">
-    <a href="{{ path('add_note') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Add students marks</a>
-    <a href="{{ path('list_student_2') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Validate Student's entry</a>
-    <a href="{{ path('import') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Import Students List</a>
-    <a href="{{ path('add_responsable') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Add an authority</a>
-    <a href="{{path('resp_statistics')}}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">See general stats</a>
-    <a href="{{ path('app_profile_show') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">View your profile</a>
-</div>
+	<div class=" w-full ml-8 px-6 lg:px-8">
+		<div class="w-full mx-auto max-w-xl ml-64 sm:py-8 lg:py-8 ">
+			<div class=" w-full hidden sm:mb-8 sm:flex sm:justify-start">
+				<div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+					Consult our documentation if you are lost.
+					<a href="{{ path('app_documentation_page') }}" class="font-semibold text-blue-500">
+						<span class="absolute inset-0" aria-hidden="true"></span>Read more
+						<span aria-hidden="true">&rarr;</span>
+					</a>
+				</div>
+			</div>
+			<div class="text-left w-full">
+				{% set hour = "now"|date("H") %}
+				<h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+					Good
+					{% if hour < 12 %}Morning{% elseif hour < 18 %}Afternoon{% else %}Evening
+					{% endif %},
+				</h1>
+				<h1 class="text-4xl font-bold tracking-tight text-orange-500 sm:text-6xl">{{ user.username }}</h1>
+				<p class="mt-4 text-lg leading-8 text-gray-600">What would you like to do today?</p>
+				<div class="mt-6 flex flex-wrap gap-4 justify-start">
+					<a href="{{ path('add_note') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Add students marks</a>
+					<a href="{{ path('list_student_2') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Validate Student's entry</a>
+					<a href="{{ path('import') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Import Students List</a>
+					<a href="{{ path('add_responsable') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Add an authority</a>
+					<a href="{{path('resp_statistics')}}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">See general stats</a>
+					<a href="{{ path('app_profile_show') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">View your profile</a>
+				</div>
 
-    </div>
-  </div>
-</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

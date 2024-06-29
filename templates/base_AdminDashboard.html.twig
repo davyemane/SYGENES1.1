@@ -61,13 +61,21 @@
 			class="flex h-full">
 
 			<!-- Sidebar -->
-			<aside class="fixed inset-y-0 left-0 w-64 bg-blue-500 text-white flex flex-col ">
-				<div class="p-4">
-					<h1 class="text-2xl font-semibold">SYGENES</h1>
+			<aside class="fixed inset-y-0 left-0 w-64 bg-blue-600 text-white flex flex-col ">
+				<div class="p-4 flex items-center justify-between">
+					<a href="#" class="flex items-center">
+						<img class="h-10 w-auto" src="/images/uiecc_logo.png" alt="SYGENES logo">
+						<h1 class="text-2xl font-semibold ml-2">SYGENES</h1>
+					</a>
+					<!--<button id="sidebar-collapse-toggle" class="hidden lg:inline-block">
+					                    <img class="h-6 w-6" src="/icons/collapse.png" alt="Toggle sidebar">
+					                </button>
+					                 <button id="sidebar-toggle" class="lg:hidden">
+					                    <img class="h-6 w-6" src="/icons/menu.png" alt="Toggle sidebar">
+					                </button> -->
 				</div>
 
-
-				<nav class="flex-grow p-4 items-center ">
+				<nav class="flex-grow flex justify-center items-center  p-4 items-center ">
 					<ul
 						class="space-y-7  items-center">
 
@@ -75,7 +83,7 @@
 						<li>
 							<div id="dropdown-container-3" class="relative w-full">
 								<div>
-									<a type="button" href="{{ path('app_dashAdmin')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+									<a type="button" href="{{ path('app_dashAdmin')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-600 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
 										<img class="h-5 w-auto" src="/icons/home.png" alt="home icon">
 										Home
 
@@ -89,7 +97,7 @@
 						<li>
 							<div id="dropdown-container" class="relative w-full">
 								<div>
-									<button type="button" class=" nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button" aria-expanded="false" aria-haspopup="true">
+									<button type="button" class=" nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-600 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button" aria-expanded="false" aria-haspopup="true">
 										<img class="h-5 w-auto" src="/icons/students.png" alt="students icon">
 										Students
 										<svg id="dropdown-arrow" class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -98,19 +106,19 @@
 									</button>
 								</div>
 
-								<div id="dropdown-menu" class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-									<div class="py-1" role="none">
-										<a href="{{ path('add_note') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">Add Students Marks</a>
-										<a href="{{ path('import') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-1">Import Excel File</a>
-										<a href="{{ path('list_student_2') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">List Students</a>
-										<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">Generate PV</a>
-										
+								<div id="dropdown-menu" class="dropdown-menu mt-2 w-full origin-top-left bg-blue-600 text-white font-semibold ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+									<div class="py-1 ml-8" role="none">
+										<a href="{{ path('add_note') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">Add Students Marks</a>
+										<a href="{{ path('import') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-1">Import Excel File</a>
+										<a href="{{ path('list_student_2') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">List Students</a>
+										<a href="#" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">Generate PV</a>
+
 										{# <form method="POST" action="#" role="none">
-										
-																														                                        <button type="submit"
-																														                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
-																														                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
-																														                                    </form> #}
+																				
+																																								                                        <button type="submit"
+																																								                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+																																								                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+																																								                                    </form> #}
 									</div>
 								</div>
 							</div>
@@ -124,7 +132,7 @@
 
 							<div id="dropdown-container-1" class="relative w-full">
 								<div>
-									<button type="button" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-1" aria-expanded="false" aria-haspopup="true">
+									<button type="button" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-600 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-1" aria-expanded="false" aria-haspopup="true">
 										<img class="h-5 w-auto" src="/icons/ue_ec.png" alt="ue_ec icon">
 										UE & EC
 										<svg id="dropdown-arrow-1" class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -133,16 +141,16 @@
 									</button>
 								</div>
 
-								<div id="dropdown-menu-1" class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-									<div class="py-1" role="none">
-										<a href="{{ path('add_ue') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">Add UE</a>
-										<a href="{{ path('add_ec') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-1">Add EC</a>
-										<a href="{{ path('choix_ec') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">List EC</a>
+								<div id="dropdown-menu-1" class="dropdown-menu mt-2 w-full origin-top-left bg-blue-600 text-white font-semibold ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+									<div class="py-1 ml-8" role="none">
+										<a href="{{ path('add_ue') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">Add UE</a>
+										<a href="{{ path('add_ec') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-1">Add EC</a>
+										<a href="{{ path('choix_ec') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">List EC</a>
 										{# <form method="POST" action="#" role="none">
-																														                                        <button type="submit"
-																														                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
-																														                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
-																														                                    </form> #}
+																																								                                        <button type="submit"
+																																								                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+																																								                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+																																								                                    </form> #}
 									</div>
 								</div>
 							</div>
@@ -154,7 +162,7 @@
 							<!-- Authorities Dropdown -->
 							<div id="dropdown-container-2" class="relative w-full">
 								<div>
-									<button type="button" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-2" aria-expanded="false" aria-haspopup="true">
+									<button type="button" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-600 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-2" aria-expanded="false" aria-haspopup="true">
 										<img class="h-5 w-auto" src="/icons/responsable.png" alt="ue_ec icon">
 										Authorities
 										<svg id="dropdown-arrow-2" class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -163,14 +171,14 @@
 									</button>
 								</div>
 
-								<div id="dropdown-menu-2" class="dropdown-menu mt-2 w-full origin-top-left bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-									<div class="py-1" role="none">
-										<a href="{{ path('add_responsable') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">Add Authorities</a>
+								<div id="dropdown-menu-2" class="dropdown-menu mt-2 w-full origin-top-left bg-blue-600 text-white font-semibold ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+									<div class="py-1 ml-6" role="none">
+										<a href="{{ path('add_responsable') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">Add Authorities</a>
 										{# <form method="POST" action="#" role="none">
-																														                                        <button type="submit"
-																														                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
-																														                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
-																														                                    </form> #}
+																																								                                        <button type="submit"
+																																								                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+																																								                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+																																								                                    </form> #}
 									</div>
 								</div>
 							</div>
@@ -183,7 +191,7 @@
 						<li>
 							<div id="dropdown-container-3" class="relative w-full">
 								<div>
-									<a href="{{ path('fields_index') }}" type="button" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
+									<a href="{{ path('fields_index') }}" type="button" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-600 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
 										<img class="h-5 w-auto" src="/icons/grades.png" alt="settings icon">
 										Marks
 										<svg id="dropdown-arrow-3" class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -195,7 +203,7 @@
 									<div class="py-1" role="none">
 										<a href="{{ path('fields_index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">List of Fields</a>
 										{# <form method="POST" action="#" role="none">
-																						                                    </form> #}
+																																                                    </form> #}
 									</div>
 								</div>
 							</div>
@@ -206,7 +214,7 @@
 						<li>
 							<div id="dropdown-container-4" class="relative w-full">
 								<div>
-									<a type="button" href="{{path('resp_statistics')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-4" aria-expanded="false" aria-haspopup="true">
+									<a type="button" href="{{path('resp_statistics')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-600 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-4" aria-expanded="false" aria-haspopup="true">
 										<img class="h-5 w-auto" src="/icons/statistics.png" alt="statistics icon">
 										Statistics
 									</a>
@@ -219,7 +227,7 @@
 						<li>
 							<div id="dropdown-container-5" class="relative w-full">
 								<div>
-									<a type="button" href="{{path('app_profile_show')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-5" aria-expanded="false" aria-haspopup="true">
+									<a type="button" href="{{path('app_profile_show')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-600 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-5" aria-expanded="false" aria-haspopup="true">
 										<img class="h-5 w-auto" src="/icons/settings.png" alt="settings icon">
 										Profile
 									</a>
@@ -229,15 +237,20 @@
 						</li>
 
 
+						<li>
+							<!-- Logout -->
+							<div class=" mt-auto ">
+								<a href="{{ path('app_logout') }}" class=" flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-600 hover:bg-blue-700 ">
+									<img class="h-5 w-auto" src="/icons/logout.png" alt="logout icon">
+									<span class="ml-3">Log out</span>
+								</a>
+							</div>
+						</li>
+
+
 					</ul>
 
 
-					<!-- Logout -->
-					<div class="mt-auto mb-4">
-						<a href="{{ path('app_logout') }}" class=" flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-700 hover:bg-blue-100 hover:text-black">
-							<span class="ml-3">Log out</span>
-						</a>
-					</div>
 				</nav>
 
 			</aside>
@@ -247,7 +260,7 @@
 			<div
 				class=" flex-grow flex flex-col">
 				<!-- Top Navigation -->
-				<header class="ml-64 bg-white shadow p-4 flex justify-between items-center">
+				<header class="ml-64 bg-white-600 shadow p-4 flex justify-between items-center">
 					<div class="flex">
 						<input type="search" placeholder="Search..." class="border rounded-md p-2 pl-3 mr-5 w-96">
 						<button type="submit" class="block w-1/5 rounded-md border bg-orange-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-700 hover:text-white-600 hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600">Search</button>
