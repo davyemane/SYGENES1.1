@@ -26,7 +26,7 @@ class EC
     private ?UE $ue = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $credit = null;
+    private ?string $credit = null;
 
     public function getId(): ?int
     {
@@ -86,12 +86,12 @@ class EC
         return $this->name;
     }
 
-    public function getCredit(): ?int
+    public function getCredit(): ?string
     {
         return $this->credit;
     }
 
-    public function setCredit(?int $credit): static
+    public function setCredit(?string $credit): static
     {
         $this->credit = $credit;
 

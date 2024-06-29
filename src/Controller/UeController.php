@@ -44,7 +44,7 @@ class UeController extends AbstractController
                 $message = $id ? 'mis à jour' : 'ajouté';
                 $this->addFlash('success', $ec->getName() . " a été $message avec succès !");
     
-                return $this->redirectToRoute("app_home_page");
+                return $this->redirectToRoute("add_ec");
             } catch (\Exception $e) {
                 $this->addFlash('error', 'Une erreur s\'est produite.');
                 error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3, 'chemin/vers/votre/error.log');
@@ -84,7 +84,7 @@ class UeController extends AbstractController
                 $message = $id ? 'mis à jour' : 'ajouté';
                 $this->addFlash('success', $ue->getName() . " a été $message avec succès !");
     
-                return $this->redirectToRoute("app_home_page");
+                return $this->redirectToRoute("add_ue");
             } catch (\Exception $e) {
                 $this->addFlash('error', 'Une erreur s\'est produite.');
                 error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3, 'chemin/vers/votre/error.log');
