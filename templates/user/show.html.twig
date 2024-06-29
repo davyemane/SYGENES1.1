@@ -32,7 +32,7 @@
         <p class="text-lg flex justify-center"><strong class="mr-2">Student ID:</strong> {{ student.studentID }}</p>
         <p class="text-lg flex justify-center"><strong class="mr-2">Level:</strong> {{ student.level }}</p>
         <p class="text-lg flex justify-center"><strong class="mr-2">Phone Number:</strong> {{ student.phoneNumber }}</p>
-        <p class="text-lg flex justify-center"><strong class="mr-2">Date of Birth:</strong> {{ student.dateOfBirth }}</p>
+        <p class="text-lg flex justify-center"><strong class="mr-2">Date of Birth:</strong> {{ student.dateOfBirth|date('d-m-Y') }}</p>
         {% endif %}
         {% if user.Responsable %}
         <p class="text-lg flex justify-center"><strong class="mr-2">Responsable:</strong> {{ user.Responsable }}</p>
