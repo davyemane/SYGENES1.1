@@ -87,7 +87,6 @@ class UserController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function show(): Response
     {
-        /** @var User|null $user */
         $user = $this->getUser();
     
         if (!$user) {
@@ -96,6 +95,13 @@ class UserController extends AbstractController
     
         // Load the Student entity if it exists
         $student = $user->getStudent();
+
+        // if (!$student) {
+        //     return $this->render('user/show.html.twig', [
+        //         'user' => $user,
+        //     ]);
+    
+        // }
         
         return $this->render('user/show.html.twig', [
             'user' => $user,
