@@ -43,8 +43,10 @@ class StudentController extends AbstractController
     public function statistics(Request $request, ManagerRegistry $doctrine): Response
     {
         $user = $this->getUser();
+        $student = $user->getStudent();
         return $this->render('student_dashboard/statistics.html.twig',[
-            "user" => $user
+            "user" => $user,
+            "student" => $student,
         ]) ; 
     }
 
