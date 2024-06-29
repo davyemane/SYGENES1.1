@@ -83,6 +83,8 @@ class ResponsableController extends AbstractController
     'user' => $user]);
     }
 
+
+    
     #[Route("/list/ec/", name:"choix_ec")]
     public function Ec(ManagerRegistry $doctrine): Response
     {
