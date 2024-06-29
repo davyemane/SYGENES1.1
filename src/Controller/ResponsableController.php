@@ -21,6 +21,15 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/admin'), IsGranted('ROLE_ADMIN')]
 class ResponsableController extends AbstractController
 {
+    #[Route ('/resp_statistics', name: 'resp_statistics')]
+    public function resp_statistics(): Response{
+        $user = $this->getUser();
+        return $this->render('responsable/resp_statistics.html.twig', [
+            'controller_name' => 'ResponsableController',
+            'user' => $user
+        ]);
+    }
+
     #[Route('/responsable', name: 'app_responsable')]
     public function index(): Response
     {
@@ -31,6 +40,7 @@ class ResponsableController extends AbstractController
         ]);
     }
 
+    
 //ajouter un responsable
     #[Route('/add/resp/{id?0}', name: 'add_responsable')]
     public function academicInscription($id, ManagerRegistry $doctrine, Request $request): Response

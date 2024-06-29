@@ -5,63 +5,29 @@
 {% endblock %}
 
 {% block body %}
-<div class="bg-white flex flex-col justify-start items-start ml-64 mr-10 p-6 ">
-<div class="mt-8 mx-12 flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-semibold">Dashboard</h1>
-    <div class="flex items-center space-x-4">
-        <a href="#" class="text-gray-600">Go To Website</a>
-        <div class="flex items-center space-x-2">
-            <img class="w-8 h-8 rounded-full" src="https://via.placeholder.com/150" alt="Profile picture">
-            <div class="text-sm font-medium text-gray-700">Mr Patient</div>
-        </div>
+<div class="ml-8 px-6 lg:px-8">
+  <div class="mx-auto max-w-2xl py-24 sm:py-32 lg:py-40 ">
+    <div class="hidden sm:mb-8 sm:flex sm:justify-start">
+      <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+        Consult our documentation if you are lost. <a href="{{ path('app_documentation_page') }}" class="font-semibold text-blue-500"><span class="absolute inset-0" aria-hidden="true"></span>Read more <span aria-hidden="true">&rarr;</span></a>
+      </div>
     </div>
+    <div class="text-left">
+      {% set hour = "now"|date("H") %}
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+        Good {% if hour < 12 %}Morning{% elseif hour < 18 %}Afternoon{% else %}Evening{% endif %}, <span class="text-orange-500">{{ user.username }}</span>
+      </h1>
+      <p class="mt-4 text-lg leading-8 text-gray-600">What would you like to do today?</p>
+      <div class="mt-6 flex flex-wrap gap-4 justify-start">
+    <a href="{{ path('add_note') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Add students marks</a>
+    <a href="{{ path('list_student_2') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Validate Student's entry</a>
+    <a href="{{ path('import') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Import Students List</a>
+    <a href="{{ path('add_responsable') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Add an authority</a>
+    <a href="{{path('resp_statistics')}}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">See general stats</a>
+    <a href="{{ path('app_profile_show') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">View your profile</a>
 </div>
 
-<div class="mt-8 mx-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    <div class="p-4 bg-white rounded-lg shadow">
-        <h2 class="text-lg font-medium">Department</h2>
-        <div class="mt-2 text-2xl font-semibold">8</div>
     </div>
-    <div class="p-4 bg-white rounded-lg shadow">
-        <h2 class="text-lg font-medium">Doctor</h2>
-        <div class="mt-2 text-2xl font-semibold">14</div>
-    </div>
-    <div class="p-4 bg-white rounded-lg shadow">
-        <h2 class="text-lg font-medium">Patient</h2>
-        <div class="mt-2 text-2xl font-semibold">1</div>
-    </div>
-    <div class="p-4 bg-white rounded-lg shadow">
-        <h2 class="text-lg font-medium">Patient Appointment</h2>
-        <div class="mt-2 text-2xl font-semibold">3</div>
-    </div>
-    <div class="p-4 bg-white rounded-lg shadow">
-        <h2 class="text-lg font-medium">Invoice</h2>
-        <div class="mt-2 text-2xl font-semibold">0</div>
-    </div>
-    <div class="p-4 bg-white rounded-lg shadow">
-        <h2 class="text-lg font-medium">Prescription</h2>
-        <div class="mt-2 text-2xl font-semibold">0</div>
-    </div>
-    <div class="p-4 bg-white rounded-lg shadow">
-        <h2 class="text-lg font-medium">Payment</h2>
-        <div class="mt-2 text-2xl font-semibold">0</div>
-    </div>
-</div>
-
-<div class="mt-8 ml-96 mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
-    <div class="p-4 bg-white rounded-lg shadow">
-        <h2 class="text-lg font-medium">Monthly Registered Users</h2>
-        <canvas id="monthlyUsersChart" class="mt-4"></canvas>
-    </div>
-    <div class="p-4 bg-white rounded-lg shadow">
-        <h2 class="text-lg font-medium">Monthly Earning</h2>
-        <div class="flex justify-between items-center mt-2">
-            <div class="text-2xl font-semibold">$29.5</div>
-            <div class="text-sm text-red-500">-31.08% From Previous week</div>
-        </div>
-        <canvas id="monthlyEarningsChart" class="mt-4"></canvas>
-    </div>
-</div>
-
+  </div>
 </div>
 {% endblock %}

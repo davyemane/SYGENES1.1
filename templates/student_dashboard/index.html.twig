@@ -4,8 +4,8 @@
 {% endblock %}
 
 {% block body %}
-<div class="relative isolate ml-8 px-6 lg:px-8">
-  <div class="mx-auto max-w-2xl py-24 sm:py-32 lg:py-40 z-10">
+<div class="ml-8 px-6 lg:px-8">
+  <div class="mx-auto max-w-2xl py-24 sm:py-32 lg:py-40 ">
     <div class="hidden sm:mb-8 sm:flex sm:justify-start">
       <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
         Consult our documentation if you are lost. <a href="{{ path('app_documentation_page') }}" class="font-semibold text-blue-500"><span class="absolute inset-0" aria-hidden="true"></span>Read more <span aria-hidden="true">&rarr;</span></a>
@@ -18,10 +18,9 @@
       </h1>
       <p class="mt-4 text-lg leading-8 text-gray-600">What would you like to do today?</p>
       <div class="mt-6 flex flex-wrap gap-4 justify-start">
-        <a href="#" class="rounded-md bg-blue-500 px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Check your grades</a>
-        <a href="#" class="rounded-md bg-blue-500 px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">View your profile</a>
-        <a href="#" class="rounded-md bg-blue-500 px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Modify your information</a>
-        <a href="#" class="rounded-md bg-blue-500 px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">See your stats</a>
+        <a href="{{ path('student_notes', {id: student.id} )}}" class="rounded-md bg-blue-500 px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Check your grades</a>
+        <a href="{{path('app_profile_show')}}" class="rounded-md bg-blue-500 px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">View your profile</a>
+        <a href="{{path('student_stats', {id: student.id} )}}" class="rounded-md bg-blue-500 px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">See your stats</a>
       </div>
     </div>
   </div>

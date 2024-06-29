@@ -104,7 +104,9 @@
 										<a href="{{ path('import') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-1">Import Excel File</a>
 										<a href="{{ path('list_student_2') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">List Students</a>
 										<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">Generate PV</a>
+										
 										{# <form method="POST" action="#" role="none">
+										
 																														                                        <button type="submit"
 																														                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
 																														                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
@@ -135,7 +137,7 @@
 									<div class="py-1" role="none">
 										<a href="{{ path('add_ue') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">Add UE</a>
 										<a href="{{ path('add_ec') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-1">Add EC</a>
-
+										<a href="{{ path('choix_ec') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">List EC</a>
 										{# <form method="POST" action="#" role="none">
 																														                                        <button type="submit"
 																														                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
@@ -193,10 +195,7 @@
 									<div class="py-1" role="none">
 										<a href="{{ path('fields_index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">List of Fields</a>
 										{# <form method="POST" action="#" role="none">
-																														                                        <button type="submit"
-																														                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
-																														                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
-																														                                    </form> #}
+																						                                    </form> #}
 									</div>
 								</div>
 							</div>
@@ -207,8 +206,8 @@
 						<li>
 							<div id="dropdown-container-4" class="relative w-full">
 								<div>
-									<a type="button" href="#" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-4" aria-expanded="false" aria-haspopup="true">
-										<img class="h-5 w-auto" src="/icons/statistics.png" alt="settings icon">
+									<a type="button" href="{{path('resp_statistics')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-500 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-4" aria-expanded="false" aria-haspopup="true">
+										<img class="h-5 w-auto" src="/icons/statistics.png" alt="statistics icon">
 										Statistics
 									</a>
 								</div>
@@ -234,7 +233,7 @@
 
 
 					<!-- Logout -->
-					<div class="mt-16 ">
+					<div class="mt-auto mb-4">
 						<a href="{{ path('app_logout') }}" class=" flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-700 hover:bg-blue-100 hover:text-black">
 							<span class="ml-3">Log out</span>
 						</a>
