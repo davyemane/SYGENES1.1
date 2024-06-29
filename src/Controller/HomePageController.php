@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,16 +60,33 @@ class HomePageController extends AbstractController
         ]) ;  
     }
 
-    #[Route('/student/dashboard', name: 'app_dashStudent'),
-    IsGranted('ROLE_USER')
-    ]
-    public function StudentDashboard(){
+    #[Route('/student/dashboard', name: 'app_dashStudent')]
+    #[IsGranted('ROLE_USER')]
+    public function StudentDashboard(ManagerRegistry $doctrine): Response
+    {
+        try {
             $user = $this->getUser();
-            return $this->render('student_dashboard/index.html.twig',[
-                "user" => $user
-            ]) ;  
-    }
 
+            if (!$user) {
+                throw new \Exception('Vous devez être connecté pour accéder à cette page.');
+            }
+
+            $student = $user->getStudent();
+
+            if (!$student) {
+                throw new \Exception('Aucun étudiant associé à cet utilisateur.');
+            }
+
+            return $this->render('student_dashboard/index.html.twig', [
+                'user' => $user,
+                'student' => $student
+            ]);
+
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+            return $this->redirectToRoute('app_login');
+        }
+    }
 
     #[Route('/register1', name: 'app_register_page')]
     public function register(){

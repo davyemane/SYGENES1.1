@@ -112,7 +112,6 @@ class StudentController extends AbstractController
 
     //update or add student
     #[Route('/add/{id?0}', name: 'add_student')]
-    #[IsGranted('ROLE_ADMIN')]
     public function academicInscription($id, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
         $studentDirectory = 'student_directory';
