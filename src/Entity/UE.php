@@ -46,6 +46,12 @@ class UE
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $semester = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $grade = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $academicYear = null;
+
     public function __construct()
     {
         $this->eCs = new ArrayCollection();
@@ -189,6 +195,30 @@ class UE
     public function __toString():string
     {
         return $this->name;
+    }
+
+    public function getGrade(): ?float
+    {
+        return $this->grade;
+    }
+
+    public function setGrade(?float $grade): static
+    {
+        $this->grade = $grade;
+
+        return $this;
+    }
+
+    public function getAcademicYear(): ?string
+    {
+        return $this->academicYear;
+    }
+
+    public function setAcademicYear(?string $academicYear): static
+    {
+        $this->academicYear = $academicYear;
+
+        return $this;
     }
 
 }

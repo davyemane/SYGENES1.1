@@ -24,7 +24,7 @@ class EcType extends AbstractType
             // ->add('descrption', TextType::class)
             ->add('credit', null,[
                 'label' => ' ',
-            ], NumberType::class)
+            ])
             ->add('ue', null,[
                 'label' => ' ',
             ])

@@ -152,4 +152,14 @@ class Note
 
         return $this;
     }
+    
+    public function getFinalGrade(): ?float
+    {
+        // Supposons que nous faisons une moyenne des champs cc, tp, sn, et rattrapage
+        $grades = array_filter([$this->cc, $this->tp, $this->sn, $this->rattrapage]);
+        $total = array_sum($grades);
+        $count = count($grades);
+        
+        return $count > 0 ? $total / $count : null;
+    }
 }
