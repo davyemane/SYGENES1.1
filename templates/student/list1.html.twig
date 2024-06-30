@@ -49,6 +49,10 @@
                                         <a href="{{ path('add_note', {id: note.id}) }}" class="block py-2 px-3 border border-orange-500 text-orange-500 rounded-md text-sm hover:bg-orange-500 hover:text-white mt-2">
                                             Edit marks
                                         </a>
+                                        <a href="{{ path('pdf_student', {id: student.id}) }}" class="block py-2 px-3 border border-orange-500 text-orange-500 rounded-md text-sm hover:bg-orange-500 hover:text-white mt-2">
+                                            PV
+                                        </a>
+
                                     {% endfor %}
                                 {% else %}
                                     <li class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">No notes available for this student.</li>

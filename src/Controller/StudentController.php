@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Field;
+use App\Entity\Note;
 use App\Entity\Student;
+use App\Entity\UE;
 use App\Entity\User;
 use App\Event\AddStudentEvent;
 use App\Form\StudentType;
@@ -182,32 +184,97 @@ class StudentController extends AbstractController
         return $this->render('student/accademicInscription.html.twig', ['form' => $form->createView()]);
     }
 
-    #[Route('/pdf/{id}', name: "pdf_student")]
-    public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
-    {
-        $repository = $doctrine->getRepository(Student::class);
+// src/Controller/StudentController.php
 
-        $student = $repository->find($id);
+#[Route('/pdf/{id}', name: "pdf_student")]
+public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
+{
+    $studentRepository = $doctrine->getRepository(Student::class);
+    $student = $studentRepository->find($id);
 
-        $html = $this->renderView('note/releve_notes.html.twig', ['student' => $student]);
-
-        $options = new Options();
-        $options->set('isHtml5ParserEnabled', true);
-        $options->set('isPhpEnabled', true);
-
-        $domPdf->setOptions($options);
-        $domPdf->loadHtml($html);
-        $domPdf->render();
-
-        // Output the generated PDF
-        $domPdf->stream("releve_notes.pdf", [
-            "Attachment" => false // Change to true if you want to force download
-        ]);
+    if (!$student) {
+        throw $this->createNotFoundException('Étudiant non trouvé');
     }
 
+    $noteRepository = $doctrine->getRepository(Note::class);
+    $notes = $noteRepository->findBy(['student' => $student]);
+
+    // Récupérer les UEs et ECs associés aux notes de l'étudiant
+    $ues = [];
+    foreach ($notes as $note) {
+        $ec = $note->getEc();
+        if ($ec) {
+            $ue = $ec->getUe();
+            if ($ue && !isset($ues[$ue->getId()])) {
+                $ues[$ue->getId()] = $ue;
+            }
+        }
+    }
+
+    // Calcul des crédits et des points
+    $total_credits_valides = 0;
+    $total_points = 0;
+    foreach ($notes as $note) {
+        $finalGrade = $note->getFinalGrade();
+        if ($finalGrade !== null && $finalGrade >= 10) { // Supposons que 10 est la note de validation
+            $total_credits_valides += $note->getEc()->getCredit();
+            $total_points += $finalGrade * $note->getEc()->getCredit();
+        }
+    }
+
+    $credits_restants = 60 - $total_credits_valides; // Supposons que le total des crédits soit 180
+    $mpc = $total_credits_valides > 0 ? $total_points / $total_credits_valides : 0;
+
+    // Déterminer les grades pour chaque note
+    $grades = [];
+    foreach ($notes as $note) {
+        $finalGrade = $note->getFinalGrade();
+        $grade = '';
+        if ($finalGrade >= 16) {
+            $grade = 'A';
+        } elseif ($finalGrade >= 14) {
+            $grade = 'B';
+        } elseif ($finalGrade >= 12) {
+            $grade = 'C';
+        } elseif ($finalGrade >= 10) {
+            $grade = 'D';
+        } else {
+            $grade = 'E';
+        }
+        $grades[$note->getId()] = $grade;
+    }
+
+    // Rendu HTML
+    $html = $this->renderView('note/releve_notes.html.twig', [
+        'student' => $student,
+        'notes' => $notes,
+        'ues' => $ues,
+        'total_credits_valides' => $total_credits_valides,
+        'credits_restants' => $credits_restants,
+        'mpc' => number_format($mpc, 2),
+        'grades' => $grades
+    ]);
+
+    // Configuration et génération du PDF
+    $options = new Options();
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isPhpEnabled', true);
+    $domPdf->setOptions($options);
+    $domPdf->loadHtml($html);
+    $domPdf->setPaper('A3', 'portrait');
+    $domPdf->render();
+
+    return new Response(
+        $domPdf->output(),
+        Response::HTTP_OK,
+        [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="releve_notes_' . $student->getStudentID() . '.pdf"'
+        ]
+    );}
 
 
-    #[Route('/{id}/notes', name: 'student_notes')]
+#[Route('/{id}/notes', name: 'student_notes')]
     public function studentNotes(Request $request, StudentRepository $studentRepository, NoteRepository $noteRepository, $id, LevelRepository $levelRepository, UERepository $ueRepository)
     {
 

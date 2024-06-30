@@ -1,106 +1,94 @@
-<!-- releve_notes.html.twig -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relevé de notes</title>
-    <style>
-        /* Styles Bootstrap nécessaires */
-        body {
-            font-family: Arial, sans-serif;
-            color: #000;
-            background-color: #fff;
-        }
-        h1 {
-            color: #007BFF;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        .logo {
-            text-align: center;
-        }
-        .signature {
-            margin-top: 50px;
-            text-align: center;
-        }
-    </style>
+    <title>Relevé de Notes - {{ student.name }}</title>
 </head>
-<body>
-    <!-- En-tête de l'établissement -->
-    <div class="logo">
-        <img src="path/to/logo.png" alt="Logo de l'établissement" width="200">
-        <h3>Nom de l'établissement</h3>
-        <p>Adresse de l'établissement</p>
-    </div>
+<body style="font-family: montserrat; display: flex; justify-content: center;">
+    <div id="page-container" style="width: 210mm; height: 297mm; background-color: white; padding: 20px; margin-top: -30px;">
+        <!-- En-tête de la page -->
+        <div style="display: flex; justify-content: center; padding-top: 2px;">
+            <img src="image/entete.png" style="width: 200mm; height: 60mm; text-align: center;" alt="En-tête">
+        </div>
+        <h2 style="margin-top: -20px; text-align: center;">RELEVÉ DE NOTES</h2>
+        
+        <div style="display: flex; flex-direction: column; justify-content: flex-start; margin-top: -26px; font-size: small;">
+            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                <p>Noms et prénoms : <strong>{{ student.name }}</strong></p>
+                <p>Matricule : <strong>{{ student.studentID }}</strong></p> 
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: -26px;">
+                <p>Né(e) le : <strong>{{ student.dateOfBirth|date('d/m/Y') }}</strong></p>
+                <p>A : <strong>{{ student.placeOfBirth }}</strong></p> 
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: -26px;">
+                <p>Sexe : <strong>{{ student.sexe }}</strong></p>
+                <p>Spécialité : <strong>{{ student.field ? student.field.name : 'Non spécifié' }}</strong></p> 
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: space-between; margin-top: -26px;">
+                <p>Niveau : <strong>{{ student.level ? student.level.name : 'Non spécifié' }}</strong></p>
+                <p>Année Académique : <strong>{{ "now"|date("Y") }}/{{ "now"|date("Y")+1 }}</strong></p> 
+            </div>
+        </div>
 
-    <h1>Relevé de notes</h1>
-    <p>Nom de l'étudiant : {{ student.name }}</p>
-    <table>
-        <thead>
-            <tr>
-                <th>Matière</th>
-                <th>Note</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Informatique</td>
-                <td>A</td>
-            </tr>
-            <tr>
-                <td>Informatique</td>
-                <td>A</td>
-            </tr>
-            <tr>
-                <td>Informatique</td>
-                <td>A</td>
-            </tr>
-            <tr>
-                <td>Informatique</td>
-                <td>A</td>
-            </tr>
-            <tr>
-                <td>Informatique</td>
-                <td>A</td>
-            </tr>
-            <tr>
-                <td>Informatique</td>
-                <td>A</td>
-            </tr>
-            <tr>
-                <td>Informatique</td>
-                <td>A</td>
-            </tr>
-            <tr>
-                <td>Informatique</td>
-                <td>A</td>
-            </tr>
-            <tr>
-                <td>Informatique</td>
-                <td>A</td>
-            </tr>
-            <tr>
-                <td>Informatique</td>
-                <td>A</td>
-            </tr>
+        <table style="width: 100%; border-collapse: collapse; margin: 0; font-size: xx-small;">
+            <thead>
+                <tr style="font-weight: bold; background-color: #fff;">
+                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">CODE</th>
+                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">INTITULÉS</th>
+                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">GRADES</th>
+                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">CRÉDITS VALIDÉS</th>
+                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">SESSION DE VALIDATION</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ue in ues %}
+                    <tr style="font-weight: bold; background-color: #dcdcde;">
+                        <td style="border: 1px solid #000; padding: 3px; text-align: center;">{{ ue.codeUe }}</td>
+                        <td style="border: 1px solid #000; padding: 4px; text-align: center; font-weight: bold;">{{ ue.name }}</td>
+                        <td style="border: 1px solid #000; padding: 3px; text-align: center;">{{ ue.grade }}</td>
+                        <td style="border: 1px solid #000; padding: 3px; text-align: center;">{{ ue.credit }}</td>
+                        <td style="border: 1px solid #000; padding: 3px; text-align: center;">{{ ue.semester }} / {{ ue.academicYear }}</td>
+                    </tr>
+                    {% for ec in ue.eCs %}
+                        {% set note = notes|filter(n => n.ec == ec)|first %}
+                        <tr>
+                            <td style="border: 1px solid #000; padding: 3px; text-align: center;">{{ ec.codeEc }}</td>
+                            <td style="border: 1px solid #000; padding: 3px; text-align: center;">{{ ec.name }}</td>
+                            <td style="border: 1px solid #000; padding: 3px; text-align: center;">{{ note ? grades[note.id] : '' }}</td>
+                            <td style="border: 1px solid #000; padding: 3px; text-align: center;">{{ ec.credit }}</td>
+                            <td style="border: 1px solid #000; padding: 3px; text-align: center;">{{ note ? ue.semester ~ ' / ' ~ ue.academicYear : '' }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
 
+        <table style="width: 100%; border-collapse: collapse; margin-top: 0px; font-size: small;">
+            <thead>
+                <tr style="font-weight: bold; width: 100%; background-color: #fff;">
+                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">Crédits Validés : {{ total_credits_valides }}</th>
+                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">Crédits Restant à Valider : {{ credits_restants }}</th>
+                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">MPC : {{ mpc }}/4</th>
+                </tr>
+            </thead>
+        </table>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 0px; font-size: small;">
+            <thead>
+                <tr style="font-weight: bold;">
+                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">A : TRÈS BIEN</th>
+                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">B : BIEN, 3pts</th>
+                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">C : SUFFISANT, 2/2,5pts</th>
+                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">D : INSATISFAISANT, 1pt</th>
+                    <th style="border: 1px solid #000; padding: 4px; text-align: center;">E : INSIGNIFIANT, 0pt</th>
+                </tr>
+            </thead>
+        </table>
 
-        </tbody>
-    </table>
-
-    <!-- Signature du directeur de l'école -->
-    <div class="signature">
-        <p>Signature du directeur de l'école :</p>
+        <div style="display: flex; justify-content: flex-end; font-weight: bold; padding-left: 20px;">
+            <p style="padding-right: 50px;">Fait à Sangmélima le {{ "now"|date("d/m/Y") }}</p>
+        </div>
     </div>
 </body>
 </html>
