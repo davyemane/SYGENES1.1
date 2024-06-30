@@ -59,6 +59,30 @@
 			.-rotate-180 {
 				transform: rotate(-190deg);
 			}
+
+			.sidebar-expanded {
+				width: 64px;
+			}
+
+			@media (max-width: 768px) {
+            .sidebar-expanded {
+                width: 100%;
+                position: fixed;
+                z-index: 10;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar-expanded {
+                width: 100%;
+                position: fixed;
+                z-index: 10;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.5);
+            }
+		}
 		</style>
 	</head>
 
@@ -73,31 +97,29 @@
 						<img class="h-10 w-auto" src="/images/uiecc_logo.png" alt="SYGENES logo">
 						<h1 class="text-2xl font-semibold ml-2">SYGENES</h1>
 					</a>
-					<!--<button id="sidebar-collapse-toggle" class="hidden lg:inline-block">
-										                    <img class="h-6 w-6" src="/icons/collapse.png" alt="Toggle sidebar">
-										                </button>
-										                 <button id="sidebar-toggle" class="lg:hidden">
-										                    <img class="h-6 w-6" src="/icons/menu.png" alt="Toggle sidebar">
-										                </button> -->
+					<button id="sidebar-toggle" class="lg:hidden">
+                   		 <img class="h-6 w-6" src="/icons/menu.png" alt="Toggle sidebar">
+               		 </button>
 				</div>
 
-				<nav class="flex-grow flex justify-center items-center  p-4 items-center ">
+				<nav class="flex-grow flex justify-center items-center p-4 overflow-y-auto ">
 					<ul
 						class="space-y-7  items-center">
 
 						<!-- Home Tab -->
 						<li>
-							<div id="dropdown-container-3" class="relative w-full">
+							<div class="relative w-full">
 								<div>
 									<a type="button" href="{{ path('app_dashAdmin')}}" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-600 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
 										<img class="h-5 w-auto" src="/icons/home.png" alt="home icon">
 										Home
-
 									</a>
 								</div>
 							</div>
 
 						</li>
+
+
 
 						<!-- Student  Dropdown -->
 						<li>
@@ -155,21 +177,21 @@
 								<div id="dropdown-menu-1" class="dropdown-menu mt-2 w-full origin-top-left bg-blue-600 text-white font-semibold ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
 									<div class="py-1 ml-8" role="none">
 										<a href="{{ path('add_ue') }}" class=" flex flex-row items-center block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">
-										<img class="icon-img" src="/icons/addition.png" alt="list icon">
-										Add UE</a>
+											<img class="icon-img" src="/icons/addition.png" alt="list icon">
+											Add UE</a>
 
 										<a href="{{ path('add_ec') }}" class=" flex flex-row items-center block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-1">
-										<img class="icon-img" src="/icons/addition.png" alt="list icon">
-										Add EC</a>
+											<img class="icon-img" src="/icons/addition.png" alt="list icon">
+											Add EC</a>
 
 										<a href="{{ path('choix_ec') }}" class=" flex flex-row items-center block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">
-										<img class="icon-img" src="/icons/list-text.png" alt="list icon">
-										List EC</a>
+											<img class="icon-img" src="/icons/list-text.png" alt="list icon">
+											List EC</a>
 										{# <form method="POST" action="#" role="none">
-																																																		                                        <button type="submit"
-																																																		                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
-																																																		                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
-																																																		                                    </form> #}
+																																																												                                        <button type="submit"
+																																																												                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+																																																												                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+																																																												                                    </form> #}
 									</div>
 								</div>
 							</div>
@@ -193,13 +215,13 @@
 								<div id="dropdown-menu-2" class="dropdown-menu mt-2 w-full origin-top-left bg-blue-600 text-white font-semibold ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
 									<div class="py-1 ml-6" role="none">
 										<a href="{{ path('add_responsable') }}" class=" flex flex-row items-center block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">
-										<img class="icon-img" src="/icons/add_user.png" alt="add user icon">
-										Add Authorities</a>
+											<img class="icon-img" src="/icons/add_user.png" alt="add user icon">
+											Add Authorities</a>
 										{# <form method="POST" action="#" role="none">
-																																																		                                        <button type="submit"
-																																																		                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
-																																																		                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
-																																																		                                    </form> #}
+																																																												                                        <button type="submit"
+																																																												                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+																																																												                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+																																																												                                    </form> #}
 									</div>
 								</div>
 							</div>
@@ -214,7 +236,7 @@
 								<div>
 									<a href="{{ path('fields_index') }}" type="button" class="nav-link items-center inline-flex w-full justify-start gap-x-4 bg-blue-600 px-2 py-2 text-md font-medium rounded-md text-white ring-inset ring-gray-300 hover:bg-blue-700" id="menu-button-3" aria-expanded="false" aria-haspopup="true">
 										<img class="h-5 w-auto" src="/icons/grades.png" alt="settings icon">
-										Marks
+										Fields & Marks
 										<svg id="dropdown-arrow-3" class="h-5 w-5 text-white transform rotate-0 transition-transform ml-auto" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
 											<path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
 										</svg>
@@ -224,7 +246,7 @@
 									<div class="py-1" role="none">
 										<a href="{{ path('fields_index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">List of Fields</a>
 										{# <form method="POST" action="#" role="none">
-																																										                                    </form> #}
+																																																				                                    </form> #}
 									</div>
 								</div>
 							</div>
@@ -310,7 +332,28 @@
 
 			<script>
 
-				document.addEventListener('DOMContentLoaded', function () {
+			// Dropdown functionality
+        document.querySelectorAll('.dropdown-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const dropdownMenu = button.nextElementSibling;
+                const dropdownArrow = button.querySelector('.dropdown-arrow');
+
+                dropdownMenu.classList.toggle('transition');
+                dropdownArrow.classList.toggle('rotate-180');
+
+                dropdownMenu.classList.toggle('dropdown-menu');
+                dropdownMenu.classList.toggle('dropdown-active');
+
+                document.addEventListener('click', (event) => {
+                    if (!button.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                        dropdownMenu.classList.remove('dropdown-active');
+                        dropdownArrow.classList.remove('rotate-180');
+                    }
+                });
+            });
+        });
+
+document.addEventListener('DOMContentLoaded', function () {
 const dropdownContainer = document.getElementById('dropdown-container');
 const menu = document.getElementById('dropdown-menu');
 const arrow = document.getElementById('dropdown-arrow');

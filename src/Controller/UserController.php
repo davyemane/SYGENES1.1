@@ -103,7 +103,7 @@ class UserController extends AbstractController
     
         // }
         
-        $template = $student ? 'base_StudentDashboard.html.twig' : 'base_AdminDashboard.html.twig';
+        $template = $student ? 'base_StudentDashboard.html.twig' : 'base_new.html.twig';
 
         return $this->render('user/show.html.twig', [
             'user' => $user,

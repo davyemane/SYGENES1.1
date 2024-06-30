@@ -30,6 +30,8 @@
 		"symfony/sendgrid-mailer": "6.4.*",
 		"symfony/string": "6.4.*",
 		"symfony/twig-bundle": "6.4.*",
+		"symfony/ux-icons": "^2.18",
+		"symfony/ux-twig-component": "^2.18",
 		"symfony/validator": "6.4.*",
 		"symfony/webpack-encore-bundle": "^2.1",
 		"symfony/yaml": "6.4.*",

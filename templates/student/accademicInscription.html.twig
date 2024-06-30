@@ -1,4 +1,4 @@
-{% extends 'base_login.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block head %}
 {% block title %} <title> Student Registration </title> {% endblock %}
@@ -6,8 +6,8 @@
 
 {% block body %}
 
-<div class="min-h-screen bg-white flex flex-col items-start px-4 md:px-8 lg:ml-48 mb-16">
-  <form class="bg-white rounded-lg px-4 md:px-8 py-8  w-full max-w-4xl" method="post" id="registration-form">
+<div class="min-h-screen bg-white flex flex-col items-start px-4 md:px-8  mb-16">
+  <form class="bg-white rounded-lg w-full max-w-4xl" method="post" id="registration-form">
     {{ form_start(form) }}
     <div class="space-y-6">
       <!-- Profile Section -->

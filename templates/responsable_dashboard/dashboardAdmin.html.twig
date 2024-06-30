@@ -1,4 +1,4 @@
-{% extends 'base_AdminDashboard.html.twig' %}
+{% extends 'base_new.html.twig' %}
 
 {% block head %}
 	{% block title %}
@@ -8,7 +8,7 @@
 
 {% block body %}
 	<div class=" w-full ml-8 px-6 lg:px-8">
-		<div class="w-full mx-auto max-w-xl ml-64 sm:py-8 lg:py-8 ">
+		<div class="w-full mx-auto max-w-xl sm:py-8 lg:py-8 ">
 			<div class=" w-full hidden sm:mb-8 sm:flex sm:justify-start">
 				<div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
 					Consult our documentation if you are lost.
@@ -21,14 +21,12 @@
 			<div class="text-left w-full">
 				{% set hour = "now"|date("H") %}
 				<h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-					Good
-					{% if hour < 12 %}Morning{% elseif hour < 18 %}Afternoon{% else %}Evening
-					{% endif %},
+					Good{% if hour < 12 %}Morning{% elseif hour < 18 %} Afternoon{% else %} Evening{% endif %}, 
 				</h1>
 				<h1 class="text-4xl font-bold tracking-tight text-orange-500 sm:text-6xl">{{ user.username }}</h1>
 				<p class="mt-4 text-lg leading-8 text-gray-600">What would you like to do today?</p>
-				<div class="mt-6 flex flex-wrap gap-4 justify-start">
-					<a href="{{ path('add_note') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Add students marks</a>
+				<div class="mt-6 flex gap-4 justify-start ">
+					<a href="{{ path('add_note') }}" class="block rounded bg-blue-500 px-2 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Add students marks</a>
 					<a href="{{ path('list_student_2') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Validate Student's entry</a>
 					<a href="{{ path('import') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Import Students List</a>
 					<a href="{{ path('add_responsable') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Add an authority</a>

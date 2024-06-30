@@ -126,6 +126,8 @@ class StudentController extends AbstractController
     #[Route('/add/{id?0}', name: 'add_student')]
     public function academicInscription($id, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
+        $student = $user->getStudent();
         $studentDirectory = 'student_directory';
         $entityManager = $doctrine->getManager();
 
@@ -179,7 +181,9 @@ class StudentController extends AbstractController
             return $this->redirectToRoute("list_student");
         }
 
-        return $this->render('student/accademicInscription.html.twig', ['form' => $form->createView()]);
+        return $this->render('student/accademicInscription.html.twig', ['form' => $form->createView(),
+            "user" => $user,
+            "student" => $student]);
     }
 
     #[Route('/pdf/{id}', name: "pdf_student")]

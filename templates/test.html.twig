@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Dashboard</title>
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    <link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-purple': '#081A51',
+                        'light-white': 'rgba(255,255,255,0.18)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        #searchInput:focus {
+            outline: none;
+            box-shadow: none;
+        }
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .submenu.active {
+            max-height: 500px;
+            transition: max-height 0.5s ease-in;
+        }
+        .submenu-item.hidden {
+            display: none;
+        }
+        .menu-item.active, .submenu-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .submenu-item {
+            padding-left: 2.5rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            #sidebarDiv {
+                width: 20rem;
+            }
+            #toggleBtn {
+                right: -1rem;
+                top: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #sidebarDiv {
+                width: 16rem;
+                position: fixed;
+                left: -16rem;
+                z-index: 10;
+                transition: left 0.3s ease;
+            }
+            #sidebarDiv.open {
+                left: 0;
+            }
+            #contentDiv {
+                margin-left: 0;
+            }
+            #toggleBtn {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            #searchContainer {
+                margin-top: 1rem;
+            }
+        }
+
+        /* Ensure the sidebar is fixed and the content scrolls independently */
+        #sidebarDiv {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        #contentDiv {
+            margin-left: 18rem; /* Adjust this value according to the width of your sidebar */
+            width: calc(100% - 18rem); /* Adjust this value according to the width of your sidebar */
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        /* Ensure dropdowns do not push other elements */
+        .submenu {
+            position: relative;
+        }
+    </style>
+</head>
+<body class="">
+    <div class="flex">
+        <div id="sidebarDiv" class="bg-dark-purple dark:bg-gray-800 p-5 pt-8 w-72 relative transition-all duration-300 flex flex-col">
+            <img id="toggleBtn" src="/icons/previous.png" alt="previous" class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
+            <div class="inline-flex items-center">
+                <img src="/icons/uiecc_logo.png" alt="uiecc_logo" class="w-16 h-auto cursor-pointer mr-2">
+                <h1 id="sidebarTitle" class="text-white text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
+            </div>
+            <div id="searchContainer" class="flex items-center rounded-md bg-light-white dark:bg-gray-600 mt-6 transition-all duration-300">
+                <img id="searchIcon" src="/icons/search.png" alt="search" class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
+                <input type="search" id="searchInput" class="text-base bg-transparent w-full text-white dark:text-gray-200 border-none focus:outline-none px-3 py-2" placeholder="Search">
+            </div>
+
+            <ul class="pt-2 flex-grow">
+                <a href="{{ path('app_dashAdmin')}}">
+                <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2">
+                    <img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
+                    <span class="text-base font-medium flex-1">Dashboard</span>
+                </li>
+                </a>
+
+                
+                <li class="menu-item text-gray-300 text-sm cursor-pointer mt-2">
+                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md">
+                        <img src="/icons/students.png" alt="students" class="w-4 h-4 ml-3">
+                        <span class="text-base font-medium flex-1">Students</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </div>
+                    <ul class="submenu ml-6 mt-2">
+                        <a href="{{path('add_student')}}">
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add new student data</li>
+                        </a>
+                        
+                        <a href="{{path('add_student')}}">
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Modify a student data</li>
+                        </a>
+                        
+                        <a href="{{ path('list_student_2') }}">
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">List students</li>
+                        </a>
+                        
+                        <a href="{{ path('import') }}">
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Import excel file</li>
+                        </a>
+                        
+                    </ul>
+                </li>
+                <li class="menu-item text-gray-300 text-sm cursor-pointer">
+                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md">
+                        <img src="/icons/grades.png" alt="grades" class="w-4 h-4 ml-3">
+                        <span class="text-base font-medium flex-1">Marks</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </div>
+                    <ul class="submenu ml-6 mt-2">
+                        <a href="{{ path('add_note') }}">
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add a student's marks</li>
+                        </a>
+                        
+                        <a href="{{ path('add_note') }}">
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Modify a student's marks</li>
+                        </a>
+                        
+                        <a href="{{ path('choix_ec') }}">
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">View students marks</li>
+                        </a>
+                        
+                    </ul>
+                </li>
+                <li class="menu-item text-gray-300 text-sm cursor-pointer">
+                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md">
+                        <img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
+                        <span class="text-base font-medium flex-1">UE & EC</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </div>
+                    <ul class="submenu ml-6 mt-2">
+                        <a href="{{ path('add_ue') }}">
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add an UE</li>
+                        </a>
+                        
+                        <a href="{{ path('add_ec') }}">
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add an EC</li>
+                        </a>
+                        
+                        <a href="{{ path('choix_ec') }}">
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">List of UE & EC</li>
+                        </a>
+                        
+                        <a href="{{ path('fields_index') }}">
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">List of Fields</li>
+                        </a>
+                        
+                    </ul>
+                </li>
+                <li class="menu-item text-gray-300 text-sm cursor-pointer">
+                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md">
+                        <img src="/icons/responsable.png" alt="grades" class="w-4 h-4 ml-3">
+                        <span class="text-base font-medium flex-1">Heads of Departments</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </div>
+                    <ul class="submenu ml-6 mt-2">
+                        <a href="{{ path('app_chef_index') }}">
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Heads of Departments</li>
+                        </a>
+                        
+                    </ul>
+                </li>
+                <a href="{{ path('app_user_index')}}">
+                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2">
+                        <img src="/icons/users.png" alt="home" class="w-4 h-4 ml-3">
+                        <span class="text-base font-medium flex-1">Users</span>
+                    </li>
+                </a>
+                <a href="{{ path('admin_logout') }}">
+                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2">
+                        <img src="/icons/logout.png" alt="home" class="w-4 h-4 ml-3">
+                        <span class="text-base font-medium flex-1">Logout</span>
+                    </li>
+                </a>
+            </ul>
+
+            <div class="flex items-center p-2 mt-auto bg-light-white dark:bg-gray-600 rounded-md">
+                <img src="/icons/profile.png" alt="profile" class="w-10 h-10 rounded-full mr-2">
+                <div class="flex flex-col">
+                    <span class="text-base font-medium text-white dark:text-gray-200">John Doe</span>
+                    <span class="text-sm text-gray-400">Administrator</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="contentDiv" class="p-7 text-2xl font-semibold flex-1 h-screen overflow-y-auto transition-all duration-300">
+            <!-- Your main content here -->
+            {% block body %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    const submenu = item.querySelector('.submenu');
+                    if (submenu) {
+                        submenu.classList.toggle('active');
+                        const icon = item.querySelector('i');
+                        icon.classList.toggle('rotate-180');
+                    }
+                });
+            });
+
+            const sidebar = document.getElementById('sidebarDiv');
+            const toggleBtn = document.getElementById('toggleBtn');
+            const sidebarTitle = document.getElementById('sidebarTitle');
+            const searchIcon = document.getElementById('searchIcon');
+
+            toggleBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('w-72');
+                sidebar.classList.toggle('w-20');
+                sidebarTitle.classList.toggle('hidden');
+                searchIcon.classList.toggle('hidden');
+                document.querySelectorAll('.menu-item span, .submenu-item').forEach(element => {
+                    element.classList.toggle('hidden');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
