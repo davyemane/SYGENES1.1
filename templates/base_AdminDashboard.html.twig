@@ -14,6 +14,12 @@
 
 		{{ encore_entry_script_tags('app') }}
 		<style>
+
+			.icon-img {
+				max-height: 1em; /* Adjust the size as needed */
+				max-width: 1em;
+				margin-right: 0.5em; /* Adjust space between image and text */
+			}
 			.transition {
 				transition: transform 0.2s ease-out, opacity 0.2s ease-out;
 			}
@@ -68,11 +74,11 @@
 						<h1 class="text-2xl font-semibold ml-2">SYGENES</h1>
 					</a>
 					<!--<button id="sidebar-collapse-toggle" class="hidden lg:inline-block">
-					                    <img class="h-6 w-6" src="/icons/collapse.png" alt="Toggle sidebar">
-					                </button>
-					                 <button id="sidebar-toggle" class="lg:hidden">
-					                    <img class="h-6 w-6" src="/icons/menu.png" alt="Toggle sidebar">
-					                </button> -->
+										                    <img class="h-6 w-6" src="/icons/collapse.png" alt="Toggle sidebar">
+										                </button>
+										                 <button id="sidebar-toggle" class="lg:hidden">
+										                    <img class="h-6 w-6" src="/icons/menu.png" alt="Toggle sidebar">
+										                </button> -->
 				</div>
 
 				<nav class="flex-grow flex justify-center items-center  p-4 items-center ">
@@ -108,17 +114,22 @@
 
 								<div id="dropdown-menu" class="dropdown-menu mt-2 w-full origin-top-left bg-blue-600 text-white font-semibold ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
 									<div class="py-1 ml-8" role="none">
-										<a href="{{ path('add_note') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">Add Students Marks</a>
-										<a href="{{ path('import') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-1">Import Excel File</a>
-										<a href="{{ path('list_student_2') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">List Students</a>
-										<a href="#" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">Generate PV</a>
-
-										{# <form method="POST" action="#" role="none">
-																				
-																																								                                        <button type="submit"
-																																								                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
-																																								                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
-																																								                                    </form> #}
+										<a href="{{ path('add_note') }}" class="flex flex-row items-center block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">
+											<img class="icon-img" src="/icons/addition.png" alt="add students icon">
+											Add Students Marks
+										</a>
+										<a href="{{ path('import') }}" class="flex flex-row items-center block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-1">
+											<img class="icon-img" src="/icons/excel.png" alt="import excel icon">
+											Import Excel File
+										</a>
+										<a href="{{ path('list_student_2') }}" class="flex flex-row items-center block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">
+											<img class="icon-img" src="/icons/list-text.png" alt="list icon">
+											List Students
+										</a>
+										<a href="#" class="flex flex-row items-center block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">
+											<img class="icon-img" src="/icons/printing.png" alt="generate pv icon">
+											Generate PV
+										</a>
 									</div>
 								</div>
 							</div>
@@ -143,14 +154,22 @@
 
 								<div id="dropdown-menu-1" class="dropdown-menu mt-2 w-full origin-top-left bg-blue-600 text-white font-semibold ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
 									<div class="py-1 ml-8" role="none">
-										<a href="{{ path('add_ue') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">Add UE</a>
-										<a href="{{ path('add_ec') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-1">Add EC</a>
-										<a href="{{ path('choix_ec') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">List EC</a>
+										<a href="{{ path('add_ue') }}" class=" flex flex-row items-center block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">
+										<img class="icon-img" src="/icons/addition.png" alt="list icon">
+										Add UE</a>
+
+										<a href="{{ path('add_ec') }}" class=" flex flex-row items-center block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-1">
+										<img class="icon-img" src="/icons/addition.png" alt="list icon">
+										Add EC</a>
+
+										<a href="{{ path('choix_ec') }}" class=" flex flex-row items-center block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-2">
+										<img class="icon-img" src="/icons/list-text.png" alt="list icon">
+										List EC</a>
 										{# <form method="POST" action="#" role="none">
-																																								                                        <button type="submit"
-																																								                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
-																																								                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
-																																								                                    </form> #}
+																																																		                                        <button type="submit"
+																																																		                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+																																																		                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+																																																		                                    </form> #}
 									</div>
 								</div>
 							</div>
@@ -173,12 +192,14 @@
 
 								<div id="dropdown-menu-2" class="dropdown-menu mt-2 w-full origin-top-left bg-blue-600 text-white font-semibold ring-opacity-5 focus:outline-none transition ease-out duration-100 transform opacity-0 scale-95" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
 									<div class="py-1 ml-6" role="none">
-										<a href="{{ path('add_responsable') }}" class="block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">Add Authorities</a>
+										<a href="{{ path('add_responsable') }}" class=" flex flex-row items-center block px-4 py-2 text-sm text-white hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">
+										<img class="icon-img" src="/icons/add_user.png" alt="add user icon">
+										Add Authorities</a>
 										{# <form method="POST" action="#" role="none">
-																																								                                        <button type="submit"
-																																								                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
-																																								                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
-																																								                                    </form> #}
+																																																		                                        <button type="submit"
+																																																		                                            class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-blue-300"
+																																																		                                            role="menuitem" tabindex="-1" id="menu-item-3">Sign out</button>
+																																																		                                    </form> #}
 									</div>
 								</div>
 							</div>
@@ -203,7 +224,7 @@
 									<div class="py-1" role="none">
 										<a href="{{ path('fields_index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-300" role="menuitem" tabindex="-1" id="menu-item-0">List of Fields</a>
 										{# <form method="POST" action="#" role="none">
-																																                                    </form> #}
+																																										                                    </form> #}
 									</div>
 								</div>
 							</div>
@@ -240,8 +261,8 @@
 						<li>
 							<!-- Logout -->
 							<div class=" mt-auto ">
-								<a href="{{ path('app_logout') }}" class=" flex items-center px-2 py-2 mt-2 text-sm font-medium rounded-md bg-blue-600 hover:bg-blue-700 ">
-									<img class="h-5 w-auto" src="/icons/logout.png" alt="logout icon">
+								<a href="{{ path('app_logout') }}" class=" flex items-center px-2 py-2 mt-2 text-md font-medium rounded-md bg-blue-600 hover:bg-blue-700 ">
+									<img class="h-5 w-auto mr-1" src="/icons/logout.png" alt="logout icon">
 									<span class="ml-3">Log out</span>
 								</a>
 							</div>
