@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Dashboard</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     <link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    {{ encore_entry_script_tags('app') }}
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -92,7 +93,7 @@
         <div id="sidebarDiv" class="inset-y-0 left-0 fixed bg-dark-purple dark:bg-gray-800 p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
             <img id="toggleBtn" src="/icons/previous.png" alt="previous" class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
             <div class="inline-flex items-center">
-                <img src="/icons/uiecc_logo.png" alt="uiecc_logo" class="w-16 h-auto cursor-pointer mr-2">
+                <img src="/icons/uiecc.svg" alt="uiecc_logo" class="w-12 h-auto cursor-pointer mr-4">
                 <h1 id="sidebarTitle" class="text-white text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
             </div>
             <div id="searchContainer" class="flex items-center rounded-md bg-light-white dark:bg-gray-600 mt-6 transition-all duration-300">
@@ -222,7 +223,7 @@
                     </li>
                     </a>
 
-                    <a href="{{ path('app_logout') }}"></a>
+                    <a href="{{ path('app_logout') }}">
                     <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="logout.html">
                         <i class="fas fa-sign-out-alt w-4 h-4 ml-3"></i>
                         <span class="text-base font-medium flex-1">Logout</span>

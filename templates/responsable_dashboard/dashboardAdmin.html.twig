@@ -1,40 +1,54 @@
 {% extends 'base_new.html.twig' %}
 
 {% block head %}
-	{% block title %}
-		<title>Admin Home</title>
-	{% endblock %}
+{% block title %}<title>Admin Dashboard</title>{% endblock %}
 {% endblock %}
 
 {% block body %}
-	<div class=" w-full ml-8 px-6 lg:px-8">
-		<div class="w-full mx-auto max-w-xl sm:py-8 lg:py-8 ">
-			<div class=" w-full hidden sm:mb-8 sm:flex sm:justify-start">
-				<div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-					Consult our documentation if you are lost.
-					<a href="{{ path('app_documentation_page') }}" class="font-semibold text-blue-500">
-						<span class="absolute inset-0" aria-hidden="true"></span>Read more
-						<span aria-hidden="true">&rarr;</span>
-					</a>
-				</div>
-			</div>
-			<div class="text-left w-full">
-				{% set hour = "now"|date("H") %}
-				<h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-					Good{% if hour < 12 %}Morning{% elseif hour < 18 %} Afternoon{% else %} Evening{% endif %}, 
-				</h1>
-				<h1 class="text-4xl font-bold tracking-tight text-orange-500 sm:text-6xl">{{ user.username }}</h1>
-				<p class="mt-4 text-lg leading-8 text-gray-600">What would you like to do today?</p>
-				<div class="mt-6 flex gap-4 justify-start ">
-					<a href="{{ path('add_note') }}" class="block rounded bg-blue-500 px-2 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Add students marks</a>
-					<a href="{{ path('list_student_2') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Validate Student's entry</a>
-					<a href="{{ path('import') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Import Students List</a>
-					<a href="{{ path('add_responsable') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Add an authority</a>
-					<a href="{{path('resp_statistics')}}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">See general stats</a>
-					<a href="{{ path('app_profile_show') }}" class="rounded-md bg-blue-500 px-3 sm:px-4 py-2 text-lg font-semibold text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">View your profile</a>
-				</div>
+<div class="min-h-screen py-12 sm:py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-lg shadow-2xl overflow-hidden">
+      <div class="px-4 py-5 sm:p-6">
+        <div class="text-center">
+          <div class="inline-flex rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-600 mb-6">
+            Consult our documentation if you need help
+            <a href="{{ path('app_documentation_page') }}" class="ml-2 font-bold hover:underline">
+              Read more
+              <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
 
-			</div>
-		</div>
-	</div>
+          {% set hour = "now"|date("H") %}
+          <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl mb-2">
+            Good {% if hour < 12 %}Morning{% elseif hour < 18 %}Afternoon{% else %}Evening{% endif %},
+          </h1>
+          <h2 class="text-3xl font-bold text-orange-500 sm:text-4xl md:text-5xl mb-4">
+            {{ user.username }}
+          </h2>
+          <p class="text-xl text-gray-600 mb-8">What would you like to do today?</p>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {% set actions = [
+            {path: 'add_note', label: 'Add students marks', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z', color: 'bg-blue-500 hover:bg-blue-600'},
+            {path: 'list_student_2', label: 'Validate Student\'s entry', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4', color: 'bg-green-500 hover:bg-green-600'},
+            {path: 'import', label: 'Import Students List', icon: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12', color: 'bg-purple-500 hover:bg-purple-600'},
+            {path: 'add_responsable', label: 'Add an authority', icon: 'M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z', color: 'bg-red-500 hover:bg-red-600'},
+            {path: 'resp_statistics', label: 'See general stats', icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', color: 'bg-yellow-500 hover:bg-yellow-600'},
+            {path: 'app_profile_show', label: 'View your profile', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', color: 'bg-indigo-500 hover:bg-indigo-600'}
+          ] %}
+
+          {% for action in actions %}
+            <a href="{{ path(action.path) }}" class="flex items-center p-5 rounded-lg shadow-md transition duration-150 ease-in-out {{ action.color }} text-white">
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ action.icon }}"></path>
+              </svg>
+              <span class="ml-3 text-sm font-medium">{{ action.label }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

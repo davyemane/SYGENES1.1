@@ -1,72 +1,59 @@
 {# templates/import_excel.html.twig #}
-
 {% extends 'base_new.html.twig' %}
 
 {% block head %}
-  {% block title %}<title>Import Excel</title>{% endblock %}
+{% block title %}<title>Import Excel</title>{% endblock %}
 {% endblock %}
 
 {% block body %}
+<div class="container mx-auto px-4 py-8">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="fixed inset-0 flex items-center justify-center z-50">
+                <div class="bg-white border border-gray-300 shadow-lg rounded-lg p-4 max-w-sm w-full mx-4 md:mx-auto">
+                    <div class="flex items-center">
+                        <div class="rounded-full p-2 {% if label == 'success' %}bg-green-500{% else %}bg-red-500{% endif %}">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{% if label == 'success' %}M5 13l4 4L19 7{% else %}M6 18L18 6M6 6l12 12{% endif %}"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-2">
+                            <p class="text-sm text-gray-800 font-semibold">{{ label == 'success' ? 'Success!' : 'Error!' }}</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">{{ message }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
 
-<div class="bg-white flex justify-start items-start">
+    <div class="bg-white rounded-lg shadow-2xl p-8">
+        <h1 class="text-4xl font-semibold text-blue-600 mb-2">Import Excel File</h1>
+        <p class="text-sm text-gray-600 mb-6">This is where you import an excel file.</p>
 
-  {# {% for label, messages in app.flashes %}
-  {% for message in messages %}
-    <div class="fixed inset-0 flex items-center justify-center z-50">
-      <div class="bg-white border border-gray-300 shadow-lg rounded-lg p-4 max-w-sm w-full mx-4 md:mx-auto">
-        <div class="flex items-center">
-          <div class="rounded-full p-2 bg-green-500">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M5 13l4 4L19 7"></path>
-            </svg>
-          </div>
-          <div class="ml-2">
-            <p class="text-sm text-gray-800 font-semibold">{{ label == 'success' ? 'Success!' : 'Error!' }}</p>
-          </div>
-        </div>
-        <p class="text-sm text-gray-600 mt-2">{{ message }}</p>
-      </div>
+        {{ form_start(form, {'attr': {'id': 'excel-form', 'class': 'space-y-6'}}) }}
+            <div class="border-b border-gray-200 pb-6">
+                <div class="mt-4">
+                    {{ form_label(form.file, 'Choose the corresponding file', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+                    {{ form_widget(form.file, {'attr': {'class': 'block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100'}}) }}
+                </div>
+            </div>
+
+            <div class="flex justify-end space-x-4">
+                <button type="button" onclick="resetForm()" class="py-2 px-4 border border-orange-500 rounded-md text-sm font-medium text-orange-500 bg-white hover:bg-orange-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                    Cancel
+                </button>
+                <button type="submit" class="py-2 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Submit
+                </button>
+            </div>
+        {{ form_end(form) }}
     </div>
-  {% endfor %}
-{% endfor %} #}
-
-  <form class="bg-white rounded-lg px-8 py-8 mt-2 w-full" method="post" id="excel-form" enctype="multipart/form-data">
-  {{ form_start(form) }}
-    <div class="space-y-6">
-      <div class="container ">
-      <h1 class="text-4xl font-semibold text-blue-600">Import Excel File</h1>
-        <p class="text-sm text-gray-600 mb-4">This is where you import an excel file.</p>
-      </div>
-    <div class="border-b border-gray-900/10 pb-12 w-full">
-
-      <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-        <div class="sm:col-span-5 w-full">
-          <label for="file" class="block text-sm font-medium leading-6 text-gray-900">Click below to choose the corresponding file </label>
-          <div class="mt-2 w-64 w-full">
-           {{ form_row(form.file, {'attr': {'class': 'block w-1/2 text-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500'}}) }}
-          </div>
-        </div>
-      </div>
-    </div>
-
-     <div class="mt-6 flex justify-end">
-      <button type="button"
-        class="mr-4 py-2 px-4 border border-orange-500 rounded-md text-sm font-medium text-orange-500 bg-white hover:bg-orange-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-        onclick="resetForm()">Cancel</button>
-
-       <button type="submit" class="py-2 px-4 border border-transparent rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Submit</button>
-    </div>
-    </div>
-   {{ form_end(form) }}
-  </form>
 </div>
 
 <script>
-  function resetForm() {
+function resetForm() {
     document.getElementById('excel-form').reset();
-  }
+}
 </script>
-
 {% endblock %}
