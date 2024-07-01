@@ -420,6 +420,6 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
         // }
 
         // Rediriger vers une autre page
-        return $this->redirectToRoute('app_home_page');
+        return $this->redirectToRoute('create_student_account');
     }
 }
