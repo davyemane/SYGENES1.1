@@ -36,7 +36,7 @@ CREATE TABLE `doctrine_migration_versions` (
 
 LOCK TABLES `doctrine_migration_versions` WRITE;
 /*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
-INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20240612082311','2024-06-12 08:23:17',39153),('DoctrineMigrations\\Version20240628085754','2024-06-28 09:10:44',41),('DoctrineMigrations\\Version20240629164702','2024-06-29 16:47:58',2410);
+INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20240612082311','2024-06-12 08:23:17',39153),('DoctrineMigrations\\Version20240628085754','2024-06-28 09:10:44',41),('DoctrineMigrations\\Version20240629164702','2024-06-29 16:47:58',2410),('DoctrineMigrations\\Version20240630153654','2024-06-30 15:37:15',1514),('DoctrineMigrations\\Version20240630154937','2024-06-30 15:49:41',901);
 /*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +172,7 @@ CREATE TABLE `note` (
   CONSTRAINT `FK_CFBDFA1427634BEF` FOREIGN KEY (`ec_id`) REFERENCES `ec` (`id`),
   CONSTRAINT `FK_CFBDFA14CB944F1A` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
   CONSTRAINT `FK_CFBDFA14D3EAB6BC` FOREIGN KEY (`createb_by_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,6 +181,7 @@ CREATE TABLE `note` (
 
 LOCK TABLES `note` WRITE;
 /*!40000 ALTER TABLE `note` DISABLE KEYS */;
+INSERT INTO `note` VALUES (4,13,1382,3,'15','15','48',NULL,'30-06-24','7');
 /*!40000 ALTER TABLE `note` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -319,6 +320,8 @@ CREATE TABLE `ue` (
   `credit` int DEFAULT NULL,
   `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `semester` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `grade` double DEFAULT NULL,
+  `academic_year` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_2E490A9B5FB14BA7` (`level_id`),
   CONSTRAINT `FK_2E490A9B5FB14BA7` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`)
@@ -331,7 +334,7 @@ CREATE TABLE `ue` (
 
 LOCK TABLES `ue` WRITE;
 /*!40000 ALTER TABLE `ue` DISABLE KEYS */;
-INSERT INTO `ue` VALUES (3,4,'SNA411','Systèmes Numériques Avancées I',5,NULL,'7'),(4,4,'ISN411','Réseaux et virtualisation des systèmes numériques',6,NULL,'7'),(5,4,'IGN411','Outils de Management de la Qualité',5,NULL,'7'),(6,4,'ISN421','Architecture des applications et Optimisation des Bases de Données',6,NULL,'7'),(7,4,'ISN431','IA et Big Data I',6,NULL,'7'),(8,4,'ISN441','Réseaux et Systèmes Multimédias I',6,NULL,'7'),(9,4,'IGN421','Projets éducatifs des étudiants',8,NULL,'7'),(10,4,'SNA412','Systèmes Numériques Avancées II',5,NULL,'8'),(11,4,'ISN412','Développement des Plateformes numériques avancées',6,NULL,'8'),(12,4,'IGN412','Transformation numérique organisationnelle',5,NULL,'8'),(13,4,'ISN422','Production de plateformes numériques',6,NULL,'8'),(14,4,'ISN432','IA et Big Data II',6,NULL,'8'),(15,4,'ISN441','Réseaux et Systèmes Multimédias II',6,NULL,'8'),(16,4,'IGN422','Projets éducatifs des étudiants',8,NULL,'8'),(17,4,'SNA411','Systèmes Numériques Avancées I',5,NULL,'7'),(18,4,'INS411','Marché, Environnement et innovation',6,NULL,'7'),(19,4,'IGN411','Outils de Management de la Qualité',5,NULL,'7'),(20,4,'INS421','Média et Technologie',6,NULL,'7'),(21,4,'SNA412','Systèmes Numériques Avancées II',5,NULL,'8'),(22,4,'ISN412','Métiers et Sécurité',6,NULL,'8'),(23,4,'INS422','Ingénierie des Médias',6,NULL,'8'),(24,4,'ISN432','Management de l’Information',6,NULL,'8'),(25,4,'ISN442','Réseaux et Systèmes Multimédias II',6,NULL,'8'),(26,4,'SNA411','Systèmes Numériques Avancées I',5,NULL,'7'),(27,4,'CDN411','Epistémologie et Design numérique',6,NULL,'7'),(28,4,'IGN411','Outils de Management de la Qualité',5,NULL,'7'),(29,4,'CDN421','Conception et animation de personnages et d’objets',6,NULL,'7'),(30,4,'CDN431','Production audiovisuelle',6,NULL,'7'),(31,4,'SNA412','Systèmes Numériques Avancées II',5,NULL,'8'),(32,4,'CDN412','Montage, Image et Son',6,NULL,'8'),(33,4,'CDN422','Réalisation de prises de vues réelles et effets visuels',6,NULL,'8'),(34,4,'CDN432','Production vidéoludique',6,NULL,'8');
+INSERT INTO `ue` VALUES (3,4,'SNA411','Systèmes Numériques Avancées I',5,NULL,'7',NULL,NULL),(4,4,'ISN411','Réseaux et virtualisation des systèmes numériques',6,NULL,'7',NULL,NULL),(5,4,'IGN411','Outils de Management de la Qualité',5,NULL,'7',NULL,NULL),(6,4,'ISN421','Architecture des applications et Optimisation des Bases de Données',6,NULL,'7',NULL,NULL),(7,4,'ISN431','IA et Big Data I',6,NULL,'7',NULL,NULL),(8,4,'ISN441','Réseaux et Systèmes Multimédias I',6,NULL,'7',NULL,NULL),(9,4,'IGN421','Projets éducatifs des étudiants',8,NULL,'7',NULL,NULL),(10,4,'SNA412','Systèmes Numériques Avancées II',5,NULL,'8',NULL,NULL),(11,4,'ISN412','Développement des Plateformes numériques avancées',6,NULL,'8',NULL,NULL),(12,4,'IGN412','Transformation numérique organisationnelle',5,NULL,'8',NULL,NULL),(13,4,'ISN422','Production de plateformes numériques',6,NULL,'8',NULL,NULL),(14,4,'ISN432','IA et Big Data II',6,NULL,'8',NULL,NULL),(15,4,'ISN441','Réseaux et Systèmes Multimédias II',6,NULL,'8',NULL,NULL),(16,4,'IGN422','Projets éducatifs des étudiants',8,NULL,'8',NULL,NULL),(17,4,'SNA411','Systèmes Numériques Avancées I',5,NULL,'7',NULL,NULL),(18,4,'INS411','Marché, Environnement et innovation',6,NULL,'7',NULL,NULL),(19,4,'IGN411','Outils de Management de la Qualité',5,NULL,'7',NULL,NULL),(20,4,'INS421','Média et Technologie',6,NULL,'7',NULL,NULL),(21,4,'SNA412','Systèmes Numériques Avancées II',5,NULL,'8',NULL,NULL),(22,4,'ISN412','Métiers et Sécurité',6,NULL,'8',NULL,NULL),(23,4,'INS422','Ingénierie des Médias',6,NULL,'8',NULL,NULL),(24,4,'ISN432','Management de l’Information',6,NULL,'8',NULL,NULL),(25,4,'ISN442','Réseaux et Systèmes Multimédias II',6,NULL,'8',NULL,NULL),(26,4,'SNA411','Systèmes Numériques Avancées I',5,NULL,'7',NULL,NULL),(27,4,'CDN411','Epistémologie et Design numérique',6,NULL,'7',NULL,NULL),(28,4,'IGN411','Outils de Management de la Qualité',5,NULL,'7',NULL,NULL),(29,4,'CDN421','Conception et animation de personnages et d’objets',6,NULL,'7',NULL,NULL),(30,4,'CDN431','Production audiovisuelle',6,NULL,'7',NULL,NULL),(31,4,'SNA412','Systèmes Numériques Avancées II',5,NULL,'8',NULL,NULL),(32,4,'CDN412','Montage, Image et Son',6,NULL,'8',NULL,NULL),(33,4,'CDN422','Réalisation de prises de vues réelles et effets visuels',6,NULL,'8',NULL,NULL),(34,4,'CDN432','Production vidéoludique',6,NULL,'8',NULL,NULL);
 /*!40000 ALTER TABLE `ue` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -379,4 +382,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-29 18:16:39
+-- Dump completed on 2024-07-01 14:12:05
