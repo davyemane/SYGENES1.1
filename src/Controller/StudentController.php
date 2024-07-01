@@ -136,7 +136,7 @@ class StudentController extends AbstractController
         // Vérifier si un ID d'étudiant a été fourni
         if ($id) {
             $student = $entityManager->getRepository(Student::class)->find($id);
-            $studentDirectory = 'student_directory';
+            $studentDirectory = 'uploads/certificates';
         } else {
             $student = new Student();
         }

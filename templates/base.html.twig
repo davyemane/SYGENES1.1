@@ -9,6 +9,16 @@
   {% endblock %}
   {{ encore_entry_script_tags('app') }}
   {% block head %}{% block title %}<title></title>{% endblock %}{% endblock %}
+  {% block current_route %}{% endblock %}
+
+  <style>
+  .nav-link.text-blue-600 {
+    font-weight: bold;
+  }
+  .nav-link .bar {
+    transition: all 0.3s ease;
+  }
+</style>
 </head>
 
 <body class="h-full">

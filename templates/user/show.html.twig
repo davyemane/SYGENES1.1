@@ -5,6 +5,15 @@
   {% block title %}<title>Show Profile</title>{% endblock %}
 {% endblock %}
 
+{% block back_button %}
+    <a href="{{ app.request.headers.get('referer') is not null ? app.request.headers.get('referer') : path('home') }}" 
+       class="absolute top-32  bg-white bg-opacity-80 hover:bg-opacity-100 text-blue-600 rounded-full p-2 transition duration-300 shadow-md back-button hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+    </a>
+{% endblock %}
+
 {% block body %}
 <style>
 .profile-picture {
@@ -14,7 +23,9 @@
     border: 2px solid #ddd; /* Example border styling */
 }
 </style>
-<div class="profile flex flex-col items-start space-y-4">
+{# Include the back button #}
+    {{ block('back_button') }}
+<div class="profile flex flex-col items-start space-y-4 ">
     <h1 class="flex justify-center w-full mt-16 mb-5 text-4xl font-semibold text-blue-600">My Profile</h1>
 
     <div class="flex justify-center w-full ">

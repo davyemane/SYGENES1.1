@@ -1,358 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
-    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
-    <link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'dark-purple': '#081A51',
-                        'light-white': 'rgba(255,255,255,0.18)'
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        #searchInput:focus {
-            outline: none;
-            box-shadow: none;
-        }
-        .submenu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-        .submenu.active {
-            max-height: 500px;
-            transition: max-height 0.5s ease-in;
-        }
-        .submenu-item.hidden {
-            display: none;
-        }
-        .menu-item.active, .submenu-item.active {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-        .submenu-item {
-            padding-left: 2.5rem;
-        }
-        .submenu {
-            position: relative;
-        }
-        
-        
+{% extends 'base_new.html.twig' %}
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            #sidebarDiv {
-                width: 20rem;
-            }
-            #toggleBtn {
-                right: -1rem;
-                top: 1rem;
-            }
-        }
+{% block head %}
+{% block title %}<title>Add Student Grades</title>{% endblock %}
+{% endblock %}
 
-        @media (max-width: 768px) {
-            #sidebarDiv {
-                width: 16rem;
-                position: fixed;
-                left: -16rem;
-                z-index: 10;
-                transition: left 0.3s ease;
-            }
-            #sidebarDiv.open {
-                left: 0;
-            }
-            #contentDiv {
-                margin-left: 0;
-            }
-            #toggleBtn {
-                display: none;
-            }
-        }
-
-        @media (max-width: 640px) {
-            #searchContainer {
-                margin-top: 1rem;
-            }
-        }
-    </style>
-</head>
-<body class="font-sans antialiased leading-none h-full w-full">
-    <div class="flex h-full">
-        <div id="sidebarDiv" class="inset-y-0 left-0 fixed bg-dark-purple dark:bg-gray-800 p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
-            <img id="toggleBtn" src="/icons/previous.png" alt="previous" class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
-            <div class="inline-flex items-center">
-                <img src="/icons/uiecc_logo.png" alt="uiecc_logo" class="w-16 h-auto cursor-pointer mr-2">
-                <h1 id="sidebarTitle" class="text-white text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
-            </div>
-            <div id="searchContainer" class="flex items-center rounded-md bg-light-white dark:bg-gray-600 mt-6 transition-all duration-300">
-                <img id="searchIcon" src="/icons/search.png" alt="search" class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
-                <input type="search" id="searchInput" class="text-base bg-transparent w-full text-white dark:text-gray-200 border-none focus:outline-none px-3 py-2" placeholder="Search">
-            </div>
-
-            <ul class="pt-2 flex-grow overflow-y-auto">
-                <a href="{{ path('app_dashStudent')}}">
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2">
-                        <img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
-                        <span class="text-base font-medium flex-1">Dashboard</span>
-                    </li>
-                </a>
-
-                
-                <li class="menu-item text-gray-300 text-sm cursor-pointer mt-2">
-                    <a href="{{ path('student_notes', {id: student.id} )}}">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md" >
-                        <img src="/icons/grades.png" alt="students" class="w-4 h-4 ml-3">
-                        <span class="text-base font-medium flex-1">View Marks</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                    </div>
-                    </a>
-                </li>
-
-                <li class="menu-item text-gray-300 text-sm cursor-pointer">
-                    <a href="{{path('student_stats', {id: student.id} )}}">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md">
-                        <img src="/icons/grades.png" alt="grades" class="w-4 h-4 ml-3">
-                        <span class="text-base font-medium flex-1">Marks</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                    </div>
-                    </a>
-                </li>
-
-                <!-- <li class="menu-item text-gray-300 text-sm cursor-pointer">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md" >
-                        <img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
-                        <span class="text-base font-medium flex-1">UE & EC</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                    </div>
-                    <ul class="submenu ml-6 mt-2">
-                        <a href="{{ path('add_ue') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >Add an UE</li>
-                        </a>
-                        
-                        <a href="{{ path('add_ec') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >Add an EC</li>
-                        </a>
-                        
-                        <a href="{{ path('choix_ec') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >List of UE & EC</li>
-                        </a>
-                        
-                        <a href="{{ path('fields_index') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >List of Fields</li>
-                        </a>
-                        
-                    </ul>
-                </li> -->
-               
-            </ul>
-
-            <div class="border-t border-gray-600 pt-4 mt-4">
-                <ul>
-                    <a href="{{path('app_profile_show')}}">
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="profile.html">
-                        <i class="fas fa-user-circle w-4 h-4 ml-3"></i>
-                        <span class="text-base font-medium flex-1">Profile</span>
-                    </li>
-                    </a>
-
-                    <a href="#">
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="settings.html">
-                        <i class="fas fa-cog w-4 h-4 ml-3"></i>
-                        <span class="text-base font-medium flex-1">Settings</span>
-                    </li>
-                    </a>
-
-                    <a href="#">
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white dark:hover:bg-gray-700 rounded-md">
-                        <i id="themeToggleIcon" class="fas fa-sun w-4 h-4"></i>
-                        <span id="themeToggleText" class="text-base font-medium flex-1">Light Mode</span>
-                    </li>
-                    </a>
-
-                    <a href="{{ path('app_logout') }}"></a>
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="logout.html">
-                        <i class="fas fa-sign-out-alt w-4 h-4 ml-3"></i>
-                        <span class="text-base font-medium flex-1">Logout</span>
-                    </li>
-                    </a>
-                </ul>
-            </div>
+{% block body %}
+<div class="min-h-screen flex justify-center items-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl w-full space-y-8 bg-white p-10 rounded-lg shadow-2xl">
+        <div>
+            <h1 class="text-4xl font-bold text-blue-600 text-center">Add Student Grades</h1>
+            <p class="mt-2 text-center text-sm text-gray-600">Add the student's grade per subject.</p>
         </div>
-        <div id="contentDiv" class="flex-1">
-             <!-- Top Navigation -->
-            <header class=" bg-white-600 shadow p-4 flex justify-end items-end">
-                <div class="flex items-center space-x-4 mr-8">
-                    <a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
-                        <div class="text-gray-500">{{ user.username }}</div>
-                        {% if user.profilePicture %}
-                            <img class="w-8 h-8 rounded-full" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture"/>
-                        {% else %}
-                            <img class="w-8 h-8 rounded-full" src="{{ asset('images/user.png') }}" alt="Default Profile Picture"/>
-                        {% endif %}
-                    </a>
-                </div>
-            </header>
-
-            <div id="bodyDiv" class="p-7 flex-1" >
-            <div class=" flex-grow flex flex-col">
-           
-
-            <!-- Main Content Area -->
-            <main class="flex-grow p-4">
-                <div id="main_content_area" class="bg-white-500 rounded-lg h-full ml-64 ">
-                    {% block body %}
-                        {% block page_header %}{% endblock %}
-                    {% endblock %}
-                </div>
-            </main>
-        </div>
-    </div>
         
-    </div>
-    </div>
-
-    <script>
-        const toggleBtn = document.getElementById('toggleBtn');
-        const mainContentArea = document.getElementById('main_content_area');
-        const sidebarDiv = document.getElementById('sidebarDiv');
-        const sidebarTitle = document.getElementById('sidebarTitle');
-        const searchContainer = document.getElementById('searchContainer');
-        const searchInput = document.getElementById('searchInput');
-        const searchIcon = document.getElementById('searchIcon');
-        const menuItems = document.querySelectorAll('.menu-item');
-        const submenuItems = document.querySelectorAll('.submenu-item');
-        const themeToggleIcon = document.getElementById('themeToggleIcon');
-        const themeToggleText = document.getElementById('themeToggleText');
-        let isOpen = true;
-        let isDarkMode = true;
-
-        function toggleSidebar() {
-            isOpen = !isOpen;
-            sidebarDiv.classList.toggle('w-20', !isOpen);
-            sidebarDiv.classList.toggle('w-72', isOpen);
-            toggleBtn.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
-            sidebarTitle.classList.toggle('opacity-0', !isOpen);
-            sidebarTitle.classList.toggle('hidden', !isOpen);
-
-            menuItems.forEach(item => {
-                const icon = item.querySelector('img, i');
-                const text = item.querySelector('span');
-                const chevron = item.querySelector('.fa-chevron-down');
-
-                if (!isOpen) {
-                    item.classList.add('justify-center');
-                    icon.classList.remove('ml-3');
-                    icon.classList.add('m-auto');
-                    mainContentArea.classList.remove('ml-64');
-                    mainContentArea.classList.add('ml-16');
-                    text.classList.add('hidden');
-                    if (chevron) chevron.classList.add('hidden');
-                } else {
-                    item.classList.remove('justify-center');
-                    icon.classList.add('ml-3');
-                    icon.classList.remove('m-auto');
-                    mainContentArea.classList.add('ml-64');
-                    mainContentArea.classList.remove('ml-16');
-                    text.classList.remove('hidden');
-                    if (chevron) chevron.classList.remove('hidden');
-                }
-            });
-
-            submenuItems.forEach(item => {
-                if (!isOpen) {
-                    item.classList.add('hidden');
-                } else {
-                    item.classList.remove('hidden');
-                }
-            });
-
-            if (!isOpen) {
-                searchContainer.classList.add('w-10', 'h-10', 'rounded-lg', 'justify-center');
-                searchContainer.classList.remove('rounded-md');
-                searchInput.classList.add('hidden');
-                searchIcon.classList.remove('ml-3');
-                searchIcon.classList.add('m-auto');
-            } else {
-                searchContainer.classList.remove('w-10', 'h-10', 'rounded-lg', 'justify-center');
-                searchContainer.classList.add('rounded-md');
-                searchInput.classList.remove('hidden');
-                searchIcon.classList.add('ml-3');
-                searchIcon.classList.remove('m-auto');
-            }
-        }
-
-        toggleBtn.addEventListener('click', toggleSidebar);
-
-        // Submenu toggle functionality
-        const submenus = document.querySelectorAll('.submenu');
-        const chevrons = document.querySelectorAll('.fa-chevron-down');
-
-        chevrons.forEach((chevron, index) => {
-            chevron.addEventListener('click', (e) => {
-                e.stopPropagation();
-                submenus[index].classList.toggle('active');
-                chevron.style.transform = submenus[index].classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
-            });
-        });
-
-        // Handle menu item clicks for redirection and active state
-        function setActiveMenuItem(url) {
-            menuItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.url === url) {
-                    item.classList.add('active');
-                }
-            });
-
-            submenuItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.url === url) {
-                    item.classList.add('active');
-                    item.closest('.submenu').classList.add('active');
-                }
-            });
-        }
-
-
-        // Theme toggle functionality
-        function toggleTheme() {
-            isDarkMode = !isDarkMode;
-            document.documentElement.classList.toggle('dark', isDarkMode);
+        <form class="mt-8 space-y-6" method="post" id="grades-form">
+            {{ form_start(form) }}
             
-            if (isDarkMode) {
-                themeToggleIcon.classList.replace('fa-moon', 'fa-sun');
-                themeToggleText.textContent = 'Light Mode';
-            } else {
-                themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
-                themeToggleText.textContent = 'Dark Mode';
-            }
-        }
+            <div class="mb-6">
+                {{ form_label(form.ec, 'Element Constitutif', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+                {{ form_widget(form.ec, {'attr': {'class': 'p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm'}}) }}
+            </div>
 
-        themeToggleIcon.parentElement.addEventListener('click', toggleTheme);
+            <div class="mb-6">
+                {{ form_label(form.semester, 'Semester', {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-2'}}) }}
+                <select name="{{ form.semester.vars.full_name }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    <option value="S1">S1</option>
+                    <option value="S2">S2</option>
+                </select>
+            </div>
 
-        // Initialize theme based on system preference
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        } else {
-            isDarkMode = false;
-            themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
-            themeToggleText.textContent = 'Dark Mode';
-        }
+            <div class="mb-6">
+                <label for="grade_type" class="block text-sm font-medium text-gray-700 mb-2">Grade Type</label>
+                <select id="grade_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    <option value="cc">CC</option>
+                    <option value="tp">TP</option>
+                    <option value="sn">SN</option>
+                </select>
+            </div>
 
-        // Set active state based on the current page
-        const currentPage = window.location.pathname.split('/').pop();
-        setActiveMenuItem(currentPage);
-    </script>
-</body>
-</html>
+            <div class="overflow-y-auto" style="max-height: 400px;">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50 sticky top-0">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for student in form.student.vars.choices %}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ loop.index }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ student.label }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <input type="number" name="cc_grade[{{ student.value }}]" class="grade-input cc-grade mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" step="0.01" min="0" max="20">
+                                <input type="number" name="tp_grade[{{ student.value }}]" class="grade-input tp-grade mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" step="0.01" min="0" max="20" style="display: none;">
+                                <input type="number" name="sn_grade[{{ student.value }}]" class="grade-input sn-grade mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" step="0.01" min="0" max="20" style="display: none;">
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-6 flex justify-end space-x-3">
+                <button type="button" onclick="resetForm()" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Cancel
+                </button>
+                {{ form_widget(form.submit, {'attr': {'class': 'px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'}}) }}
+            </div>
+            
+            {{ form_end(form) }}
+        </form>
+    </div>
+</div>
+
+<script>
+function resetForm() {
+    document.getElementById('grades-form').reset();
+}
+
+document.getElementById('grade_type').addEventListener('change', function() {
+    var gradeType = this.value;
+    var gradeInputs = document.querySelectorAll('.grade-input');
+    gradeInputs.forEach(function(input) {
+        input.style.display = 'none';
+    });
+    var selectedInputs = document.querySelectorAll('.' + gradeType + '-grade');
+    selectedInputs.forEach(function(input) {
+        input.style.display = 'block';
+    });
+});
+
+// Initialize the form to show only CC grades
+document.addEventListener('DOMContentLoaded', function() {
+    var event = new Event('change');
+    document.getElementById('grade_type').dispatchEvent(event);
+});
+</script>
+{% endblock %}
