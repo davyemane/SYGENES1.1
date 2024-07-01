@@ -203,13 +203,13 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
     $noteRepository = $doctrine->getRepository(Note::class);
     $notes = $noteRepository->findBy(['student' => $student]);
 
-    // Récupérer les UEs et ECs associés aux notes de l'étudiant
+    // Récupérer toutes les UEs associées aux notes de l'étudiant
     $ues = [];
     foreach ($notes as $note) {
         $ec = $note->getEc();
         if ($ec) {
             $ue = $ec->getUe();
-            if ($ue && !isset($ues[$ue->getId()])) {
+            if ($ue) {
                 $ues[$ue->getId()] = $ue;
             }
         }
@@ -221,8 +221,11 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
     foreach ($notes as $note) {
         $finalGrade = $note->getFinalGrade();
         if ($finalGrade !== null && $finalGrade >= 10) { // Supposons que 10 est la note de validation
-            $total_credits_valides += $note->getEc()->getCredit();
-            $total_points += $finalGrade * $note->getEc()->getCredit();
+            $ec = $note->getEc();
+            if ($ec) {
+                $total_credits_valides += $ec->getCredit();
+                $total_points += $finalGrade * $ec->getCredit();
+            }
         }
     }
 
@@ -265,7 +268,7 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
     $options->set('isPhpEnabled', true);
     $domPdf->setOptions($options);
     $domPdf->loadHtml($html);
-    $domPdf->setPaper('A3', 'portrait');
+    $domPdf->setPaper('A4', 'portrait');
     $domPdf->render();
 
     return new Response(
@@ -275,7 +278,8 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="releve_notes_' . $student->getStudentID() . '.pdf"'
         ]
-    );}
+    );
+}
 
 
 #[Route('/{id}/notes', name: 'student_notes')]

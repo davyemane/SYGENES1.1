@@ -328,4 +328,17 @@ class Student
         return $this;
     }
 
+    private $fullGrades;
+
+    public function setFullGrades(array $fullGrades): self
+    {
+        $this->fullGrades = $fullGrades;
+        return $this;
+    }
+
+    public function getFullGrades(): ?array
+    {
+        return $this->fullGrades;
+    }
+
 }
