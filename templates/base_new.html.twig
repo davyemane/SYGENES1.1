@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,35 +28,46 @@
             outline: none;
             box-shadow: none;
         }
+
         .submenu {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
         }
+
         .submenu.active {
             max-height: 500px;
             transition: max-height 0.5s ease-in;
         }
+
         .submenu-item.hidden {
             display: none;
         }
-        .menu-item.active, .submenu-item.active {
+
+        .menu-item.active,
+        .submenu-item.active {
             background-color: rgba(255, 255, 255, 0.2);
         }
+
         .submenu-item {
             padding-left: 2.5rem;
         }
+
         .submenu {
             position: relative;
         }
-        
-        
+
+        .submenu-trigger {
+            cursor: pointer;
+            user-select: none;
+        }
 
         /* Responsive Design */
         @media (max-width: 1024px) {
             #sidebarDiv {
                 width: 20rem;
             }
+
             #toggleBtn {
                 right: -1rem;
                 top: 1rem;
@@ -70,12 +82,15 @@
                 z-index: 10;
                 transition: left 0.3s ease;
             }
+
             #sidebarDiv.open {
                 left: 0;
             }
+
             #contentDiv {
                 margin-left: 0;
             }
+
             #toggleBtn {
                 display: none;
             }
@@ -88,114 +103,121 @@
         }
     </style>
 </head>
+
 <body class="font-sans antialiased leading-none h-full w-full">
     <div class="flex h-full">
-        <div id="sidebarDiv" class="inset-y-0 left-0 fixed bg-dark-purple dark:bg-gray-800 p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
-            <img id="toggleBtn" src="/icons/previous.png" alt="previous" class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
+        <div id="sidebarDiv"
+            class="inset-y-0 left-0 fixed bg-dark-purple dark:bg-gray-800 p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
+            <img id="toggleBtn" src="/icons/previous.png" alt="previous"
+                class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
             <div class="inline-flex items-center">
                 <img src="/icons/uiecc.svg" alt="uiecc_logo" class="w-12 h-auto cursor-pointer mr-4">
                 <h1 id="sidebarTitle" class="text-white text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
             </div>
-            <div id="searchContainer" class="flex items-center rounded-md bg-light-white dark:bg-gray-600 mt-6 transition-all duration-300">
-                <img id="searchIcon" src="/icons/search.png" alt="search" class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
-                <input type="search" id="searchInput" class="text-base bg-transparent w-full text-white dark:text-gray-200 border-none focus:outline-none px-3 py-2" placeholder="Search">
+            <div id="searchContainer"
+                class="flex items-center rounded-md bg-light-white dark:bg-gray-600 mt-6 transition-all duration-300">
+                <img id="searchIcon" src="/icons/search.png" alt="search"
+                    class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
+                <input type="search" id="searchInput"
+                    class="text-base bg-transparent w-full text-white dark:text-gray-200 border-none focus:outline-none px-3 py-2"
+                    placeholder="Search">
             </div>
 
             <ul class="pt-2 flex-grow overflow-y-auto">
                 <a href="{{ path('app_dashAdmin')}}">
-                <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2">
-                    <img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
-                    <span class="text-base font-medium flex-1">Dashboard</span>
-                </li>
+                    <li
+                        class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2">
+                        <img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
+                        <span class="text-base font-medium flex-1">Dashboard</span>
+                    </li>
                 </a>
 
                 
                 <li class="menu-item text-gray-300 text-sm cursor-pointer mt-2">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md" >
+                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md submenu-trigger">
                         <img src="/icons/students.png" alt="students" class="w-4 h-4 ml-3">
                         <span class="text-base font-medium flex-1">Students</span>
                         <i class="fas fa-chevron-down transition-transform duration-300"></i>
                     </div>
                     <ul class="submenu ml-6 mt-2">
                         <a href="{{path('add_student')}}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >Add new student data</li>
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add new student
+                                data</li>
                         </a>
-                        
                         <a href="{{path('add_student')}}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >Modify a student data</li>
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Modify a student
+                                data</li>
                         </a>
-                        
                         <a href="{{ path('list_student_2') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >List students</li>
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">List students</li>
                         </a>
-                        
                         <a href="{{ path('import') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >Import excel file</li>
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Import excel file
+                            </li>
                         </a>
-                        
                     </ul>
                 </li>
+                
+
                 <li class="menu-item text-gray-300 text-sm cursor-pointer">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md">
+                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md submenu-trigger">
                         <img src="/icons/grades.png" alt="grades" class="w-4 h-4 ml-3">
                         <span class="text-base font-medium flex-1">Marks</span>
                         <i class="fas fa-chevron-down transition-transform duration-300"></i>
                     </div>
                     <ul class="submenu ml-6 mt-2">
                         <a href="{{ path('add_note') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >Add a student's marks</li>
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add a student's
+                                marks</li>
                         </a>
-                        
                         <a href="{{ path('add_note') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >Modify a student's marks</li>
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Modify a student's
+                                marks</li>
                         </a>
-                        
                         <a href="{{ path('choix_ec') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >View students marks</li>
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">View students
+                                marks</li>
                         </a>
-                        
                     </ul>
                 </li>
                 <li class="menu-item text-gray-300 text-sm cursor-pointer">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md" >
+                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md submenu-trigger">
                         <img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
                         <span class="text-base font-medium flex-1">UE & EC</span>
                         <i class="fas fa-chevron-down transition-transform duration-300"></i>
                     </div>
                     <ul class="submenu ml-6 mt-2">
                         <a href="{{ path('add_ue') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >Add an UE</li>
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add an UE</li>
                         </a>
-                        
                         <a href="{{ path('add_ec') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >Add an EC</li>
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add an EC</li>
                         </a>
-                        
                         <a href="{{ path('choix_ec') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >List of UE & EC</li>
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">List of UE & EC
+                            </li>
                         </a>
-                        
                         <a href="{{ path('fields_index') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >List of Fields</li>
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">List of Fields
+                            </li>
                         </a>
-                        
                     </ul>
                 </li>
                 <li class="menu-item text-gray-300 text-sm cursor-pointer">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md" data-url="grades.html">
+                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md submenu-trigger">
                         <img src="/icons/responsable.png" alt="grades" class="w-4 h-4 ml-3">
                         <span class="text-base font-medium flex-1">Responsable</span>
                         <i class="fas fa-chevron-down transition-transform duration-300"></i>
                     </div>
                     <ul class="submenu ml-6 mt-2">
                         <a href="{{ path('add_responsable') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >Add Responsable</li>
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add Responsable
+                            </li>
                         </a>
-                        
                         <a href="#">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >View List of Responsable</li>
+                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">View List of
+                                Responsable</li>
                         </a>
-                        
                     </ul>
                 </li>
             </ul>
@@ -203,66 +225,67 @@
             <div class="border-t border-gray-600 pt-4 mt-4">
                 <ul>
                     <a href="{{path('app_profile_show')}}">
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="profile.html">
-                        <i class="fas fa-user-circle w-4 h-4 ml-3"></i>
-                        <span class="text-base font-medium flex-1">Profile</span>
-                    </li>
+                        <li
+                            class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md">
+                            <i class="fas fa-user-circle w-4 h-4 ml-3"></i>
+                            <span class="text-base font-medium flex-1">Profile</span>
+                        </li>
                     </a>
-
                     <a href="#">
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="settings.html">
-                        <i class="fas fa-cog w-4 h-4 ml-3"></i>
-                        <span class="text-base font-medium flex-1">Settings</span>
-                    </li>
+                        <li
+                            class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md">
+                            <i class="fas fa-cog w-4 h-4 ml-3"></i>
+                            <span class="text-base font-medium flex-1">Settings</span>
+                        </li>
                     </a>
-
                     <a href="#">
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white dark:hover:bg-gray-700 rounded-md">
-                        <i id="themeToggleIcon" class="fas fa-sun w-4 h-4"></i>
-                        <span id="themeToggleText" class="text-base font-medium flex-1">Light Mode</span>
-                    </li>
+                        <li
+                            class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white dark:hover:bg-gray-700 rounded-md">
+                            <i id="themeToggleIcon" class="fas fa-sun w-4 h-4"></i>
+                            <span id="themeToggleText" class="text-base font-medium flex-1">Light Mode</span>
+                        </li>
                     </a>
-
                     <a href="{{ path('app_logout') }}">
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="logout.html">
-                        <i class="fas fa-sign-out-alt w-4 h-4 ml-3"></i>
-                        <span class="text-base font-medium flex-1">Logout</span>
-                    </li>
+                        <li
+                            class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md">
+                            <i class="fas fa-sign-out-alt w-4 h-4 ml-3"></i>
+                            <span class="text-base font-medium flex-1">Logout</span>
+                        </li>
                     </a>
                 </ul>
             </div>
         </div>
         <div id="contentDiv" class="flex-1">
-             <!-- Top Navigation -->
-            <header class=" bg-white-600 shadow p-4 flex justify-end items-end">
+            <!-- Top Navigation -->
+            <header class="bg-white-600 shadow p-4 flex justify-end items-end">
                 <div class="flex items-center space-x-4 mr-8">
                     <a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
                         <div class="text-gray-500">{{ user.username }}</div>
                         {% if user.profilePicture %}
-                            <img class="w-8 h-8 rounded-full" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture"/>
+                        <img class="w-8 h-8 rounded-full"
+                            src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}"
+                            alt="Profile Picture" />
                         {% else %}
-                            <img class="w-8 h-8 rounded-full" src="{{ asset('images/user.png') }}" alt="Default Profile Picture"/>
+                        <img class="w-8 h-8 rounded-full" src="{{ asset('images/user.png') }}"
+                            alt="Default Profile Picture" />
                         {% endif %}
                     </a>
                 </div>
             </header>
 
-            <div id="bodyDiv" class="p-7 flex-1" >
-            <div class=" flex-grow flex flex-col">
-           
-
-            <!-- Main Content Area -->
-            <main class="flex-grow p-4">
-                <div id="main_content_area" class="bg-white-500 rounded-lg h-full ml-64 ">
-                    {% block body %}
-                        {% block page_header %}{% endblock %}
-                    {% endblock %}
+            <div id="bodyDiv" class="p-7 flex-1">
+                <div class="flex-grow flex flex-col">
+                    <!-- Main Content Area -->
+                    <main class="flex-grow p-4">
+                        <div id="main_content_area" class="bg-white-500 rounded-lg h-full ml-64">
+                            {% block body %}
+                            {% block page_header %}{% endblock %}
+                            {% endblock %}
+                        </div>
+                    </main>
                 </div>
-            </main>
+            </div>
         </div>
-    </div>
-        
-    </div>
     </div>
 
     <script>
@@ -337,15 +360,29 @@
 
         toggleBtn.addEventListener('click', toggleSidebar);
 
-        // Submenu toggle functionality
+        // Updated submenu toggle functionality
+        const submenuTriggers = document.querySelectorAll('.submenu-trigger');
         const submenus = document.querySelectorAll('.submenu');
-        const chevrons = document.querySelectorAll('.fa-chevron-down');
 
-        chevrons.forEach((chevron, index) => {
-            chevron.addEventListener('click', (e) => {
+        submenuTriggers.forEach((trigger, index) => {
+            trigger.addEventListener('click', (e) => {
                 e.stopPropagation();
-                submenus[index].classList.toggle('active');
-                chevron.style.transform = submenus[index].classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
+                const submenu = trigger.nextElementSibling;
+                const chevron = trigger.querySelector('.fa-chevron-down');
+
+                submenu.classList.toggle('active');
+                chevron.style.transform = submenu.classList.contains('active') ? 'rotate(180deg)' :
+                    'rotate(0)';
+
+                // Close other open submenus
+                submenus.forEach((otherSubmenu, otherIndex) => {
+                    if (otherIndex !== index && otherSubmenu.classList.contains('active')) {
+                        otherSubmenu.classList.remove('active');
+                        const otherChevron = otherSubmenu.previousElementSibling.querySelector(
+                            '.fa-chevron-down');
+                        otherChevron.style.transform = 'rotate(0)';
+                    }
+                });
             });
         });
 
@@ -372,7 +409,7 @@
         function toggleTheme() {
             isDarkMode = !isDarkMode;
             document.documentElement.classList.toggle('dark', isDarkMode);
-            
+
             if (isDarkMode) {
                 themeToggleIcon.classList.replace('fa-moon', 'fa-sun');
                 themeToggleText.textContent = 'Light Mode';
@@ -398,4 +435,5 @@
         setActiveMenuItem(currentPage);
     </script>
 </body>
+
 </html>

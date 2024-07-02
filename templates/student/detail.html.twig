@@ -1,34 +1,87 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <h2 class="text-xl font-bold mb-4">{{ student.name }}</h2>
-        
-        <div class="flex mb-4">
-            <div class="w-1/2">
-                <p><strong>Student ID:</strong> {{ student.studentID }}</p>
-                <p><strong>Email:</strong> {{ student.email }}</p>
-                <p><strong>Phone Number:</strong> {{ student.phoneNumber }}</p>
-                <p><strong>Date of Birth:</strong> {{ student.dateOfBirth ? student.dateOfBirth.format('Y-m-d') : 'N/A' }}</p>
-                <p><strong>Place of Birth:</strong> {{ student.placeOfBirth ?: 'N/A' }}</p>
-            </div>
-            <div class="w-1/2">
-                <p><strong>Sexe:</strong> {{ student.sexe ?: 'N/A' }}</p>
-                <p><strong>CNI:</strong> {{ student.cni ?: 'N/A' }}</p>
-                <p><strong>Country:</strong> {{ student.country ?: 'N/A' }}</p>
-                <p><strong>Field:</strong> {{ student.field ? student.field.name : 'N/A' }}</p>
-                <p><strong>Level:</strong> {{ student.level ? student.level.name : 'N/A' }}</p>
-            </div>
-        </div>
-        
-        <div class="mt-4">
-            <a href="{{ path('list_student') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Back to Student List
-            </a>
-        </div>
-    </div>
+{% block title %}<title>{{ student.name }} - Student Profile</title>{% endblock %}
+
+{# Define a new block for the back button #}
+{% block back_button %}
+    <a href="{{ app.request.headers.get('referer') is not null ? app.request.headers.get('referer') : path('home') }}" 
+       class="absolute top-4 left-16 bg-white bg-opacity-80 hover:bg-opacity-100 text-blue-600 rounded-full p-2 transition duration-300 shadow-md back-button hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+    </a>
 {% endblock %}
 
-{% block head %}
-    {% block title %}<title>{{ student.name }}</title>{% endblock %}
+{% block body %}
+<div class="min-h-screen bg-gray-100 flex justify-center items-center py-12 px-4 sm:px-6 lg:px-8 relative">
+{# Include the back button #}
+    {{ block('back_button') }}
+    <div class="max-w-4xl w-full space-y-8 bg-white p-10 rounded-lg shadow-md">
+        <div class="bg-blue-600 text-white px-6 py-4 rounded-t-lg">
+            <h1 class="text-4xl font-bold">{{ student.name }}</h1>
+        </div>
+        
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-3">Personal Information</h2>
+                    <ul class="space-y-2">
+                        <li><span class="font-medium">Student ID:</span> {{ student.studentID }}</li>
+                        <li><span class="font-medium">Email:</span> {{ student.email }}</li>
+                        <li><span class="font-medium">Phone:</span> {{ student.phoneNumber }}</li>
+                        <li><span class="font-medium">Date of Birth:</span> {{ student.dateOfBirth ? student.dateOfBirth|date('d M Y') : 'N/A' }}</li>
+                        <li><span class="font-medium">Place of Birth:</span> {{ student.placeOfBirth ?: 'N/A' }}</li>
+                    </ul>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-3">Additional Details</h2>
+                    <ul class="space-y-2">
+                        <li><span class="font-medium">Gender:</span> {{ student.sexe ?: 'N/A' }}</li>
+                        <li><span class="font-medium">CNI:</span> {{ student.cni ?: 'N/A' }}</li>
+                        <li><span class="font-medium">Country:</span> {{ student.country ?: 'N/A' }}</li>
+                        <li><span class="font-medium">Field:</span> {{ student.field ? student.field.name : 'N/A' }}</li>
+                        <li><span class="font-medium">Level:</span> {{ student.level ? student.level.name : 'N/A' }}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-3">Certificates</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-md font-medium text-gray-700">Birth Certificate Photo</h3>
+                        {% if student.birthCertificate %}
+                            <img src="{{ asset('uploads/certificates/' ~ student.birthCertificate) }}" alt="Birth Certificate Photo" class="mt-2 w-96 h-96 rounded-lg shadow-sm">
+                            <a href="{{ asset('uploads/certificates/' ~ student.birthCertificate) }}" download class="mt-2 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">Download Certificate</a>
+                        {% else %}
+                            <p class="text-gray-500">No certificate photo available.</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h3 class="text-md font-medium text-gray-700">Diploma Photo</h3>
+                        {% if student.admissionCertificate %}
+                            <img src="{{ asset('uploads/certificates/' ~ student.admissionCertificate) }}" alt="Diploma Photo" class="mt-2 w-96 h-96 rounded-lg shadow-sm">
+                            <a href="{{ asset('uploads/certificates/' ~ student.admissionCertificate) }}" download class="mt-2 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">Download Diploma</a>
+                        {% else %}
+                            <p class="text-gray-500">No diploma photo available.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gray-50 px-6 py-4 rounded-b-lg">
+
+        {{ block('back_button') }}
+
+            <a href="{{ path('list_student') }}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300">
+                &larr; Back to Student List
+            </a>
+
+            <a href="{{ path('add_student', {id: student.id}) }}"
+            class="w-32 inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded transition duration-300">Edit</a>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
