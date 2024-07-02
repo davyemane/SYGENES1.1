@@ -50,8 +50,8 @@ class HomePageController extends AbstractController
         ]);
     }
 
-    #[Route('/admin', name: 'app_dashAdmin'),
-    IsGranted('ROLE_ADMIN')
+    #[Route('/admin', name: 'app_dashAdmin')
+    
     ]
     public function dashboard(){
         $user = $this->getUser();

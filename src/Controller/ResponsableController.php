@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/admin'), IsGranted('ROLE_ADMIN')]
+#[Route('/admin')]
 class ResponsableController extends AbstractController
 {
     #[Route ('/resp_statistics', name: 'resp_statistics')]
@@ -28,7 +28,7 @@ class ResponsableController extends AbstractController
             'controller_name' => 'ResponsableController',
             'user' => $user
         ]);
-    }
+    }   
 
     #[Route('/responsable', name: 'app_responsable')]
     public function index(): Response
