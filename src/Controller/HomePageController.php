@@ -54,6 +54,13 @@ class HomePageController extends AbstractController
     
     ]
     public function dashboard(){
+         // Check if the user has ROLE_ADMIN
+         if (!$this->isGranted('ROLE_TEACHER')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
         $user = $this->getUser();
         return $this->render('responsable_dashboard/dashboardAdmin.html.twig',[
             "user" => $user

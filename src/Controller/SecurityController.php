@@ -22,6 +22,15 @@ class SecurityController extends AbstractController
         $this->security = $security;
     }
 
+
+    #[Route('/access-denied', name: 'access_denied')]
+    public function accessDenied(): Response
+    {
+        return $this->render('security/access_denied.html.twig', [
+            'message' => 'Access Denied'
+        ], new Response('', Response::HTTP_FORBIDDEN));
+    }
+
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -54,6 +63,15 @@ class SecurityController extends AbstractController
             return new RedirectResponse($this->generateUrl('app_dashSuperAdmin'));
         }
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN', $user)) {
+            return new RedirectResponse($this->generateUrl('app_dashAdmin'));
+        }
+        if ($this->authorizationChecker->isGranted('ROLE_AATP', $user)) {
+            return new RedirectResponse($this->generateUrl('app_dashAdmin'));
+        }
+        if ($this->authorizationChecker->isGranted('ROLE_AAT', $user)) {
+            return new RedirectResponse($this->generateUrl('app_dashAdmin'));
+        }
+        if ($this->authorizationChecker->isGranted('ROLE_RPA', $user)) {
             return new RedirectResponse($this->generateUrl('app_dashAdmin'));
         }
         if ($this->authorizationChecker->isGranted('ROLE_TEACHER', $user)) {
