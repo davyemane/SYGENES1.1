@@ -6,6 +6,7 @@
 parameters:
     student_directory: '%kernel.project_dir%/public/uploads/students'
     profile_pictures_directory: '%kernel.project_dir%/public/uploads/profile_pictures'
+    logo_directory: '%kernel.project_dir%/public/uploads/logos'
 
 
 
@@ -33,3 +34,5 @@ services:
             - {name: kernel.event_listener, event: create_student_account, method: onAddStudent}
         # add more service definitions when explicit configuration is needed
         # please note that last definitions always *replace* previous ones
+    App\Twig\ColorSchemeExtension:
+        tags: [twig.extension]

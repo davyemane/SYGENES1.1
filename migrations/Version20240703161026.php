@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240630154937 extends AbstractMigration
+final class Version20240703161026 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20240630154937 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE ue ADD academic_year VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE field CHANGE description description LONGTEXT DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE ue DROP academic_year');
+        $this->addSql('ALTER TABLE field CHANGE description description VARCHAR(255) DEFAULT NULL');
     }
 }
