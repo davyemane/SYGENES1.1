@@ -50,8 +50,8 @@ class HomePageController extends AbstractController
         ]);
     }
 
-    #[Route('/admin', name: 'app_dashAdmin')
-    
+    #[Route('/admin', name: 'app_dashAdmin'),
+    IsGranted('ROLE_TEACHER')
     ]
     public function dashboard(){
          // Check if the user has ROLE_ADMIN

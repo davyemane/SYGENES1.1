@@ -30,6 +30,10 @@ class Level
     #[ORM\OneToMany(targetEntity: UE::class, mappedBy: 'level')]
     private Collection $ues;
 
+    #[ORM\ManyToOne(inversedBy: 'levels')]
+    private ?Field $field = null;
+
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
@@ -118,5 +122,18 @@ class Level
     {
         return $this->name;
 }
+
+    public function getField(): ?Field
+    {
+        return $this->field;
+    }
+
+    public function setField(?Field $field): static
+    {
+        $this->field = $field;
+
+        return $this;
+    }
+
 
 }

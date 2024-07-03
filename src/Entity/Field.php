@@ -21,7 +21,7 @@ class Field
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: "text", nullable: true)]
     private ?string $description = null;
 
     /**
@@ -30,16 +30,21 @@ class Field
     #[ORM\OneToMany(targetEntity: Student::class, mappedBy: 'field')]
     private Collection $students;
 
+
+    #[ORM\ManyToOne(inversedBy: 'fields')]
+    private ?School $school = null;
+
     /**
-     * @var Collection<int, UE>
+     * @var Collection<int, Level>
      */
-    #[ORM\ManyToMany(targetEntity: UE::class, inversedBy: 'fields')]
-    private Collection $ues;
+    #[ORM\OneToMany(targetEntity: Level::class, mappedBy: 'field')]
+    private Collection $levels;
+
 
     public function __construct()
     {
         $this->students = new ArrayCollection();
-        $this->ues = new ArrayCollection();
+        $this->levels = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,32 +118,52 @@ class Field
         return $this;
     }
 
-    /**
-     * @return Collection<int, UE>
-     */
-    public function getUes(): Collection
-    {
-        return $this->ues;
-    }
-
-    public function addUe(UE $ue): static
-    {
-        if (!$this->ues->contains($ue)) {
-            $this->ues->add($ue);
-        }
-
-        return $this;
-    }
-
-    public function removeUe(UE $ue): static
-    {
-        $this->ues->removeElement($ue);
-
-        return $this;
-    }
 
     public function __toString():string
     {
         return $this->name;
     }
+
+    public function getSchool(): ?School
+    {
+        return $this->school;
+    }
+
+    public function setSchool(?School $school): static
+    {
+        $this->school = $school;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Level>
+     */
+    public function getLevels(): Collection
+    {
+        return $this->levels;
+    }
+
+    public function addLevel(Level $level): static
+    {
+        if (!$this->levels->contains($level)) {
+            $this->levels->add($level);
+            $level->setField($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLevel(Level $level): static
+    {
+        if ($this->levels->removeElement($level)) {
+            // set the owning side to null (unless already changed)
+            if ($level->getField() === $this) {
+                $level->setField(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
