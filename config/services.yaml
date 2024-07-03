@@ -6,10 +6,11 @@
 parameters:
     student_directory: '%kernel.project_dir%/public/uploads/students'
     profile_pictures_directory: '%kernel.project_dir%/public/uploads/profile_pictures'
-
-
+    locale: 'en'
 
 services:
+
+    
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
@@ -31,5 +32,15 @@ services:
     App\EventListener\StudentListener:
         tags:
             - {name: kernel.event_listener, event: create_student_account, method: onAddStudent}
+    
+    App\EventListener\LocaleListener:
+        arguments:
+            $defaultLocale: '%locale%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+
+        
+
         # add more service definitions when explicit configuration is needed
         # please note that last definitions always *replace* previous ones

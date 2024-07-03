@@ -12,7 +12,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class HomePageController extends AbstractController
 {
-    #[Route('/', name: 'app_home_page')]
+    #[Route('/welcome', name: 'app_home_page')]
     public function index(): Response
     {
         $user = $this->getUser();

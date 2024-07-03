@@ -1,5 +1,5 @@
 {% extends 'base_new.html.twig' %}
-
+{# {{ app.request.locale }} #}
 {% block head %}
 {% block title %}<title>Add Student Grades</title>{% endblock %}
 {% endblock %}
@@ -52,7 +52,7 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ loop.index }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ student.label }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                 {{ form_widget(form.cc, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm'}}) }}
+                                 <input type="number" name="grades[{{ student.value }}][cc]" class="grade-input tp-grade mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" step="0.01" min="0" max="20" style="display: none;">
                                 <input type="number" name="grades[{{ student.value }}][tp]" class="grade-input tp-grade mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" step="0.01" min="0" max="20" style="display: none;">
                                 <input type="number" name="grades[{{ student.value }}][sn]" class="grade-input sn-grade mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" step="0.01" min="0" max="20" style="display: none;">
                             </td>
