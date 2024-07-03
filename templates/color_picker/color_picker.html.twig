@@ -1,0 +1,37 @@
+{# templates/color_picker.html.twig #}
+
+
+
+<form action="{{ path('update_colors') }}" method="POST">
+    <div>
+        <label for="primary-color">Primary Color:</label>
+        <input type="color" id="primary-color" name="primary" value="{{ color_scheme().primaryColor }}">
+    </div>
+    <div>
+        <label for="secondary-color">Secondary Color:</label>
+        <input type="color" id="secondary-color" name="secondary" value="{{ color_scheme().secondaryColor }}">
+    </div>
+    <div>
+        <label for="background-color">Background Color:</label>
+        <input type="color" id="background-color" name="background" value="{{ color_scheme().backgroundColor }}">
+    </div>
+    <div>
+        <label for="accent-color">Accent Color:</label>
+        <input type="color" id="accent-color" name="accent" value="{{ color_scheme().accentColor }}">
+    </div>
+    <div>
+        <label for="text-color">Text Color:</label>
+        <input type="color" id="text-color" name="text" value="{{ color_scheme().textColor }}">
+    </div>
+    {# Add more color inputs as needed #}
+    <button type="submit">Update Colors</button>
+</form>
+
+<script>
+document.querySelectorAll('input[type="color"]').forEach(input => {
+    input.addEventListener('change', (event) => {
+        const root = document.documentElement;
+        root.style.setProperty(`--${event.target.name}-color`, event.target.value);
+    });
+});
+</script>

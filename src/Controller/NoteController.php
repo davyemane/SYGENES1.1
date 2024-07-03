@@ -15,9 +15,19 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/admin'), IsGranted('ROLE_TEACHER')]
 class NoteController extends AbstractController
 {
+
     #[Route('/add/note/{id?0}', name: 'add_note')]
     public function AddNote($id, ManagerRegistry $doctrine, Request $request, SystemNotation $systemNotation): Response
     {
+
+        // Check if the user has ROLE_ADMIN
+        if (!$this->isGranted('ROLE_CEP') ) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
+
         $user = $this->getUser();
         $entityManager = $doctrine->getManager();
     

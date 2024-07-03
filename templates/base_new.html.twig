@@ -132,7 +132,7 @@
                     </li>
                 </a>
 
-                
+                {% if is_granted("ROLE_SA") %} 
                 <li class="menu-item text-gray-300 text-sm cursor-pointer mt-2">
                     <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md submenu-trigger">
                         <img src="/icons/students.png" alt="students" class="w-4 h-4 ml-3">
@@ -157,7 +157,7 @@
                         </a>
                     </ul>
                 </li>
-                
+                 {% endif %} 
 
                 <li class="menu-item text-gray-300 text-sm cursor-pointer">
                     <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md submenu-trigger">
@@ -166,20 +166,22 @@
                         <i class="fas fa-chevron-down transition-transform duration-300"></i>
                     </div>
                     <ul class="submenu ml-6 mt-2">
+                    {% if is_granted('ROLE_AAT') %}
                         <a href="{{ path('add_note') }}">
                             <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add a student's
                                 marks</li>
                         </a>
-                        <a href="{{ path('add_note') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Modify a student's
-                                marks</li>
-                        </a>
+                    {% endif %}
+                    {% if is_granted('ROLE_AATP') %}    
                         <a href="{{ path('choix_ec') }}">
                             <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">View students
                                 marks</li>
                         </a>
+                    {% endif %}
                     </ul>
                 </li>
+
+                {% if is_granted("ROLE_CEP") %}
                 <li class="menu-item text-gray-300 text-sm cursor-pointer">
                     <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md submenu-trigger">
                         <img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
@@ -197,12 +199,14 @@
                             <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">List of UE & EC
                             </li>
                         </a>
-                        <a href="{{ path('fields_index') }}">
+                        <!-- <a href="{{ path('fields_index') }}">
                             <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">List of Fields
                             </li>
-                        </a>
+                        </a> -->
                     </ul>
                 </li>
+                {% endif %}
+                {% if is_granted("ROLE_SA") %}
                 <li class="menu-item text-gray-300 text-sm cursor-pointer">
                     <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md submenu-trigger">
                         <img src="/icons/responsable.png" alt="grades" class="w-4 h-4 ml-3">
@@ -220,6 +224,7 @@
                         </a>
                     </ul>
                 </li>
+                {% endif %}
             </ul>
 
             <div class="border-t border-gray-600 pt-4 mt-4">

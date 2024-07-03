@@ -29,6 +29,15 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
+
+        // Check if the user has ROLE_ADMIN
+        if (!$this->isGranted('ROLE_SA')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);

@@ -23,6 +23,14 @@ class ResponsableController extends AbstractController
 {
     #[Route ('/resp_statistics', name: 'resp_statistics')]
     public function resp_statistics(): Response{
+        // Check if the user has ROLE_ADMIN
+        if (!$this->isGranted('ROLE_SA')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
+
         $user = $this->getUser();
         return $this->render('responsable/resp_statistics.html.twig', [
             'controller_name' => 'ResponsableController',
@@ -30,21 +38,30 @@ class ResponsableController extends AbstractController
         ]);
     }   
 
-    #[Route('/responsable', name: 'app_responsable')]
-    public function index(): Response
-    {
-        $user = $this->getUser();
-        return $this->render('responsable/index.html.twig', [
-            'controller_name' => 'ResponsableController',
-            'user' => $user
-        ]);
-    }
+    // #[Route('/responsable', name: 'app_responsable')]
+    // public function index(): Response
+    // {
+    //     $user = $this->getUser();
+    //     return $this->render('responsable/index.html.twig', [
+    //         'controller_name' => 'ResponsableController',
+    //         'user' => $user
+    //     ]);
+    // }
 
     
 //ajouter un responsable
     #[Route('/add/resp/{id?0}', name: 'add_responsable')]
     public function academicInscription($id, ManagerRegistry $doctrine, Request $request): Response
     {
+
+        // Check if the user has ROLE_ADMIN
+        if (!$this->isGranted('ROLE_SA')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
+
         $user = $this->getUser();
         $entityManager = $doctrine->getManager();
 
@@ -88,6 +105,14 @@ class ResponsableController extends AbstractController
     #[Route("/list/ec/", name:"choix_ec")]
     public function Ec(ManagerRegistry $doctrine): Response
     {
+        // Check if the user has ROLE_ADMIN
+        if (!$this->isGranted('ROLE_AATP')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
+
         $user = $this->getUser();
         $entityManager = $doctrine->getManager();
     
@@ -111,6 +136,13 @@ class ResponsableController extends AbstractController
 #[Route('/list', name: 'list_student_notes')]
 public function home(Request $request, ManagerRegistry $doctrine): Response
 {
+    // Check if the user has ROLE_ADMIN
+    if (!$this->isGranted('ROLE_AATP')) {
+        // Redirect to a custom error page
+        return $this->render('student/error.html.twig', [
+            'message' => 'Access Denied'
+        ], new Response('', Response::HTTP_FORBIDDEN));
+    }
     try {
         $repository = $doctrine->getRepository(Student::class);
 
@@ -186,6 +218,14 @@ public function home(Request $request, ManagerRegistry $doctrine): Response
     #[Route('/fields', name: 'fields_index')]
     public function fields(EntityManagerInterface $entityManager): Response
     {
+        // Check if the user has ROLE_ADMIN
+        if (!$this->isGranted('ROLE_RPA')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
+
         $user = $this->getUser();
         $fields = $entityManager->getRepository(Field::class)->findAll();
 
@@ -201,6 +241,14 @@ public function home(Request $request, ManagerRegistry $doctrine): Response
     #[Route('/list_student/{fieldId?1}/{page?1}/{nbre?12}', name: 'list_student_2')]
     public function ListStudent(Request $request, ManagerRegistry $doctrine, $fieldId, $page, $nbre): Response
     {
+
+        // Check if the user has ROLE_ADMIN
+        if (!$this->isGranted('ROLE_RPA')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
         $user = $this->getUser();
         try {
             $entityManager = $doctrine->getManager();

@@ -58,7 +58,9 @@ class RegistrationFormType extends AbstractType
                     'ROLE_TEACHER' => 'ROLE_TEACHER',
                     'ROLE_CEP' => 'ROLE_CEP',
                     'ROLE_SA' => 'ROLE_SA',
-                    'ROLE_SUPER_ADMIN'=>'ROLE_SUPER_ADMIN'
+                    'ROLE_RPA'=>'ROLE_RPA',
+                    'ROLE_AATP'=>'ROLE_AATP',
+                    'ROLE_AAT'=>'ROLE_AAT'
                     // ... other roles
                 ],
                 'expanded' => true, // Allows selecting multiple roles (checkbox style)

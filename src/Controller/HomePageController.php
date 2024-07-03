@@ -12,7 +12,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class HomePageController extends AbstractController
 {
-    #[Route('/', name: 'app_home_page')]
+    #[Route('/welcome', name: 'app_home_page')]
     public function index(): Response
     {
         $user = $this->getUser();
@@ -54,6 +54,13 @@ class HomePageController extends AbstractController
     IsGranted('ROLE_TEACHER')
     ]
     public function dashboard(){
+         // Check if the user has ROLE_ADMIN
+         if (!$this->isGranted('ROLE_TEACHER')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
         $user = $this->getUser();
         return $this->render('responsable_dashboard/dashboardAdmin.html.twig',[
             "user" => $user

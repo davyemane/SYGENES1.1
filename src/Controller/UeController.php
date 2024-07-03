@@ -18,10 +18,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class UeController extends AbstractController
 {
 
-    #[Route('/add/ec/{id?0}', name: 'add_ec'),
-    IsGranted('ROLE_ADMIN')]
+    #[Route('/add/ec/{id?0}', name: 'add_ec')]
     public function AddEc($id, ManagerRegistry $doctrine, Request $request): Response
     {
+        // Check if the user has ROLE_ADMIN
+        if (!$this->isGranted('ROLE_CEP')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
         $user = $this->getUser();
         $entityManager = $doctrine->getManager();
     
@@ -58,10 +64,16 @@ class UeController extends AbstractController
 
 
 
-    #[Route('/add/ue/{id?0}', name: 'add_ue'),
-    IsGranted('ROLE_ADMIN')]
+    #[Route('/add/ue/{id?0}', name: 'add_ue')]
     public function AddUe($id, ManagerRegistry $doctrine, Request $request): Response
     {
+        // Check if the user has ROLE_ADMIN
+        if (!$this->isGranted('ROLE_CEP')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
         $user = $this->getUser();
         $entityManager = $doctrine->getManager();
     

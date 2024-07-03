@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin')]
 class ImportExcelController extends AbstractController
@@ -20,6 +21,15 @@ class ImportExcelController extends AbstractController
     #[Route('/import', name: 'import')]
     public function importExcel(Request $request, EntityManagerInterface $entityManager): Response
     {
+
+        // Check if the user has ROLE_ADMIN
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
+
         $user = $this->getUser();
         $form = $this->createForm(ExcelFormType::class);
         $form->handleRequest($request);

@@ -44,6 +44,7 @@ class StudentController extends AbstractController
     #[Route('/student_statistics', name: 'student_stats')]
     public function statistics(Request $request, ManagerRegistry $doctrine): Response
     {
+        
         $user = $this->getUser();
         $student = $user->getStudent();
         return $this->render('student_dashboard/statistics.html.twig',[
@@ -56,6 +57,7 @@ class StudentController extends AbstractController
     #[Route('/list/{page?1}/{nbre?12}', name: 'list_student')]
     public function home(Request $request, ManagerRegistry $doctrine, $page, $nbre): Response
     {
+        
         $repository = $doctrine->getRepository(Student::class);
         $queryBuilder = $repository->createQueryBuilder('s');
 
@@ -138,6 +140,13 @@ class StudentController extends AbstractController
             $student = $entityManager->getRepository(Student::class)->find($id);
             $studentDirectory = 'uploads/certificates';
         } else {
+            // Check if the user has ROLE_ADMIN
+        if (!$this->isGranted('ROLE_RPA')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
             $student = new Student();
         }
 
@@ -193,6 +202,14 @@ class StudentController extends AbstractController
 #[Route('/pdf/{id}', name: "pdf_student")]
 public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
 {
+    // Check if the user has ROLE_ADMIN
+    if (!$this->isGranted('ROLE_CEP')) {
+        // Redirect to a custom error page
+        return $this->render('student/error.html.twig', [
+            'message' => 'Access Denied'
+        ], new Response('', Response::HTTP_FORBIDDEN));
+    }
+
     $studentRepository = $doctrine->getRepository(Student::class);
     $student = $studentRepository->find($id);
 
@@ -286,6 +303,14 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
     public function studentNotes(Request $request, StudentRepository $studentRepository, NoteRepository $noteRepository, $id, LevelRepository $levelRepository, UERepository $ueRepository)
     {
 
+        // Check if the user has ROLE_ADMIN
+        if (!$this->isGranted('ROLE_USER')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
+
         // Récupérer l'étudiant connecté
         $currentUser = $this->getUser();
         $message = '';
@@ -362,6 +387,14 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
         Request $request,
         MailerInterface $mailer
     ): Response {
+
+        // Check if the user has ROLE_ADMIN
+        if (!$this->isGranted('ROLE_RPA')) {
+            // Redirect to a custom error page
+            return $this->render('student/error.html.twig', [
+                'message' => 'Access Denied'
+            ], new Response('', Response::HTTP_FORBIDDEN));
+        }
         $new = true;
         // Récupérer l'étudiant par son ID
         $student = $entityManager->getRepository(Student::class)->find($studentId);
@@ -420,6 +453,6 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
         // }
 
         // Rediriger vers une autre page
-        return $this->redirectToRoute('create_student_account');
+        return $this->redirectToRoute('list_student_2');
     }
 }

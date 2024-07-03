@@ -7,7 +7,10 @@
   {% block stylesheets %}
     {{ encore_entry_link_tags('app') }}
   {% endblock %}
-  {{ encore_entry_script_tags('app') }}
+  {% block script %}
+    {{ encore_entry_script_tags('app') }}
+  {% endblock %}
+  
   {% block head %}{% block title %}<title></title>{% endblock %}{% endblock %}
   {% block current_route %}{% endblock %}
 
@@ -31,7 +34,7 @@
   </a>
 </div>
 
-    <div class="flex lg:hidden">
+    <div class="flex lg:hidden"brandontapiba@gmail.com>
       <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" id="mobile-menu-button">
         <span class="sr-only">Open main menu</span>
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
