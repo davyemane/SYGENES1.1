@@ -29,9 +29,9 @@
         <div class="text-center">
             <h1 class="text-4xl font-bold mb-10 text-shadow">{{ 'message'|trans }}</h1>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-                <a href="{{ path('change_locale', {'locale': 'en'}) }}" class="btn font-semibold py-4 px-6 rounded-lg">English</a>
-                <a href="{{ path('change_locale', {'locale': 'fr'}) }}" class="btn font-semibold py-4 px-6 rounded-lg">Français</a>
-                <a href="{{ path('change_locale', {'locale': 'es'}) }}" class="btn font-semibold py-4 px-6 rounded-lg">Español</a>
+                <a href="{{ path('change_locale', {'locale': 'en'}) }}" class="btn font-semibold py-4 px-6 rounded-lg">{{ 'english-language'|trans }}</a>
+                <a href="{{ path('change_locale', {'locale': 'fr'}) }}" class="btn font-semibold py-4 px-6 rounded-lg">{{ 'french-language'|trans }}</a>
+                <a href="{{ path('change_locale', {'locale': 'es'}) }}" class="btn font-semibold py-4 px-6 rounded-lg">{{ 'spanish-language'|trans }}</a>
             </div>
             <div class="mt-16">
                 <a href="#" class="btn font-semibold py-4 px-8 rounded-lg">Next</a>
