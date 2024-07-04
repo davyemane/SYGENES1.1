@@ -21,13 +21,14 @@ class Privilege
     /**
      * @var Collection<int, Role>
      */
-    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'privileges')]
+    #[ORM\ManyToMany(targetEntity: Role::class, mappedBy: 'privileges')]
     private Collection $roles;
 
     public function __construct()
     {
         $this->roles = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -58,6 +59,7 @@ class Privilege
     {
         if (!$this->roles->contains($role)) {
             $this->roles->add($role);
+            $role->addPrivilege($this);
         }
 
         return $this;
@@ -65,8 +67,11 @@ class Privilege
 
     public function removeRole(Role $role): static
     {
-        $this->roles->removeElement($role);
+        if ($this->roles->removeElement($role)) {
+            $role->removePrivilege($this);
+        }
 
         return $this;
     }
+
 }
