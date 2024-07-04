@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class RoleController extends AbstractController
 {
     #[Route('/new/{id?0}', name: 'role_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, int $id = 0): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, RoleRepository $roleRepository, int $id = 0): Response
     {
         if ($id > 0) {
             $role = $entityManager->getRepository(Role::class)->find($id);
@@ -47,10 +47,15 @@ class RoleController extends AbstractController
             return $this->redirectToRoute('field_new');
         }
     
+        // Récupérer tous les rôles existants
+        $existingRoles = $roleRepository->findAll();
+    
         return $this->render('role/new.html.twig', [
             'role' => $role,
             'form' => $form,
-            'isNew' => $id === 0
+            'isNew' => $id === 0,
+            'existingRoles' => $existingRoles, // Passer les rôles existants à la vue
         ]);
     }
+
 }

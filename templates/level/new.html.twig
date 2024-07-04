@@ -1,34 +1,63 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ isNew ? 'Nouveau Niveau' : 'Modifier Niveau' }}
+{{ isNew ? 'Nouveau Niveau' : 'Modifier Niveau' }}
 {% endblock %}
 
 {% block body %}
-    <div class="container mx-auto mt-8">
-        <h1 class="text-2xl font-bold mb-4">{{ isNew ? 'Créer un nouveau niveau' : 'Modifier le niveau' }}</h1>
-        
-        {{ form_start(form, {'attr': {'class': 'w-full max-w-lg'}}) }}
-        
-        <div class="mb-4">
-            {{ form_label(form.name, 'Nom du niveau', {'class': 'block text-gray-700 text-sm font-bold mb-2'}) }}
-            {{ form_widget(form.name, {'attr': {'class': 'form-input w-full'}}) }}
-        </div>
-        
-        <div class="mb-4">
-            {# Affichage du champ associé (ManyToOne) #}
-            {{ form_label(form.fields, 'Champ associé', {'class': 'block text-gray-700 text-sm font-bold mb-2'}) }}
-            {{ form_widget(form.fields, {'attr': {'class': 'form-choice w-full'}}) }}
-            {# Afficher les erreurs éventuelles du champ #}
-            {{ form_errors(form.fields) }}
-        </div>
-        
-        <div class="mb-4">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                {{ isNew ? 'Créer' : 'Modifier' }}
-            </button>
-        </div>
-        
-        {{ form_end(form) }}
+<div class="container mx-auto mt-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">{{ isNew ? 'Créer un nouveau niveau' : 'Modifier le niveau' }}</h1>
+        <button id="toggleExistingLevels" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Afficher/Masquer les niveaux existants
+        </button>
     </div>
+
+    <div id="existingLevelsContainer" class="mb-6 hidden">
+        <h2 class="text-xl font-bold mb-4">Niveaux existants</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {% for existingLevel in existingLevels %}
+            <div class="bg-white shadow-md rounded p-4">
+                <h3 class="font-bold text-lg mb-2">{{ existingLevel.name }}</h3>
+                <p class="text-sm text-gray-600">
+                    Filières:
+                    {% if existingLevel.fields|length > 0 %}
+                    {{ existingLevel.fields|map(field => field.name)|join(', ') }}
+                    {% else %}
+                    Non assignées
+                    {% endif %}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {{ form_start(form, {'attr': {'class': 'w-full max-w-lg'}}) }}
+
+    <div class="mb-4">
+        {{ form_label(form.name, 'Nom du niveau', {'class': 'block text-gray-700 text-sm font-bold mb-2'}) }}
+        {{ form_widget(form.name, {'attr': {'class': 'form-input w-full'}}) }}
+    </div>
+
+    <div class="mb-4">
+        {{ form_label(form.fields, 'Champ associé', {'class': 'block text-gray-700 text-sm font-bold mb-2'}) }}
+        {{ form_widget(form.fields, {'attr': {'class': 'form-choice w-full'}}) }}
+        {{ form_errors(form.fields) }}
+    </div>
+
+    <div class="mb-4">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            {{ isNew ? 'Créer' : 'Modifier' }}
+        </button>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+
+<script>
+    document.getElementById('toggleExistingLevels').addEventListener('click', function () {
+        var container = document.getElementById('existingLevelsContainer');
+        container.classList.toggle('hidden');
+    });
+</script>
 {% endblock %}
