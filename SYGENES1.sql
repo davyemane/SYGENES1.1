@@ -48,31 +48,6 @@ INSERT INTO `color_scheme` VALUES (1,'#30ec22','#ffffff','#91f231','#000000','#0
 UNLOCK TABLES;
 
 --
--- Table structure for table `doctrine_migration_versions`
---
-
-DROP TABLE IF EXISTS `doctrine_migration_versions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `doctrine_migration_versions` (
-  `version` varchar(191) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
-  `executed_at` datetime DEFAULT NULL,
-  `execution_time` int DEFAULT NULL,
-  PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `doctrine_migration_versions`
---
-
-LOCK TABLES `doctrine_migration_versions` WRITE;
-/*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
-INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20240612082311','2024-06-12 08:23:17',39153),('DoctrineMigrations\\Version20240628085754','2024-06-28 09:10:44',41),('DoctrineMigrations\\Version20240629164702','2024-06-29 16:47:58',2410),('DoctrineMigrations\\Version20240630153654','2024-06-30 15:37:15',1514),('DoctrineMigrations\\Version20240630154937','2024-06-30 15:49:41',901),('DoctrineMigrations\\Version20240703105216','2024-07-03 10:52:44',26078),('DoctrineMigrations\\Version20240703133812','2024-07-03 13:38:31',2186),('DoctrineMigrations\\Version20240703135211','2024-07-03 13:52:18',4053),('DoctrineMigrations\\Version20240703141725','2024-07-03 14:17:30',622),('DoctrineMigrations\\Version20240703151853','2024-07-03 15:19:00',708),('DoctrineMigrations\\Version20240703153245','2024-07-03 15:32:49',7754),('DoctrineMigrations\\Version20240703161026','2024-07-03 16:10:32',2608),('DoctrineMigrations\\Version20240703171052','2024-07-03 17:11:01',6313),('DoctrineMigrations\\Version20240704102058','2024-07-04 10:21:19',8995),('DoctrineMigrations\\Version20240704105009','2024-07-04 10:50:15',8953),('DoctrineMigrations\\Version20240704105751','2024-07-04 10:58:00',8054);
-/*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `ec`
 --
 
@@ -536,4 +511,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-04 14:01:23
+-- Dump completed on 2024-07-04 14:21:41
