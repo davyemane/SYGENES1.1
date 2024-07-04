@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,9 +24,12 @@ class LocaleController extends AbstractController
         // $referer = $request->headers->get('referer');
         //return new RedirectResponse($referer ?: $this->generateUrl('homepage'));
 
-        //
-        return $this->redirectToRoute('language_choice');
+
+        // Redirect to the previous page
+        $referer = $request->headers->get('referer');
+        return new RedirectResponse($referer ?: $this->generateUrl('homepage'));
     }
+    
     #[Route('/get-translations/{locale}', name: 'get_translations')]
     public function getTranslations(string $locale): JsonResponse
     {

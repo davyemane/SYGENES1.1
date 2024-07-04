@@ -7,13 +7,14 @@ parameters:
     student_directory: '%kernel.project_dir%/public/uploads/students'
     profile_pictures_directory: '%kernel.project_dir%/public/uploads/profile_pictures'
     logo_directory: '%kernel.project_dir%/public/uploads/logos'
-
-
     locale: 'en'
+
 
 services:
 
-    
+    Symfony\Component\HttpFoundation\Session\SessionInterface:
+        calls:
+            - [set, ['_locale', '%locale%']]
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
@@ -37,12 +38,8 @@ services:
             - {name: kernel.event_listener, event: create_student_account, method: onAddStudent}
     
     App\EventListener\LocaleListener:
-        arguments:
-            $defaultLocale: '%locale%'
         tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-
-
+            - { name: kernel.event_subscriber }
         
 
         # add more service definitions when explicit configuration is needed
