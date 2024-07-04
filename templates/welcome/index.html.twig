@@ -6,6 +6,12 @@
     <title>SYGENES</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+     {% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+  {% endblock %}
+  {% block script %}
+    {{ encore_entry_script_tags('app') }}
+  {% endblock %}
     <style>
         .text-shadow {
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
@@ -31,7 +37,7 @@
         
     </style>
 </head>
-<body class="bg-white text-gray-900 min-h-screen flex flex-col relative">
+<body class="bg-gradient-to-br from-blue-100 to-orange-100 text-gray-900 min-h-screen flex flex-col relative">
     <main class="flex-grow flex items-center justify-center px-4 ">
         <div class="text-center">
             <img src="images/uiecc_logo.png" alt="SYGENES Logo" class="mx-auto mb-6 w-48">

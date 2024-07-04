@@ -10,6 +10,16 @@
   {% block script %}
     {{ encore_entry_script_tags('app') }}
   {% endblock %}
+
+  <style>
+        :root {
+            --primary-color: {{ color_scheme.primaryColor }};
+            --secondary-color: {{ color_scheme.secondaryColor }};
+            --accent-color: {{ color_scheme.accentColor }};
+            --background-color: {{ color_scheme.backgroundColor }};
+            --text-color: {{ color_scheme.textColor }};
+        }
+  </style>
   
   {% block head %}{% block title %}<title></title>{% endblock %}{% endblock %}
   {% block current_route %}{% endblock %}
@@ -24,17 +34,17 @@
 </style>
 </head>
 
-<body class="h-full">
+<body class="h-full" style="background-color: var(--background-color); color: var(--text-color);">
 <header class="bg-white">
   <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 " aria-label="Global">
     <div class="flex items-center lg:flex-1">
-  <a href="{{ path('app_home_page') }}" class="-m-1.5 p-1.5 flex items-center">
-    <img class="h-12 w-auto" src="/images/uiecc_logo.png" alt="UIECC Logo">
-    <span class="ml-3 text-lg font-semibold text-gray-900 ">SYGENES</span>
-  </a>
-</div>
+      <a href="{{ path('app_home_page') }}" class="-m-1.5 p-1.5 flex items-center">
+        <img class="h-12 w-auto" src="/images/uiecc_logo.png" alt="UIECC Logo">
+        <span class="ml-3 text-lg font-semibold" style="color: var(--text-color);">SYGENES</span>
+      </a>
+    </div>
 
-    <div class="flex lg:hidden"brandontapiba@gmail.com>
+    <div class="flex lg:hidden">
       <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" id="mobile-menu-button">
         <span class="sr-only">Open main menu</span>
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -44,17 +54,17 @@
     </div>
     <div class="hidden lg:flex lg:gap-x-12">
       <div class="relative hover:text-blue-600">
-        <a href="{{ path('app_home_page') }}" class="nav-link flex items-center gap-x-1 font-semibold leading-6 text-gray-900 hover:text-blue-600">
+        <a href="{{ path('app_home_page') }}" class="nav-link flex items-center gap-x-1 font-semibold leading-6" style="color: var(--text-color);">
           Home
           <div id="bottom-bar" class="hidden h-1 bg-blue-500 w-4/2 mx-auto rounded-full bar"></div>
         </a>
       </div>
-      <a href="{{ path('app_about_page') }}" class="nav-link font-semibold leading-6 text-gray-900 hover:text-blue-600">About</a>
-      <a href="{{ path('app_contact_us_page') }}" class="nav-link font-semibold leading-6 text-gray-900 hover:text-blue-600">Contact us</a>
-      <a href="{{ path('app_documentation_page') }}" class="nav-link font-semibold leading-6 text-gray-900 hover:text-blue-600">Documentation</a>
+      <a href="{{ path('app_about_page') }}" class="nav-link font-semibold leading-6" style="color: var(--text-color);">About</a>
+      <a href="{{ path('app_contact_us_page') }}" class="nav-link font-semibold leading-6" style="color: var(--text-color);">Contact us</a>
+      <a href="{{ path('app_documentation_page') }}" class="nav-link font-semibold leading-6" style="color: var(--text-color);">Documentation</a>
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-      <a href="{{ path('app_login') }}" class="nav-link rounded-md bg-orange-500 px-3.5 py-2.5 hover:text-white hover:bg-orange-400 font-semibold leading-6 text-white">Log in <span aria-hidden="true">&rarr;</span></a>
+      <a href="{{ path('app_login') }}" class="nav-link rounded-md px-3.5 py-2.5 font-semibold leading-6 text-white" style="background-color: var(--accent-color); hover:text-white; hover:bg-orange-400;">Log in <span aria-hidden="true">&rarr;</span></a>
     </div>
   </nav>
   <!-- Mobile menu, show/hide based on menu open state. -->
@@ -76,13 +86,13 @@
       <div class="mt-6 flow-root">
         <div class="-my-6 divide-y divide-gray-500/10">
           <div class="space-y-2 py-6">
-            <a href="{{ path('app_home_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Home</a>
-            <a href="{{ path('app_about_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">About</a>
-            <a href="{{ path('app_contact_us_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Contact Us</a>
-            <a href="{{ path('app_documentation_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Documentation</a>
+            <a href="{{ path('app_home_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7" style="color: var(--text-color); hover:bg-gray-50;">Home</a>
+            <a href="{{ path('app_about_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7" style="color: var(--text-color); hover:bg-gray-50;">About</a>
+            <a href="{{ path('app_contact_us_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7" style="color: var(--text-color); hover:bg-gray-50;">Contact Us</a>
+            <a href="{{ path('app_documentation_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7" style="color: var(--text-color); hover:bg-gray-50;">Documentation</a>
           </div>
           <div class="py-6">
-            <a href="{{ path('app_login') }}" class="block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in</a>
+            <a href="{{ path('app_login') }}" class="block rounded-lg px-3 py-2.5 text-base font-semibold leading-7" style="color: var(--text-color); hover:bg-gray-50;">Log in</a>
           </div>
         </div>
       </div>
@@ -93,22 +103,22 @@
 {% block body %} {% endblock %}
 
 <div class="flex flex-col bg-white">
-  <footer class="footer py-3 my-4 mt-auto">
+  <footer class="footer py-3 my-4 mt-auto" style="background-color: var(--background-color); color: var(--text-color);">
     <ul class="flex justify-center border-b pb-3 mb-3">
       <li class="nav-item">
-        <a class="nav-link px-2 text-gray-500" href="{{ path('app_home_page') }}">Home</a>
+        <a class="nav-link px-2" style="color: var(--text-color);" href="{{ path('app_home_page') }}">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link px-2 text-gray-500" href="{{ path('app_about_page') }}">About</a>
+        <a class="nav-link px-2" style="color: var(--text-color);" href="{{ path('app_about_page') }}">About</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link px-2 text-gray-500" href="{{ path('app_contact_us_page') }}">Contact Us</a>
+        <a class="nav-link px-2" style="color: var(--text-color);" href="{{ path('app_contact_us_page') }}">Contact Us</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link px-2 text-gray-500" href="{{ path('app_documentation_page') }}">Documentation</a>
+        <a class="nav-link px-2" style="color: var(--text-color);" href="{{ path('app_documentation_page') }}">Documentation</a>
       </li>
     </ul>
-    <p class="text-center text-gray-500">© 2024 SYGENES, UIECC.</p>
+    <p class="text-center" style="color: var(--text-color);">© 2024 SYGENES, UIECC.</p>
   </footer>
 </div>
 
@@ -124,7 +134,6 @@
   mobileMenuClose.addEventListener('click', () => {
     mobileMenu.classList.add('hidden');
   });
-
 </script>
 </body>
 </html>

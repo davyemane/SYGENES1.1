@@ -6,3 +6,10 @@ body {
     background-color: white;
 }
 
+:root {
+    --primary-color: #ea8035;
+    --secondary-color: #1a73e8;
+    --accent-color: #fbbc05;
+    --background-color: #ffffff;
+    --text-color: #323436;
+}

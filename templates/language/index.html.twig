@@ -7,42 +7,58 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
+       
         .text-shadow {
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
         .btn {
-            background-color: #ea4335;
+            background-color: #ff6600;
             color: white;
-            transition: background-color 0.3s, transform 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
         }
         .btn:hover, .btn.active {
-            background-color: #1a73e8;
-            transform: scale(1.05);
+            background-color: #0066cc;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
         }
         .btn.active {
-            box-shadow: 0 0 0 3px #1a73e8, 0 0 0 6px rgba(26, 115, 232, 0.3);
+            box-shadow: 0 0 0 3px #0066cc, 0 0 0 6px rgba(0, 102, 204, 0.3);
+        }
+        .language-switcher {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
-<body class="text-gray-900 min-h-screen flex flex-col">
-    <main class="flex-grow flex items-center justify-center px-4">
-        <div class="text-center language-switcher">
-            <h1 class="text-4xl font-bold mb-10 text-shadow">{{ 'language-message'|trans }}</h1>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-                <a href="{{ path('change_language', {'locale': 'en'}) }}" class="btn font-semibold py-4 px-6 rounded-lg {{ app.request.locale == 'en' ? 'active' : '' }}">{{ 'english-language'|trans }}</a>
-                <a href="{{ path('change_language', {'locale': 'fr'}) }}" class="btn font-semibold py-4 px-6 rounded-lg {{ app.request.locale == 'fr' ? 'active' : '' }}">{{ 'french-language'|trans }}</a>
-                <a href="{{ path('change_language', {'locale': 'es'}) }}" class="btn font-semibold py-4 px-6 rounded-lg {{ app.request.locale == 'es' ? 'active' : '' }}">{{ 'spanish-language'|trans }}</a>
+<body class="bg-gradient-to-br from-blue-100 to-orange-100 text-gray-900 min-h-screen flex flex-col">
+    <main class="flex-grow flex items-center justify-center px-4 py-12">
+        <div class="text-center language-switcher p-8 w-full max-w-4xl">
+            <h1 class="text-4xl font-bold mb-10 text-shadow text-gray-800">{{ 'language-message'|trans }}</h1>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
+                <a href="{{ path('change_language', {'locale': 'en'}) }}" class="btn font-semibold py-4 px-6 rounded-lg {{ app.request.locale == 'en' ? 'active' : '' }} flex items-center justify-center">
+                    <span class="mr-2">🇬🇧</span> {{ 'english-language'|trans }}
+                </a>
+                <a href="{{ path('change_language', {'locale': 'fr'}) }}" class="btn font-semibold py-4 px-6 rounded-lg {{ app.request.locale == 'fr' ? 'active' : '' }} flex items-center justify-center">
+                    <span class="mr-2">🇫🇷</span> {{ 'french-language'|trans }}
+                </a>
+                <a href="{{ path('change_language', {'locale': 'es'}) }}" class="btn font-semibold py-4 px-6 rounded-lg {{ app.request.locale == 'es' ? 'active' : '' }} flex items-center justify-center">
+                    <span class="mr-2">🇪🇸</span> {{ 'spanish-language'|trans }}
+                </a>
             </div>
-            <div class="mt-16">
-                <a href="{{path('school_new')}}" class="btn font-semibold py-4 px-8 rounded-lg">{{ 'next-language-btn'|trans }}</a>
+            <div>
+                <a href="{{path('school_new')}}" class="btn font-semibold py-4 px-8 rounded-lg inline-flex items-center">
+                    {{ 'next-language-btn'|trans }}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </a>
             </div>
         </div>
     </main>
-    <footer class="p-6 text-center">
-        <p class="text-sm opacity-75">&copy; 2024 ESIGN. All rights reserved.</p>
+    <footer class="p-6 text-center text-gray-600">
+        <p class="text-sm">&copy; 2024 ESIGN. All rights reserved.</p>
     </footer>
 </body>
 </html>
