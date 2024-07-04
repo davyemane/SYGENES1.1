@@ -1,4 +1,39 @@
-message: "Veuillez choisir votre langue"
+# Language choice text
+language-message: "Veuillez choisir votre langue"
 english-language: "Anglais"
 french-language: "Français"
 spanish-language: "Espagnol"
+next-language-btn: "Suivant"
+
+# Create school text
+create-school-title: "Nouvelle École"
+edit-school-title: "Modifier l'École"
+create-school: "Créer une nouvelle école"
+edit-school: "Modifier l'école"
+school-name: "Nom de l'école"
+logo: "Logo"
+address: "Adresse"
+phone-number: "Numero de telephone"
+email: "Email"
+color-schemes: "Schema de Couleurs"
+add-color-scheme: "Ajouter un schema de couleurs"
+remove-color-scheme: "Supprimer le schema de couleurs"
+create-school-btn: "Creer l'ecole"
+update-school-btn: "Mettre a jour l'ecole"
+success-message: ""
+error-message: ""
+
+
+# Create a profile Text
+
+
+# Create a whatever text
+
+
+
+# Dashboard Text
+
+
+
+
+# Others

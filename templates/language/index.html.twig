@@ -28,17 +28,16 @@
     </style>
 </head>
 <body class="text-gray-900 min-h-screen flex flex-col">
-{{ app.request.locale|upper }}
     <main class="flex-grow flex items-center justify-center px-4">
         <div class="text-center language-switcher">
-            <h1 class="text-4xl font-bold mb-10 text-shadow">{{ 'message'|trans }}</h1>
+            <h1 class="text-4xl font-bold mb-10 text-shadow">{{ 'language-message'|trans }}</h1>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
                 <a href="{{ path('change_language', {'locale': 'en'}) }}" class="btn font-semibold py-4 px-6 rounded-lg {{ app.request.locale == 'en' ? 'active' : '' }}">{{ 'english-language'|trans }}</a>
                 <a href="{{ path('change_language', {'locale': 'fr'}) }}" class="btn font-semibold py-4 px-6 rounded-lg {{ app.request.locale == 'fr' ? 'active' : '' }}">{{ 'french-language'|trans }}</a>
                 <a href="{{ path('change_language', {'locale': 'es'}) }}" class="btn font-semibold py-4 px-6 rounded-lg {{ app.request.locale == 'es' ? 'active' : '' }}">{{ 'spanish-language'|trans }}</a>
             </div>
             <div class="mt-16">
-                <a href="#" class="btn font-semibold py-4 px-8 rounded-lg">{{ 'next'|trans }}</a>
+                <a href="{{path('school_new')}}" class="btn font-semibold py-4 px-8 rounded-lg">{{ 'next-language-btn'|trans }}</a>
             </div>
         </div>
     </main>
