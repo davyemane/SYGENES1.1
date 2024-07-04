@@ -43,7 +43,7 @@ class LevelController extends AbstractController
             $entityManager->flush();
     
             $this->addFlash('success', $id > 0 ? 'Le niveau a été mis à jour avec succès.' : 'Le niveau a été créé avec succès.');
-            return $this->redirectToRoute('level_new');
+            return $this->redirectToRoute('app_register');
         }
     
         return $this->render('level/new.html.twig', [
