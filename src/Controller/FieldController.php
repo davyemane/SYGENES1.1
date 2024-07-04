@@ -44,7 +44,7 @@ class FieldController extends AbstractController
             $entityManager->flush();
     
             $this->addFlash('success', $id > 0 ? 'La filière a été mise à jour avec succès.' : 'La filière a été créée avec succès.');
-            return $this->redirectToRoute('field_new');
+            return $this->redirectToRoute('level_new');
         }
     
         return $this->render('field/new.html.twig', [

@@ -64,7 +64,7 @@ class SchoolController extends AbstractController
             $entityManager->flush();
     
             $this->addFlash('success', $id > 0 ? 'L\'école a été mise à jour avec succès.' : 'L\'école a été créée avec succès.');
-            return $this->redirectToRoute('app_school');
+            return $this->redirectToRoute('role_new');
         }
     
         return $this->render('school/new.html.twig', [
