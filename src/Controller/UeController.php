@@ -21,14 +21,28 @@ class UeController extends AbstractController
     #[Route('/add/ec/{id?0}', name: 'add_ec')]
     public function AddEc($id, ManagerRegistry $doctrine, Request $request): Response
     {
-        // Check if the user has ROLE_ADMIN
-        if (!$this->isGranted('ROLE_CEP')) {
-            // Redirect to a custom error page
-            return $this->render('student/error.html.twig', [
-                'message' => 'Access Denied'
-            ], new Response('', Response::HTTP_FORBIDDEN));
-        }
+
         $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Vérifier si l'utilisateur a le privilège "List Student"
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'Add EC') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+        }        
+
+
         $entityManager = $doctrine->getManager();
     
         // Vérifier si un ID de l'ue a été fourni
@@ -67,14 +81,29 @@ class UeController extends AbstractController
     #[Route('/add/ue/{id?0}', name: 'add_ue')]
     public function AddUe($id, ManagerRegistry $doctrine, Request $request): Response
     {
-        // Check if the user has ROLE_ADMIN
-        if (!$this->isGranted('ROLE_CEP')) {
-            // Redirect to a custom error page
-            return $this->render('student/error.html.twig', [
-                'message' => 'Access Denied'
-            ], new Response('', Response::HTTP_FORBIDDEN));
-        }
+
         $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Vérifier si l'utilisateur a le privilège "List Student"
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'Add UE') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+        }        
+
+
+        // Check if the user has ROLE_ADMIN
         $entityManager = $doctrine->getManager();
     
         // Vérifier si un ID de l'ue a été fourni
@@ -108,43 +137,4 @@ class UeController extends AbstractController
     }
 
 
-        // List of all UEs with error handling
-//         #[Route('/list/{page?1}/{nbre?16}', name: 'list_ue')
-//         ]
-//         public function home(ManagerRegistry $doctrine, $page, $nbre): Response
-//         {
-//             try {
-//                 $repository = $doctrine->getRepository(UE::class);
-    
-//                 // Calculate total ue and number of pages
-//                 $nbUe = $repository->count([]);
-//                 $nbPage = ceil($nbUe / $nbre);
-    
-//                 // Fetch ue with pagination (handle potential errors)
-//                 $ue = $repository->findBy([], [], $nbre, ($page - 1) * $nbre);
-//                 if (!$ue) {
-//                     // Handle case where no ue are found
-//                     throw new NotFoundHttpException('No ue found.');
-//                 }
-    
-//                 return $this->render("ue/list.html.twig", [
-//                     'ue' => $ue,
-//                     'isPaginated' => true,
-//                     'nbPage' => $nbPage,
-//                     'page' => $page,
-//                     'nbre' => $nbre
-//                 ]);
-//             } catch (NotFoundHttpException $e) {
-//                 // Handle the specific case of not finding ue
-//                 $this->addFlash('error', 'No ue found.');
-//                 return $this->redirectToRoute('list_ue', ['page' => 1]); // Redirect to first page
-//             } catch (\Exception $e) {
-//                 // Catch other unexpected exceptions for broader error handling
-//                 $this->addFlash('error', 'An error occurred.'); // Generic error message
-//                 // Log the error for further investigation
-//                 error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3, 'path/to/your/error.log'); // Replace with your log path
-//                 return $this->redirectToRoute('list_ue', ['page' => 1]); // Redirect to first page
-//             }
-//         }
-    
 }

@@ -69,7 +69,7 @@ class RegistrationController extends AbstractController
             );
     
             // Set roles
-            $roles = $form->get('role')->getData();
+            $roles = $form->get('roles')->getData();
             foreach ($roles as $role) {
                 $user->addRole($role);
             }            

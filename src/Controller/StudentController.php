@@ -26,6 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -57,7 +58,27 @@ class StudentController extends AbstractController
     #[Route('/list/{page?1}/{nbre?12}', name: 'list_student')]
     public function home(Request $request, ManagerRegistry $doctrine, $page, $nbre): Response
     {
-        
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Vérifier si l'utilisateur a le privilège "List Student"
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'List Students') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+
+        }        
         $repository = $doctrine->getRepository(Student::class);
         $queryBuilder = $repository->createQueryBuilder('s');
 
@@ -107,6 +128,28 @@ class StudentController extends AbstractController
     #[Route('/listDetail/{id<\d+>}', name: 'detail_student')]
     public function details(ManagerRegistry $doctrine, $id): Response
     {
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Vérifier si l'utilisateur a le privilège "List Student"
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'Detail Student') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+
+        }        
+
         try {
             $repository = $doctrine->getRepository(Student::class);
 
@@ -125,13 +168,30 @@ class StudentController extends AbstractController
         } 
     }
 
-
+    
     //update or add student
     #[Route('/add/{id?0}', name: 'add_student')]
     public function academicInscription($id, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
-        // $user = $this->getUser();
-        // $student = $user->getStudent();
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Vérifier si l'utilisateur a le privilège "List Student"
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'Add Student') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+        }        
         
          $entityManager = $doctrine->getManager();
 
@@ -202,13 +262,26 @@ class StudentController extends AbstractController
 #[Route('/pdf/{id}', name: "pdf_student")]
 public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
 {
-    // Check if the user has ROLE_ADMIN
-    if (!$this->isGranted('ROLE_CEP')) {
-        // Redirect to a custom error page
-        return $this->render('student/error.html.twig', [
-            'message' => 'Access Denied'
-        ], new Response('', Response::HTTP_FORBIDDEN));
+    $user = $this->getUser();
+
+    if (!$user) {
+        return $this->redirectToRoute('app_login');
     }
+
+    // Vérifier si l'utilisateur a le privilège "List Student"
+    $hasListStudentPrivilege = false;
+    foreach ($user->getRole() as $role) {
+        foreach ($role->getPrivileges() as $privilege) {
+            if ($privilege->getName() === 'Add Student') {
+                $hasListStudentPrivilege = true;
+                break 2;
+            }
+        }
+    }
+    if (!$hasListStudentPrivilege) {
+        return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+    }        
+    
 
     $studentRepository = $doctrine->getRepository(Student::class);
     $student = $studentRepository->find($id);
@@ -303,13 +376,6 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
     public function studentNotes(Request $request, StudentRepository $studentRepository, NoteRepository $noteRepository, $id, LevelRepository $levelRepository, UERepository $ueRepository)
     {
 
-        // Check if the user has ROLE_ADMIN
-        if (!$this->isGranted('ROLE_USER')) {
-            // Redirect to a custom error page
-            return $this->render('student/error.html.twig', [
-                'message' => 'Access Denied'
-            ], new Response('', Response::HTTP_FORBIDDEN));
-        }
 
         // Récupérer l'étudiant connecté
         $currentUser = $this->getUser();
@@ -388,13 +454,27 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
         MailerInterface $mailer
     ): Response {
 
-        // Check if the user has ROLE_ADMIN
-        if (!$this->isGranted('ROLE_RPA')) {
-            // Redirect to a custom error page
-            return $this->render('student/error.html.twig', [
-                'message' => 'Access Denied'
-            ], new Response('', Response::HTTP_FORBIDDEN));
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
         }
+
+        // Vérifier si l'utilisateur a le privilège "List Student"
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'Validate Student') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+        }        
+        
+
         $new = true;
         // Récupérer l'étudiant par son ID
         $student = $entityManager->getRepository(Student::class)->find($studentId);

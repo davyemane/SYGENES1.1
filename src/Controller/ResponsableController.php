@@ -24,12 +24,26 @@ class ResponsableController extends AbstractController
     #[Route ('/resp_statistics', name: 'resp_statistics')]
     public function resp_statistics(): Response{
         // Check if the user has ROLE_ADMIN
-        if (!$this->isGranted('ROLE_SA')) {
-            // Redirect to a custom error page
-            return $this->render('student/error.html.twig', [
-                'message' => 'Access Denied'
-            ], new Response('', Response::HTTP_FORBIDDEN));
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
         }
+
+        // Vérifier si l'utilisateur a le privilège "List Student"
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'View stitistics') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+        }        
+
 
         $user = $this->getUser();
         return $this->render('responsable/resp_statistics.html.twig', [
@@ -38,31 +52,27 @@ class ResponsableController extends AbstractController
         ]);
     }   
 
-    // #[Route('/responsable', name: 'app_responsable')]
-    // public function index(): Response
-    // {
-    //     $user = $this->getUser();
-    //     return $this->render('responsable/index.html.twig', [
-    //         'controller_name' => 'ResponsableController',
-    //         'user' => $user
-    //     ]);
-    // }
-
     
 //ajouter un responsable
     #[Route('/add/resp/{id?0}', name: 'add_responsable')]
     public function academicInscription($id, ManagerRegistry $doctrine, Request $request): Response
     {
 
-        // Check if the user has ROLE_ADMIN
-        if (!$this->isGranted('ROLE_SA')) {
-            // Redirect to a custom error page
-            return $this->render('student/error.html.twig', [
-                'message' => 'Access Denied'
-            ], new Response('', Response::HTTP_FORBIDDEN));
-        }
-
+        // Vérifier si l'utilisateur a le privilège "List Student"
         $user = $this->getUser();
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'Add user') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+        }        
+
         $entityManager = $doctrine->getManager();
 
         // Vérifier si un ID d'étudiant a été fourni
@@ -105,15 +115,21 @@ class ResponsableController extends AbstractController
     #[Route("/list/ec/", name:"choix_ec")]
     public function Ec(ManagerRegistry $doctrine): Response
     {
-        // Check if the user has ROLE_ADMIN
-        if (!$this->isGranted('ROLE_AATP')) {
-            // Redirect to a custom error page
-            return $this->render('student/error.html.twig', [
-                'message' => 'Access Denied'
-            ], new Response('', Response::HTTP_FORBIDDEN));
-        }
-
+        // Vérifier si l'utilisateur a le privilège "List Student"
         $user = $this->getUser();
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'List EC') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+        }        
+
         $entityManager = $doctrine->getManager();
     
         // Retrieve all UEs
@@ -136,14 +152,21 @@ class ResponsableController extends AbstractController
 #[Route('/list', name: 'list_student_notes')]
 public function home(Request $request, ManagerRegistry $doctrine): Response
 {
-    // Check if the user has ROLE_ADMIN
-    if (!$this->isGranted('ROLE_AATP')) {
-        // Redirect to a custom error page
-        return $this->render('student/error.html.twig', [
-            'message' => 'Access Denied'
-        ], new Response('', Response::HTTP_FORBIDDEN));
+    $user = $this->getUser();
+    $hasListStudentPrivilege = false;
+    foreach ($user->getRole() as $role) {
+        foreach ($role->getPrivileges() as $privilege) {
+            if ($privilege->getName() === 'View Marks') {
+                $hasListStudentPrivilege = true;
+                break 2;
+            }
+        }
     }
-    try {
+    if (!$hasListStudentPrivilege) {
+        return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+    }    
+
+try {
         $repository = $doctrine->getRepository(Student::class);
 
         // Calculate total students and number of pages
@@ -218,16 +241,21 @@ public function home(Request $request, ManagerRegistry $doctrine): Response
     #[Route('/fields', name: 'fields_index')]
     public function fields(EntityManagerInterface $entityManager): Response
     {
-        // Check if the user has ROLE_ADMIN
-        if (!$this->isGranted('ROLE_RPA')) {
-            // Redirect to a custom error page
-            return $this->render('student/error.html.twig', [
-                'message' => 'Access Denied'
-            ], new Response('', Response::HTTP_FORBIDDEN));
-        }
-
         $user = $this->getUser();
-        $fields = $entityManager->getRepository(Field::class)->findAll();
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'List Fields') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+        } 
+
+            $fields = $entityManager->getRepository(Field::class)->findAll();
 
         return $this->render('responsable/field.html.twig', [
             'fields' => $fields,
@@ -242,14 +270,20 @@ public function home(Request $request, ManagerRegistry $doctrine): Response
     public function ListStudent(Request $request, ManagerRegistry $doctrine, $fieldId, $page, $nbre): Response
     {
 
-        // Check if the user has ROLE_ADMIN
-        if (!$this->isGranted('ROLE_RPA')) {
-            // Redirect to a custom error page
-            return $this->render('student/error.html.twig', [
-                'message' => 'Access Denied'
-            ], new Response('', Response::HTTP_FORBIDDEN));
-        }
         $user = $this->getUser();
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'List Students') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+        } 
+
         try {
             $entityManager = $doctrine->getManager();
     
