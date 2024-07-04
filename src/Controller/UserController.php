@@ -24,7 +24,6 @@ class UserController extends AbstractController
     }
 
     #[Route('user/profile/edit', name: 'app_profile_edit')]
-    #[IsGranted('ROLE_USER')]
     public function edit(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -84,7 +83,6 @@ class UserController extends AbstractController
 
 
     #[Route('user/profile', name: 'app_profile_show')]
-    #[IsGranted('ROLE_USER')]
     public function show(): Response
     {
         $user = $this->getUser();

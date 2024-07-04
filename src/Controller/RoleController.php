@@ -39,7 +39,7 @@ class RoleController extends AbstractController
             $entityManager->flush();
     
             $this->addFlash('success', $id > 0 ? 'Le rôle a été mis à jour avec succès.' : 'Le rôle a été créé avec succès.');
-            return $this->redirectToRoute('role_index');
+            return $this->redirectToRoute('field_new');
         }
     
         return $this->render('role/new.html.twig', [
