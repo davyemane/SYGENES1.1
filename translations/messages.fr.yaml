@@ -24,8 +24,15 @@ success-message: ""
 error-message: ""
 
 
-# Create a profile Text
-
+# Create a Role Text
+create-role-title: "Créer un profile"
+edit-role-title: "Modifier un profile"
+create-role: "Créer un profile"
+edit-role: "Modifier un profile"
+role-name: "Nom du profile"
+role-school: "Ecole" 
+role-privileges: ""
+create-role-btn: ""
 
 
 # Create a whatever text
