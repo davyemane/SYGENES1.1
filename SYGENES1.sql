@@ -16,6 +16,38 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `color_scheme`
+--
+
+DROP TABLE IF EXISTS `color_scheme`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `color_scheme` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `primary_color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `secondary_color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `accent_color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bacground_color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `text_color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `school_id` int DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_9AFD9BB9C32A47EE` (`school_id`),
+  CONSTRAINT `FK_9AFD9BB9C32A47EE` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `color_scheme`
+--
+
+LOCK TABLES `color_scheme` WRITE;
+/*!40000 ALTER TABLE `color_scheme` DISABLE KEYS */;
+INSERT INTO `color_scheme` VALUES (1,'#30ec22','#ffffff','#91f231','#000000','#000000',1,'schemaLM');
+/*!40000 ALTER TABLE `color_scheme` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `doctrine_migration_versions`
 --
 
@@ -36,7 +68,7 @@ CREATE TABLE `doctrine_migration_versions` (
 
 LOCK TABLES `doctrine_migration_versions` WRITE;
 /*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
-INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20240612082311','2024-06-12 08:23:17',39153),('DoctrineMigrations\\Version20240628085754','2024-06-28 09:10:44',41),('DoctrineMigrations\\Version20240629164702','2024-06-29 16:47:58',2410),('DoctrineMigrations\\Version20240630153654','2024-06-30 15:37:15',1514),('DoctrineMigrations\\Version20240630154937','2024-06-30 15:49:41',901);
+INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20240612082311','2024-06-12 08:23:17',39153),('DoctrineMigrations\\Version20240628085754','2024-06-28 09:10:44',41),('DoctrineMigrations\\Version20240629164702','2024-06-29 16:47:58',2410),('DoctrineMigrations\\Version20240630153654','2024-06-30 15:37:15',1514),('DoctrineMigrations\\Version20240630154937','2024-06-30 15:49:41',901),('DoctrineMigrations\\Version20240703105216','2024-07-03 10:52:44',26078),('DoctrineMigrations\\Version20240703133812','2024-07-03 13:38:31',2186),('DoctrineMigrations\\Version20240703135211','2024-07-03 13:52:18',4053),('DoctrineMigrations\\Version20240703141725','2024-07-03 14:17:30',622),('DoctrineMigrations\\Version20240703151853','2024-07-03 15:19:00',708),('DoctrineMigrations\\Version20240703153245','2024-07-03 15:32:49',7754),('DoctrineMigrations\\Version20240703161026','2024-07-03 16:10:32',2608),('DoctrineMigrations\\Version20240703171052','2024-07-03 17:11:01',6313),('DoctrineMigrations\\Version20240704102058','2024-07-04 10:21:19',8995),('DoctrineMigrations\\Version20240704105009','2024-07-04 10:50:15',8953),('DoctrineMigrations\\Version20240704105751','2024-07-04 10:58:00',8054);
 /*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,8 +113,11 @@ CREATE TABLE `field` (
   `id` int NOT NULL AUTO_INCREMENT,
   `code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `school_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_5BF54558C32A47EE` (`school_id`),
+  CONSTRAINT `FK_5BF54558C32A47EE` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=344 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -92,35 +127,8 @@ CREATE TABLE `field` (
 
 LOCK TABLES `field` WRITE;
 /*!40000 ALTER TABLE `field` DISABLE KEYS */;
-INSERT INTO `field` VALUES (1,'ISN','Ingenierie des Systèmes Numerique','filiere'),(2,'INS','Ingenierie Numerique Sociotechnique',NULL),(3,'CDN','Creation et Disign Numerique',NULL);
+INSERT INTO `field` VALUES (1,'ISN','Ingenierie des Systèmes Numerique','filiere',NULL),(2,'INS','Ingenierie Numerique Sociotechnique',NULL,NULL),(3,'CDN','Création et Design Numérique','Création et Design Numérique est une filière académique et professionnelle qui se concentre sur l\'application des principes de design et de créativité dans le domaine numérique. Cette filière combine des éléments de l\'art, du design graphique, de la technologie et de l\'informatique pour produire du contenu visuel et interactif destiné à divers supports numériques.',1);
 /*!40000 ALTER TABLE `field` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `field_ue`
---
-
-DROP TABLE IF EXISTS `field_ue`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `field_ue` (
-  `field_id` int NOT NULL,
-  `ue_id` int NOT NULL,
-  PRIMARY KEY (`field_id`,`ue_id`),
-  KEY `IDX_D5476A7B443707B0` (`field_id`),
-  KEY `IDX_D5476A7B62E883B1` (`ue_id`),
-  CONSTRAINT `FK_D5476A7B443707B0` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_D5476A7B62E883B1` FOREIGN KEY (`ue_id`) REFERENCES `ue` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `field_ue`
---
-
-LOCK TABLES `field_ue` WRITE;
-/*!40000 ALTER TABLE `field_ue` DISABLE KEYS */;
-/*!40000 ALTER TABLE `field_ue` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -133,8 +141,11 @@ DROP TABLE IF EXISTS `level`;
 CREATE TABLE `level` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `field_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_9AEACC13443707B0` (`field_id`),
+  CONSTRAINT `FK_9AEACC13443707B0` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,8 +154,36 @@ CREATE TABLE `level` (
 
 LOCK TABLES `level` WRITE;
 /*!40000 ALTER TABLE `level` DISABLE KEYS */;
-INSERT INTO `level` VALUES (1,'L1'),(2,'L2'),(3,'L3'),(4,'M1'),(5,'M2');
+INSERT INTO `level` VALUES (1,'L1',NULL),(2,'L2',NULL),(3,'L3',NULL),(4,'M1',NULL),(5,'M2',NULL),(8,'D1',NULL);
 /*!40000 ALTER TABLE `level` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `level_fields`
+--
+
+DROP TABLE IF EXISTS `level_fields`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `level_fields` (
+  `level_id` int NOT NULL,
+  `field_id` int NOT NULL,
+  PRIMARY KEY (`level_id`,`field_id`),
+  KEY `IDX_75382295FB14BA7` (`level_id`),
+  KEY `IDX_7538229443707B0` (`field_id`),
+  CONSTRAINT `FK_7538229443707B0` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_75382295FB14BA7` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `level_fields`
+--
+
+LOCK TABLES `level_fields` WRITE;
+/*!40000 ALTER TABLE `level_fields` DISABLE KEYS */;
+INSERT INTO `level_fields` VALUES (8,1),(8,2),(8,3);
+/*!40000 ALTER TABLE `level_fields` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -186,6 +225,57 @@ INSERT INTO `note` VALUES (4,13,1382,3,'15','15','48',NULL,'30-06-24','7');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `privilege`
+--
+
+DROP TABLE IF EXISTS `privilege`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `privilege` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `privilege`
+--
+
+LOCK TABLES `privilege` WRITE;
+/*!40000 ALTER TABLE `privilege` DISABLE KEYS */;
+INSERT INTO `privilege` VALUES (1,'AddUser');
+/*!40000 ALTER TABLE `privilege` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `privilege_role`
+--
+
+DROP TABLE IF EXISTS `privilege_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `privilege_role` (
+  `privilege_id` int NOT NULL,
+  `role_id` int NOT NULL,
+  PRIMARY KEY (`privilege_id`,`role_id`),
+  KEY `IDX_97F8DF5F32FB8AEA` (`privilege_id`),
+  KEY `IDX_97F8DF5FD60322AC` (`role_id`),
+  CONSTRAINT `FK_97F8DF5F32FB8AEA` FOREIGN KEY (`privilege_id`) REFERENCES `privilege` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_97F8DF5FD60322AC` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `privilege_role`
+--
+
+LOCK TABLES `privilege_role` WRITE;
+/*!40000 ALTER TABLE `privilege_role` DISABLE KEYS */;
+/*!40000 ALTER TABLE `privilege_role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `responsable`
 --
 
@@ -202,7 +292,7 @@ CREATE TABLE `responsable` (
   PRIMARY KEY (`id`),
   KEY `IDX_52520D07B03A8386` (`created_by_id`),
   CONSTRAINT `FK_52520D07B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -211,6 +301,7 @@ CREATE TABLE `responsable` (
 
 LOCK TABLES `responsable` WRITE;
 /*!40000 ALTER TABLE `responsable` DISABLE KEYS */;
+INSERT INTO `responsable` VALUES (1,13,'eyenga@gmail.com','676469014','Eyenga','01-07-24'),(2,NULL,'desire@gmail.com','676469014','Mavaiwa',NULL);
 /*!40000 ALTER TABLE `responsable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -223,9 +314,15 @@ DROP TABLE IF EXISTS `role`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `role` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `school_id` int DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `role` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_57698A6AC32A47EE` (`school_id`),
+  CONSTRAINT `FK_57698A6AC32A47EE` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -234,7 +331,36 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
+INSERT INTO `role` VALUES (1,1,'Directeur','2024-07-03 15:21:23','2024-07-03 15:21:23',NULL);
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `school`
+--
+
+DROP TABLE IF EXISTS `school`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `school` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `school`
+--
+
+LOCK TABLES `school` WRITE;
+/*!40000 ALTER TABLE `school` DISABLE KEYS */;
+INSERT INTO `school` VALUES (1,'Langue Maternelle','Langue-Maternelle-66855edc5a385.png','12, sang, sud, cmr','676469014','lm-afrique@gmail.com');
+/*!40000 ALTER TABLE `school` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -348,19 +474,19 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(180) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `roles` json NOT NULL,
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `student_id` int DEFAULT NULL,
   `responsable_id` int DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `profile_picture` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `roles` json NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_IDENTIFIER_USERNAME` (`username`),
   UNIQUE KEY `UNIQ_8D93D649CB944F1A` (`student_id`),
   UNIQUE KEY `UNIQ_8D93D64953C59D72` (`responsable_id`),
   CONSTRAINT `FK_8D93D64953C59D72` FOREIGN KEY (`responsable_id`) REFERENCES `responsable` (`id`),
   CONSTRAINT `FK_8D93D649CB944F1A` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -369,8 +495,36 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (13,'davyEmanes','[\"ROLE_ADMIN\"]','$2y$13$oMWFueqB4Vz4STn34Abb6uYgyVMZ2OcrsarOZjo5isQhoB3z8WPU2',NULL,NULL,'davyemane3@gmail.com','667eeb91130c0.jpg'),(14,'Emane','[\"ROLE_ADMIN\"]','$2y$13$e9.7ocoSG/hsdXjdXk0uDef2UvWLTE1mUgVrw7ca5HE1PXGKEWS3q',NULL,NULL,NULL,'667eeafb960bd.jpg'),(15,'bile0','[]','$2y$13$94bvm/YO.pAsgrIfAJybau669yUXtsWi0lFUhXYf4pAsnO6KN/2Bq',NULL,NULL,NULL,NULL),(16,'bile1','[]','$2y$13$jhLYWTaFXlnjS7wXeGphiudluicMu91mNSF/fi3gnpFgrISd7Lzyy',NULL,NULL,NULL,NULL),(17,'bile2','[]','$2y$13$2flcrkdtKWhXAnGVNLUR2eWQUR3IeuqGXnORke6el6pMIbcTRl.Pq',NULL,NULL,NULL,NULL),(18,'bile3','[]','$2y$13$6jM7.gVYZp1QxjiALesgz.xJ.BKgcY4LPJrpV0X9tP9zs6Q8iNT6a',NULL,NULL,NULL,NULL),(19,'bile4','[]','$2y$13$8PtFEuMXuhn9JRqy0mVbhOQ5eUz42YjHKD0JVEIkLxRt3XHeng782',NULL,NULL,NULL,NULL),(20,'bile5','[]','$2y$13$cXDSBP7/YJBzofQAEG4IJun.BJ4JRowxH3D6YD2oyMUO3RnRRaPEO',NULL,NULL,NULL,NULL),(22,'davyemane2@gmail.com','[\"ROLE_USER\"]','$2y$13$H5YtJ6Z0qa93yzPt.TXlQ.mBr/.nvUzpBk6reQNuj4j95s/glckLm',1382,NULL,'davyemane2@gmail.com','667fe4e017d94.jpg');
+INSERT INTO `user` VALUES (13,'davyEmanes','$2y$13$oMWFueqB4Vz4STn34Abb6uYgyVMZ2OcrsarOZjo5isQhoB3z8WPU2',NULL,NULL,'davyemane3@gmail.com','667eeb91130c0.jpg','null'),(14,'Emane','$2y$13$e9.7ocoSG/hsdXjdXk0uDef2UvWLTE1mUgVrw7ca5HE1PXGKEWS3q',NULL,NULL,NULL,'667eeafb960bd.jpg','null'),(15,'bile0','$2y$13$94bvm/YO.pAsgrIfAJybau669yUXtsWi0lFUhXYf4pAsnO6KN/2Bq',NULL,NULL,NULL,NULL,'null'),(16,'bile1','$2y$13$jhLYWTaFXlnjS7wXeGphiudluicMu91mNSF/fi3gnpFgrISd7Lzyy',NULL,NULL,NULL,NULL,'null'),(17,'bile2','$2y$13$2flcrkdtKWhXAnGVNLUR2eWQUR3IeuqGXnORke6el6pMIbcTRl.Pq',NULL,NULL,NULL,NULL,'null'),(18,'bile3','$2y$13$6jM7.gVYZp1QxjiALesgz.xJ.BKgcY4LPJrpV0X9tP9zs6Q8iNT6a',NULL,NULL,NULL,NULL,'null'),(19,'bile4','$2y$13$8PtFEuMXuhn9JRqy0mVbhOQ5eUz42YjHKD0JVEIkLxRt3XHeng782',NULL,NULL,NULL,NULL,'null'),(20,'bile5','$2y$13$cXDSBP7/YJBzofQAEG4IJun.BJ4JRowxH3D6YD2oyMUO3RnRRaPEO',NULL,NULL,NULL,NULL,'null'),(22,'davyemane2@gmail.com','$2y$13$H5YtJ6Z0qa93yzPt.TXlQ.mBr/.nvUzpBk6reQNuj4j95s/glckLm',1382,NULL,'davyemane2@gmail.com','667fe4e017d94.jpg','null'),(23,'eyenga','$2y$13$d7KWgn6E4gC1efhmMyi4KeEe7b9JsXFNqJCQVgDYxSrcz3CSeOghu',NULL,NULL,'eyenga@gmail.com','57f6dc924c724f75a3e5b9743e235d9f-6682d76feea19.jpg','null'),(24,'desire','$2y$13$88OxMNhrw0S6/0sq0jKBqe23CVtesRbgJbROya/x4aSXVaEAXBdzq',NULL,2,'desire@gmail.com','7dd184ec9e98470db6d9f24f1afd6a85-66869a986eade.jpg','[]');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_role`
+--
+
+DROP TABLE IF EXISTS `user_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_role` (
+  `user_id` int NOT NULL,
+  `role_id` int NOT NULL,
+  PRIMARY KEY (`user_id`,`role_id`),
+  KEY `IDX_2DE8C6A3A76ED395` (`user_id`),
+  KEY `IDX_2DE8C6A3D60322AC` (`role_id`),
+  CONSTRAINT `FK_2DE8C6A3A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_2DE8C6A3D60322AC` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_role`
+--
+
+LOCK TABLES `user_role` WRITE;
+/*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
+INSERT INTO `user_role` VALUES (24,1);
+/*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -382,4 +536,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-01 14:12:05
+-- Dump completed on 2024-07-04 14:01:23
