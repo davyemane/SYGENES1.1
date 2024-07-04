@@ -119,7 +119,7 @@ CREATE TABLE `level` (
   PRIMARY KEY (`id`),
   KEY `IDX_9AEACC13443707B0` (`field_id`),
   CONSTRAINT `FK_9AEACC13443707B0` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,7 +128,7 @@ CREATE TABLE `level` (
 
 LOCK TABLES `level` WRITE;
 /*!40000 ALTER TABLE `level` DISABLE KEYS */;
-INSERT INTO `level` VALUES (1,NULL,'D2');
+INSERT INTO `level` VALUES (1,NULL,'D2'),(2,NULL,'P1');
 /*!40000 ALTER TABLE `level` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,7 +156,7 @@ CREATE TABLE `level_fields` (
 
 LOCK TABLES `level_fields` WRITE;
 /*!40000 ALTER TABLE `level_fields` DISABLE KEYS */;
-INSERT INTO `level_fields` VALUES (1,1);
+INSERT INTO `level_fields` VALUES (1,1),(2,1);
 /*!40000 ALTER TABLE `level_fields` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -508,4 +508,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-04 15:28:30
+-- Dump completed on 2024-07-04 16:03:42
