@@ -49,7 +49,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Role>
      */
-    #[ORM\ManyToMany(targetEntity: Role::class, mappedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
     private Collection $role;
 
     public function __construct()
@@ -198,7 +198,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->role->contains($role)) {
             $this->role->add($role);
-            $role->addUser($this);
         }
 
         return $this;
@@ -206,9 +205,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeRole(Role $role): static
     {
-        if ($this->role->removeElement($role)) {
-            $role->removeUser($this);
-        }
+        $this->role->removeElement($role);
 
         return $this;
     }
