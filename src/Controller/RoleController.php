@@ -33,6 +33,11 @@ class RoleController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+            $privileges = $role->getPrivileges();
+            foreach ($privileges as $privilege) {
+                $role->addPrivilege($privilege);
+            }
+                
             if (!$role->getId()) {
                 $entityManager->persist($role);
             }

@@ -33,21 +33,21 @@ class Role
     private ?School $school = null;
 
     /**
-     * @var Collection<int, Privilege>
-     */
-    #[ORM\ManyToMany(targetEntity: Privilege::class, mappedBy: 'roles')]
-    private Collection $privileges;
-
-    /**
      * @var Collection<int, User>
      */
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'role')]
     private Collection $users;
 
+    /**
+     * @var Collection<int, Privilege>
+     */
+    #[ORM\ManyToMany(targetEntity: Privilege::class, inversedBy: 'roles')]
+    private Collection $privileges;
+
     public function __construct()
     {
-        $this->privileges = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->privileges = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -118,33 +118,6 @@ class Role
     }
 
     /**
-     * @return Collection<int, Privilege>
-     */
-    public function getPrivileges(): Collection
-    {
-        return $this->privileges;
-    }
-
-    public function addPrivilege(Privilege $privilege): static
-    {
-        if (!$this->privileges->contains($privilege)) {
-            $this->privileges->add($privilege);
-            $privilege->addRole($this);
-        }
-
-        return $this;
-    }
-
-    public function removePrivilege(Privilege $privilege): static
-    {
-        if ($this->privileges->removeElement($privilege)) {
-            $privilege->removeRole($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, User>
      */
     public function getUsers(): Collection
@@ -174,6 +147,30 @@ class Role
     public function __toString():string
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, Privilege>
+     */
+    public function getPrivileges(): Collection
+    {
+        return $this->privileges;
+    }
+
+    public function addPrivilege(Privilege $privilege): static
+    {
+        if (!$this->privileges->contains($privilege)) {
+            $this->privileges->add($privilege);
+        }
+
+        return $this;
+    }
+
+    public function removePrivilege(Privilege $privilege): static
+    {
+        $this->privileges->removeElement($privilege);
+
+        return $this;
     }
 
 }
