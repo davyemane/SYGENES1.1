@@ -16,6 +16,8 @@ class Role
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $role = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
@@ -26,11 +28,6 @@ class Role
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updatedAt = null;
 
-    /**
-     * @var Collection<int, User>
-     */
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'role')]
-    private Collection $users;
 
     #[ORM\ManyToOne(inversedBy: 'Roles')]
     private ?School $school = null;
@@ -41,10 +38,16 @@ class Role
     #[ORM\ManyToMany(targetEntity: Privilege::class, mappedBy: 'roles')]
     private Collection $privileges;
 
+    /**
+     * @var Collection<int, User>
+     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'role')]
+    private Collection $users;
+
     public function __construct()
     {
-        $this->users = new ArrayCollection();
         $this->privileges = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -52,6 +55,17 @@ class Role
         return $this->id;
     }
 
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(?string $role): static
+    {
+        $this->role = $role;
+
+        return $this;
+    }
 
     public function getName(): ?string
     {
@@ -89,29 +103,7 @@ class Role
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
 
-    public function addUser(User $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): static
-    {
-        $this->users->removeElement($user);
-
-        return $this;
-    }
 
     public function getSchool(): ?School
     {
@@ -151,4 +143,37 @@ class Role
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addRole($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): static
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeRole($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString():string
+    {
+        return $this->name;
+    }
+
 }

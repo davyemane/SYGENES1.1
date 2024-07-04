@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Responsable;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\EmailVerifier;
@@ -29,16 +30,10 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
-
-        // Check if the user has ROLE_ADMIN
-        if (!$this->isGranted('ROLE_SA')) {
-            // Redirect to a custom error page
-            return $this->render('student/error.html.twig', [
-                'message' => 'Access Denied'
-            ], new Response('', Response::HTTP_FORBIDDEN));
-        }
-
         $user = new User();
+        $responsable = new Responsable();
+        $user->setResponsable($responsable);
+        
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
     
@@ -73,23 +68,18 @@ class RegistrationController extends AbstractController
                 )
             );
     
+            // Set roles
+            $roles = $form->get('roles')->getData();
+            foreach ($roles as $role) {
+                $user->addRole($role);
+            }            
+            // Persist both User and Responsable
             $entityManager->persist($user);
+            $entityManager->persist($responsable);
             $entityManager->flush();
     
-            // Generate a signed url and email it to the user
-            // $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-            // (new TemplatedEmail())
-            //         ->from(new Address('SYGENES@sandbox6b1bc277a71d4f37b6fdeed52fdeeebe.mailgun.org', 'SYGENES'))
-            //         ->to($user->getEmail())
-            //         ->subject('Hi! Please confirm your email!')
-            //         ->htmlTemplate('registration/confirmation_email.html.twig')
-            //         ->context([
-            //             'user' => $user,
-            //             'signedUrl' => 'URL_GENERATED', // Replace with the actual signed URL
-            //             'expiresAtMessageKey' => 'EXPIRES_AT_MESSAGE_KEY', // Replace with the actual message key
-            //             'expiresAtMessageData' => 'EXPIRES_AT_MESSAGE_DATA' // Replace with the actual message data
-            //         ])
-            // );
+            // Email verification code (commented out in your original code)
+            // ...
     
             // Log the user in
             return $security->login($user, LoginAuthenticator::class, 'main');
