@@ -1,17 +1,6 @@
 <!doctype html>
 <html class="h-full" lang="{{ app.request.locale }}">
 <head>
-<<<<<<< HEAD
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
-  {% block stylesheets %}
-    {{ encore_entry_link_tags('app') }}
-  {% endblock %}
-  {{ encore_entry_script_tags('app') }}
-  {% block head %}{% block title %}<title></title>{% endblock %}{% endblock %}
-
-=======
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ asset('images/uiecc_logo.png') }}" type="image/x-icon">
@@ -28,7 +17,6 @@
             document.documentElement.classList.remove('dark')
         }
     </script>
->>>>>>> 725c2b6776803684beeaddf8eb26f18943fad0d1
 </head>
 <body class="h-full bg-background dark:bg-background text-text dark:text-text transition-colors duration-300">
 <header class="bg-background dark:bg-background">
