@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\School;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -51,8 +54,17 @@ class HomePageController extends AbstractController
     }
 
     #[Route('/admin', name: 'app_dashAdmin')]
-    public function dashboard(): Response
+    public function dashboard(SessionInterface $session, EntityManagerInterface $entityManager): Response
     {
+        $schoolName = $session->get('school_name');
+        $school = null;
+    
+        if ($schoolName) {
+            // Trouver l'entité School correspondante
+            $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
+        }
+
+
         // Check if the user has ROLE_ADMIN
         $user = $this->getUser();
 
@@ -65,19 +77,6 @@ class HomePageController extends AbstractController
         ];
 
         // Assuming the user has only one role
-        $roles = $user->getRole(); // Assuming getRoles() returns a collection of roles
-        $school = null;
-        
-        foreach ($roles as $role) {
-            // Assume each role has a getSchool method
-            $school = $role->getSchool();
-            
-            // Force initialization of the school proxy
-            if ($school !== null) {
-                $schoolName = $school->getName(); // Access a property to initialize the proxy
-                break; // Assuming you only need the school from one role
-            }
-        }
         
         return $this->render('responsable_dashboard/dashboardAdmin.html.twig', [
             "user" => $user,
@@ -88,7 +87,7 @@ class HomePageController extends AbstractController
     
     
     #[Route('/student/dashboard', name: 'app_dashStudent')]
-    public function StudentDashboard(ManagerRegistry $doctrine): Response
+    public function StudentDashboard(ManagerRegistry $doctrine, SessionInterface $session, EntityManagerInterface $entityManager): Response
     {
         try {
             $user = $this->getUser();
@@ -103,32 +102,17 @@ class HomePageController extends AbstractController
                 throw new \Exception('Aucun étudiant associé à cet utilisateur.');
             }
 
-            $colorScheme = [
-                'primaryColor' => '#ffed4a', // Replace with your primary color
-                'secondaryColor' => '#ffed4a', // Replace with your secondary color
-                'accentColor' => '#ffed4a', // Replace with your accent color
-                'backgroundColor' => '#ffed4a', // Replace with your background color
-                'textColor' => '#ffed4a' // Replace with your text color
-            ];
-
             //recupere le role
-            $roles = $user->getRole(); // Assuming getRoles() returns a collection of roles
+            $schoolName = $session->get('school_name');
             $school = null;
-            
-            foreach ($roles as $role) {
-                // Assume each role has a getSchool method
-                $school = $role->getSchool();
-                
-                // Force initialization of the school proxy
-                if ($school !== null) {
-                    $schoolName = $school->getName(); // Access a property to initialize the proxy
-                    break; // Assuming you only need the school from one role
-                }
+        
+            if ($schoolName) {
+                // Trouver l'entité School correspondante
+                $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
             }
-                return $this->render('student_dashboard/index.html.twig', [
+                    return $this->render('student_dashboard/index.html.twig', [
                 'user' => $user,
                 'student' => $student,
-                'color_scheme'=>$colorScheme,
                 'school'=>$school,
             ]);
 
@@ -138,19 +122,6 @@ class HomePageController extends AbstractController
         }
     }
 
-    #[Route('/register1', name: 'app_register_page')]
-    public function register(){
-        return $this->render('home_page/index.html.twig', [
-            'controller_name' => 'HomePageController',
-        ]);
-    }
-
-    #[Route('/register_temp', name: 'app_register_temp_page')]
-    public function register_temp(){
-        return $this->render('home_page/registration_temp.html.twig', [
-            'controller_name' => 'HomePageController',
-        ]);
-    }
 
 }
 
