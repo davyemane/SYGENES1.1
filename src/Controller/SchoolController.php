@@ -68,7 +68,7 @@ class SchoolController extends AbstractController
             $session->set('school_name', $school->getName());
     
             $this->addFlash('success', $id > 0 ? 'L\'école a été mise à jour avec succès.' : 'L\'école a été créée avec succès.');
-            return $this->redirectToRoute('role_new');
+            return $this->redirectToRoute('field_new');
         }
     
         return $this->render('school/new.html.twig', [

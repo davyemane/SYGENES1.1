@@ -9,32 +9,13 @@
     <link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
     {{ encore_entry_script_tags('app') }}
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': 'var(--primary-color)',
-                        'secondary': 'var(--secondary-color)',
-                        'accent': 'var(--accent-color)',
-                        'background': 'var(--background-color)',
-                        'text': 'var(--text-color)',
-                    }
-                }
-            }
-        }
-    </script>
-    {% set color_scheme = color_scheme() %}
+  
+
     <style>
-        :root {
-            --primary-color: {{ color_scheme.primaryColor|e }};
-            --secondary-color: {{ color_scheme.secondaryColor|e }};
-            --accent-color: {{ color_scheme.accentColor|e }};
-            --background-color: {{ color_scheme.bacgroundColor|e }};
-            --text-color: {{ color_scheme.textColor|e }};
-        }
 
         body {
             background-color: var(--background-color);
