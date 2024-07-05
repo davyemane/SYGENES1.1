@@ -10,43 +10,23 @@
   {% block script %}
     {{ encore_entry_script_tags('app') }}
   {% endblock %}
-
-  {% set color_scheme = color_scheme() %}
-  <style>
-        :root {
-            --primary-color: {{ color_scheme.primaryColor|e }};
-            --secondary-color: {{ color_scheme.secondaryColor|e }};
-            --accent-color: {{ color_scheme.accentColor|e }};
-            --background-color: {{ color_scheme.backgroundColor|e }};
-            --text-color: {{ color_scheme.textColor|e }};
-        }
-  </style>
   
-  {% block head %}{% block title %}<title></title>{% endblock %}{% endblock %}
+  {% block head %}{% block title %}<title>{{ 'app.title'|trans }}</title>{% endblock %}{% endblock %}
   {% block current_route %}{% endblock %}
-
-  <style>
-  .nav-link.text-blue-600 {
-    font-weight: bold;
-  }
-  .nav-link .bar {
-    transition: all 0.3s ease;
-  }
-  </style>
 </head>
 
-<body class="h-full" style="background-color: var(--background-color); color: var(--text-color);">
-<header class="bg-white">
-  <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 " aria-label="Global">
-    <div class="flex items-center lg:flex-1">
-      <a href="{{ path('app_home_page') }}" class="-m-1.5 p-1.5 flex items-center">
-        <img class="h-12 w-auto" src="/images/uiecc_logo.png" alt="UIECC Logo">
-        <span class="ml-3 text-lg font-semibold" style="color: var(--text-color);">SYGENES</span>
+<body class="h-full">
+<header class="bg-background text-text ">
+  <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+    <div class="flex items-center lg:flex-1 ">
+      <a href="{{ path('app_home_page') }}" class="-m-1.5 p-1.5 flex text-text items-center hover:text-secondary">
+        <img class="h-12 w-auto" src="/images/uiecc_logo.png" alt="{{ 'app.logo_alt'|trans }}">
+        <span class="ml-3 text-lg font-semibold ">{{ 'app.name'|trans }}</span>
       </a>
     </div>
 
     <div class="flex lg:hidden">
-      <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" id="mobile-menu-button">
+      <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5" id="mobile-menu-button" style="color: var(--secondary-color);">
         <span class="sr-only">Open main menu</span>
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -54,30 +34,30 @@
       </button>
     </div>
     <div class="hidden lg:flex lg:gap-x-12">
-      <div class="relative hover:text-blue-600">
-        <a href="{{ path('app_home_page') }}" class="nav-link flex items-center gap-x-1 font-semibold leading-6" style="color: var(--text-color);">
-          Home
-          <div id="bottom-bar" class="hidden h-1 bg-blue-500 w-4/2 mx-auto rounded-full bar"></div>
+      <div class="relative">
+        <a href="{{ path('app_home_page') }}" class="hover:text-secondary flex items-center gap-x-1 font-semibold leading-6">
+          {{ 'nav.home'|trans }}
+          <div id="bottom-bar" class="hidden h-1 w-4/2 mx-auto rounded-full bar"></div>
         </a>
       </div>
-      <a href="{{ path('app_about_page') }}" class="nav-link font-semibold leading-6" style="color: var(--text-color);">About</a>
-      <a href="{{ path('app_contact_us_page') }}" class="nav-link font-semibold leading-6" style="color: var(--text-color);">Contact us</a>
-      <a href="{{ path('app_documentation_page') }}" class="nav-link font-semibold leading-6" style="color: var(--text-color);">Documentation</a>
+      <a href="{{ path('app_about_page') }}" class="hover:text-secondary font-semibold leading-6">{{ 'nav.about'|trans }}</a>
+      <a href="{{ path('app_contact_us_page') }}" class="hover:text-secondary font-semibold leading-6">{{ 'nav.contact_us'|trans }}</a>
+      <a href="{{ path('app_documentation_page') }}" class="hover:text-secondary font-semibold leading-6">{{ 'nav.documentation'|trans }}</a>
     </div>
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-      <a href="{{ path('app_login') }}" class="nav-link rounded-md px-3.5 py-2.5 font-semibold leading-6 text-white" style="background-color: var(--accent-color); hover:text-white; hover:bg-orange-400;">Log in <span aria-hidden="true">&rarr;</span></a>
+      <a href="{{ path('app_login') }}" class="hover:text-secondary login-button rounded-md px-3.5 py-2.5 font-semibold leading-6">{{ 'nav.login'|trans }} <span aria-hidden="true">&rarr;</span></a>
     </div>
   </nav>
   <!-- Mobile menu, show/hide based on menu open state. -->
-  <div class="hidden lg:hidden " role="dialog" aria-modal="true" id="mobile-menu">
+  <div class="hidden lg:hidden mobile-menu" role="dialog" aria-modal="true" id="mobile-menu">
     <div class="fixed inset-0 z-10"></div>
-    <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+    <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
       <div class="flex items-center justify-between">
-        <a href="{{path('app_home_page')}}" class="-m-1.5 p-1.5">
+        <a href="{{path('app_home_page')}}" class="-m-1.5 p-1.5 hover:text-secondary text-text">
           <span class="sr-only">SYGENES</span>
           <img class="h-8 w-auto" src="/images/uiecc_logo.png" alt="">
         </a>
-        <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" id="mobile-menu-close">
+        <button type="button" class="-m-2.5 rounded-md p-2.5" id="mobile-menu-close" style="color: var(--secondary-color);">
           <span class="sr-only">Close menu</span>
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -87,13 +67,13 @@
       <div class="mt-6 flow-root">
         <div class="-my-6 divide-y divide-gray-500/10">
           <div class="space-y-2 py-6">
-            <a href="{{ path('app_home_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7" style="color: var(--text-color); hover:bg-gray-50;">Home</a>
-            <a href="{{ path('app_about_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7" style="color: var(--text-color); hover:bg-gray-50;">About</a>
-            <a href="{{ path('app_contact_us_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7" style="color: var(--text-color); hover:bg-gray-50;">Contact Us</a>
-            <a href="{{ path('app_documentation_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7" style="color: var(--text-color); hover:bg-gray-50;">Documentation</a>
+            <a href="{{ path('app_home_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100">{{ 'nav.home'|trans }}</a>
+            <a href="{{ path('app_about_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100">{{ 'nav.about'|trans }}</a>
+            <a href="{{ path('app_contact_us_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100">{{ 'nav.contact_us'|trans }}</a>
+            <a href="{{ path('app_documentation_page') }}" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100">{{ 'nav.documentation'|trans }}</a>
           </div>
           <div class="py-6">
-            <a href="{{ path('app_login') }}" class="block rounded-lg px-3 py-2.5 text-base font-semibold leading-7" style="color: var(--text-color); hover:bg-gray-50;">Log in</a>
+            <a href="{{ path('app_login') }}" class="block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 hover:bg-gray-100">{{ 'nav.login'|trans }}</a>
           </div>
         </div>
       </div>
@@ -103,11 +83,43 @@
 
 {% block body %} {% endblock %}
 
-<div class="flex flex-col bg-white">
-  <footer class="footer py-3 my-4 mt-auto" style="background-color: var(--background-color); color: var(--text-color);">
-    <ul class="flex justify-center border-b pb-3 mb-3">
+<div class="flex flex-col">
+  <footer class="footer py-3 my-4 mt-auto">
+    <ul class="flex justify-center border-b pb-3 mb-3" style="border-color: rgba(71, 71, 71, 0.1);">
       <li class="nav-item">
-        <a class="nav-link px-2" style="color: var(--text-color);" href="{{ path('app_home_page') }}">Home</a>
+        <a class="hover:text-secondary text-text  px-2" href="{{ path('app_home_page') }}">{{ 'nav.home'|trans }}</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link px-2" style
+        <a class="hover:text-secondary  text-text  px-2" href="{{ path('app_about_page') }}">{{ 'nav.about'|trans }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="hover:text-secondary text-text  px-2" href="{{ path('app_contact_us_page') }}">{{ 'nav.contact_us'|trans }}</a>
+      </li>
+      <li class="nav-item">
+        <a class="hover:text-secondary text-text  px-2" href="{{ path('app_documentation_page') }}">{{ 'nav.documentation'|trans }}</a>
+      </li>
+    </ul>
+    <p class="text-center">{{ 'footer.copyright'|trans({'%year%': 'now'|date('Y')}) }}</p>
+  </footer>
+</div>
+
+<script>
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+  mobileMenuButton.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+  });
+
+  mobileMenuClose.addEventListener('click', () => {
+    mobileMenu.classList.add('hidden');
+  });
+
+  function toggleDarkMode() {
+  document.documentElement.classList.toggle('dark');
+  localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+}
+</script>
+</body>
+</html>

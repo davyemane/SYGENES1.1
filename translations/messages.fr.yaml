@@ -35,7 +35,21 @@ role-privileges: ""
 create-role-btn: ""
 
 
-# Create a whatever text
+# Base.html.twig page
+app:
+  title: 'SYGENES'
+  name: 'SYGENES'
+  logo_alt: 'Logo UIECC'
+
+nav:
+  home: 'Accueil'
+  about: 'À propos'
+  contact_us: 'Contactez-nous'
+  documentation: 'Documentation'
+  login: 'Connexion'
+
+footer:
+  copyright: '© %year% SYGENES, UIECC.'
 
 
 

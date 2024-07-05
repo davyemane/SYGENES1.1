@@ -16,14 +16,61 @@
             theme: {
                 extend: {
                     colors: {
-                        'dark-purple': '#081A51',
-                        'light-white': 'rgba(255,255,255,0.18)'
+                        'primary': 'var(--primary-color)',
+                        'secondary': 'var(--secondary-color)',
+                        'accent': 'var(--accent-color)',
+                        'background': 'var(--background-color)',
+                        'text': 'var(--text-color)',
                     }
                 }
             }
         }
     </script>
+    {% set color_scheme = color_scheme() %}
     <style>
+        :root {
+            --primary-color: {{ color_scheme.primaryColor|e }};
+            --secondary-color: {{ color_scheme.secondaryColor|e }};
+            --accent-color: {{ color_scheme.accentColor|e }};
+            --background-color: {{ color_scheme.bacgroundColor|e }};
+            --text-color: {{ color_scheme.textColor|e }};
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        #sidebarDiv {
+            background-color: var(--primary-color);
+        }
+
+        .menu-item, .submenu-item {
+            color: var(--text-color);
+        }
+
+        .menu-item:hover, .submenu-item:hover, .menu-item.active, .submenu-item.active {
+            background-color: var(--secondary-color);
+        }
+
+        #searchContainer {
+            background-color: var(--secondary-color);
+        }
+
+        #searchInput::placeholder {
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        header {
+            background-color: var(--background-color);
+            border-bottom: 1px solid var(--secondary-color);
+        }
+
+        #main_content_area {
+            background-color: var(--background-color);
+        }
+
         #searchInput:focus {
             outline: none;
             box-shadow: none;
@@ -42,11 +89,6 @@
 
         .submenu-item.hidden {
             display: none;
-        }
-
-        .menu-item.active,
-        .submenu-item.active {
-            background-color: rgba(255, 255, 255, 0.2);
         }
 
         .submenu-item {
@@ -107,60 +149,60 @@
 <body class="font-sans antialiased leading-none h-full w-full">
     <div class="flex h-full">
         <div id="sidebarDiv"
-            class="inset-y-0 left-0 fixed bg-dark-purple dark:bg-gray-800 p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
+            class="inset-y-0 left-0 fixed bg-primary p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
             <img id="toggleBtn" src="/icons/previous.png" alt="previous"
                 class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
             <div class="inline-flex items-center">
                 <img src="/icons/uiecc.svg" alt="uiecc_logo" class="w-12 h-auto cursor-pointer mr-4">
-                <h1 id="sidebarTitle" class="text-white text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
+                <h1 id="sidebarTitle" class="text-text text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
             </div>
             <div id="searchContainer"
-                class="flex items-center rounded-md bg-light-white dark:bg-gray-600 mt-6 transition-all duration-300">
+                class="flex items-center rounded-md bg-secondary mt-6 transition-all duration-300">
                 <img id="searchIcon" src="/icons/search.png" alt="search"
                     class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
                 <input type="search" id="searchInput"
-                    class="text-base bg-transparent w-full text-white dark:text-gray-200 border-none focus:outline-none px-3 py-2"
+                    class="text-base bg-transparent w-full text-text border-none focus:outline-none px-3 py-2"
                     placeholder="Search">
             </div>
 
             <ul class="pt-2 flex-grow overflow-y-auto">
                 <a href="{{ path('app_dashAdmin')}}">
                     <li
-                        class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2">
+                        class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md mt-2">
                         <img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
                         <span class="text-base font-medium flex-1">Dashboard</span>
                     </li>
                 </a>
 
-                {% if is_granted("ROLE_SA") %} 
-                <li class="menu-item text-gray-300 text-sm cursor-pointer mt-2">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md submenu-trigger">
+                {% if is_granted("ROLE_SA") %}
+                <li class="menu-item text-text text-sm cursor-pointer mt-2">
+                    <div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
                         <img src="/icons/students.png" alt="students" class="w-4 h-4 ml-3">
                         <span class="text-base font-medium flex-1">Students</span>
                         <i class="fas fa-chevron-down transition-transform duration-300"></i>
                     </div>
                     <ul class="submenu ml-6 mt-2">
                         <a href="{{path('add_student')}}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add new student
+                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add new student
                                 data</li>
                         </a>
                         <a href="{{path('add_student')}}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Modify a student
+                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Modify a student
                                 data</li>
                         </a>
                         <a href="{{ path('list_student_2') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">List students</li>
+                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List students</li>
                         </a>
                         <a href="{{ path('import') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Import excel file
+                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Import excel file
                             </li>
                         </a>
                     </ul>
                 </li>
-                 {% endif %} 
+                {% endif %}
 
-                <li class="menu-item text-gray-300 text-sm cursor-pointer">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md submenu-trigger">
+                <li class="menu-item text-text text-sm cursor-pointer">
+                    <div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
                         <img src="/icons/grades.png" alt="grades" class="w-4 h-4 ml-3">
                         <span class="text-base font-medium flex-1">Marks</span>
                         <i class="fas fa-chevron-down transition-transform duration-300"></i>
@@ -168,13 +210,13 @@
                     <ul class="submenu ml-6 mt-2">
                     {% if is_granted('ROLE_AAT') %}
                         <a href="{{ path('add_note') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add a student's
+                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add a student's
                                 marks</li>
                         </a>
                     {% endif %}
                     {% if is_granted('ROLE_AATP') %}    
                         <a href="{{ path('choix_ec') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">View students
+                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View students
                                 marks</li>
                         </a>
                     {% endif %}
@@ -182,44 +224,40 @@
                 </li>
 
                 {% if is_granted("ROLE_CEP") %}
-                <li class="menu-item text-gray-300 text-sm cursor-pointer">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md submenu-trigger">
+                <li class="menu-item text-text text-sm cursor-pointer">
+                    <div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
                         <img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
                         <span class="text-base font-medium flex-1">UE & EC</span>
                         <i class="fas fa-chevron-down transition-transform duration-300"></i>
                     </div>
                     <ul class="submenu ml-6 mt-2">
                         <a href="{{ path('add_ue') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add an UE</li>
+                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add an UE</li>
                         </a>
                         <a href="{{ path('add_ec') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add an EC</li>
+                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add an EC</li>
                         </a>
                         <a href="{{ path('choix_ec') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">List of UE & EC
+                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List of UE & EC
                             </li>
                         </a>
-                        <!-- <a href="{{ path('fields_index') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">List of Fields
-                            </li>
-                        </a> -->
                     </ul>
                 </li>
                 {% endif %}
                 {% if is_granted("ROLE_SA") %}
-                <li class="menu-item text-gray-300 text-sm cursor-pointer">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md submenu-trigger">
+                <li class="menu-item text-text text-sm cursor-pointer">
+                    <div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
                         <img src="/icons/responsable.png" alt="grades" class="w-4 h-4 ml-3">
                         <span class="text-base font-medium flex-1">Responsable</span>
                         <i class="fas fa-chevron-down transition-transform duration-300"></i>
                     </div>
                     <ul class="submenu ml-6 mt-2">
                         <a href="{{ path('add_responsable') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">Add Responsable
+                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add Responsable
                             </li>
                         </a>
                         <a href="#">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300">View List of
+                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View List of
                                 Responsable</li>
                         </a>
                     </ul>
@@ -231,28 +269,28 @@
                 <ul>
                     <a href="{{path('app_profile_show')}}">
                         <li
-                            class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md">
+                            class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
                             <i class="fas fa-user-circle w-4 h-4 ml-3"></i>
                             <span class="text-base font-medium flex-1">Profile</span>
                         </li>
                     </a>
                     <a href="#">
                         <li
-                            class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md">
+                            class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
                             <i class="fas fa-cog w-4 h-4 ml-3"></i>
                             <span class="text-base font-medium flex-1">Settings</span>
                         </li>
                     </a>
                     <a href="#">
                         <li
-                            class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white dark:hover:bg-gray-700 rounded-md">
+                            class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
                             <i id="themeToggleIcon" class="fas fa-sun w-4 h-4"></i>
                             <span id="themeToggleText" class="text-base font-medium flex-1">Light Mode</span>
                         </li>
                     </a>
                     <a href="{{ path('app_logout') }}">
                         <li
-                            class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md">
+                            class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
                             <i class="fas fa-sign-out-alt w-4 h-4 ml-3"></i>
                             <span class="text-base font-medium flex-1">Logout</span>
                         </li>
@@ -262,10 +300,10 @@
         </div>
         <div id="contentDiv" class="flex-1">
             <!-- Top Navigation -->
-            <header class="bg-white-600 shadow p-4 flex justify-end items-end">
+            <header class="bg-background shadow p-4 flex justify-end items-end">
                 <div class="flex items-center space-x-4 mr-8">
                     <a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
-                        <div class="text-gray-500">{{ user.username }}</div>
+                        <div class="text-text">{{ user.username }}</div>
                         {% if user.profilePicture %}
                         <img class="w-8 h-8 rounded-full"
                             src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}"
@@ -282,7 +320,7 @@
                 <div class="flex-grow flex flex-col">
                     <!-- Main Content Area -->
                     <main class="flex-grow p-4">
-                        <div id="main_content_area" class="bg-white-500 rounded-lg h-full ml-64">
+                        <div id="main_content_area" class="bg-background rounded-lg h-full ml-64">
                             {% block body %}
                             {% block page_header %}{% endblock %}
                             {% endblock %}
@@ -416,9 +454,14 @@
             document.documentElement.classList.toggle('dark', isDarkMode);
 
             if (isDarkMode) {
+                document.documentElement.style.setProperty('--background-color',
+                    '{{ color_scheme.darkBackgroundColor|e }}');
+                document.documentElement.style.setProperty('--text-color', '{{ color_scheme.darkTextColor|e }}');
                 themeToggleIcon.classList.replace('fa-moon', 'fa-sun');
                 themeToggleText.textContent = 'Light Mode';
             } else {
+                document.documentElement.style.setProperty('--background-color', '{{ color_scheme.bacgroundColor|e }}');
+                document.documentElement.style.setProperty('--text-color', '{{ color_scheme.textColor|e }}');
                 themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
                 themeToggleText.textContent = 'Dark Mode';
             }

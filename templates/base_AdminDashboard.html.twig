@@ -13,6 +13,17 @@
 		<link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
 
 		{{ encore_entry_script_tags('app') }}
+		{% set color_scheme = color_scheme() %}
+		<style>
+        :root {
+            --primary-color: {{ color_scheme.primaryColor|e }};
+            --secondary-color: {{ color_scheme.secondaryColor|e }};
+            --accent-color: {{ color_scheme.accentColor|e }};
+            --background-color: {{ color_scheme.bacgroundColor|e }};
+            --text-color: {{ color_scheme.textColor|e }};
+        }
+  		</style>
+
 		<style>
 
 			.icon-img {

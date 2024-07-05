@@ -22,3 +22,36 @@ create-school-btn: "Create School"
 update-school-btn: "Update School"
 success-message: ""
 error-message: ""
+
+# Base.html.twig page variables
+app:
+  title: 'SYGENES'
+  name: 'SYGENES'
+  logo_alt: 'UIECC Logo'
+
+nav:
+  home: 'Home'
+  about: 'About'
+  contact_us: 'Contact us'
+  documentation: 'Documentation'
+  login: 'Log in'
+
+footer:
+  copyright: '© %year% SYGENES, UIECC.'
+
+
+# Basehtml index page text
+home:
+  name: "SYGENES"
+  title: 'Home'
+  documentation_prompt: 'Consult our documentation if you are lost.'
+  read_more: 'Read more'
+  welcome: 'Welcome to'
+  description: 'Your all in one Marks Management System, made for and by the International Advanced School of Digital Engineering.'
+  sign_up: 'Sign Up'
+  log_in: 'Log in'
+  register_prompt: 'New to the School? Register Now.'
+  register_description: 'You just got the competitive entrance exam. Click below to register administratively.'
+  student_registration: 'Student Registration'
+  learn_more: 'Learn more'
+  app_screenshot: 'App screenshot'

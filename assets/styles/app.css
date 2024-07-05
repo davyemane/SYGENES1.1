@@ -7,9 +7,11 @@ body {
 }
 
 :root {
-    --primary-color: #ea8035;
-    --secondary-color: #1a73e8;
-    --accent-color: #fbbc05;
-    --background-color: #ffffff;
-    --text-color: #323436;
+
+      --primary-color: rgb(249 115 22);
+      --primary-color-hover: rgb(251 146 60);
+      --secondary-color: rgb(52, 128, 251);
+      --secondary-color-hover: rgb(65, 135, 248);
+      --background-color: #ffffff;
+      --text-color: #2b2a2a;
 }
