@@ -57,29 +57,36 @@ class HomePageController extends AbstractController
         $user = $this->getUser();
 
         $colorScheme = [
-            'primaryColor' => '#ffed4a', // Replace with your primary color
-            'secondaryColor' => '#ffed4a', // Replace with your secondary color
-            'accentColor' => '#ffed4a', // Replace with your accent color
-            'backgroundColor' => '#ffed4a', // Replace with your background color
-            'textColor' => '#ffed4a' // Replace with your text color
+            'primaryColor' => '#3490dc', // Bleu vif pour la couleur principale
+            'secondaryColor' => '#ffed4a', // Jaune doré pour la couleur secondaire
+            'accentColor' => '#e3342f', // Rouge vif pour les accents
+            'backgroundColor' => '#f8fafc', // Blanc cassé pour l'arrière-plan
+            'textColor' => '#2d3748' // Gris foncé pour le texte
         ];
 
         // Assuming the user has only one role
         $roles = $user->getRole(); // Assuming getRoles() returns a collection of roles
         $school = null;
-
-        if (!empty($roles)) {
-            // Get the first role (assuming it's a single role for the user)
-            $role = $roles[0]; // Adjust this based on your actual logic
+        
+        foreach ($roles as $role) {
+            // Assume each role has a getSchool method
             $school = $role->getSchool();
+            
+            // Force initialization of the school proxy
+            if ($school !== null) {
+                $schoolName = $school->getName(); // Access a property to initialize the proxy
+                break; // Assuming you only need the school from one role
+            }
         }
-dump($school);
+        
         return $this->render('responsable_dashboard/dashboardAdmin.html.twig', [
             "user" => $user,
             'color_scheme' => $colorScheme,
             'school' => $school
         ]);
     }
+    
+    
     #[Route('/student/dashboard', name: 'app_dashStudent')]
     public function StudentDashboard(ManagerRegistry $doctrine): Response
     {
@@ -112,8 +119,22 @@ dump($school);
                 'backgroundColor' => '#ffed4a', // Replace with your background color
                 'textColor' => '#ffed4a' // Replace with your text color
             ];
-            $school = $student->getField()->getSchool();
-            return $this->render('student_dashboard/index.html.twig', [
+
+            //recupere le role
+            $roles = $user->getRole(); // Assuming getRoles() returns a collection of roles
+            $school = null;
+            
+            foreach ($roles as $role) {
+                // Assume each role has a getSchool method
+                $school = $role->getSchool();
+                
+                // Force initialization of the school proxy
+                if ($school !== null) {
+                    $schoolName = $school->getName(); // Access a property to initialize the proxy
+                    break; // Assuming you only need the school from one role
+                }
+            }
+                return $this->render('student_dashboard/index.html.twig', [
                 'user' => $user,
                 'student' => $student,
                 'color_scheme'=>$colorScheme,

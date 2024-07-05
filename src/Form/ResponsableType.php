@@ -28,11 +28,6 @@ class ResponsableType extends AbstractType
                 'label' => ' ',
             ],)
             ->add('created_by', HiddenType::class)
-            // ->add('userAccount', EntityType::class, [
-            //     'class' => User::class,
-            //     'choice_label' => 'id',
-            // ])
-            ->add('submit', SubmitType::class)
 
         ;
     }

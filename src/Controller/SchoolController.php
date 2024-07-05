@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -24,7 +25,7 @@ class SchoolController extends AbstractController
     }
 
     #[Route('/new/{id?0}', name: 'school_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, int $id = 0): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger, SessionInterface $session, int $id = 0): Response
     {
         if ($id > 0) {
             $school = $entityManager->getRepository(School::class)->find($id);
@@ -62,6 +63,9 @@ class SchoolController extends AbstractController
                 $entityManager->persist($school);
             }
             $entityManager->flush();
+            
+            // Enregistrez le nom de l'école dans la session
+            $session->set('school_name', $school->getName());
     
             $this->addFlash('success', $id > 0 ? 'L\'école a été mise à jour avec succès.' : 'L\'école a été créée avec succès.');
             return $this->redirectToRoute('role_new');
