@@ -40,9 +40,12 @@ services:
     App\EventListener\LocaleListener:
         tags:
             - { name: kernel.event_subscriber }
-        
+            
+    App\Twig\ColorSchemeExtension:
+        arguments:
+            $colorSchemeService: '@App\Service\ColorSchemeService'
+        tags:
+            - { name: 'twig.extension' }
 
         # add more service definitions when explicit configuration is needed
         # please note that last definitions always *replace* previous ones
-    App\Twig\ColorSchemeExtension:
-        tags: [twig.extension]

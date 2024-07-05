@@ -11,14 +11,15 @@
     {{ encore_entry_script_tags('app') }}
   {% endblock %}
 
+  {% set color_scheme = color_scheme() %}
   <style>
-        :root {
-            --primary-color: {{ color_scheme.primaryColor }};
-            --secondary-color: {{ color_scheme.secondaryColor }};
-            --accent-color: {{ color_scheme.accentColor }};
-            --background-color: {{ color_scheme.backgroundColor }};
-            --text-color: {{ color_scheme.textColor }};
-        }
+      :root {
+          --primary-color: {{ color_scheme.primaryColor }};
+          --secondary-color: {{ color_scheme.secondaryColor }};
+          --accent-color: {{ color_scheme.accentColor }};
+          --background-color: {{ color_scheme.bacgroundColor }};
+          --text-color: {{ color_scheme.textColor }};
+      }
   </style>
   
   {% block head %}{% block title %}<title></title>{% endblock %}{% endblock %}
