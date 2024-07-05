@@ -3,43 +3,39 @@
 {% block title %}<title>{{ 'register.register'|trans }}</title>{% endblock %}
 
 {% block body %}
-<div class="max-w-lg mx-auto mt-10 p-6 bg-white dark:bg-gray-800 shadow-md rounded-md transition-colors duration-300">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-semibold text-text dark:text-text-light">{{ 'register.user-registration'|trans }}</h2>
-        <a href="{{path('level_new')}}" class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 shadow-lg">
+<div class="max-w-lg mx-auto mt-10 p-8 bg-white dark:bg-gray-800 shadow-lg rounded-lg transition-colors duration-300">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold text-primary dark:text-primary-light">{{ 'register.user-registration'|trans }}</h2>
+        <a href="{{path('level_new')}}" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 focus:ring-opacity-50 shadow-md">
             <i class="fas fa-arrow-left mr-2"></i>{{ 'register.back'|trans }}
         </a>
     </div>
     
     {{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
-        <div>
-            {{ form_label(registrationForm.username, 'register.username'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light mb-1'}}) }}
-            {{ form_widget(registrationForm.username, {'attr': {'class': 'block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+        {% for field in [
+            {'name': 'username', 'label': 'register.username'},
+            {'name': 'email', 'label': 'register.email'},
+            {'name': 'plainPassword', 'label': 'register.password'}
+        ] %}
+            <div class="form-group">
+                {{ form_label(attribute(registrationForm, field.name), field.label|trans, {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                {{ form_widget(attribute(registrationForm, field.name), {'attr': {'class': 'block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition duration-300 ease-in-out'}}) }}
+            </div>
+        {% endfor %}
+
+        <div class="form-group">
+            {{ form_label(registrationForm.profilePicture, 'register.profile-picture'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'}}) }}
+            {{ form_widget(registrationForm.profilePicture, {'attr': {'class': 'block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primaryHover cursor-pointer'}}) }}
         </div>
 
-        <div>
-            {{ form_label(registrationForm.email, 'register.email'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light mb-1'}}) }}
-            {{ form_widget(registrationForm.email, {'attr': {'class': 'block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
-        </div>
-
-        <div>
-            {{ form_label(registrationForm.plainPassword, 'register.password'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light mb-1'}}) }}
-            {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
-        </div>
-
-        <div>
-            {{ form_label(registrationForm.profilePicture, 'register.profile-picture'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light mb-1'}}) }}
-            {{ form_widget(registrationForm.profilePicture, {'attr': {'class': 'block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-secondary file:text-white hover:file:bg-secondaryHover'}}) }}
-        </div>
-
-        <div>
-            <label class="block text-sm font-medium text-text dark:text-text-light mb-1">{{ 'register.roles'|trans }}</label>
-            <div class="space-y-2">
+        <div class="form-group">
+            <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ 'register.roles'|trans }}</label>
+            <div class="space-y-2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                 {% if existingRoles is defined and existingRoles|length > 0 %}
                     {% for role in existingRoles %}
                         <div class="flex items-center">
-                            <input type="checkbox" id="role_{{ role.id }}" name="roles[]" value="{{ role.id }}" class="h-4 w-4 text-secondary border-gray-300 dark:border-gray-600 rounded focus:ring-secondary">
-                            <label for="role_{{ role.id }}" class="ml-2 block text-sm text-text dark:text-text-light">{{ role.name }}</label>
+                            <input type="checkbox" id="role_{{ role.id }}" name="roles[]" value="{{ role.id }}" class="h-4 w-4 text-primary border-gray-300 dark:border-gray-600 rounded focus:ring-primary">
+                            <label for="role_{{ role.id }}" class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ role.name }}</label>
                         </div>
                     {% endfor %}
                 {% else %}
@@ -48,29 +44,24 @@
             </div>
         </div>
 
-        <h3 class="text-xl font-semibold mt-6 mb-4 text-text dark:text-text-light">{{ 'register.responsible-information'|trans }}</h3>
+        <h3 class="text-xl font-bold mt-8 mb-4 text-gray-800 dark:text-gray-200">{{ 'register.responsible-information'|trans }}</h3>
         
-        <div>
-            {{ form_label(registrationForm.Responsable.name, 'register.name'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light mb-1'}}) }}
-            {{ form_widget(registrationForm.Responsable.name, {'attr': {'class': 'block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+        {% for field in [
+            {'name': 'name', 'label': 'register.name'},
+            {'name': 'phoneNumber', 'label': 'register.phone-number'}
+        ] %}
+            <div class="form-group">
+                {{ form_label(attribute(registrationForm.Responsable, field.name), field.label|trans, {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                {{ form_widget(attribute(registrationForm.Responsable, field.name), {'attr': {'class': 'block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition duration-300 ease-in-out'}}) }}
+            </div>
+        {% endfor %}
+
+        <div class="flex items-center mt-6">
+            {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'h-4 w-4 text-primary border-gray-300 dark:border-gray-600 rounded focus:ring-primary'}}) }}
+            {{ form_label(registrationForm.agreeTerms, 'register.agree-to-terms'|trans, {'label_attr': {'class': 'ml-2 text-sm text-gray-700 dark:text-gray-300'}}) }}
         </div>
 
-        <div>
-            {{ form_label(registrationForm.Responsable.email, 'register.email'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light mb-1'}}) }}
-            {{ form_widget(registrationForm.Responsable.email, {'attr': {'class': 'block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
-        </div>
-
-        <div>
-            {{ form_label(registrationForm.Responsable.phoneNumber, 'register.phone-number'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light mb-1'}}) }}
-            {{ form_widget(registrationForm.Responsable.phoneNumber, {'attr': {'class': 'block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
-        </div>
-
-        <div class="flex items-center">
-            {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'h-4 w-4 text-secondary border-gray-300 dark:border-gray-600 rounded focus:ring-secondary'}}) }}
-            {{ form_label(registrationForm.agreeTerms, 'register.agree-to-terms'|trans, {'label_attr': {'class': 'ml-2 block text-sm text-text dark:text-text-light'}}) }}
-        </div>
-
-        <button type="submit" class="w-full bg-primary hover:bg-primaryHover text-white py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-300 ease-in-out transform hover:scale-105">{{ 'register.register'|trans }}</button>
+        <button type="submit" class="w-full bg-primary hover:bg-primaryHover text-white font-semibold py-3 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-300 ease-in-out transform hover:scale-105 mt-6">{{ 'register.register'|trans }}</button>
     {{ form_end(registrationForm) }}
 </div>
 {% endblock %}
