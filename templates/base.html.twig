@@ -13,11 +13,11 @@
 
   <style>
         :root {
-            --primary-color: {{ color_scheme.primaryColor }};
-            --secondary-color: {{ color_scheme.secondaryColor }};
-            --accent-color: {{ color_scheme.accentColor }};
-            --background-color: {{ color_scheme.backgroundColor }};
-            --text-color: {{ color_scheme.textColor }};
+            --primary-color: {{ color_scheme.primaryColor|e }};
+            --secondary-color: {{ color_scheme.secondaryColor|e }};
+            --accent-color: {{ color_scheme.accentColor|e }};
+            --background-color: {{ color_scheme.backgroundColor|e }};
+            --text-color: {{ color_scheme.textColor|e }};
         }
   </style>
   
@@ -31,7 +31,7 @@
   .nav-link .bar {
     transition: all 0.3s ease;
   }
-</style>
+  </style>
 </head>
 
 <body class="h-full" style="background-color: var(--background-color); color: var(--text-color);">
@@ -109,31 +109,4 @@
         <a class="nav-link px-2" style="color: var(--text-color);" href="{{ path('app_home_page') }}">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link px-2" style="color: var(--text-color);" href="{{ path('app_about_page') }}">About</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link px-2" style="color: var(--text-color);" href="{{ path('app_contact_us_page') }}">Contact Us</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link px-2" style="color: var(--text-color);" href="{{ path('app_documentation_page') }}">Documentation</a>
-      </li>
-    </ul>
-    <p class="text-center" style="color: var(--text-color);">© 2024 SYGENES, UIECC.</p>
-  </footer>
-</div>
-
-<script>
-  const mobileMenuButton = document.getElementById('mobile-menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const mobileMenuClose = document.getElementById('mobile-menu-close');
-
-  mobileMenuButton.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-  });
-
-  mobileMenuClose.addEventListener('click', () => {
-    mobileMenu.classList.add('hidden');
-  });
-</script>
-</body>
-</html>
+        <a class="nav-link px-2" style

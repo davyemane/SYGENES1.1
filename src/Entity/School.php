@@ -53,6 +53,7 @@ class School
         $this->fields = new ArrayCollection();
         $this->Roles = new ArrayCollection();
         $this->colors = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -209,4 +210,5 @@ class School
 
         return $this;
     }
+
 }

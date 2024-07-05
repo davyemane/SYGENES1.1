@@ -69,7 +69,7 @@ class RegistrationController extends AbstractController
             );
     
             // Set roles
-            $roles = $form->get('roles')->getData();
+            $roles = $form->get('role')->getData();
             foreach ($roles as $role) {
                 $user->addRole($role);
             }            
@@ -84,10 +84,20 @@ class RegistrationController extends AbstractController
             // Log the user in
             return $security->login($user, LoginAuthenticator::class, 'main');
         }
-    
-        return $this->render('registration/register.html.twig', [
+            $colorScheme = [
+                'primaryColor' => '#3490dc', // Bleu vif pour la couleur principale
+                'secondaryColor' => '#e3342f', // Jaune doré pour la couleur secondaire
+                'accentColor' => '#e3342f', // Rouge vif pour les accents
+                'backgroundColor' => '#e3342f', // Blanc cassé pour l'arrière-plan
+                'textColor' => '#e3342f' // Gris foncé pour le texte
+            ];
+
+
+            return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
-            'user' => $user
+            'user' => $user,
+            'color_scheme' => $colorScheme,
+
         ]);
     }
 
