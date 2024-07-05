@@ -72,11 +72,9 @@ class RegistrationController extends AbstractController
             );
     
             // Set roles
-            $selectedRoles = $form->get('role')->getData();
-            foreach ($selectedRoles as $role) {
+            foreach ($schoolRoles as $role) {
                 $user->addRole($role);
             }
-    
             // Set the email for the responsable
             $responsable->setEmail($user->getEmail());
             $session->clear();
@@ -93,7 +91,7 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
             'user' => $user,
             'school' => $school,
-            'schoolRoles' => $schoolRoles
+            'existingRoles' => $schoolRoles
         ]);
     }
     
