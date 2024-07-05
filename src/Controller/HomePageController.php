@@ -83,6 +83,15 @@ dump($school);
     #[Route('/student/dashboard', name: 'app_dashStudent')]
     public function StudentDashboard(ManagerRegistry $doctrine): Response
     {
+
+
+        $colorScheme = [
+            'primaryColor' => '#ffed4a', // Replace with your primary color
+            'secondaryColor' => '#ffed4a', // Replace with your secondary color
+            'accentColor' => '#ffed4a', // Replace with your accent color
+            'backgroundColor' => '#ffed4a', // Replace with your background color
+            'textColor' => '#ffed4a' // Replace with your text color
+        ];
         try {
             $user = $this->getUser();
 

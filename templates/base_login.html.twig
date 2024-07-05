@@ -9,6 +9,16 @@
   {% endblock %}
   {{ encore_entry_script_tags('app') }}
   {% block head %}{% block title %}<title></title>{% endblock %}{% endblock %}
+
+  <style>
+        :root {
+            --primary-color: {{ color_scheme.primaryColor|e }};
+            --secondary-color: {{ color_scheme.secondaryColor|e }};
+            --accent-color: {{ color_scheme.accentColor|e }};
+            --background-color: {{ color_scheme.bacgroundColor|e }};
+            --text-color: {{ color_scheme.textColor|e }};
+        }
+  </style>
 </head>
 
 <body class="h-full">

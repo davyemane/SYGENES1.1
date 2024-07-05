@@ -13,15 +13,20 @@ module.exports = {
           light: 'color-mix(in srgb, var(--primary-color) 80%, white)',
           dark: 'color-mix(in srgb, var(--primary-color) 80%, black)',
         },
+        primaryHover: {
+          DEFAULT: 'var(--primary-color-hover)',
+          light: 'color-mix(in srgb, var(--primary-color) 80%, white)',
+          dark: 'color-mix(in srgb, var(--primary-color) 80%, black)',
+        },
         secondary: {
           DEFAULT: 'var(--secondary-color)',
           light: 'color-mix(in srgb, var(--secondary-color) 80%, white)',
           dark: 'color-mix(in srgb, var(--secondary-color) 80%, black)',
         },
-        accent: {
-          DEFAULT: 'var(--accent-color)',
-          light: 'color-mix(in srgb, var(--accent-color) 80%, white)',
-          dark: 'color-mix(in srgb, var(--accent-color) 80%, black)',
+        secondaryHover: {
+          DEFAULT: 'var(--secondary-color-hover)',
+          light: 'color-mix(in srgb, var(--secondary-color) 80%, white)',
+          dark: 'color-mix(in srgb, var(--secondary-color) 80%, black)',
         },
         background: {
           DEFAULT: 'var(--background-color)',

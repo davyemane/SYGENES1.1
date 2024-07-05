@@ -21,6 +21,7 @@
             }
         }
     </script>
+    {% set color_scheme = color_scheme() %}
     <style>
         #searchInput:focus {
             outline: none;
@@ -39,7 +40,7 @@
             display: none;
         }
         .menu-item.active, .submenu-item.active {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: var(--accent-color);
         }
         .submenu-item {
             padding-left: 2.5rem;
@@ -48,7 +49,47 @@
             position: relative;
         }
         
-        
+        :root {
+            --primary-color: {{ color_scheme.primaryColor|e }};
+            --secondary-color: {{ color_scheme.secondaryColor|e }};
+            --accent-color: {{ color_scheme.accentColor|e }};
+            --background-color: {{ color_scheme.bacgroundColor|e }};
+            --text-color: {{ color_scheme.textColor|e }};
+        }
+
+        /* Apply colors to the elements */
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        #sidebarDiv {
+            background-color: var(--primary-color);
+        }
+
+        #toggleBtn, .menu-item img, .menu-item i, .submenu-item {
+            color: var(--text-color);
+        }
+
+        .menu-item:hover, .submenu-item:hover {
+            background-color: var(--secondary-color);
+        }
+
+        #sidebarTitle {
+            color: var(--text-color);
+        }
+
+        #searchContainer {
+            background-color: var(--light-white);
+        }
+
+        #searchInput {
+            color: var(--text-color);
+        }
+
+        #themeToggleIcon, #themeToggleText {
+            color: var(--text-color);
+        }
 
         /* Responsive Design */
         @media (max-width: 1024px) {
@@ -89,27 +130,27 @@
 </head>
 <body class="font-sans antialiased leading-none h-full w-full">
     <div class="flex h-full">
-        <div id="sidebarDiv" class="inset-y-0 left-0 fixed bg-dark-purple dark:bg-gray-800 p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
+        <div id="sidebarDiv" class="inset-y-0 left-0 fixed p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
             <img id="toggleBtn" src="/icons/previous.png" alt="previous" class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
             <div class="inline-flex items-center">
                 <img src="/icons/uiecc_logo.png" alt="uiecc_logo" class="w-16 h-auto cursor-pointer mr-2">
-                <h1 id="sidebarTitle" class="text-white text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
+                <h1 id="sidebarTitle" class="text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
             </div>
-            <div id="searchContainer" class="flex items-center rounded-md bg-light-white dark:bg-gray-600 mt-6 transition-all duration-300">
+            <div id="searchContainer" class="flex items-center rounded-md mt-6 transition-all duration-300">
                 <img id="searchIcon" src="/icons/search.png" alt="search" class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
-                <input type="search" id="searchInput" class="text-base bg-transparent w-full text-white dark:text-gray-200 border-none focus:outline-none px-3 py-2" placeholder="Search">
+                <input type="search" id="searchInput" class="text-base bg-transparent w-full border-none focus:outline-none px-3 py-2" placeholder="Search">
             </div>
 
             <ul class="pt-2 flex-grow overflow-y-auto ">
                 <a href="{{ path('app_dashStudent')}}">
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2">
+                    <li class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2">
                         <img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
                         <span class="text-base font-medium flex-1">Dashboard</span>
                     </li>
                 </a>
 
                 
-                <li class="menu-item text-gray-300 text-sm cursor-pointer mt-2">
+                <li class="menu-item text-sm cursor-pointer mt-2">
                     <a href="{{ path('student_notes', {id: student.id} )}}">
                     <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md" >
                         <img src="/icons/grades.png" alt="students" class="w-4 h-4 ml-3">
@@ -119,7 +160,7 @@
                     </a>
                 </li>
 
-                <li class="menu-item text-gray-300 text-sm cursor-pointer">
+                <li class="menu-item text-sm cursor-pointer">
                     <a href="{{path('student_stats', {id: student.id} )}}">
                     <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md">
                         <img src="/icons/statistics.png" alt="grades" class="w-4 h-4 ml-3">
@@ -128,46 +169,20 @@
                     </div>
                     </a>
                 </li>
-
-                <!-- <li class="menu-item text-gray-300 text-sm cursor-pointer">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md" >
-                        <img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
-                        <span class="text-base font-medium flex-1">UE & EC</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                    </div>
-                    <ul class="submenu ml-6 mt-2">
-                        <a href="{{ path('add_ue') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >Add an UE</li>
-                        </a>
-                        
-                        <a href="{{ path('add_ec') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >Add an EC</li>
-                        </a>
-                        
-                        <a href="{{ path('choix_ec') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >List of UE & EC</li>
-                        </a>
-                        
-                        <a href="{{ path('fields_index') }}">
-                            <li class="submenu-item p-2 hover:bg-light-white rounded-md duration-300" >List of Fields</li>
-                        </a>
-                        
-                    </ul>
-                </li> -->
                
             </ul>
 
             <div class="border-t border-gray-600 pt-4 mt-4">
                 <ul>
                     <a href="{{path('app_profile_show')}}">
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="profile.html">
+                    <li class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="profile.html">
                         <i class="fas fa-user-circle w-4 h-4 ml-3"></i>
                         <span class="text-base font-medium flex-1">Profile</span>
                     </li>
                     </a>
 
                     <a href="#">
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="settings.html">
+                    <li class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="settings.html">
                         <i class="fas fa-cog w-4 h-4 ml-3"></i>
                         <span class="text-base font-medium flex-1">Settings</span>
                     </li>

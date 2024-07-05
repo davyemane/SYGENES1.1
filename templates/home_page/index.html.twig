@@ -1,91 +1,65 @@
 {% extends 'base.html.twig' %}
 
 {% block head %}
-	{% block title %}
-		<title>
-			Home
-		</title>
-	{% endblock %}
+    {% block title %}
+        <title>{{ 'home.title'|trans }}</title>
+    {% endblock %}
 {% endblock %}
 
 {% block body %}
+    <div class="relative isolate px-6 pt-5 lg:px-8">
+        <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56 z-10">
+            <div class="hidden sm:mb-8 sm:flex sm:justify-center">
+                <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-text ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                    {{ 'home.documentation_prompt'|trans }}
+                    <a href="{{ path('app_documentation_page') }}" class="font-semibold text-secondary">
+                        <span class="absolute inset-0" aria-hidden="true"></span>{{ 'home.read_more'|trans }}
+                        <span aria-hidden="true">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+            <div class="text-center">
+                <h1 class="text-4xl font-bold tracking-tight text-text sm:text-6xl">{{ 'home.welcome'|trans }}
+                    <span style="color: var(--primary-color);">{{ 'home.name'|trans }}</span>
+                </h1>
+                <p class="mt-6 text-lg leading-8 text-text">{{ 'home.description'|trans }}</p>
+                <div class="mt-10 flex items-center justify-center gap-x-6">
+                    <a href="{{ path('list_student') }}" class="hover:bg-primaryHover  bg-primary text-background rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary">{{ 'home.sign_up'|trans }}</a>
+                    <a href="{{ path('app_login') }}" class="text-sm font-semibold leading-6 text-text hover:text-secondary">{{ 'home.log_in'|trans }}
+                        <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
+            <div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="background-image: linear-gradient(to right, var(--primary-color), var(--secondary-color)); clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
+        </div>
+    </div>
 
-	<div class="relative isolate px-6 pt-5 lg:px-8 ">
-
-		<div
-			class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56 z-10">
-			<!-- <img class="h-18 w-auto sm:flex sm:justify-center" fill="none" src="/images/uiecc_logo.png" alt="uiecc logo"> -->
-			<div class="hidden sm:mb-8 sm:flex sm:justify-center">
-				<div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-					Consult our documentation if you are lost.
-					<a href="{{ path('app_documentation_page') }}" class="font-semibold text-blue-500">
-						<span class="absolute inset-0" aria-hidden="true"></span>Read more
-						<span aria-hidden="true">&rarr;</span>
-					</a>
-				</div>
-			</div>
-			<div class="text-center">
-				<h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Welcome to
-					<span class="text-orange-500">SYGENES</span>
-				</h1>
-				<p class="mt-6 text-lg leading-8 text-gray-600">Your all in one Marks Management System, made for and by the
-					        International Advanced School of Digital Engineering.</p>
-				<div class="mt-10 flex items-center justify-center gap-x-6">
-					<a href="{{ path('list_student') }}" class="rounded-md bg-orange-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">Sign
-						          Up</a>
-					<a href="{{ path('app_login') }}" class="text-sm font-semibold leading-6 text-gray-900 hover:text-blue-500">Log
-						          in
-						<span aria-hidden="true">→</span>
-					</a>
-				</div>
-			</div>
-		</div>
-		<div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
-			<div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ffa500] to-[#ff4500] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
-		</div>
-
-		<!-- <div class="absolute inset-x-0 top-0 left-0  -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]" aria-hidden="true">
-		    <div class="relative top-0 left-0 aspect-[1155/678] w-[36.125rem] bg-gradient-to-tr from-[#ffa500] to-[#ff4500] opacity-30 sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
-		  </div>
-		  -->
-		<!-- 
-		  <div class="absolute inset-x-0 top-0 left-0 -z-10 transform-gpu overflow-hidden blur-3xl" aria-hidden="true">
-		  <div class="relative top-0 left-0 aspect-[1155/678] w-[36.125rem] bg-gradient-to-tr from-[#ffa500] to-[#ff4500] opacity-30 sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
-		</div>
-		
-		   -->
-	</div>
-
-	<div class="bg-white">
-		<div class="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
-			<div class="relative isolate overflow-hidden bg-white px-6 pt-16 shadow-2xl sm:rounded-3xl sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
-				<svg viewbox="0 0 1024 1024" class="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-y-1/2 [mask-image:radial-gradient(closest-side,white,transparent)] sm:left-full sm:-ml-80 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2 lg:translate-y-0" aria-hidden="true">
-					<circle cx="512" cy="512" r="512" fill="url(#759c1415-0410-454c-8f7c-9a820de03641)" fill-opacity="0.7"/>
-					<defs>
-						<radialGradient id="759c1415-0410-454c-8f7c-9a820de03641">
-							<stop stop-color="#3b82f6"/>
-							<stop offset="1" stop-color="#60a5fa"/>
-						</radialGradient>
-					</defs>
-				</svg>
-				<div class="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left">
-					<h2 class="text-3xl font-bold tracking-tight text-black sm:text-4xl">New to the School? Register Now.</h2>
-					<p class="mt-6 text-lg leading-8 text-gray-900">You just got the competitive entrance exam. Click below to
-						          register administratively.</p>
-					<div class="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
-						<a href="{{ path('list_student') }}" class="rounded-md bg-blue-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Student
-							            Registration</a>
-						<a href="{{ path('app_documentation_page') }}" class="text-sm font-semibold leading-6 text-black">Learn
-							            more<span aria-hidden="true">→</span>
-						</a>
-					</div>
-				</div>
-				<div class="relative mt-16 h-80 lg:mt-8">
-					<img class="absolute left-0 top-0 w-[57rem] max-w-none rounded-md bg-white/5 ring-1 ring-gray-200" src="images/dashboard_picture.png" alt="App screenshot" width="1824" height="1080">
-				</div>
-			</div>
-		</div>
-	</div>
-
-
+    {# <div class="bg-background">
+        <div class="mx-auto max-w-7xl py-24 sm:px-6 sm:py-32 lg:px-8">
+            <div class="relative isolate overflow-hidden bg-background px-6 pt-16 shadow-2xl sm:rounded-3xl sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0">
+                <svg viewbox="0 0 1024 1024" class="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-y-1/2 [mask-image:radial-gradient(closest-side,white,transparent)] sm:left-full sm:-ml-80 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2 lg:translate-y-0" aria-hidden="true">
+                    <circle cx="512" cy="512" r="512" fill="url(#759c1415-0410-454c-8f7c-9a820de03641)" fill-opacity="0.7"/>
+                    <defs>
+                        <radialGradient id="759c1415-0410-454c-8f7c-9a820de03641">
+                            <stop stop-color="var(--secondary-color)"/>
+                            <stop offset="1" stop-color="var(--secondary-color-hover)"/>
+                        </radialGradient>
+                    </defs>
+                </svg>
+                <div class="mx-auto max-w-md text-center lg:mx-0 lg:flex-auto lg:py-32 lg:text-left">
+                    <h2 class="text-3xl font-bold tracking-tight text-text sm:text-4xl">{{ 'home.register_prompt'|trans }}</h2>
+                    <p class="mt-6 text-lg leading-8 text-text">{{ 'home.register_description'|trans }}</p>
+                    <div class="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
+                        <a href="{{ path('list_student') }}" class="rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" style="background-color: var(--secondary-color); hover:background-color: var(--secondary-color-hover);">{{ 'home.student_registration'|trans }}</a>
+                        <a href="{{ path('app_documentation_page') }}" class="text-sm font-semibold leading-6 text-text">{{ 'home.learn_more'|trans }}<span aria-hidden="true">→</span></a>
+                    </div>
+                </div>
+                <div class="relative mt-16 h-80 lg:mt-8">
+                    <img class="absolute left-0 top-0 w-[57rem] max-w-none rounded-md bg-white/5 ring-1 ring-gray-200" src="images/dashboard_picture.png" alt="{{ 'home.app_screenshot'|trans }}" width="1824" height="1080">
+                </div>
+            </div>
+        </div>
+    </div> #}
 {% endblock %}
