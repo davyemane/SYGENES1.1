@@ -41,11 +41,17 @@ services:
         tags:
             - { name: kernel.event_subscriber }
             
+<<<<<<< HEAD
     App\EventListener\AuthenticationSuccessListener:
         tags:
             - { name: kernel.event_listener, event: security.interactive_login }    
+=======
+    App\Twig\ColorSchemeExtension:
+        arguments:
+            $colorSchemeService: '@App\Service\ColorSchemeService'
+        tags:
+            - { name: 'twig.extension' }
+>>>>>>> b99bb456b69abce05a4c42f8a9d869b9b8de6d01
 
         # add more service definitions when explicit configuration is needed
         # please note that last definitions always *replace* previous ones
-    App\Twig\ColorSchemeExtension:
-        tags: [twig.extension]
