@@ -186,9 +186,58 @@ admin_dash:
   Logout: Logout
 
 
+
+field: 
+  create-field-title: "Create Field"
+  edit-field-title: "Edit Field"
+  next: "Next"
+  create-field: "Create Field"
+  edit-field: "Edit Field"
+  toggle-existing-fields: "Show/Hide Existing Fields"
+  existing-fields: "Existing Fields"
+  code: "Code"
+  edit: "Edit"
+  success: "Success"
+  error: "Error"
+  name: "Name"
+  description: "Description"
+  create: "Create"
+  update: "Update"
+
+
+role:
+  edit-role-title: "Edit Role"
+  create-role-title: "Create Role"
+  back: "Back"
+  next: "Next"
+  edit-role: "Edit Role"
+  create-role: "Create Role"
+  toggle-existing-roles: "Show/Hide Existing Roles"
+  existing-roles: "Existing Roles"
+  school: "School"
+  not-assigned: "Not assigned"
+  privileges: "Privileges"
+  success: "Success"
+  error: "Error"
+  name: "Name"
+  update: "Update"
+  create: "Create"
+
 # Student Dashboard Page and subpages
-
-
+register:
+  register: "Register"
+  user-registration: "User Registration"
+  back: "Back"
+  username: "Username"
+  email: "Email"
+  password: "Password"
+  profile-picture: "Profile Picture"
+  roles: "Roles"
+  no-roles-available: "No roles available for this school."
+  responsible-information: "Responsible Information"
+  name: "Name"
+  phone-number: "Phone Number"
+  agree-to-terms: "I agree to the terms"
 
 
 

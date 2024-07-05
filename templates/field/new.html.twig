@@ -1,41 +1,34 @@
 {% extends 'base_login.html.twig' %}
 
-{% block title %}<title>{{ isNew ? 'Créer' : 'Modifier' }} une filière</title>{% endblock %}
+{% block title %}<title>{{ (isNew ? "field.create-field-title" : "field.edit-field-title")|trans }}</title>{% endblock %}
 
 {% block body %}
-<div
-    class="min-h-screen bg-gradient-to-br from-blue-100 to-orange-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+<div class="min-h-screen bg-gradient-to-br from-blue-100 to-orange-100 dark:from-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center transition-colors duration-300">
     <div class="max-w-4xl w-full">
-        <div
-            class="bg-white shadow-2xl rounded-lg overflow-hidden transform transition-all hover:scale-105 duration-300">
+        <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-lg overflow-hidden transform transition-all hover:scale-105 duration-300">
             <div class="px-6 py-8 sm:px-10">
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-8 space-y-4 sm:space-y-0">
                     <div class="flex items-center space-x-4">
-                        <a href="{{path('role_new')}}"
-                            class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 shadow-lg">
-                            Suivant<i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                        <h1
-                            class="text-3xl font-extrabold text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-orange-500">
-                            {{ isNew ? 'Créer' : 'Modifier' }} une filière
+                       
+                        <h1 class="text-3xl font-extrabold text-text dark:text-text-light bg-clip-text text-transparent bg-gradient-to-r from-secondary to-primary">
+                            {{ (isNew ? "field.create-field" : "field.edit-field")|trans }}
                         </h1>
                     </div>
                     <button id="toggleExistingFields"
-                        class="bg-gradient-to-r from-blue-500 to-orange-500 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50 shadow-lg">
-                        Afficher/Masquer les filières existantes
+                        class="bg-gradient-to-r from-secondary to-primary text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 shadow-lg">
+                        {{ "field.toggle-existing-fields"|trans }}
                     </button>
                 </div>
 
                 <div id="existingFieldsContainer" class="mb-8 hidden transition-all duration-300 ease-in-out">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Filières existantes</h2>
+                    <h2 class="text-2xl font-bold text-text dark:text-text-light mb-4">{{ "field.existing-fields"|trans }}</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {% for existingField in existingFields %}
-                        <div
-                            class="bg-gradient-to-r from-orange-100 to-orange-200 rounded-lg p-4 shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
-                            <h3 class="font-bold text-lg text-gray-800 mb-2">{{ existingField.name }}</h3>
-                            <p class="text-sm text-gray-600 mb-2">Code: {{ existingField.code }}</p>
+                        <div class="bg-gradient-to-r from-orange-100 to-orange-200 dark:from-gray-700 dark:to-gray-600 rounded-lg p-4 shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
+                            <h3 class="font-bold text-lg text-text dark:text-text-light mb-2">{{ existingField.name }}</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">{{ "field.code"|trans }}: {{ existingField.code }}</p>
                             <a href="{{ path('field_new', {'id': existingField.id}) }}"
-                                class="text-blue-600 hover:text-blue-800 text-sm transition duration-300 ease-in-out hover:underline">Modifier</a>
+                                class="text-secondary hover:text-secondaryHover dark:text-blue-400 dark:hover:text-blue-300 text-sm transition duration-300 ease-in-out hover:underline">{{ "field.edit"|trans }}</a>
                         </div>
                         {% endfor %}
                     </div>
@@ -43,10 +36,10 @@
 
                 {% for label, messages in app.flashes %}
                 {% for message in messages %}
-                <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 p-4 mb-6 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md"
+                <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 dark:bg-{{ label == 'success' ? 'green' : 'red' }}-900 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 dark:text-{{ label == 'success' ? 'green' : 'red' }}-100 p-4 mb-6 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md"
                     role="alert">
-                    <p class="font-bold">{{ label == 'success' ? 'Succès' : 'Erreur' }}</p>
-                    <p>{{ message }}</p>
+                    <p class="font-bold">{{ (label == 'success' ? "field.success" : "field.error")|trans }}</p>
+                    <p>{{ message|trans }}</p>
                 </div>
                 {% endfor %}
                 {% endfor %}
@@ -54,26 +47,20 @@
                 {{ form_start(form, {'attr': {'class': 'space-y-8'}}) }}
                 <div class="space-y-6">
                     <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
-                        {{ form_label(form.code, 'Code', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}})
-                        }}
-                        {{ form_widget(form.code, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-300'}})
-                        }}
+                        {{ form_label(form.code, 'field.code'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
+                        {{ form_widget(form.code, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-secondary focus:ring focus:ring-secondary focus:ring-opacity-50 transition-all duration-300 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
                         {{ form_errors(form.code, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
                     </div>
 
                     <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
-                        {{ form_label(form.name, 'Nom', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}})
-                        }}
-                        {{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-300'}})
-                        }}
+                        {{ form_label(form.name, 'field.name'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
+                        {{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-secondary focus:ring focus:ring-secondary focus:ring-opacity-50 transition-all duration-300 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
                         {{ form_errors(form.name, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
                     </div>
 
                     <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
-                        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}})
-                        }}
-                        {{ form_widget(form.description, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-300', 'rows': '4'}})
-                        }}
+                        {{ form_label(form.description, 'field.description'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
+                        {{ form_widget(form.description, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-secondary focus:ring focus:ring-secondary focus:ring-opacity-50 transition-all duration-300 bg-background dark:bg-gray-700 text-text dark:text-white', 'rows': '4'}}) }}
                         {{ form_errors(form.description, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
                     </div>
                 </div>
@@ -81,9 +68,13 @@
                 <div class="pt-8">
                     <div class="flex justify-end">
                         <button type="submit"
-                            class="inline-flex justify-center py-3 px-6 border border-transparent shadow-lg text-sm font-medium rounded-md text-white bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out transform hover:scale-105">
-                            {{ isNew ? 'Créer' : 'Mettre à jour' }}
+                            class=" mr-4 inline-flex justify-center py-3 px-6 border border-transparent shadow-lg text-sm font-medium rounded-md text-white bg-gradient-to-r from-primary to-primaryHover hover:from-primaryHover hover:to-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-300 ease-in-out transform hover:scale-105">
+                            {{ (isNew ? "field.create" : "field.update")|trans }}
                         </button>
+                         <a href="{{path('role_new')}}"
+                            class=" bg-secondary hover:bg-secondaryHover text-white font-semibold py-4 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50 shadow-lg">
+                            {{ "field.next"|trans }}<i class="fas fa-arrow-right ml-2"></i>
+                        </a>
                     </div>
                 </div>
                 {{ form_end(form) }}
