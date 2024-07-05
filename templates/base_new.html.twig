@@ -436,12 +436,9 @@
 
             if (isDarkMode) {
                 document.documentElement.style.setProperty;
-                document.documentElement.style.setProperty('--text-color', '{{ color_scheme.darkTextColor|e }}');
                 themeToggleIcon.classList.replace('fa-moon', 'fa-sun');
                 themeToggleText.textContent = 'Light Mode';
             } else {
-                document.documentElement.style.setProperty('--background-color', '{{ color_scheme.bacgroundColor|e }}');
-                document.documentElement.style.setProperty('--text-color', '{{ color_scheme.textColor|e }}');
                 themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
                 themeToggleText.textContent = 'Dark Mode';
             }
