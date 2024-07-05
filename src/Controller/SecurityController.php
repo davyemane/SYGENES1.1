@@ -42,8 +42,20 @@ class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
+        $colorScheme = [
+            'primaryColor' => '#000000', // Replace with your primary color
+            'secondaryColor' => '#ffed4a', // Replace with your secondary color
+            'accentColor' => '#e3342f', // Replace with your accent color
+            'backgroundColor' => '#f8fafc', // Replace with your background color
+            'textColor' => '#2d3748' // Replace with your text color
+        ];
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+
+        return $this->render('security/login.html.twig', [
+            'last_username' => $lastUsername, 
+            'error' => $error,
+            'color_scheme'=>$colorScheme
+        ]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
@@ -59,34 +71,10 @@ class SecurityController extends AbstractController
         $user = $this->security->getUser();
 
         // Vérification des rôles et redirection en conséquence
-        if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN', $user)) {
-            return new RedirectResponse($this->generateUrl('app_dashSuperAdmin'));
-        }
-        if ($this->authorizationChecker->isGranted('ROLE_ADMIN', $user)) {
-            return new RedirectResponse($this->generateUrl('app_dashAdmin'));
-        }
-        if ($this->authorizationChecker->isGranted('ROLE_AATP', $user)) {
-            return new RedirectResponse($this->generateUrl('app_dashAdmin'));
-        }
-        if ($this->authorizationChecker->isGranted('ROLE_AAT', $user)) {
-            return new RedirectResponse($this->generateUrl('app_dashAdmin'));
-        }
-        if ($this->authorizationChecker->isGranted('ROLE_RPA', $user)) {
-            return new RedirectResponse($this->generateUrl('app_dashAdmin'));
-        }
-        if ($this->authorizationChecker->isGranted('ROLE_TEACHER', $user)) {
-            return new RedirectResponse($this->generateUrl('app_dashAdmin'));
-        }
-        if ($this->authorizationChecker->isGranted('ROLE_CEP', $user)) {
-            return new RedirectResponse($this->generateUrl('app_dashAdmin'));
-        }
-        if ($this->authorizationChecker->isGranted('ROLE_SA', $user)) {
-            return new RedirectResponse($this->generateUrl('app_dashAdmin'));
-        }
-        if ($this->authorizationChecker->isGranted('ROLE_USER', $user)) {
+        if ($user->getRole() === 'student') {
             return new RedirectResponse($this->generateUrl('app_dashStudent'));
-            dump($user);
         }
+            return new RedirectResponse($this->generateUrl('app_dashAdmin'));
 
         // Redirection par défaut si aucun rôle spécifique n'est trouvé
         return new RedirectResponse($this->generateUrl('app_home'));

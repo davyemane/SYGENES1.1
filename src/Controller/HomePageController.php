@@ -50,25 +50,37 @@ class HomePageController extends AbstractController
         ]);
     }
 
-    #[Route('/admin', name: 'app_dashAdmin'),
-    IsGranted('ROLE_TEACHER')
-    ]
-    public function dashboard(){
-         // Check if the user has ROLE_ADMIN
-         if (!$this->isGranted('ROLE_TEACHER')) {
-            // Redirect to a custom error page
-            return $this->render('student/error.html.twig', [
-                'message' => 'Access Denied'
-            ], new Response('', Response::HTTP_FORBIDDEN));
-        }
+    #[Route('/admin', name: 'app_dashAdmin')]
+    public function dashboard(): Response
+    {
+        // Check if the user has ROLE_ADMIN
         $user = $this->getUser();
-        return $this->render('responsable_dashboard/dashboardAdmin.html.twig',[
-            "user" => $user
-        ]) ;  
-    }
 
+        $colorScheme = [
+            'primaryColor' => '#ffed4a', // Replace with your primary color
+            'secondaryColor' => '#ffed4a', // Replace with your secondary color
+            'accentColor' => '#ffed4a', // Replace with your accent color
+            'backgroundColor' => '#ffed4a', // Replace with your background color
+            'textColor' => '#ffed4a' // Replace with your text color
+        ];
+
+        // Assuming the user has only one role
+        $roles = $user->getRole(); // Assuming getRoles() returns a collection of roles
+        $school = null;
+
+        if (!empty($roles)) {
+            // Get the first role (assuming it's a single role for the user)
+            $role = $roles[0]; // Adjust this based on your actual logic
+            $school = $role->getSchool();
+        }
+dump($school);
+        return $this->render('responsable_dashboard/dashboardAdmin.html.twig', [
+            "user" => $user,
+            'color_scheme' => $colorScheme,
+            'school' => $school
+        ]);
+    }
     #[Route('/student/dashboard', name: 'app_dashStudent')]
-    #[IsGranted('ROLE_USER')]
     public function StudentDashboard(ManagerRegistry $doctrine): Response
     {
         try {
@@ -84,9 +96,19 @@ class HomePageController extends AbstractController
                 throw new \Exception('Aucun étudiant associé à cet utilisateur.');
             }
 
+            $colorScheme = [
+                'primaryColor' => '#ffed4a', // Replace with your primary color
+                'secondaryColor' => '#ffed4a', // Replace with your secondary color
+                'accentColor' => '#ffed4a', // Replace with your accent color
+                'backgroundColor' => '#ffed4a', // Replace with your background color
+                'textColor' => '#ffed4a' // Replace with your text color
+            ];
+            $school = $student->getField()->getSchool();
             return $this->render('student_dashboard/index.html.twig', [
                 'user' => $user,
-                'student' => $student
+                'student' => $student,
+                'color_scheme'=>$colorScheme,
+                'school'=>$school,
             ]);
 
         } catch (\Exception $e) {
