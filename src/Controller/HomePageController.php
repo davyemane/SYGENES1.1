@@ -68,19 +68,11 @@ class HomePageController extends AbstractController
         // Check if the user has ROLE_ADMIN
         $user = $this->getUser();
 
-        $colorScheme = [
-            'primaryColor' => '#3490dc', // Bleu vif pour la couleur principale
-            'secondaryColor' => '#ffed4a', // Jaune doré pour la couleur secondaire
-            'accentColor' => '#e3342f', // Rouge vif pour les accents
-            'backgroundColor' => '#f8fafc', // Blanc cassé pour l'arrière-plan
-            'textColor' => '#2d3748' // Gris foncé pour le texte
-        ];
 
         // Assuming the user has only one role
         
         return $this->render('responsable_dashboard/dashboardAdmin.html.twig', [
             "user" => $user,
-            'color_scheme' => $colorScheme,
             'school' => $school
         ]);
     }
@@ -91,13 +83,6 @@ class HomePageController extends AbstractController
     {
 
 
-        $colorScheme = [
-            'primaryColor' => '#ffed4a', // Replace with your primary color
-            'secondaryColor' => '#ffed4a', // Replace with your secondary color
-            'accentColor' => '#ffed4a', // Replace with your accent color
-            'backgroundColor' => '#ffed4a', // Replace with your background color
-            'textColor' => '#ffed4a' // Replace with your text color
-        ];
         try {
             $user = $this->getUser();
 

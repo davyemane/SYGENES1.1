@@ -42,19 +42,11 @@ class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        $colorScheme = [
-            'primaryColor' => '#000000', // Replace with your primary color
-            'secondaryColor' => '#ffed4a', // Replace with your secondary color
-            'accentColor' => '#e3342f', // Replace with your accent color
-            'backgroundColor' => '#f8fafc', // Replace with your background color
-            'textColor' => '#2d3748' // Replace with your text color
-        ];
 
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername, 
             'error' => $error,
-            'color_scheme'=>$colorScheme
         ]);
     }
 

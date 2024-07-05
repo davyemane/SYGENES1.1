@@ -26,15 +26,7 @@
             }
         }
     </script>
-    {% set color_scheme = color_scheme() %}
     <style>
-        :root {
-            --primary-color: {{ color_scheme.primaryColor|e }};
-            --secondary-color: {{ color_scheme.secondaryColor|e }};
-            --accent-color: {{ color_scheme.accentColor|e }};
-            --background-color: {{ color_scheme.bacgroundColor|e }};
-            --text-color: {{ color_scheme.textColor|e }};
-        }
 
         body {
             background-color: var(--background-color);
@@ -454,8 +446,7 @@
             document.documentElement.classList.toggle('dark', isDarkMode);
 
             if (isDarkMode) {
-                document.documentElement.style.setProperty('--background-color',
-                    '{{ color_scheme.darkBackgroundColor|e }}');
+                document.documentElement.style.setProperty;
                 document.documentElement.style.setProperty('--text-color', '{{ color_scheme.darkTextColor|e }}');
                 themeToggleIcon.classList.replace('fa-moon', 'fa-sun');
                 themeToggleText.textContent = 'Light Mode';

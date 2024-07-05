@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Field;
 use App\Entity\Level;
+use App\Entity\School;
 use App\Entity\Student;
 use App\Form\ExcelFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,24 +14,47 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin')]
 class ImportExcelController extends AbstractController
 {
     #[Route('/import', name: 'import')]
-    public function importExcel(Request $request, EntityManagerInterface $entityManager): Response
+    public function importExcel(Request $request, SessionInterface $session,EntityManagerInterface $entityManager): Response
     {
-
-        // Check if the user has ROLE_ADMIN
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            // Redirect to a custom error page
-            return $this->render('student/error.html.twig', [
-                'message' => 'Access Denied'
-            ], new Response('', Response::HTTP_FORBIDDEN));
+        $schoolName = $session->get('school_name');
+        $school = null;
+    
+        if ($schoolName) {
+            // Trouver l'entité School correspondante
+            $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
         }
 
+
+
+
         $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Vérifier si l'utilisateur a le privilège "List Student"
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'Add Student') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+        }        
+
+
         $form = $this->createForm(ExcelFormType::class);
         $form->handleRequest($request);
 
@@ -109,7 +133,8 @@ class ImportExcelController extends AbstractController
 
         return $this->render('student/import_excel.html.twig', [
             'form' => $form->createView(),
-            'user' => $user
+            'user' => $user,
+            'school'=>$school
         ]);
     }
 
