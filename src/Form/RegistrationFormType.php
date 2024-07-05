@@ -71,7 +71,13 @@ class RegistrationFormType extends AbstractType
                     ])
                 ],
             ])
-            ->add('role', HiddenType::class)
+            ->add('role', EntityType::class, [
+                'class' => Role::class,
+                'choices' => $options['school_roles'],
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
+            ])
             ->add('Responsable', ResponsableType::class);
     }
 
@@ -79,6 +85,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'school_roles' => [],
         ]);
     }
 }
