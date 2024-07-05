@@ -30,7 +30,7 @@
         {% for field in [form.name, form.logo, form.address, form.phoneNumber, form.email] %}
             <div>
                 {{ form_label(field, null, {'label_attr': {'class': 'block text-sm font-medium mb-1'}}) }}
-                {{ form_widget(field, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-medium shadow-sm focus:border-secondary focus:ring-secondary sm:text-sm bg-background dark:bg-gray-dark text-text dark:text-text-light'}}) }}
+               {{ form_widget(field, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-medium shadow-sm focus:border-secondary focus:ring-secondary sm:text-sm bg-background dark:bg-gray-dark text-text dark:text-white'}}) }}
                 {{ form_errors(field, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
             </div>
         {% endfor %}
@@ -44,7 +44,7 @@
                     {% for colorField in colorScheme %}
                         <div class="mb-4">
                             {{ form_label(colorField, null, {'label_attr': {'class': 'block text-sm font-medium mb-1'}}) }}
-                            {{ form_widget(colorField, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-medium shadow-sm focus:border-secondary focus:ring-secondary sm:text-sm bg-background dark:bg-gray-dark text-text dark:text-text-light'}}) }}
+                            {{ form_widget(colorField, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-medium shadow-sm focus:border-secondary focus:ring-secondary sm:text-sm bg-background dark:bg-gray-dark text-text dark:text-white'}}) }}
                             {{ form_errors(colorField, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
                         </div>
                     {% endfor %}
@@ -97,8 +97,9 @@
             $collectionHolder.append($newFormLi);
 
             // Add Tailwind classes to the new form elements
-             $newFormLi.find('input[type="text"], input[type="color"]').addClass('mt-1 block w-full rounded-md border-gray-medium shadow-sm focus:border-secondary focus:ring-secondary sm:text-sm bg-background dark:bg-gray-dark text-text dark:text-text-light');
-    $newFormLi.find('label').addClass('block text-sm font-medium text-text dark:text-text-light mb-1');
+            $newFormLi.find('input[type="text"], input[type="color"]').addClass('mt-1 block w-full rounded-md border-gray-medium shadow-sm focus:border-secondary focus:ring-secondary sm:text-sm');
+            $newFormLi.find('label').addClass('block text-sm font-medium text-text mb-1');
+            $newFormLi.find('input[type="text"], input[type="color"]').addClass('mt-1 block w-full rounded-md border-gray-medium shadow-sm focus:border-secondary focus:ring-secondary sm:text-sm bg-background dark:bg-gray-dark text-text dark:text-white');
         }
     });
 </script>
