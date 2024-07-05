@@ -35,12 +35,14 @@ nav:
   contact_us: 'Contact us'
   documentation: 'Documentation'
   login: 'Log in'
+  open_menu: 'Open main menu'
+  close_menu: 'Close menu'
 
 footer:
   copyright: '© %year% SYGENES, UIECC.'
 
 
-# Basehtml index page text
+#  index and other welcome pages
 home:
   name: "SYGENES"
   title: 'Home'
@@ -55,3 +57,140 @@ home:
   student_registration: 'Student Registration'
   learn_more: 'Learn more'
   app_screenshot: 'App screenshot'
+
+about:
+  title: 'About'
+  sygenes_title: 'About SYGENES'
+  sygenes_description: "We're passionate about simplifying grade management for educators, students, and parents alike. Our robust web application offers a comprehensive suite of tools designed to streamline the grading process, enhance communication, and empower educational institutions to achieve academic excellence."
+  origin_title: 'Origin'
+  origin_description: 'Designed by UIECC.'
+  mission_title: 'Mission'
+  mission_description: 'To revolutionize grade management by providing intuitive, efficient, and reliable solutions tailored to the needs of modern educational environments.'
+  user_centric_title: 'User-Centric Design'
+  user_centric_description: "SYGENES is built with the end-user in mind. We understand the diverse needs of educators, students, and parents, and we've crafted our platform to be intuitive and easy to use for all stakeholders."
+  integration_title: 'Seamless Integration'
+  integration_description: 'SYGENES seamlessly integrates with existing educational platforms and systems, ensuring a smooth transition and minimal disruption to your workflow.'
+  image1_alt: 'Front view of the SYGENES system'
+  image2_alt: 'Long side view of the SYGENES system'
+  image3_alt: 'Water tank of the SYGENES system'
+  image4_alt: 'Green view of the SYGENES system'
+  get_started_title: 'Get Started Today'
+  get_started_description: 'Ready to experience the benefits of SYGENES for yourself? Sign up today and discover how our grade management solution can transform your educational institution.'
+  get_access: 'Get access'
+
+contact:
+  title: 'Contact Us'
+  heading: 'Contact Us'
+  description: 'Have questions or need assistance? Our dedicated support team is here to help. Contact us via email or phone, and we''ll be happy to assist you.'
+  first_name: 'First name'
+  last_name: 'Last name'
+  company: 'Company'
+  email: 'Email'
+  phone_number: 'Phone number'
+  country: 'Country'
+  message: 'Message'
+  submit: 'Let''s talk'
+
+documentation:
+  title: "Documentation"
+  manage_grades_faster: "Manage grades faster"
+  intro_text: "Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam eget aliquam. Quisque id at vitae feugiat egestas."
+  section1_text: "Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius sit"
+  push_to_deploy: ""
+  push_to_deploy_text: ""
+
+  ssl_certificates: ""
+  ssl_certificates_text: ""
+
+  database_backups: ""
+  database_backups_text: ""
+
+  section2_text: ""
+
+  no_server_no_problem: ""
+  no_server_no_problem_text: ""
+
+
+# Base Login and Login Page  
+login:
+  app:
+    title: 'SYGENES'
+    name: 'SYGENES'
+    logo_alt: 'UIECC Logo'
+
+  nav:
+    open_menu: 'Open main menu'
+    home: 'Home'
+    about: 'About'
+    contact_us: 'Contact Us'
+    documentation: 'Documentation'
+
+  footer:
+    copyright: '© %year% SYGENES, UIECC.'
+
+login_page:
+  title: 'Login'
+  logo_alt: 'UIECC Logo'
+  heading: 'Sign in to your account'
+  username_label: 'Username'
+  password_label: 'Password'
+  forgot_password: 'Forgot password?'
+  show_password: 'Show password'
+  hide_password: 'Hide password'
+  remember_me: 'Remember me'
+  sign_in_button: 'Sign in'
+  logged_in_as: 'You are logged in as %username%,'
+  logout: 'Log out'
+  no_account: 'Have no account?'
+  sign_up: 'Sign Up'
+
+
+
+
+# Error Page
+error_page:
+  title: "Error Occurred - We're Sorry!"
+  image_alt: "Error occurred"
+  heading: "Oops! Something Went Wrong"
+  go_back: "Go Back"
+  contact_support: "Need help? Contact support"
+
+
+
+# Admin Dashboard Page and subpages
+
+admin_dash:
+  SYGENES: "SYGENES"
+  'Profile Picture': 'Profile Picture'
+  'Default Profile Picture': 'Default Profile Picture'
+  Dashboard: Dashboard
+  Students: Students
+  'Add new student data': 'Add new student data'
+  'Modify a student data': 'Modify a student data'
+  'List students': 'List students'
+  'Import excel file': 'Import excel file'
+  Marks: Marks
+  'Add a student''s marks': 'Add a student''s marks'
+  'View students marks': 'View students marks'
+  'UE & EC': 'UE & EC'
+  'Add an UE': 'Add an UE'
+  'Add an EC': 'Add an EC'
+  'List of UE & EC': 'List of UE & EC'
+  Responsable: Responsable
+  'Add Responsable': 'Add Responsable'
+  'View List of Responsable': 'View List of Responsable'
+  Profile: Profile
+  Settings: Settings
+  'Light Mode': 'Light Mode'
+  'Dark Mode': 'Dark Mode'
+  Logout: Logout
+
+
+# Student Dashboard Page and subpages
+
+
+
+
+
+# Initialisation Pages
+

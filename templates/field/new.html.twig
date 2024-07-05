@@ -3,15 +3,25 @@
 {% block title %}<title>{{ isNew ? 'Créer' : 'Modifier' }} une filière</title>{% endblock %}
 
 {% block body %}
-<div class="min-h-screen bg-gradient-to-br from-blue-100 to-orange-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+<div
+    class="min-h-screen bg-gradient-to-br from-blue-100 to-orange-100 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
     <div class="max-w-4xl w-full">
-        <div class="bg-white shadow-2xl rounded-lg overflow-hidden transform transition-all hover:scale-105 duration-300">
+        <div
+            class="bg-white shadow-2xl rounded-lg overflow-hidden transform transition-all hover:scale-105 duration-300">
             <div class="px-6 py-8 sm:px-10">
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-8 space-y-4 sm:space-y-0">
-                    <h1 class="text-3xl font-extrabold text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-orange-500">
-                        {{ isNew ? 'Créer' : 'Modifier' }} une filière
-                    </h1>
-                    <button id="toggleExistingFields" class="bg-gradient-to-r from-blue-500 to-orange-500 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50 shadow-lg">
+                    <div class="flex items-center space-x-4">
+                        <a href="{{path('role_new')}}"
+                            class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 shadow-lg">
+                            Suivant<i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                        <h1
+                            class="text-3xl font-extrabold text-gray-900 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-orange-500">
+                            {{ isNew ? 'Créer' : 'Modifier' }} une filière
+                        </h1>
+                    </div>
+                    <button id="toggleExistingFields"
+                        class="bg-gradient-to-r from-blue-500 to-orange-500 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50 shadow-lg">
                         Afficher/Masquer les filières existantes
                     </button>
                 </div>
@@ -20,52 +30,62 @@
                     <h2 class="text-2xl font-bold text-gray-800 mb-4">Filières existantes</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {% for existingField in existingFields %}
-                            <div class="bg-gradient-to-r from-orange-100 to-orange-200 rounded-lg p-4 shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
-                                <h3 class="font-bold text-lg text-gray-800 mb-2">{{ existingField.name }}</h3>
-                                <p class="text-sm text-gray-600 mb-2">Code: {{ existingField.code }}</p>
-                                <a href="{{ path('field_new', {'id': existingField.id}) }}" class="text-blue-600 hover:text-blue-800 text-sm transition duration-300 ease-in-out hover:underline">Modifier</a>
-                            </div>
+                        <div
+                            class="bg-gradient-to-r from-orange-100 to-orange-200 rounded-lg p-4 shadow-md hover:shadow-lg transition duration-300 transform hover:scale-105">
+                            <h3 class="font-bold text-lg text-gray-800 mb-2">{{ existingField.name }}</h3>
+                            <p class="text-sm text-gray-600 mb-2">Code: {{ existingField.code }}</p>
+                            <a href="{{ path('field_new', {'id': existingField.id}) }}"
+                                class="text-blue-600 hover:text-blue-800 text-sm transition duration-300 ease-in-out hover:underline">Modifier</a>
+                        </div>
                         {% endfor %}
                     </div>
                 </div>
 
                 {% for label, messages in app.flashes %}
-                    {% for message in messages %}
-                        <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 p-4 mb-6 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md" role="alert">
-                            <p class="font-bold">{{ label == 'success' ? 'Succès' : 'Erreur' }}</p>
-                            <p>{{ message }}</p>
-                        </div>
-                    {% endfor %}
+                {% for message in messages %}
+                <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 p-4 mb-6 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md"
+                    role="alert">
+                    <p class="font-bold">{{ label == 'success' ? 'Succès' : 'Erreur' }}</p>
+                    <p>{{ message }}</p>
+                </div>
+                {% endfor %}
                 {% endfor %}
 
                 {{ form_start(form, {'attr': {'class': 'space-y-8'}}) }}
-                    <div class="space-y-6">
-                        <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
-                            {{ form_label(form.code, 'Code', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}}) }}
-                            {{ form_widget(form.code, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-300'}}) }}
-                            {{ form_errors(form.code, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
-                        </div>
-
-                        <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
-                            {{ form_label(form.name, 'Nom', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}}) }}
-                            {{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-300'}}) }}
-                            {{ form_errors(form.name, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
-                        </div>
-
-                        <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
-                            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}}) }}
-                            {{ form_widget(form.description, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-300', 'rows': '4'}}) }}
-                            {{ form_errors(form.description, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
-                        </div>
+                <div class="space-y-6">
+                    <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
+                        {{ form_label(form.code, 'Code', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}})
+                        }}
+                        {{ form_widget(form.code, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-300'}})
+                        }}
+                        {{ form_errors(form.code, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
                     </div>
 
-                    <div class="pt-8">
-                        <div class="flex justify-end">
-                            <button type="submit" class="inline-flex justify-center py-3 px-6 border border-transparent shadow-lg text-sm font-medium rounded-md text-white bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out transform hover:scale-105">
-                                {{ isNew ? 'Créer' : 'Mettre à jour' }}
-                            </button>
-                        </div>
+                    <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
+                        {{ form_label(form.name, 'Nom', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}})
+                        }}
+                        {{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-300'}})
+                        }}
+                        {{ form_errors(form.name, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
                     </div>
+
+                    <div class="transition-all duration-300 ease-in-out transform hover:scale-105">
+                        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 mb-2'}})
+                        }}
+                        {{ form_widget(form.description, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-300', 'rows': '4'}})
+                        }}
+                        {{ form_errors(form.description, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+                    </div>
+                </div>
+
+                <div class="pt-8">
+                    <div class="flex justify-end">
+                        <button type="submit"
+                            class="inline-flex justify-center py-3 px-6 border border-transparent shadow-lg text-sm font-medium rounded-md text-white bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition duration-300 ease-in-out transform hover:scale-105">
+                            {{ isNew ? 'Créer' : 'Mettre à jour' }}
+                        </button>
+                    </div>
+                </div>
                 {{ form_end(form) }}
             </div>
         </div>
@@ -73,7 +93,7 @@
 </div>
 
 <script>
-    document.getElementById('toggleExistingFields').addEventListener('click', function() {
+    document.getElementById('toggleExistingFields').addEventListener('click', function () {
         var container = document.getElementById('existingFieldsContainer');
         container.classList.toggle('hidden');
         container.classList.toggle('opacity-0');

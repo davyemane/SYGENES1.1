@@ -10,9 +10,17 @@
         <div class="bg-white shadow-xl rounded-lg overflow-hidden">
             <div class="px-6 py-8 sm:px-10">
                 <div class="flex justify-between items-center mb-8">
-                    <h1 class="text-3xl font-extrabold text-gray-900">
-                        {{ isNew ? 'Créer un nouveau niveau' : 'Modifier le niveau' | trans }}
-                    </h1>
+                    <div class="flex items-center space-x-4">
+                        <a href="{{ path('role_new') }}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 shadow-lg">
+                            <i class="fas fa-arrow-left mr-2"></i>{{ 'Retour' | trans }}
+                        </a>
+                        <a href="{{ path('app_register') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 shadow-lg">
+                            {{ 'Suivant' | trans }}<i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                        <h1 class="text-3xl font-extrabold text-gray-900">
+                            {{ isNew ? 'Créer un nouveau niveau' : 'Modifier le niveau' | trans }}
+                        </h1>
+                    </div>
                     <button id="toggleExistingLevels" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                         {{ 'Afficher/Masquer les niveaux existants' | trans }}
                     </button>
