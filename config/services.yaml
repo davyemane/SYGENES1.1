@@ -40,7 +40,10 @@ services:
     App\EventListener\LocaleListener:
         tags:
             - { name: kernel.event_subscriber }
-        
+            
+    App\EventListener\AuthenticationSuccessListener:
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login }    
 
         # add more service definitions when explicit configuration is needed
         # please note that last definitions always *replace* previous ones

@@ -16,10 +16,6 @@ class RoleType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('school', EntityType::class, [
-                'class' => School::class,
-                'choice_label' => 'name',
-            ])
             ->add('privileges', EntityType::class, [
                 'class' => Privilege::class,
                 'choice_label' => 'name', // Assurez-vous que votre entité Privilege a un champ 'name'

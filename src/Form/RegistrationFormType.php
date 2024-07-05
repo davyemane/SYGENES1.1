@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -70,15 +71,8 @@ class RegistrationFormType extends AbstractType
                     ])
                 ],
             ])
-            ->add('role', EntityType::class, [
-                'class' => Role::class,
-                'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true,
-            ])
-            ->add('Responsable', ResponsableType::class, [
-                'label' => 'Responsable Information',
-            ]);
+            ->add('role', HiddenType::class)
+            ->add('Responsable', ResponsableType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
