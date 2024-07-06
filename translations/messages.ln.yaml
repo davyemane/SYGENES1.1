@@ -1,0 +1,161 @@
+# Language choice text
+language-message: "Kótá moko yo léláko"
+english-language: "Mongɔlɛ"
+french-language: "Falánsɛ"
+spanish-language: "Esipanye"
+next-language-btn: "Mokɛlɛ"
+
+# Create school text
+create-school-title: "Lélákela Mokanda moko"
+edit-school-title: "Lobɔla Mokanda"
+create-school: "Lélákela mokanda moko"
+edit-school: "Lobɔla mokanda"
+school-name: "Lomukanda"
+logo: "Mokandá moko"
+address: "Lisúsú"
+phone-number: "Nzila ya téléphone"
+email: "E-mail"
+color-schemes: "Bísí ya malamu"
+add-color-scheme: "Yokosá bísí ya malamu"
+remove-color-scheme: "Kómela bísí ya malamu"
+create-school-btn: "Lobɔla mokanda"
+update-school-btn: "Bongisa mokanda"
+success-message: "Lisúsu ya bolamu"
+error-message: "Lisúsu ya mabele"
+
+
+# Create a Role Text
+create-role-title: "Lélákela mwambe"
+edit-role-title: "Lobɔla mwambe"
+create-role: "Lélákela mwambe"
+edit-role: "Lobɔla mwambe"
+role-name: "Lomikanda"
+role-school: "Mokanda"
+role-privileges: "Makambo ya malamu"
+create-role-btn: "Lobɔla"
+
+# Base.html.twig page
+app:
+  title: 'SYGENES'
+  name: 'SYGENES'
+  logo_alt: 'Mokanda UIECC'
+
+nav:
+  home: 'Lisúsu'
+  about: 'Kótá mingi'
+  contact_us: 'Tuna tálá'
+  documentation: 'Yamóká'
+
+footer:
+  copyright: '© %year% SYGENES, UIECC.'
+
+create-level-title: "Lélákela Nganda moko"
+edit-level-title: "Lobɔla Nganda"
+back: "Kótá"
+next: "Mokɛlɛ"
+create-level: "Lélákela nganda moko"
+edit-level: "Lobɔla nganda"
+toggle-existing-levels: "Kótá/ngúmá nganda eleko"
+existing-levels: "Nganda eleko"
+fields: "Bísí"
+not-assigned: "Té na kití"
+
+level-name: "Nganda moko"
+associated-field: "Mpɔsɛ ya mpeki"
+
+create: "Lélákela"
+update: "Bongisa"
+
+register:
+  register: "Leláko"
+  user-registration: "Leláko ya mokomi"
+  back: "Kótá"
+  username: "Nkómbo ya ngáí"
+  email: "E-mail"
+  password: "Mɔtɔ ya moko"
+  profile-picture: "Lukombo lwa lolo"
+  roles: "Mwambe"
+  no-roles-available: "Té na mwambe eleko mpo na mokanda moko."
+  responsible-information: "Lisusu ya malamu"
+  name: "Nkákí"
+  phone-number: "Nzila ya téléphone"
+  agree-to-terms: "Nakoyambola lisusu"
+  
+
+# Home page
+
+home:
+  name: "SYGENES"
+  title: 'Lisusu'
+  documentation_prompt: 'Lobéla malamu oyo okokí na liyé.'
+  read_more: 'Mokɛlɛ'
+  welcome: 'Bó yéka na'
+  description: "Mfumu yá koyekama na bo ngáí, oyo ekóta mpe oyokí na Ékɔlɛ ya Élɔtɛlɛ ya Digisɔni ya Lisusu"
+  sign_up: "Leláko"
+  log_in: 'Túná tálá'
+  register_prompt: "Ozalí té na ékɔlɛ? Lobéla malamu oyo okokí na liyé."
+  register_description: "Olobaki mokomi wa nzela na ngáí ya koyekama oyo okokí, kobókisa mpe kobókóla mokomi ya mabela."
+  student_registration: 'Leláko ya mokomi'
+  learn_more: 'Mokɛlɛ'
+  app_screenshot: "Lukombó lwa lolo na lisusu"
+
+about:
+  title: 'Kótá mingi'
+  sygenes_title: 'Kótá mingi na SYGENES'
+  sygenes_description: "Túná kolamuka na koyekama na bo ngáí, bo ngáí mpe bo ngáí. Yandimi ya koyekama na bo ngáí mpe teke ya mutúkulu ya mpɛtɛ ya ngáí ya na ntango na maboko. Ekóka yango te, na kabaka ya bo koyekama ya ngáí ya mabela."
+  origin_title: 'Lisusu'
+  origin_description: 'Kolongola na UIECC.'
+  mission_title: 'Malámu'
+  mission_description: 'Túná koselá kolongola na koyekama na bo ngáí ya bo ngáí mpe teke ya bo ngáí ya kozonga na yango na bo ngáí na libanda ya mabela ya kongó. '
+  user_centric_title: "Yebisa mokoyekama ya ngáí"
+  user_centric_description: "SYGENES etombóli na kozwela bongó na mokoyekama ya ngáí. Túná koyómbola malamu na kolobela na bo ngáí, bo ngáí mpe bo ngáí, mpe túná kolébisa libanda ya yé."
+  integration_title: 'Lisusu'
+  integration_description: "SYGENES na koyekama bokúmá na kozwela ntsánga ya kotika. Mpe túná komitá ntina na mabanda ya koyekama ya mabela na teke na bo ngáí na bokúmá libanda ya bokúmá."
+  image1_alt: 'Lisusu na koyekama ya SYGENES'
+  image2_alt: 'Lisusu ya libanda ya mabela ya SYGENES'
+  image3_alt: "Mposo ya lisusu ya SYGENES"
+  image4_alt: 'Lisusu ya tala ya SYGENES'
+  get_started_title: "Tikóla té"
+  get_started_description: "Olobaki na mokoyekama oyo okokí, mokomi súka mpe koyéla yango na yé mpe yebisi ndé bo ngáí na SYGENES na ngáí ya mabela."
+  get_access: "Túná kolongola"
+
+
+contact:
+  title: 'Túná tálá'
+  heading: 'Túná tálá'
+  description: "Ozalí koyemba té na ozalí té na mobali? Nzémbo ya mobali ya bolamu na yé te na kolongola. Ozalí kolobela té te kolinga."
+  first_name: 'Nkaki ya ntango ya ntango'
+  last_name: 'Nkamba ya ntango'
+  company: 'Eskomisi'
+  email: 'E-mail'
+  phone_number: 'Nzila ya téléphone'
+  country: 'Linga'
+  message: 'Nzémbo ya ngáí'
+  submit: 'Bolamu'
+
+documentation:
+  title: "Yamóká"
+  manage_grades_faster: "Kozwela ntongo na bolamu"
+  intro_text: "Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam eget aliquam. Quisque id at vitae feugiat egestas."
+  section1_text: "Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius sit"
+  push_to_deploy: ""
+  push_to_deploy_text: ""
+
+  ssl_certificates: ""
+  ssl_certificates_text: ""
+
+  database_backups: ""
+  database_backups_text: ""
+
+  section2_text: ""
+
+  no_server_no_problem: ""
+  no_server_no_problem_text: ""
+
+# Dashboard Text
+
+
+
+
+
+# Others

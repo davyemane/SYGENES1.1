@@ -82,6 +82,80 @@ register:
   name: "Nom"
   phone-number: "Numéro de téléphone"
   agree-to-terms: "J'accepte les conditions"
+
+
+
+
+
+# Home page
+
+home:
+  name: "SYGENES"
+  title: 'Accueil'
+  documentation_prompt: 'Consultez notre documentation si vous êtes perdu.'
+  read_more: 'En savoir plus'
+  welcome: 'Bienvenue à'
+  description: "Votre système de gestion des notes tout-en-un, conçu pour et par l'École Superieure Internationale du Génie Numérique."
+  sign_up: "S'inscrire"
+  log_in: 'Se connecter'
+  register_prompt: "Nouveau à l'École ? Inscrivez-vous maintenant."
+  register_description: "Vous venez de passer l'examen d'entrée compétitif. Cliquez ci-dessous pour vous inscrire administrativement."
+  student_registration: 'Inscription des étudiants'
+  learn_more: 'En savoir plus'
+  app_screenshot: "Capture d'écran de l'application"
+
+about:
+  title: 'À propos'
+  sygenes_title: 'À propos de SYGENES'
+  sygenes_description: "Nous sommes passionnés par la simplification de la gestion des notes pour les éducateurs, les étudiants et les parents. Notre robuste application web offre une gamme complète d'outils conçus pour rationaliser le processus de notation, améliorer la communication et permettre aux institutions éducatives d'atteindre l'excellence académique."
+  origin_title: 'Origine'
+  origin_description: 'Conçu par UIECC.'
+  mission_title: 'Mission'
+  mission_description: 'Révolutionner la gestion des notes en fournissant des solutions intuitives, efficaces et fiables adaptées aux besoins des environnements éducatifs modernes.'
+  user_centric_title: "Conception centrée sur l'utilisateur"
+  user_centric_description: "SYGENES est construit en pensant à l'utilisateur final. Nous comprenons les besoins diversifiés des éducateurs, des étudiants et des parents, et nous avons conçu notre plateforme pour qu'elle soit intuitive et facile à utiliser pour toutes les parties prenantes."
+  integration_title: 'Intégration transparente'
+  integration_description: "SYGENES s'intègre parfaitement aux plates-formes et systèmes éducatifs existants, garantissant une transition fluide et une perturbation minimale de votre flux de travail."
+  image1_alt: 'Vue de face du système SYGENES'
+  image2_alt: 'Vue latérale longue du système SYGENES'
+  image3_alt: "Réservoir d'eau du système SYGENES"
+  image4_alt: 'Vue verte du système SYGENES'
+  get_started_title: "Commencez dès aujourd'hui"
+  get_started_description: "Prêt à découvrir par vous-même les avantages de SYGENES ? Inscrivez-vous dès aujourd'hui et découvrez comment notre solution de gestion des notes peut transformer votre institution éducative."
+  get_access: "Obtenez l'accès"
+
+contact:
+  title: 'Contactez-nous'
+  heading: 'Contactez-nous'
+  description: "Vous avez des questions ou avez besoin d'aide ? Notre équipe de support dédiée est là pour vous aider. Contactez-nous par e-mail ou par téléphone, et nous serons heureux de vous assister."
+  first_name: 'Prénom'
+  last_name: 'Nom de famille'
+  company: 'Entreprise'
+  email: 'E-mail'
+  phone_number: 'Numéro de téléphone'
+  country: 'Pays'
+  message: 'Message'
+  submit: 'Parlons-en'
+
+documentation:
+  title: "Documentation"
+  manage_grades_faster: "Gérez les notes plus rapidement"
+  intro_text: "Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam eget aliquam. Quisque id at vitae feugiat egestas."
+  section1_text: "Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius sit"
+  push_to_deploy: ""
+  push_to_deploy_text: ""
+
+  ssl_certificates: ""
+  ssl_certificates_text: ""
+
+  database_backups: ""
+  database_backups_text: ""
+
+  section2_text: ""
+
+  no_server_no_problem: ""
+  no_server_no_problem_text: ""
+
 # Dashboard Text
 
 
