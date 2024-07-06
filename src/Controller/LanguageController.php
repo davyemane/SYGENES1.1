@@ -3,19 +3,12 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class LanguageController extends AbstractController
 {
-    
-
     #[Route('/language', name: 'language_choice')]
     public function index(): Response
     {
@@ -27,7 +20,7 @@ class LanguageController extends AbstractController
     {
         $request->getSession()->set('_locale', $locale);
 
-        return $this->redirect($request->headers->get('referer'));
+        $referer = $request->headers->get('referer');
+        return $referer ? $this->redirect($referer) : $this->redirectToRoute('app_home_page');
     }
-
 }

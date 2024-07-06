@@ -21,7 +21,6 @@
             }
         }
     </script>
-    {% set color_scheme = color_scheme() %}
     <style>
         #searchInput:focus {
             outline: none;
@@ -48,14 +47,6 @@
         .submenu {
             position: relative;
         }
-        
-        :root {
-            --primary-color: {{ color_scheme.primaryColor|e }};
-            --secondary-color: {{ color_scheme.secondaryColor|e }};
-            --accent-color: {{ color_scheme.accentColor|e }};
-            --background-color: {{ color_scheme.bacgroundColor|e }};
-            --text-color: {{ color_scheme.textColor|e }};
-        }
 
         /* Apply colors to the elements */
         body {
@@ -64,7 +55,7 @@
         }
 
         #sidebarDiv {
-            background-color: var(--primary-color);
+            background-color: var(--background-color);
         }
 
         #toggleBtn, .menu-item img, .menu-item i, .submenu-item {

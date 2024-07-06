@@ -5,6 +5,13 @@ french-language: "French"
 spanish-language: "Spanish"
 next-language-btn: "Next"
 
+language:
+  change: "Change language"
+  english: "English"
+  french: "French"
+  spanish: "Spanish"
+  lingala: "Lingala"
+
 # Create school text
 create-school-title: "New School"
 edit-school-title: "Edit School"

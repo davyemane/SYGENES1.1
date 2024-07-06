@@ -1,5 +1,5 @@
 # Language choice text
-language-message: "Por favor elige tu idioma"
+language-message: "Por favor, elige tu idioma"
 english-language: "Inglés"
 french-language: "Francés"
 spanish-language: "Español"
@@ -8,17 +8,155 @@ next-language-btn: "Siguiente"
 # Create school text
 create-school-title: "Nueva Escuela"
 edit-school-title: "Editar Escuela"
-create-school: "Crear una nueva escuela"
+create-school: "Crear nueva escuela"
 edit-school: "Editar escuela"
 school-name: "Nombre de la escuela"
 logo: "Logotipo"
 address: "Dirección"
 phone-number: "Número de teléfono"
 email: "Correo electrónico"
-color-schemes: "Esquemas de Colores"
-add-color-scheme: "Añadir Esquema de Colores"
-remove-color-scheme: "Eliminar Esquema de Colores"
-create-school-btn: "Crear Escuela"
-update-school-btn: "Actualizar Escuela"
-success-message: ""
-error-message: ""
+color-schemes: "Esquemas de color"
+add-color-scheme: "Agregar esquema de color"
+remove-color-scheme: "Eliminar esquema de color"
+create-school-btn: "Crear escuela"
+update-school-btn: "Actualizar escuela"
+success-message: "Mensaje de éxito"
+error-message: "Mensaje de error"
+
+
+# Create a Role Text
+create-role-title: "Crear Rol"
+edit-role-title: "Editar Rol"
+create-role: "Crear rol"
+edit-role: "Editar rol"
+role-name: "Nombre del rol"
+role-school: "Escuela" 
+role-privileges: "Privilegios"
+create-role-btn: "Crear rol"
+
+
+# Base.html.twig page
+app:
+  title: 'SYGENES'
+  name: 'SYGENES'
+  logo_alt: 'Logotipo UIECC'
+
+nav:
+  home: 'Inicio'
+  about: 'Acerca de'
+  contact_us: 'Contacto'
+  documentation: 'Documentación'
+  login: 'Iniciar sesión'
+
+footer:
+  copyright: '© %year% SYGENES, UIECC.'
+
+
+
+create-level-title: "Nuevo Nivel"
+edit-level-title: "Editar Nivel"
+back: "Atrás"
+next: "Siguiente"
+create-level: "Crear nuevo nivel"
+edit-level: "Editar nivel"
+toggle-existing-levels: "Mostrar/Ocultar niveles existentes"
+existing-levels: "Niveles existentes"
+fields: "Campos"
+not-assigned: "No asignado"
+level-name: "Nombre del nivel"
+associated-field: "Campo asociado"
+create: "Crear"
+update: "Actualizar"
+
+register:
+  register: "Registrarse"
+  user-registration: "Registro de usuario"
+  back: "Atrás"
+  username: "Nombre de usuario"
+  email: "Correo electrónico"
+  password: "Contraseña"
+  profile-picture: "Foto de perfil"
+  roles: "Roles"
+  no-roles-available: "No hay roles disponibles para esta escuela."
+  responsible-information: "Información del responsable"
+  name: "Nombre"
+  phone-number: "Número de teléfono"
+  agree-to-terms: "Acepto los términos"
+
+
+# Home page
+
+home:
+  name: "SYGENES"
+  title: 'Inicio'
+  documentation_prompt: 'Consulta nuestra documentación si te sientes perdido.'
+  read_more: 'Leer más'
+  welcome: 'Bienvenido a'
+  description: "Tu sistema integral de gestión de calificaciones, diseñado para y por la Escuela Internacional Avanzada de Ingeniería Digital."
+  sign_up: 'Registrarse'
+  log_in: 'Iniciar sesión'
+  register_prompt: '¿Nuevo en la Escuela? Regístrate ahora.'
+  register_description: 'Acabas de pasar el examen de ingreso competitivo. Haz clic a continuación para registrarte administrativamente.'
+  student_registration: 'Registro de estudiantes'
+  learn_more: 'Saber más'
+  app_screenshot: 'Captura de pantalla de la aplicación'
+
+about:
+  title: 'Acerca de'
+  sygenes_title: 'Acerca de SYGENES'
+  sygenes_description: "Nos apasiona simplificar la gestión de calificaciones para educadores, estudiantes y padres por igual. Nuestra sólida aplicación web ofrece una completa suite de herramientas diseñadas para agilizar el proceso de calificación, mejorar la comunicación y empoderar a las instituciones educativas para lograr la excelencia académica."
+  origin_title: 'Origen'
+  origin_description: 'Diseñado por UIECC.'
+  mission_title: 'Misión'
+  mission_description: 'Revolucionar la gestión de calificaciones proporcionando soluciones intuitivas, eficientes y confiables adaptadas a las necesidades de los entornos educativos modernos.'
+  user_centric_title: 'Diseño Centrado en el Usuario'
+  user_centric_description: "SYGENES está construido pensando en el usuario final. Entendemos las diversas necesidades de educadores, estudiantes y padres, y hemos diseñado nuestra plataforma para que sea intuitiva y fácil de usar para todas las partes interesadas."
+  integration_title: 'Integración Perfecta'
+  integration_description: 'SYGENES se integra perfectamente con plataformas y sistemas educativos existentes, garantizando una transición fluida y una interrupción mínima en su flujo de trabajo.'
+  image1_alt: 'Vista frontal del sistema SYGENES'
+  image2_alt: 'Vista lateral larga del sistema SYGENES'
+  image3_alt: 'Tanque de agua del sistema SYGENES'
+  image4_alt: 'Vista verde del sistema SYGENES'
+  get_started_title: 'Comienza Hoy'
+  get_started_description: '¿Listo para experimentar los beneficios de SYGENES por ti mismo? Regístrate hoy y descubre cómo nuestra solución de gestión de calificaciones puede transformar tu institución educativa.'
+  get_access: 'Obtener acceso'
+
+contact:
+  title: 'Contáctanos'
+  heading: 'Contáctanos'
+  description: '¿Tienes preguntas o necesitas ayuda? Nuestro equipo de soporte dedicado está aquí para ayudarte. Contáctanos por correo electrónico o teléfono, y estaremos encantados de asistirte.'
+  first_name: 'Nombre'
+  last_name: 'Apellido'
+  company: 'Empresa'
+  email: 'Correo electrónico'
+  phone_number: 'Número de teléfono'
+  country: 'País'
+  message: 'Mensaje'
+  submit: 'Enviar'
+
+documentation:
+  title: 'Documentación'
+  manage_grades_faster: 'Gestiona las calificaciones más rápido'
+  intro_text: 'Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam eget aliquam. Quisque id at vitae feugiat egestas.'
+  section1_text: 'Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius sit'
+  push_to_deploy: ''
+  push_to_deploy_text: ''
+
+  ssl_certificates: ''
+  ssl_certificates_text: ''
+
+  database_backups: ''
+  database_backups_text: ''
+
+  section2_text: ''
+
+  no_server_no_problem: ''
+  no_server_no_problem_text: ''
+
+# Dashboard Text
+
+
+
+
+
+# Others
