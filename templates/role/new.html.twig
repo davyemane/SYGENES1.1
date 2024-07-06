@@ -47,11 +47,7 @@
                     {% for message in messages %}
                         <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 dark:bg-{{ label == 'success' ? 'green' : 'red' }}-900 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 dark:text-{{ label == 'success' ? 'green' : 'red' }}-100 p-4 mb-6 rounded-lg shadow-md" role="alert">
                             <p class="font-bold">{{ (label == 'success' ? "role.success" : "role.error")|trans }}</p>
-<<<<<<< HEAD
                             <p>{{message|trans }}</p>
-=======
-                            <p>{{ message|trans }}</p>
->>>>>>> d7b523d40ed50fb5e0a9c6e1b5e1d59bc7485460
                         </div>
                     {% endfor %}
                 {% endfor %}
