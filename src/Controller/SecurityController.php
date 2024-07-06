@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Role;
+use App\Repository\PrivilegeRepository;
+use App\Repository\RoleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,14 +64,29 @@ class SecurityController extends AbstractController
     {
         // Récupérer l'utilisateur connecté
         $user = $this->security->getUser();
-
-        // Vérification des rôles et redirection en conséquence
-        if ($user->getRole() === 'student') {
-            return new RedirectResponse($this->generateUrl('app_dashStudent'));
+    
+        if (!$user) {
+            // Si aucun utilisateur n'est connecté, rediriger vers la page d'accueil
+            return $this->redirectToRoute('app_home');
         }
-            return new RedirectResponse($this->generateUrl('app_dashAdmin'));
-
-        // Redirection par défaut si aucun rôle spécifique n'est trouvé
-        return new RedirectResponse($this->generateUrl('app_home'));
-    }
-}
+    
+        // Récupérer les rôles de l'utilisateur
+        $userRoles = $user->getRole();
+    
+        if ($userRoles->isEmpty()) {
+            // Si l'utilisateur n'a pas de rôles, rediriger vers la page d'accueil
+            return $this->redirectToRoute('app_home');
+        }
+    
+        // Vérifier si l'utilisateur a le rôle "Student"
+        $isStudent = $userRoles->exists(function($key, Role $role) {
+            return $role->getName() === 'Student';
+        });
+    
+        if ($isStudent) {
+            return $this->redirectToRoute('app_dashStudent');
+        } else {
+            // Tous les autres rôles sont redirigés vers le dashboard Admin
+            return $this->redirectToRoute('app_dashAdmin');
+        }
+    }}
