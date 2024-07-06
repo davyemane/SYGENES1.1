@@ -156,70 +156,89 @@
                 </a>
 
                 {% if privileges is not empty %}
-                    {% set menuItems = {
-                        'Students': {
-                            'icon': 'students.png',
-                            'privileges': ['Add Student', 'Modify Student', 'List Students', 'Import Students'],
-                            'submenu': {
-                                'Add Student': {'path': 'add_student', 'label': 'Add new student data'},
-                                'Modify Student': {'path': 'add_student', 'label': 'Modify a student data'},
-                                'List Students': {'path': 'list_student_2', 'label': 'List students'},
-                                'Import Students': {'path': 'import', 'label': 'Import excel file'}
-                            }
-                        },
-                        'Marks': {
-                            'icon': 'grades.png',
-                            'privileges': ['Add Mark', 'View Marks'],
-                            'submenu': {
-                                'Add Mark': {'path': 'add_note', 'label': 'Add a student\'s marks'},
-                                'View Marks': {'path': 'choix_ec', 'label': 'View students marks'}
-                            }
-                        },
-                        'UE & EC': {
-                            'icon': 'ue_ec.png',
-                            'privileges': ['Add UE', 'Add EC', 'List UE', 'List EC'],
-                            'submenu': {
-                                'Add UE': {'path': 'add_ue', 'label': 'Add an UE'},
-                                'Add EC': {'path': 'add_ec', 'label': 'Add an EC'},
-                                'List UE': {'path': 'choix_ec', 'label': 'List of UE'},
-                                'List EC': {'path': 'choix_ec', 'label': 'List of EC'}
-                            }
-                        },
-                        'Responsable': {
-                            'icon': 'responsable.png',
-                            'privileges': ['Add Responsable', 'View Responsable'],
-                            'submenu': {
-                                'Add Responsable': {'path': 'add_responsable', 'label': 'Add Responsable'},
-                                'View Responsable': {'path': '#', 'label': 'View List of Responsable'}
-                            }
-                        }
-                    } %}
+    {% set menuItems = {
+        'Students': {
+            'icon': 'students.png',
+            'privileges': ['Add Student', 'Validate Student', 'List Students', 'Detail Student'],
+            'submenu': {
+                'Add Student': {'path': 'add_student', 'label': 'Add new student data'},
+                'Validate Student': {'path': 'list_student_2', 'label': 'Validate students'},
+                'List Students': {'path': 'list_student_2', 'label': 'List students'},
+                'Detail Student': {'path': 'detail_student', 'label': 'Student details'}
+            }
+        },
+        'Marks': {
+            'icon': 'grades.png',
+            'privileges': ['Add Mark', 'View Marks', 'Generate PV', 'Generate Transcript of notes'],
+            'submenu': {
+                'Add Mark': {'path': 'add_note', 'label': 'Add a student\'s marks'},
+                'View Marks': {'path': 'choix_ec', 'label': 'View students marks'},
+                'Generate PV': {'path': 'generate_pv', 'label': 'Generate PV'},
+                'Generate Transcript': {'path': 'generate_transcript', 'label': 'Generate transcript of notes'}
+            }
+        },
+        'UE & EC': {
+            'icon': 'ue_ec.png',
+            'privileges': ['Add UE', 'Add EC', 'List UE', 'List EC'],
+            'submenu': {
+                'Add UE': {'path': 'add_ue', 'label': 'Add an UE'},
+                'Add EC': {'path': 'add_ec', 'label': 'Add an EC'},
+                'List UE': {'path': 'list_ue', 'label': 'List of UE'},
+                'List EC': {'path': 'list_ec', 'label': 'List of EC'}
+            }
+        },
+        'Administration': {
+            'icon': 'admin.png',
+            'privileges': ['Add User', 'Add Field', 'Add Profile', 'Add Level', 'Add School'],
+            'submenu': {
+                'Add User': {'path': 'add_user', 'label': 'Add new user'},
+                'Add Field': {'path': 'add_field', 'label': 'Add new field'},
+                'Add Profile': {'path': 'add_profile', 'label': 'Add new profile'},
+                'Add Level': {'path': 'add_level', 'label': 'Add new level'},
+                'Add School': {'path': 'add_school', 'label': 'Add new school'}
+            }
+        },
+        'Lists': {
+            'icon': 'list.png',
+            'privileges': ['List Fields', 'List Profile'],
+            'submenu': {
+                'List Fields': {'path': 'list_fields', 'label': 'List of fields'},
+                'List Profile': {'path': 'list_profile', 'label': 'List of profiles'}
+            }
+        },
+        'Statistics': {
+            'icon': 'stats.png',
+            'privileges': ['View statistics'],
+            'submenu': {
+                'View Statistics': {'path': 'view_stats', 'label': 'View statistics'}
+            }
+        }
+    } %}
 
-                    {% for menuName, menuData in menuItems %}
-                        {% if privileges|filter(p => p.name in menuData.privileges)|length > 0 %}
-                            <li class="menu-item text-text text-sm cursor-pointer mt-2">
-                                <div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
-                                    <img src="/icons/{{ menuData.icon }}" alt="{{ menuName|lower }}" class="w-4 h-4 ml-3">
-                                    <span class="text-base font-medium flex-1">{{ menuName }}</span>
-                                    <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                                </div>
-                                <ul class="submenu ml-6 mt-2">
-                                    {% for privilege in privileges %}
-                                        {% if privilege.name in menuData.submenu|keys %}
-                                            <a href="{{ path(menuData.submenu[privilege.name].path) }}">
-                                                <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">
-                                                    {{ menuData.submenu[privilege.name].label }}
-                                                </li>
-                                            </a>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </li>
+    {% for menuName, menuData in menuItems %}
+        {% if privileges|filter(p => p.name in menuData.privileges)|length > 0 %}
+            <li class="menu-item text-text text-sm cursor-pointer mt-2">
+                <div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
+                    <img src="/icons/{{ menuData.icon }}" alt="{{ menuName|lower }}" class="w-4 h-4 ml-3">
+                    <span class="text-base font-medium flex-1">{{ menuName }}</span>
+                    <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                </div>
+                <ul class="submenu ml-6 mt-2">
+                    {% for privilege in privileges %}
+                        {% if privilege.name in menuData.submenu|keys %}
+                            <a href="{{ path(menuData.submenu[privilege.name].path) }}">
+                                <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">
+                                    {{ menuData.submenu[privilege.name].label }}
+                                </li>
+                            </a>
                         {% endif %}
                     {% endfor %}
-                {% endif %}
+                </ul>
+            </li>
+        {% endif %}
+    {% endfor %}
+{% endif %}
             </ul>
-            
             <div class="border-t border-gray-600 pt-4 mt-4">
                 <ul>
                     <a href="{{path('app_profile_show')}}">
