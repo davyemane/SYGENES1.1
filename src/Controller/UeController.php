@@ -28,10 +28,12 @@ class UeController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
+        $privileges = [];
         // Vérifier si l'utilisateur a le privilège "List Student"
         $hasListStudentPrivilege = false;
         foreach ($user->getRole() as $role) {
             foreach ($role->getPrivileges() as $privilege) {
+                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
                 if ($privilege->getName() === 'Add EC') {
                     $hasListStudentPrivilege = true;
                     break 2;
@@ -72,8 +74,11 @@ class UeController extends AbstractController
             }
         }
     
-        return $this->render('ue/createEC.html.twig', ['form' => $form->createView(),
-    'user' => $user]);
+        return $this->render('ue/createEC.html.twig', 
+        ['form' => $form->createView(),
+    'user' => $user,
+    'privileges' => array_values($privileges) // Convertir en tableau indexé
+    ]);
     }
 
 
@@ -90,8 +95,10 @@ class UeController extends AbstractController
 
         // Vérifier si l'utilisateur a le privilège "List Student"
         $hasListStudentPrivilege = false;
+        $privileges = [];
         foreach ($user->getRole() as $role) {
             foreach ($role->getPrivileges() as $privilege) {
+                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
                 if ($privilege->getName() === 'Add UE') {
                     $hasListStudentPrivilege = true;
                     break 2;
@@ -133,7 +140,9 @@ class UeController extends AbstractController
             }
         }
     
-        return $this->render('ue/createUe.html.twig', ['form' => $form->createView(), 'user' => $user]);
+        return $this->render('ue/createUe.html.twig', ['form' => $form->createView(), 'user' => $user,            
+         'privileges' => array_values($privileges), // Convertir en tableau indexé
+    ]);
     }
 
 
