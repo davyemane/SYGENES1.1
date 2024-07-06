@@ -5,24 +5,25 @@
 {% block body %}
 <div class="min-h-screen bg-gradient-to-br from-blue-100 to-orange-100 dark:from-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
     <div class="max-w-4xl mx-auto">
-        <div class="bg-white dark:bg-gray-800 shadow-xl rounded-lg overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-xl overflow-hidden">
             <div class="px-6 py-8 sm:px-10">
-                <div class="flex justify-between items-center mb-8">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-8 space-y-4 sm:space-y-0">
+                    <h1 class="text-3xl font-extrabold text-primary dark:text-primary-light">
+                        {{ (role.id ? "role.edit-role" : "role.create-role")|trans }}
+                    </h1>
                     <div class="flex items-center space-x-4">
-                        <a href="{{ path('field_new') }}" class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 shadow-lg">
+                        <a href="{{ path('field_new') }}" class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 shadow-md">
                             <i class="fas fa-arrow-left mr-2"></i>{{ "role.back"|trans }}
                         </a>
-                        <a href="{{ path('level_new') }}" class="bg-secondary hover:bg-secondaryHover text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50 shadow-lg">
+                        <a href="{{ path('level_new') }}" class="bg-secondary hover:bg-secondaryHover text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50 shadow-md">
                             {{ "role.next"|trans }}<i class="fas fa-arrow-right ml-2"></i>
                         </a>
-                        <h1 class="text-3xl font-extrabold text-text dark:text-text-light">
-                            {{ (role.id ? "role.edit-role" : "role.create-role")|trans }}
-                        </h1>
                     </div>
-                    <button id="toggleExistingRoles" class="bg-secondary hover:bg-secondaryHover text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50">
-                        {{ "role.toggle-existing-roles"|trans }}
-                    </button>
                 </div>
+
+                <button id="toggleExistingRoles" class="w-full mb-8 bg-secondary hover:bg-secondaryHover text-white font-semibold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50 shadow-md">
+                    {{ "role.toggle-existing-roles"|trans }}
+                </button>
 
                 <div id="existingRolesContainer" class="mb-8 hidden">
                     <h2 class="text-2xl font-bold text-text dark:text-text-light mb-4">{{ "role.existing-roles"|trans }}</h2>
@@ -39,9 +40,13 @@
 
                 {% for label, messages in app.flashes %}
                     {% for message in messages %}
-                        <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 dark:bg-{{ label == 'success' ? 'green' : 'red' }}-900 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 dark:text-{{ label == 'success' ? 'green' : 'red' }}-100 p-4 mb-6 rounded-md shadow-sm" role="alert">
+                        <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 dark:bg-{{ label == 'success' ? 'green' : 'red' }}-900 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 dark:text-{{ label == 'success' ? 'green' : 'red' }}-100 p-4 mb-6 rounded-lg shadow-md" role="alert">
                             <p class="font-bold">{{ (label == 'success' ? "role.success" : "role.error")|trans }}</p>
+<<<<<<< HEAD
                             <p>{{message|trans }}</p>
+=======
+                            <p>{{ message|trans }}</p>
+>>>>>>> d7b523d40ed50fb5e0a9c6e1b5e1d59bc7485460
                         </div>
                     {% endfor %}
                 {% endfor %}
@@ -50,14 +55,14 @@
                     <div class="space-y-6">
                         <div>
                             {{ form_label(form.name, 'role.name'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
-                            {{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-secondary focus:ring focus:ring-secondary focus:ring-opacity-50 transition bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                            {{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-secondary focus:ring focus:ring-secondary focus:ring-opacity-50 transition bg-background dark:bg-gray-700 text-text dark:text-white py-3 px-4'}}) }}
                             {{ form_errors(form.name, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
                         </div>
                     </div>
 
                     <div class="mt-8">
                         <h3 class="text-xl font-semibold text-text dark:text-text-light mb-4">{{ "role.privileges"|trans }}</h3>
-                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 shadow-inner">
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {% for privilege in form.privileges %}
                                     <div class="flex items-center">
@@ -72,7 +77,7 @@
 
                     <div class="pt-8">
                         <div class="flex justify-end">
-                            <button type="submit" class="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primaryHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-300 ease-in-out transform hover:scale-105">
+                            <button type="submit" class="inline-flex justify-center py-3 px-6 border border-transparent shadow-lg text-sm font-medium rounded-lg text-white bg-primary hover:bg-primaryHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-300 ease-in-out transform hover:scale-105">
                                 {{ (role.id ? "role.update" : "role.create")|trans }}
                             </button>
                         </div>

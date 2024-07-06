@@ -18,7 +18,7 @@
                             {{ 'next' | trans }}<i class="fas fa-arrow-right ml-2"></i>
                         </a>
                         <h1 class="text-3xl font-extrabold text-text dark:text-text-light">
-                            {{ (isNew ? 'create-level' : 'edit-level') | trans }}
+                            {{ (isNew ? 'create-level' : 'edit-level') | trans }} - {{ schoolName }}
                         </h1>
                     </div>
                     <button id="toggleExistingLevels" class="bg-secondary hover:bg-secondaryHover text-white font-semibold py-2 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50">
@@ -27,7 +27,7 @@
                 </div>
 
                 <div id="existingLevelsContainer" class="mb-8 hidden">
-                    <h2 class="text-2xl font-bold text-text dark:text-text-light mb-4">{{ 'existing-levels' | trans }}</h2>
+                    <h2 class="text-2xl font-bold text-text dark:text-text-light mb-4">{{ 'existing-levels' | trans }} - {{ schoolName }}</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {% for existingLevel in existingLevels %}
                             <div class="bg-gradient-to-r from-orange-100 to-orange-200 dark:from-gray-700 dark:to-gray-600 rounded-lg p-4 shadow-md hover:shadow-lg transition duration-300">
@@ -55,7 +55,14 @@
 
                         <div>
                             {{ form_label(form.fields, 'associated-field' | trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
-                            {{ form_widget(form.fields, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-secondary focus:ring focus:ring-secondary focus:ring-opacity-50 transition bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                            <div class="mt-1 space-y-2">
+                                {% for field in form.fields %}
+                                    <div class="flex items-center">
+                                        {{ form_widget(field, {'attr': {'class': 'form-checkbox h-4 w-4 text-secondary transition duration-150 ease-in-out'}}) }}
+                                        {{ form_label(field, null, {'label_attr': {'class': 'ml-2 block text-sm leading-5 text-text dark:text-text-light'}}) }}
+                                    </div>
+                                {% endfor %}
+                            </div>
                             {{ form_errors(form.fields, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
                         </div>
                     </div>
