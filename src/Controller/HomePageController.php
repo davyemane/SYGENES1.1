@@ -53,9 +53,60 @@ class HomePageController extends AbstractController
         ]);
     }
 
+
     #[Route('/admin', name: 'app_dashAdmin')]
     public function dashboard(SessionInterface $session, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+    
+        // Collecter tous les privilèges uniques de l'utilisateur
+        $privileges = [];
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
+            }
+        }
+    
+        $schoolName = $session->get('school_name');
+        $school = null;
+    
+        if ($schoolName) {
+            // Trouver l'entité School correspondante
+            $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
+        }
+    
+        return $this->render('responsable_dashboard/dashboardAdmin.html.twig', [
+            "user" => $user,
+            'school' => $school,
+            'privileges' => array_values($privileges), // Convertir en tableau indexé
+        ]);
+    }    
+    
+#[Route('/student/dashboard', name: 'app_dashStudent')]
+public function StudentDashboard(SessionInterface $session, EntityManagerInterface $entityManager): Response
+{
+    try {
+        $user = $this->getUser();
+        if (!$user) {
+            throw new \Exception('Vous devez être connecté pour accéder à cette page.');
+        }
+
+        $student = $user->getStudent();
+        if (!$student) {
+            throw new \Exception('Aucun étudiant associé à cet utilisateur.');
+        }
+
+        // Collecter tous les privilèges uniques de l'utilisateur
+        $privileges = [];
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
+            }
+        }
+
         $schoolName = $session->get('school_name');
         $school = null;
     
@@ -64,58 +115,18 @@ class HomePageController extends AbstractController
             $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
         }
 
-
-        // Check if the user has ROLE_ADMIN
-        $user = $this->getUser();
-
-
-        // Assuming the user has only one role
-        
-        return $this->render('responsable_dashboard/dashboardAdmin.html.twig', [
-            "user" => $user,
-            'school' => $school
+        return $this->render('student_dashboard/index.html.twig', [
+            'user' => $user,
+            'student' => $student,
+            'school' => $school,
+            'privileges' => array_values($privileges), // Convertir en tableau indexé
         ]);
+
+    } catch (\Exception $e) {
+        $this->addFlash('error', $e->getMessage());
+        return $this->redirectToRoute('app_login');
     }
-    
-    
-    #[Route('/student/dashboard', name: 'app_dashStudent')]
-    public function StudentDashboard(ManagerRegistry $doctrine, SessionInterface $session, EntityManagerInterface $entityManager): Response
-    {
-
-
-        try {
-            $user = $this->getUser();
-
-            if (!$user) {
-                throw new \Exception('Vous devez être connecté pour accéder à cette page.');
-            }
-
-            $student = $user->getStudent();
-
-            if (!$student) {
-                throw new \Exception('Aucun étudiant associé à cet utilisateur.');
-            }
-
-            //recupere le role
-            $schoolName = $session->get('school_name');
-            $school = null;
-        
-            if ($schoolName) {
-                // Trouver l'entité School correspondante
-                $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
-            }
-                    return $this->render('student_dashboard/index.html.twig', [
-                'user' => $user,
-                'student' => $student,
-                'school'=>$school,
-            ]);
-
-        } catch (\Exception $e) {
-            $this->addFlash('error', $e->getMessage());
-            return $this->redirectToRoute('app_login');
-        }
-    }
-
+}
 
 }
 

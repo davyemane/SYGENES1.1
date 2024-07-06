@@ -160,7 +160,6 @@ class ResponsableController extends AbstractController
     public function home(
         Request $request,
         EntityManagerInterface $entityManager,
-        PrivilegeRepository $privilegeRepository,
         int $page = 1,
         int $nbre = 12
     ): Response {
@@ -169,11 +168,20 @@ class ResponsableController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        // Vérification optimisée du privilège
-        $viewMarksPrivilege = $privilegeRepository->findOneBy(['name' => 'View Marks']);
-        if (!$viewMarksPrivilege) {
-            return $this->render('student/error.html.twig', ['message' => 'Privilege not found']);
+        // Vérifier si l'utilisateur a le privilège "de valider l'etudiant"
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'View Marks') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
         }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+        }
+
 
         $hasPrivilege = $entityManager->getRepository(User::class)
             ->createQueryBuilder('u')
@@ -183,7 +191,7 @@ class ResponsableController extends AbstractController
             ->where('u.id = :userId')
             ->andWhere('p.id = :privilegeId')
             ->setParameter('userId', $user->getId())
-            ->setParameter('privilegeId', $viewMarksPrivilege->getId())
+            ->setParameter('privilegeId', $privilege->getId())
             ->getQuery()
             ->getSingleScalarResult() > 0;
 
