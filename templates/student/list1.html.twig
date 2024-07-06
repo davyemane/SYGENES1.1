@@ -15,11 +15,9 @@
     <div class="flex w-full flex-col md:flex-row items-start justify-between">
         <form action="{{ path('list_student_notes') }}" method="GET" class="w-full flex-col md:w-2/3 md:mr-5 flex md:flex-row ">
             <div class=" w-full flex items-center mb-2">
-                <!-- <label for="name" class="mr-2">Search by Name:</label> -->
                 <input type="text" id="name" placeholder="Search by name..." name="name" value="{{ currentName }}" class="border rounded-md p-2 pl-3 w-full md:w-7/8 mr-4 mb-2 md:mb-0 focus:outline-none focus:border-blue-500">
             </div>
             <div class="flex items-center mb-2">
-                <!-- <label for="field" class="mr-2">Filter by Field:</label> -->
                 <select id="field" name="field" class="w-full flex form-control mr-4 border rounded-md md:w-7/8 focus:outline-none focus:border-blue-500">
                     <option value="">All Fields</option>
                     {% for field in fields %}
@@ -49,17 +47,15 @@
                                         <a href="{{ path('add_note', {id: note.id}) }}" class="block py-2 px-3 border border-orange-500 text-orange-500 rounded-md text-sm hover:bg-orange-500 hover:text-white mt-2">
                                             Edit marks
                                         </a>
-                                        <a href="{{ path('pdf_student', {id: student.id}) }}" class="block py-2 px-3 border border-orange-500 text-orange-500 rounded-md text-sm hover:bg-orange-500 hover:text-white mt-2">
-                                            PV
-                                        </a>
-
                                     {% endfor %}
+                                    <a href="{{ path('pdf_student', {id: student.id}) }}" class="block py-2 px-3 border border-orange-500 text-orange-500 rounded-md text-sm hover:bg-orange-500 hover:text-white mt-2">
+                                        PV
+                                    </a>
                                 {% else %}
                                     <li class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">No notes available for this student.</li>
                                 {% endif %}
                             </ul>
                         </div>
-                        {# Additional content or actions can be added here #}
                     </div>
                 </div>
             </div>
@@ -70,7 +66,7 @@
     <div class="flex justify-center mt-4 w-full">
         <nav aria-label="Page navigation">
             <ul class="inline-flex -space-x-px mb-4">
-                {% if page != 1 %}
+                {% if page > 1 %}
                     <li>
                         <a href="{{ path('list_student_notes', {page: page - 1, nbre: nbre, name: currentName, field: currentField}) }}" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
                             Previous
@@ -78,15 +74,15 @@
                     </li>
                 {% endif %}
 
-                {% for i in range(1, nbPage + 1) %}
+                {% for i in 1..nbPage %}
                     <li>
-                        <a href="{{ path('list_student_notes', {page: i, nbre: nbre, name: currentName, field: currentField}) }}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                        <a href="{{ path('list_student_notes', {page: i, nbre: nbre, name: currentName, field: currentField}) }}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 {% if i == page %}font-bold{% endif %}">
                             {{ i }}
                         </a>
                     </li>
                 {% endfor %}
 
-                {% if page != nbPage %}
+                {% if page < nbPage %}
                     <li>
                         <a href="{{ path('list_student_notes', {page: page + 1, nbre: nbre, name: currentName, field: currentField}) }}" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
                             Next

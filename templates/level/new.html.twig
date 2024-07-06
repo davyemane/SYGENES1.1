@@ -26,7 +26,7 @@
                 </div>
 
                 <div id="existingLevelsContainer" class="mb-8 hidden">
-                    <h2 class="text-2xl font-bold text-text dark:text-text-light mb-4">{{ 'existing-levels' | trans }}</h2>
+                    <h2 class="text-2xl font-bold text-text dark:text-text-light mb-4">{{ 'existing-levels' | trans }} - {{ schoolName }}</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {% for existingLevel in existingLevels %}
                             <div class="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-lg p-4 shadow-md hover:shadow-lg transition duration-300">
