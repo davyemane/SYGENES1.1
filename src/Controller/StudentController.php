@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Field;
 use App\Entity\Note;
+use App\Entity\Role;
+use App\Entity\School;
 use App\Entity\Student;
 use App\Entity\UE;
 use App\Entity\User;
@@ -16,6 +18,7 @@ use App\Repository\UERepository;
 use App\Security\LoginAuthenticator;
 use App\services\PdfService;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Persistence\ManagerRegistry;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -26,6 +29,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Mailer\MailerInterface;
@@ -38,30 +42,42 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 class StudentController extends AbstractController
 {
 
-    public function __construct(private EventDispatcherInterface $dispatcher)
-    {
+    public function __construct(
+        private EventDispatcherInterface $dispatcher,
+        private RequestStack $requestStack,
+    ) {
     }
 
     #[Route('/student_statistics', name: 'student_stats')]
     public function statistics(Request $request, ManagerRegistry $doctrine): Response
     {
-        
+
         $user = $this->getUser();
         $student = $user->getStudent();
-        return $this->render('student_dashboard/statistics.html.twig',[
+        return $this->render('student_dashboard/statistics.html.twig', [
             "user" => $user,
             "student" => $student,
-        ]) ; 
+        ]);
     }
 
 
     #[Route('/list/{page?1}/{nbre?12}', name: 'list_student')]
-    public function home(Request $request, ManagerRegistry $doctrine, $page, $nbre): Response
+    public function home(Request $request, ManagerRegistry $doctrine, EntityManagerInterface $entityManager ,$page, $nbre): Response
     {
         $user = $this->getUser();
 
         if (!$user) {
             return $this->redirectToRoute('app_login');
+        }
+
+        //ici je recupere la session de l'utilisateur 
+        $session = $this->requestStack->getSession();
+        $schoolName = $session->get('school_name');
+        $school = null;
+
+        if ($schoolName) {
+            // Trouver l'entité School correspondante
+            $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
         }
 
         // Vérifier si l'utilisateur a le privilège "List Student"
@@ -77,8 +93,8 @@ class StudentController extends AbstractController
 
         if (!$hasListStudentPrivilege) {
             return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+        }
 
-        }        
         $repository = $doctrine->getRepository(Student::class);
         $queryBuilder = $repository->createQueryBuilder('s');
 
@@ -106,7 +122,15 @@ class StudentController extends AbstractController
             ->getResult();
 
         if (empty($students)) {
-            return $this->render('student/error.html.twig', ['message' => 'Aucun étudiant trouvé']);
+            // Log the filters applied for debugging
+            $filtersApplied = [
+                'name' => $name,
+                'fieldId' => $fieldId,
+            ];
+            return $this->render('student/error.html.twig', [
+                'message' => 'Aucun étudiant trouvé',
+                'filters' => $filtersApplied, // Display filters for debugging
+            ]);
         }
 
         // Retrieve all fields for filtering options
@@ -123,7 +147,7 @@ class StudentController extends AbstractController
             'fields' => $fields,
         ]);
     }
-    
+
     //detail of one student
     #[Route('/listDetail/{id<\d+>}', name: 'detail_student')]
     public function details(ManagerRegistry $doctrine, $id): Response
@@ -147,8 +171,7 @@ class StudentController extends AbstractController
 
         if (!$hasListStudentPrivilege) {
             return $this->render('student/error.html.twig', ['message' => 'Access denied']);
-
-        }        
+        }
 
         try {
             $repository = $doctrine->getRepository(Student::class);
@@ -165,10 +188,10 @@ class StudentController extends AbstractController
             // Handle specific case of student not found
             $this->addFlash('error', 'Student not found.'); // More user-friendly message
             return $this->redirectToRoute('list_student');
-        } 
+        }
     }
 
-    
+
     //update or add student
     #[Route('/add/{id?0}', name: 'add_student')]
     public function academicInscription($id, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
@@ -191,9 +214,9 @@ class StudentController extends AbstractController
         }
         if (!$hasListStudentPrivilege) {
             return $this->render('student/error.html.twig', ['message' => 'Access denied']);
-        }        
-        
-         $entityManager = $doctrine->getManager();
+        }
+
+        $entityManager = $doctrine->getManager();
 
         // Vérifier si un ID d'étudiant a été fourni
         if ($id) {
@@ -201,12 +224,12 @@ class StudentController extends AbstractController
             $studentDirectory = 'uploads/certificates';
         } else {
             // Check if the user has ROLE_ADMIN
-        if (!$this->isGranted('ROLE_RPA')) {
-            // Redirect to a custom error page
-            return $this->render('student/error.html.twig', [
-                'message' => 'Access Denied'
-            ], new Response('', Response::HTTP_FORBIDDEN));
-        }
+            if (!$this->isGranted('ROLE_RPA')) {
+                // Redirect to a custom error page
+                return $this->render('student/error.html.twig', [
+                    'message' => 'Access Denied'
+                ], new Response('', Response::HTTP_FORBIDDEN));
+            }
             $student = new Student();
         }
 
@@ -253,126 +276,128 @@ class StudentController extends AbstractController
             return $this->redirectToRoute("list_student");
         }
 
-        return $this->render('student/accademicInscription.html.twig', ['form' => $form->createView(),
-            "student" => $student]);
+        return $this->render('student/accademicInscription.html.twig', [
+            'form' => $form->createView(),
+            "student" => $student
+        ]);
     }
 
-// src/Controller/StudentController.php
+    // src/Controller/StudentController.php
 
-#[Route('/pdf/{id}', name: "pdf_student")]
-public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
-{
-    $user = $this->getUser();
+    #[Route('/pdf/{id}', name: "pdf_student")]
+    public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
+    {
+        $user = $this->getUser();
 
-    if (!$user) {
-        return $this->redirectToRoute('app_login');
-    }
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
 
-    // Vérifier si l'utilisateur a le privilège "List Student"
-    $hasListStudentPrivilege = false;
-    foreach ($user->getRole() as $role) {
-        foreach ($role->getPrivileges() as $privilege) {
-            if ($privilege->getName() === 'Add Student') {
-                $hasListStudentPrivilege = true;
-                break 2;
+        // Vérifier si l'utilisateur a le privilège "List Student"
+        $hasListStudentPrivilege = false;
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                if ($privilege->getName() === 'Add Student') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
             }
         }
-    }
-    if (!$hasListStudentPrivilege) {
-        return $this->render('student/error.html.twig', ['message' => 'Access denied']);
-    }        
-    
-
-    $studentRepository = $doctrine->getRepository(Student::class);
-    $student = $studentRepository->find($id);
-
-    if (!$student) {
-        throw $this->createNotFoundException('Étudiant non trouvé');
-    }
-
-    $noteRepository = $doctrine->getRepository(Note::class);
-    $notes = $noteRepository->findBy(['student' => $student]);
-
-    // Récupérer toutes les UEs associées aux notes de l'étudiant
-    $ues = [];
-    foreach ($notes as $note) {
-        $ec = $note->getEc();
-        if ($ec) {
-            $ue = $ec->getUe();
-            if ($ue) {
-                $ues[$ue->getId()] = $ue;
-            }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
         }
-    }
 
-    // Calcul des crédits et des points
-    $total_credits_valides = 0;
-    $total_points = 0;
-    foreach ($notes as $note) {
-        $finalGrade = $note->getFinalGrade();
-        if ($finalGrade !== null && $finalGrade >= 10) { // Supposons que 10 est la note de validation
+
+        $studentRepository = $doctrine->getRepository(Student::class);
+        $student = $studentRepository->find($id);
+
+        if (!$student) {
+            throw $this->createNotFoundException('Étudiant non trouvé');
+        }
+
+        $noteRepository = $doctrine->getRepository(Note::class);
+        $notes = $noteRepository->findBy(['student' => $student]);
+
+        // Récupérer toutes les UEs associées aux notes de l'étudiant
+        $ues = [];
+        foreach ($notes as $note) {
             $ec = $note->getEc();
             if ($ec) {
-                $total_credits_valides += $ec->getCredit();
-                $total_points += $finalGrade * $ec->getCredit();
+                $ue = $ec->getUe();
+                if ($ue) {
+                    $ues[$ue->getId()] = $ue;
+                }
             }
         }
-    }
 
-    $credits_restants = 60 - $total_credits_valides; // Supposons que le total des crédits soit 180
-    $mpc = $total_credits_valides > 0 ? $total_points / $total_credits_valides : 0;
-
-    // Déterminer les grades pour chaque note
-    $grades = [];
-    foreach ($notes as $note) {
-        $finalGrade = $note->getFinalGrade();
-        $grade = '';
-        if ($finalGrade >= 16) {
-            $grade = 'A';
-        } elseif ($finalGrade >= 14) {
-            $grade = 'B';
-        } elseif ($finalGrade >= 12) {
-            $grade = 'C';
-        } elseif ($finalGrade >= 10) {
-            $grade = 'D';
-        } else {
-            $grade = 'E';
+        // Calcul des crédits et des points
+        $total_credits_valides = 0;
+        $total_points = 0;
+        foreach ($notes as $note) {
+            $finalGrade = $note->getFinalGrade();
+            if ($finalGrade !== null && $finalGrade >= 10) { // Supposons que 10 est la note de validation
+                $ec = $note->getEc();
+                if ($ec) {
+                    $total_credits_valides += $ec->getCredit();
+                    $total_points += $finalGrade * $ec->getCredit();
+                }
+            }
         }
-        $grades[$note->getId()] = $grade;
+
+        $credits_restants = 60 - $total_credits_valides; // Supposons que le total des crédits soit 180
+        $mpc = $total_credits_valides > 0 ? $total_points / $total_credits_valides : 0;
+
+        // Déterminer les grades pour chaque note
+        $grades = [];
+        foreach ($notes as $note) {
+            $finalGrade = $note->getFinalGrade();
+            $grade = '';
+            if ($finalGrade >= 16) {
+                $grade = 'A';
+            } elseif ($finalGrade >= 14) {
+                $grade = 'B';
+            } elseif ($finalGrade >= 12) {
+                $grade = 'C';
+            } elseif ($finalGrade >= 10) {
+                $grade = 'D';
+            } else {
+                $grade = 'E';
+            }
+            $grades[$note->getId()] = $grade;
+        }
+
+        // Rendu HTML
+        $html = $this->renderView('note/releve_notes.html.twig', [
+            'student' => $student,
+            'notes' => $notes,
+            'ues' => $ues,
+            'total_credits_valides' => $total_credits_valides,
+            'credits_restants' => $credits_restants,
+            'mpc' => number_format($mpc, 2),
+            'grades' => $grades
+        ]);
+
+        // Configuration et génération du PDF
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $domPdf->setOptions($options);
+        $domPdf->loadHtml($html);
+        $domPdf->setPaper('A4', 'portrait');
+        $domPdf->render();
+
+        return new Response(
+            $domPdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="releve_notes_' . $student->getStudentID() . '.pdf"'
+            ]
+        );
     }
 
-    // Rendu HTML
-    $html = $this->renderView('note/releve_notes.html.twig', [
-        'student' => $student,
-        'notes' => $notes,
-        'ues' => $ues,
-        'total_credits_valides' => $total_credits_valides,
-        'credits_restants' => $credits_restants,
-        'mpc' => number_format($mpc, 2),
-        'grades' => $grades
-    ]);
 
-    // Configuration et génération du PDF
-    $options = new Options();
-    $options->set('isHtml5ParserEnabled', true);
-    $options->set('isPhpEnabled', true);
-    $domPdf->setOptions($options);
-    $domPdf->loadHtml($html);
-    $domPdf->setPaper('A4', 'portrait');
-    $domPdf->render();
-
-    return new Response(
-        $domPdf->output(),
-        Response::HTTP_OK,
-        [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="releve_notes_' . $student->getStudentID() . '.pdf"'
-        ]
-    );
-}
-
-
-#[Route('/{id}/notes', name: 'student_notes')]
+    #[Route('/{id}/notes', name: 'student_notes')]
     public function studentNotes(Request $request, StudentRepository $studentRepository, NoteRepository $noteRepository, $id, LevelRepository $levelRepository, UERepository $ueRepository)
     {
 
@@ -402,8 +427,10 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
         if (!$student) {
             $message = "Pas d'etudiant avec cet identifiant";
 
-            return $this->render('student/error.html.twig', ['message' => $message,
-        'user' => $currentUser]);
+            return $this->render('student/error.html.twig', [
+                'message' => $message,
+                'user' => $currentUser
+            ]);
         }
 
         $notes = $noteRepository->findBy(['student' => $student]);
@@ -448,19 +475,29 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
         int $studentId,
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface $entityManager,
-        UserAuthenticatorInterface $userAuthenticator,
-        LoginAuthenticator $authenticator,
-        Request $request,
-        MailerInterface $mailer
     ): Response {
 
+        //ici je recupere l'utilisateur connecté
         $user = $this->getUser();
 
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 
-        // Vérifier si l'utilisateur a le privilège "List Student"
+
+        //ici je recupere la session de l'utilisateur 
+        $session = $this->requestStack->getSession();
+        $schoolName = $session->get('school_name');
+        $school = null;
+
+        if ($schoolName) {
+            // Trouver l'entité School correspondante
+            $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
+        }
+
+
+
+        // Vérifier si l'utilisateur a le privilège "de valider l'etudiant"
         $hasListStudentPrivilege = false;
         foreach ($user->getRole() as $role) {
             foreach ($role->getPrivileges() as $privilege) {
@@ -472,16 +509,16 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
         }
         if (!$hasListStudentPrivilege) {
             return $this->render('student/error.html.twig', ['message' => 'Access denied']);
-        }        
-        
+        }
+
 
         $new = true;
         // Récupérer l'étudiant par son ID
         $student = $entityManager->getRepository(Student::class)->find($studentId);
 
         if (!$student) {
-            throw $this->createNotFoundException('Student not found');
             $new = false;
+            throw $this->createNotFoundException('Student not found');
         }
 
         // Vérifier si l'étudiant a déjà un compte utilisateur
@@ -491,18 +528,43 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
             return $this->redirectToRoute('list_student_2'); // Rediriger vers une page appropriée
         }
 
+
+
         // Créer un nouvel utilisateur et lier avec l'étudiant
+
+        $username = '';
+        if (!empty($student->getCni())) {
+            $username = $student->getCni();
+        } elseif (!empty($student->getPhoneNumber())) {
+            $username = $student->getPhoneNumber();
+        }
+
         $user = new User();
-        $user->setUsername($student->getEmail());  // Utiliser l'email de l'étudiant comme nom d'utilisateur
+        $user->setUsername($username);  // Utiliser la cni ou le numero de telephone de l'étudiant comme nom d'utilisateur
         $user->setEmail($student->getEmail());
         $user->setStudent($student);
-        $user->setRoles(['ROLE_USER']);
 
-        // Utiliser l'email comme mot de passe
+        //ici je recupere le role de l'etudiant
+        $studentRole = $entityManager->getRepository(Role::class)->findOneBy(['name' => 'Student']);
+        if ($studentRole) {
+            $user->addRole($studentRole);
+        } else {
+            return $this->render('student/error.html.twig', ['message' => 'Le Profile Student n\'existe pas. Veillez contacter l\'administrateur.']);
+        }
+
+
+        // Utiliser l'email comme mot de passe par défaut
+        $userPassword = '';
+
+        if (!empty($student->getCni())) {
+            $userPassword = $student->getCni();
+        } elseif (!empty($student->getPhoneNumber())) {
+            $userPassword = $student->getPhoneNumber();
+        }
         $user->setPassword(
             $userPasswordHasher->hashPassword(
                 $user,
-                $student->getEmail()
+                $userPassword
             )
         );
 
@@ -510,27 +572,9 @@ public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
         $entityManager->persist($user);
         $entityManager->flush();
 
-        // // Envoyer une notification par email
-        // $email = (new Email())
-        //     ->from('davyemane1@gmail.com')
-        //     ->to($student->getEmail())
-        //     ->subject('Account Created')
-        //     ->html('<p>Your account has been created. Your username and password is your email address.</p>');
-
-        // $mailer->send($email);
 
         // Ajouter un message flash de succès
         $this->addFlash('success', 'Account created successfully');
-
-
-        // //j'ai créé un evennement 
-        // if ($new) {
-        //     $addStudentEvent = new AddStudentEvent(
-        //         $student
-        //     );
-
-        //     $this->dispacher->dispatch($addStudentEvent, AddStudentEvent::ADD_STUDENT_EVENT);
-        // }
 
         // Rediriger vers une autre page
         return $this->redirectToRoute('list_student_2');

@@ -5,14 +5,18 @@ namespace App\Controller;
 use App\Entity\EC;
 use App\Entity\Field;
 use App\Entity\Responsable;
+use App\Entity\School;
 use App\Entity\Student;
 use App\Entity\UE;
 use App\Entity\User;
 use App\Form\ResponsableType;
+use App\Repository\PrivilegeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -239,38 +243,80 @@ try {
 
     //afficher la listes des filieres 
     #[Route('/fields', name: 'fields_index')]
-    public function fields(EntityManagerInterface $entityManager): Response
-    {
+    public function fields(
+        EntityManagerInterface $entityManager, 
+        RequestStack $requestStack,
+        PrivilegeRepository $privilegeRepository
+    ): Response {
         $user = $this->getUser();
-        $hasListStudentPrivilege = false;
-        foreach ($user->getRole() as $role) {
-            foreach ($role->getPrivileges() as $privilege) {
-                if ($privilege->getName() === 'List Fields') {
-                    $hasListStudentPrivilege = true;
-                    break 2;
-                }
-            }
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
         }
-        if (!$hasListStudentPrivilege) {
+    
+        // Vérification du privilège de manière optimisée
+        $listFieldsPrivilege = $privilegeRepository->findOneBy(['name' => 'List Fields']);
+        if (!$listFieldsPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Privilege not found']);
+        }
+    
+        $hasPrivilege = $entityManager->getRepository(User::class)
+            ->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->join('u.role', 'r')
+            ->join('r.privileges', 'p')
+            ->where('u.id = :userId')
+            ->andWhere('p.id = :privilegeId')
+            ->setParameter('userId', $user->getId())
+            ->setParameter('privilegeId', $listFieldsPrivilege->getId())
+            ->getQuery()
+            ->getSingleScalarResult() > 0;
+    
+        if (!$hasPrivilege) {
             return $this->render('student/error.html.twig', ['message' => 'Access denied']);
-        } 
-
-            $fields = $entityManager->getRepository(Field::class)->findAll();
-
+        }
+    
+        // Récupération de l'école et des filières associées
+        $session = $requestStack->getSession();
+        $schoolName = $session->get('school_name');
+    
+        if (!$schoolName) {
+            return $this->render('student/error.html.twig', ['message' => 'No school found in session']);
+        }
+    
+        $fields = $entityManager->getRepository(Field::class)
+            ->createQueryBuilder('f')
+            ->join('f.school', 's')
+            ->where('s.name = :schoolName')
+            ->setParameter('schoolName', $schoolName)
+            ->getQuery()
+            ->getResult();
+    
         return $this->render('responsable/field.html.twig', [
             'fields' => $fields,
             'user' => $user
         ]);
-    }
-    
-
-    //list des etudiants en attente de validation d'inscription 
+    }    //list des etudiants en attente de validation d'inscription 
 
     #[Route('/list_student/{fieldId?1}/{page?1}/{nbre?12}', name: 'list_student_2')]
-    public function ListStudent(Request $request, ManagerRegistry $doctrine, $fieldId, $page, $nbre): Response
+    public function ListStudent(Request $request, ManagerRegistry $doctrine, EntityManagerInterface $entityManager, $fieldId = 1, $page = 1, $nbre = 12): Response
     {
-
         $user = $this->getUser();
+        
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+        
+        // Récupérer la session de l'utilisateur
+        $session = $request->getSession();
+        $schoolName = $session->get('school_name');
+        $school = null;
+        
+        if ($schoolName) {
+            // Trouver l'entité School correspondante
+            $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
+        }
+        
+        // Vérifier si l'utilisateur a le privilège "List Student"
         $hasListStudentPrivilege = false;
         foreach ($user->getRole() as $role) {
             foreach ($role->getPrivileges() as $privilege) {
@@ -280,93 +326,67 @@ try {
                 }
             }
         }
+        
         if (!$hasListStudentPrivilege) {
             return $this->render('student/error.html.twig', ['message' => 'Access denied']);
-        } 
-
-        try {
-            $entityManager = $doctrine->getManager();
-    
-            // Fetch the selected field
-            $field = null;
-            if ($fieldId) {
-                $field = $entityManager->getRepository(Field::class)->find($fieldId);
-                if (!$field) {
-                    return $this->render('student/error.html.twig', ['message' => 'Cette filière n\'existe pas !']);
-                }
-            }
-    
-            // Fetch search parameters from request
-            $name = $request->query->get('name');
-    
-            // Fetch students without user accounts in the specified field with pagination
-            $qb = $entityManager->createQueryBuilder()
-                ->select('s')
-                ->from(Student::class, 's')
-                ->leftJoin('s.userAccount', 'u')
-                ->where('u.id IS NULL');
-    
-            if ($field) {
-                $qb->andWhere('s.field = :fieldId')
-                    ->setParameter('fieldId', $fieldId);
-            }
-    
-            if ($name) {
-                $qb->andWhere('s.name LIKE :name')
-                    ->setParameter('name', '%' . $name . '%');
-            }
-    
-            // Apply pagination
-            $qb->orderBy('s.id', 'ASC') // Sort by student ID (optional)
-                ->setFirstResult(($page - 1) * $nbre) // Apply pagination offset
-                ->setMaxResults($nbre);
-    
-            $students = $qb->getQuery()->getResult();
-    
-            // Calculate total students without user accounts in the specified field
-            $countQueryBuilder = $entityManager->createQueryBuilder()
-                ->select('COUNT(s)')
-                ->from(Student::class, 's')
-                ->leftJoin('s.userAccount', 'u')
-                ->where('u.id IS NULL');
-    
-            if ($field) {
-                $countQueryBuilder->andWhere('s.field = :fieldId')
-                    ->setParameter('fieldId', $fieldId);
-            }
-    
-            if ($name) {
-                $countQueryBuilder->andWhere('s.name LIKE :name')
-                    ->setParameter('name', '%' . $name . '%');
-            }
-    
-            $nbStudent = $countQueryBuilder->getQuery()->getSingleScalarResult();
-            $nbPage = ceil($nbStudent / $nbre);
-    
-            if (!$students) {
-                // Handle case where no students without user accounts are found
-                return $this->render('student/error.html.twig', ['message' => 'Aucun étudiant trouvé !']);
-            }
-    
-            // Retrieve all fields for filtering options
-            $fields = $entityManager->getRepository(Field::class)->findAll();
-            
-    
-            return $this->render('responsable/list_student.html.twig', [
-                'user' => $user,
-                'students' => $students,
-                'field' => $field,
-                'fields' => $fields,
-                'isPaginated' => true,
-                'nbPage' => $nbPage,
-                'page' => $page,
-                'nbre' => $nbre,
-                'currentName' => $name,
-                'currentField' => $fieldId,
-            ]);
-        } catch (\Exception $e) {
-            // Handle the specific case of not finding students without user accounts
-            return $this->render('student/error.html.twig', ['message' => $e]);
         }
-    }
-                         }
+        
+        $repository = $doctrine->getRepository(Student::class);
+        $queryBuilder = $repository->createQueryBuilder('s')
+            ->leftJoin('s.userAccount', 'u')
+            ->where('u.id IS NULL');
+        
+        // Fetch all students initially without filters
+        $queryBuilderTotal = clone $queryBuilder;
+        $nbStudent = $queryBuilderTotal->select('COUNT(s.id)')->getQuery()->getSingleScalarResult();
+        $nbPage = ceil($nbStudent / $nbre);
+        
+        // Retrieve search parameters from request
+        $name = $request->query->get('name');
+        $fieldId = $request->query->get('field', $fieldId);
+        
+        // Apply filters if provided
+        if ($name) {
+            $queryBuilder->andWhere('s.name LIKE :name')->setParameter('name', '%' . $name . '%');
+        }
+        if ($fieldId) {
+            $queryBuilder->andWhere('s.field = :field')->setParameter('field', $fieldId);
+        }
+        
+        // Fetch filtered students with pagination
+        $students = $queryBuilder
+            ->setMaxResults($nbre)
+            ->setFirstResult(($page - 1) * $nbre)
+            ->getQuery()
+            ->getResult();
+        
+        if (empty($students)) {
+            // Log the filters applied for debugging
+            $filtersApplied = [
+                'name' => $name,
+                'fieldId' => $fieldId,
+            ];
+            return $this->render('student/error.html.twig', [
+                'message' => 'Aucun étudiant trouvé',
+                'filters' => $filtersApplied, // Display filters for debugging
+            ]);
+        }
+        
+        // Retrieve fields for the specific school
+        $fields = [];
+        if ($school) {
+            $fields = $doctrine->getRepository(Field::class)->findBy(['school' => $school]);
+        }
+        
+        return $this->render('responsable/list_student.html.twig', [
+            'students' => $students,
+            'isPaginated' => true,
+            'nbPage' => $nbPage,
+            'page' => $page,
+            'nbre' => $nbre,
+            'currentName' => $name,
+            'currentField' => $fieldId,
+            'fields' => $fields,
+            'user' => $user,     
+        ]);
+    }                        }
