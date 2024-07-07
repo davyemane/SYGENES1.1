@@ -29,7 +29,7 @@
                 <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {% set actions = [] %}
 
-                    {% if is_granted("ROLE_AAT") %}
+                    {% if 'Add Mark' in privileges|column('name') %}
                         {% set actions = actions|merge([{
                             path: 'add_note',
                             label: 'Add students marks',
@@ -38,7 +38,7 @@
                         }]) %}
                     {% endif %}
 
-                    {% if is_granted("ROLE_RPA") %}
+                    {% if 'Validate Student' in privileges|column('name') %}
                         {% set actions = actions|merge([{
                             path: 'list_student_2',
                             label: 'Validate Student\'s entry',
@@ -47,24 +47,25 @@
                         }]) %}
                     {% endif %}
 
-                    {% if is_granted("ROLE_ADMIN") %}
-                        {% set actions = actions|merge([
-                            {
-                                path: 'import',
-                                label: 'Import Students List',
-                                icon: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12',
-                                color: 'bg-purple-500 hover:bg-purple-600'
-                            },
-                            {
-                                path: 'add_responsable',
-                                label: 'Add an authority',
-                                icon: 'M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z',
-                                color: 'bg-red-500 hover:bg-red-600'
-                            }
-                        ]) %}
+                    {% if 'Add Student' in privileges|column('name') %}
+                        {% set actions = actions|merge([{
+                            path: 'import',
+                            label: 'Import Students List',
+                            icon: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12',
+                            color: 'bg-purple-500 hover:bg-purple-600'
+                        }]) %}
                     {% endif %}
 
-                    {% if is_granted("ROLE_SA") %}
+                    {% if 'Add user' in privileges|column('name') %}
+                        {% set actions = actions|merge([{
+                            path: 'add_responsable',
+                            label: 'Add an authority',
+                            icon: 'M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z',
+                            color: 'bg-red-500 hover:bg-red-600'
+                        }]) %}
+                    {% endif %}
+
+                    {% if 'View statistics' in privileges|column('name') %}
                         {% set actions = actions|merge([{
                             path: 'resp_statistics',
                             label: 'See general stats',

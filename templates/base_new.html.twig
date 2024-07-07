@@ -1,464 +1,482 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
-    <link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
-    {% endblock %}
-    {{ encore_entry_script_tags('app') }}
-  
-
-    <style>
-
-        body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-        }
-
-        #sidebarDiv {
-            background-color: var(--primary-color);
-        }
-
-        .menu-item, .submenu-item {
-            color: var(--text-color);
-        }
-
-        .menu-item:hover, .submenu-item:hover, .menu-item.active, .submenu-item.active {
-            background-color: var(--secondary-color);
-        }
-
-        #searchContainer {
-            background-color: var(--secondary-color);
-        }
-
-        #searchInput::placeholder {
-            color: var(--text-color);
-            opacity: 0.7;
-        }
-
-        header {
-            background-color: var(--background-color);
-            border-bottom: 1px solid var(--secondary-color);
-        }
-
-        #main_content_area {
-            background-color: var(--background-color);
-        }
-
-        #searchInput:focus {
-            outline: none;
-            box-shadow: none;
-        }
-
-        .submenu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-
-        .submenu.active {
-            max-height: 500px;
-            transition: max-height 0.5s ease-in;
-        }
-
-        .submenu-item.hidden {
-            display: none;
-        }
-
-        .submenu-item {
-            padding-left: 2.5rem;
-        }
-
-        .submenu {
-            position: relative;
-        }
-
-        .submenu-trigger {
-            cursor: pointer;
-            user-select: none;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            #sidebarDiv {
-                width: 20rem;
-            }
-
-            #toggleBtn {
-                right: -1rem;
-                top: 1rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            #sidebarDiv {
-                width: 16rem;
-                position: fixed;
-                left: -16rem;
-                z-index: 10;
-                transition: left 0.3s ease;
-            }
-
-            #sidebarDiv.open {
-                left: 0;
-            }
-
-            #contentDiv {
-                margin-left: 0;
-            }
-
-            #toggleBtn {
-                display: none;
-            }
-        }
-
-        @media (max-width: 640px) {
-            #searchContainer {
-                margin-top: 1rem;
-            }
-        }
-    </style>
-</head>
-
-<body class="font-sans antialiased leading-none h-full w-full">
-    <div class="flex h-full">
-        <div id="sidebarDiv"
-            class="inset-y-0 left-0 fixed bg-primary p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
-            <img id="toggleBtn" src="/icons/previous.png" alt="previous"
-                class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
-            <div class="inline-flex items-center">
-                <img src="/icons/uiecc.svg" alt="uiecc_logo" class="w-12 h-auto cursor-pointer mr-4">
-                <h1 id="sidebarTitle" class="text-text text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
-            </div>
-            <div id="searchContainer"
-                class="flex items-center rounded-md bg-secondary mt-6 transition-all duration-300">
-                <img id="searchIcon" src="/icons/search.png" alt="search"
-                    class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
-                <input type="search" id="searchInput"
-                    class="text-base bg-transparent w-full text-text border-none focus:outline-none px-3 py-2"
-                    placeholder="Search">
-            </div>
-
-            <ul class="pt-2 flex-grow overflow-y-auto">
-                <a href="{{ path('app_dashAdmin')}}">
-                    <li
-                        class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md mt-2">
-                        <img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
-                        <span class="text-base font-medium flex-1">Dashboard</span>
-                    </li>
-                </a>
-
-                {% if is_granted("ROLE_SA") %}
-                <li class="menu-item text-text text-sm cursor-pointer mt-2">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
-                        <img src="/icons/students.png" alt="students" class="w-4 h-4 ml-3">
-                        <span class="text-base font-medium flex-1">Students</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                    </div>
-                    <ul class="submenu ml-6 mt-2">
-                        <a href="{{path('add_student')}}">
-                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add new student
-                                data</li>
-                        </a>
-                        <a href="{{path('add_student')}}">
-                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Modify a student
-                                data</li>
-                        </a>
-                        <a href="{{ path('list_student_2') }}">
-                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List students</li>
-                        </a>
-                        <a href="{{ path('import') }}">
-                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Import excel file
-                            </li>
-                        </a>
-                    </ul>
-                </li>
-                {% endif %}
-
-                <li class="menu-item text-text text-sm cursor-pointer">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
-                        <img src="/icons/grades.png" alt="grades" class="w-4 h-4 ml-3">
-                        <span class="text-base font-medium flex-1">Marks</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                    </div>
-                    <ul class="submenu ml-6 mt-2">
-                    {% if is_granted('ROLE_AAT') %}
-                        <a href="{{ path('add_note') }}">
-                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add a student's
-                                marks</li>
-                        </a>
-                    {% endif %}
-                    {% if is_granted('ROLE_AATP') %}    
-                        <a href="{{ path('choix_ec') }}">
-                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View students
-                                marks</li>
-                        </a>
-                    {% endif %}
-                    </ul>
-                </li>
-
-                {% if is_granted("ROLE_CEP") %}
-                <li class="menu-item text-text text-sm cursor-pointer">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
-                        <img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
-                        <span class="text-base font-medium flex-1">UE & EC</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                    </div>
-                    <ul class="submenu ml-6 mt-2">
-                        <a href="{{ path('add_ue') }}">
-                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add an UE</li>
-                        </a>
-                        <a href="{{ path('add_ec') }}">
-                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add an EC</li>
-                        </a>
-                        <a href="{{ path('choix_ec') }}">
-                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List of UE & EC
-                            </li>
-                        </a>
-                    </ul>
-                </li>
-                {% endif %}
-                {% if is_granted("ROLE_SA") %}
-                <li class="menu-item text-text text-sm cursor-pointer">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
-                        <img src="/icons/responsable.png" alt="grades" class="w-4 h-4 ml-3">
-                        <span class="text-base font-medium flex-1">Responsable</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                    </div>
-                    <ul class="submenu ml-6 mt-2">
-                        <a href="{{ path('add_responsable') }}">
-                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add Responsable
-                            </li>
-                        </a>
-                        <a href="#">
-                            <li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View List of
-                                Responsable</li>
-                        </a>
-                    </ul>
-                </li>
-                {% endif %}
-            </ul>
-
-            <div class="border-t border-gray-600 pt-4 mt-4">
-                <ul>
-                    <a href="{{path('app_profile_show')}}">
-                        <li
-                            class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
-                            <i class="fas fa-user-circle w-4 h-4 ml-3"></i>
-                            <span class="text-base font-medium flex-1">Profile</span>
-                        </li>
-                    </a>
-                    <a href="#">
-                        <li
-                            class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
-                            <i class="fas fa-cog w-4 h-4 ml-3"></i>
-                            <span class="text-base font-medium flex-1">Settings</span>
-                        </li>
-                    </a>
-                    <a href="#">
-                        <li
-                            class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
-                            <i id="themeToggleIcon" class="fas fa-sun w-4 h-4"></i>
-                            <span id="themeToggleText" class="text-base font-medium flex-1">Light Mode</span>
-                        </li>
-                    </a>
-                    <a href="{{ path('app_logout') }}">
-                        <li
-                            class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
-                            <i class="fas fa-sign-out-alt w-4 h-4 ml-3"></i>
-                            <span class="text-base font-medium flex-1">Logout</span>
-                        </li>
-                    </a>
-                </ul>
-            </div>
-        </div>
-        <div id="contentDiv" class="flex-1">
-            <!-- Top Navigation -->
-            <header class="bg-background shadow p-4 flex justify-end items-end">
-                <div class="flex items-center space-x-4 mr-8">
-                    <a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
-                        <div class="text-text">{{ user.username }}</div>
-                        {% if user.profilePicture %}
-                        <img class="w-8 h-8 rounded-full"
-                            src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}"
-                            alt="Profile Picture" />
-                        {% else %}
-                        <img class="w-8 h-8 rounded-full" src="{{ asset('images/user.png') }}"
-                            alt="Default Profile Picture" />
-                        {% endif %}
-                    </a>
-                </div>
-            </header>
-
-            <div id="bodyDiv" class="p-7 flex-1">
-                <div class="flex-grow flex flex-col">
-                    <!-- Main Content Area -->
-                    <main class="flex-grow p-4">
-                        <div id="main_content_area" class="bg-background rounded-lg h-full ml-64">
-                            {% block body %}
-                            {% block page_header %}{% endblock %}
-                            {% endblock %}
-                        </div>
-                    </main>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const toggleBtn = document.getElementById('toggleBtn');
-        const mainContentArea = document.getElementById('main_content_area');
-        const sidebarDiv = document.getElementById('sidebarDiv');
-        const sidebarTitle = document.getElementById('sidebarTitle');
-        const searchContainer = document.getElementById('searchContainer');
-        const searchInput = document.getElementById('searchInput');
-        const searchIcon = document.getElementById('searchIcon');
-        const menuItems = document.querySelectorAll('.menu-item');
-        const submenuItems = document.querySelectorAll('.submenu-item');
-        const themeToggleIcon = document.getElementById('themeToggleIcon');
-        const themeToggleText = document.getElementById('themeToggleText');
-        let isOpen = true;
-        let isDarkMode = true;
-
-        function toggleSidebar() {
-            isOpen = !isOpen;
-            sidebarDiv.classList.toggle('w-20', !isOpen);
-            sidebarDiv.classList.toggle('w-72', isOpen);
-            toggleBtn.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
-            sidebarTitle.classList.toggle('opacity-0', !isOpen);
-            sidebarTitle.classList.toggle('hidden', !isOpen);
-
-            menuItems.forEach(item => {
-                const icon = item.querySelector('img, i');
-                const text = item.querySelector('span');
-                const chevron = item.querySelector('.fa-chevron-down');
-
-                if (!isOpen) {
-                    item.classList.add('justify-center');
-                    icon.classList.remove('ml-3');
-                    icon.classList.add('m-auto');
-                    mainContentArea.classList.remove('ml-64');
-                    mainContentArea.classList.add('ml-16');
-                    text.classList.add('hidden');
-                    if (chevron) chevron.classList.add('hidden');
-                } else {
-                    item.classList.remove('justify-center');
-                    icon.classList.add('ml-3');
-                    icon.classList.remove('m-auto');
-                    mainContentArea.classList.add('ml-64');
-                    mainContentArea.classList.remove('ml-16');
-                    text.classList.remove('hidden');
-                    if (chevron) chevron.classList.remove('hidden');
-                }
-            });
-
-            submenuItems.forEach(item => {
-                if (!isOpen) {
-                    item.classList.add('hidden');
-                } else {
-                    item.classList.remove('hidden');
-                }
-            });
-
-            if (!isOpen) {
-                searchContainer.classList.add('w-10', 'h-10', 'rounded-lg', 'justify-center');
-                searchContainer.classList.remove('rounded-md');
-                searchInput.classList.add('hidden');
-                searchIcon.classList.remove('ml-3');
-                searchIcon.classList.add('m-auto');
-            } else {
-                searchContainer.classList.remove('w-10', 'h-10', 'rounded-lg', 'justify-center');
-                searchContainer.classList.add('rounded-md');
-                searchInput.classList.remove('hidden');
-                searchIcon.classList.add('ml-3');
-                searchIcon.classList.remove('m-auto');
-            }
-        }
-
-        toggleBtn.addEventListener('click', toggleSidebar);
-
-        // Updated submenu toggle functionality
-        const submenuTriggers = document.querySelectorAll('.submenu-trigger');
-        const submenus = document.querySelectorAll('.submenu');
-
-        submenuTriggers.forEach((trigger, index) => {
-            trigger.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const submenu = trigger.nextElementSibling;
-                const chevron = trigger.querySelector('.fa-chevron-down');
-
-                submenu.classList.toggle('active');
-                chevron.style.transform = submenu.classList.contains('active') ? 'rotate(180deg)' :
-                    'rotate(0)';
-
-                // Close other open submenus
-                submenus.forEach((otherSubmenu, otherIndex) => {
-                    if (otherIndex !== index && otherSubmenu.classList.contains('active')) {
-                        otherSubmenu.classList.remove('active');
-                        const otherChevron = otherSubmenu.previousElementSibling.querySelector(
-                            '.fa-chevron-down');
-                        otherChevron.style.transform = 'rotate(0)';
-                    }
-                });
-            });
-        });
-
-        // Handle menu item clicks for redirection and active state
-        function setActiveMenuItem(url) {
-            menuItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.url === url) {
-                    item.classList.add('active');
-                }
-            });
-
-            submenuItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.dataset.url === url) {
-                    item.classList.add('active');
-                    item.closest('.submenu').classList.add('active');
-                }
-            });
-        }
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Admin Dashboard</title>
+		<link rel="stylesheet" href="{{ asset('build/app.css') }}">
+		<link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
+		<script src="https://cdn.tailwindcss.com"></script>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+		{{ encore_entry_script_tags('app') }}
 
 
-        // Theme toggle functionality
-        function toggleTheme() {
-            isDarkMode = !isDarkMode;
-            document.documentElement.classList.toggle('dark', isDarkMode);
+		<style>
 
-            if (isDarkMode) {
-                document.documentElement.style.setProperty;
-                themeToggleIcon.classList.replace('fa-moon', 'fa-sun');
-                themeToggleText.textContent = 'Light Mode';
-            } else {
-                themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
-                themeToggleText.textContent = 'Dark Mode';
-            }
-        }
+			body {
+				background-color: var(--background-color);
+				color: var(--text-color);
+			}
 
-        themeToggleIcon.parentElement.addEventListener('click', toggleTheme);
+			#sidebarDiv {
+				background-color: var(--primary-color);
+			}
 
-        // Initialize theme based on system preference
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        } else {
-            isDarkMode = false;
-            themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
-            themeToggleText.textContent = 'Dark Mode';
-        }
+			.menu-item,
+			.submenu-item {
+				color: var(--text-color);
+			}
 
-        // Set active state based on the current page
-        const currentPage = window.location.pathname.split('/').pop();
-        setActiveMenuItem(currentPage);
-    </script>
-</body>
+			.menu-item:hover,
+			.submenu-item:hover,
+			.menu-item.active,
+			.submenu-item.active {
+				background-color: var(--secondary-color);
+			}
+
+			#searchContainer {
+				background-color: var(--secondary-color);
+			}
+
+			#searchInput::placeholder {
+				color: var(--text-color);
+				opacity: 0.7;
+			}
+
+			header {
+				background-color: var(--background-color);
+				border-bottom: 1px solid var(--secondary-color);
+			}
+
+			#main_content_area {
+				background-color: var(--background-color);
+			}
+
+			#searchInput:focus {
+				outline: none;
+				box-shadow: none;
+			}
+
+			.submenu {
+				max-height: 0;
+				overflow: hidden;
+				transition: max-height 0.3s ease-out;
+			}
+
+			.submenu.active {
+				max-height: 500px;
+				transition: max-height 0.5s ease-in;
+			}
+
+			.submenu-item.hidden {
+				display: none;
+			}
+
+			.submenu-item {
+				padding-left: 2.5rem;
+			}
+
+			.submenu {
+				position: relative;
+			}
+
+			.submenu-trigger {
+				cursor: pointer;
+				user-select: none;
+			}
+
+			/* Responsive Design */
+			@media(max-width: 1024px) {
+				#sidebarDiv {
+					width: 20rem;
+				}
+
+				#toggleBtn {
+					right: -1rem;
+					top: 1rem;
+				}
+			}
+
+			@media(max-width: 768px) {
+				#sidebarDiv {
+					width: 16rem;
+					position: fixed;
+					left: -16rem;
+					z-index: 10;
+					transition: left 0.3s ease;
+				}
+
+				#sidebarDiv.open {
+					left: 0;
+				}
+
+				#contentDiv {
+					margin-left: 0;
+				}
+
+				#toggleBtn {
+					display: none;
+				}
+			}
+
+			@media(max-width: 640px) {
+				#searchContainer {
+					margin-top: 1rem;
+				}
+			}
+		</style>
+	</head>
+
+	<body class="font-sans antialiased leading-none h-full w-full">
+		<div class="flex h-full">
+
+			<div id="sidebarDiv" class="inset-y-0 left-0 fixed bg-primary p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
+				<img id="toggleBtn" src="/icons/previous.png" alt="previous" class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
+				<div class="inline-flex items-center">
+					<img src="/icons/uiecc.svg" alt="uiecc_logo" class="w-12 h-auto cursor-pointer mr-4">
+					<h1 id="sidebarTitle" class="text-text text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
+				</div>
+				<div id="searchContainer" class="flex items-center rounded-md bg-secondary mt-6 transition-all duration-300">
+					<img id="searchIcon" src="/icons/search.png" alt="search" class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
+					<input type="search" id="searchInput" class="text-base bg-transparent w-full text-text border-none focus:outline-none px-3 py-2" placeholder="Search">
+				</div>
+
+				<ul class="pt-2 flex-grow overflow-y-auto">
+					<a href="{{ path('app_dashAdmin')}}">
+						<li class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md mt-2">
+							<img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
+							<span class="text-base font-medium flex-1">Dashboard</span>
+						</li>
+					</a>
+					{% if privileges is not empty %}
+						{% set student_privileges = ['Add Student', 'List Students', 'Detail Student', 'Validate Student'] %}
+						{% if privileges|filter(p => p.name in student_privileges)|length > 0 %}
+							<li class="menu-item text-text text-sm cursor-pointer mt-2">
+								<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
+									<img src="/icons/students.png" alt="students" class="w-4 h-4 ml-3">
+									<span class="text-base font-medium flex-1">Students</span>
+									<i class="fas fa-chevron-down transition-transform duration-300"></i>
+								</div>
+								<ul class="submenu ml-6 mt-2 ">
+									{% if 'Add Student' in privileges|column('name') %}
+										<a href="{{path('add_student')}}">
+											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add new student data</li>
+										</a>
+										<a href="{{path('add_student')}}">
+											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Modify a student data</li>
+										</a>
+									{% endif %}
+									{% if 'List Students' in privileges|column('name') %}
+										<a href="{{ path('list_student_2') }}">
+											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List students</li>
+										</a>
+									{% endif %}
+									{% if 'Add Student' in privileges|column('name') %}
+										<a href="{{ path('import') }}">
+											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Import excel file</li>
+										</a>
+									{% endif %}
+								</ul>
+							</li>
+						{% endif %}
+
+						{% set marks_privileges = ['Add Mark', 'View Marks'] %}
+						{% if privileges|filter(p => p.name in marks_privileges)|length > 0 %}
+							<li class="menu-item text-text text-sm cursor-pointer">
+								<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
+									<img src="/icons/grades.png" alt="grades" class="w-4 h-4 ml-3">
+									<span class="text-base font-medium flex-1">Marks</span>
+									<i class="fas fa-chevron-down transition-transform duration-300"></i>
+								</div>
+								<ul class="submenu ml-6 mt-2">
+									{% if 'Add Mark' in privileges|column('name') %}
+										<a href="{{ path('add_note') }}">
+											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add a student's marks</li>
+										</a>
+									{% endif %}
+									{% if 'View Marks' in privileges|column('name') %}
+										<a href="{{ path('choix_ec') }}">
+											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View students marks</li>
+										</a>
+									{% endif %}
+								</ul>
+							</li>
+						{% endif %}
+
+
+						{% set ue_ec_privileges = ['Add UE', 'Add EC', 'List EC', 'List UE'] %}
+						{% if privileges|filter(p => p.name in ue_ec_privileges)|length > 0 %}
+							<li class="menu-item text-text text-sm cursor-pointer">
+								<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
+									<img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
+									<span class="text-base font-medium flex-1">UE & EC</span>
+									<i class="fas fa-chevron-down transition-transform duration-300"></i>
+								</div>
+								<ul class="submenu ml-6 mt-2">
+									{% if 'Add UE' in privileges|column('name') %}
+										<a href="{{ path('add_ue') }}">
+											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add an UE</li>
+										</a>
+									{% endif %}
+									{% if 'Add EC' in privileges|column('name') %}
+										<a href="{{ path('add_ec') }}">
+											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add an EC</li>
+										</a>
+									{% endif %}
+									{% if 'List EC' in privileges|column('name') or 'List UE' in privileges|column('name') %}
+										<a href="{{ path('choix_ec') }}">
+											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List of UE & EC</li>
+										</a>
+									{% endif %}
+								</ul>
+							</li>
+						{% endif %}
+
+
+						{% set responsable_privileges = ['Add user', 'List Profile'] %}
+						{% if privileges|filter(p => p.name in responsable_privileges)|length > 0 %}
+							<li class="menu-item text-text text-sm cursor-pointer">
+								<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
+									<img src="/icons/responsable.png" alt="grades" class="w-4 h-4 ml-3">
+									<span class="text-base font-medium flex-1">Responsable</span>
+									<i class="fas fa-chevron-down transition-transform duration-300"></i>
+								</div>
+								<ul class="submenu ml-6 mt-2">
+									{% if 'Add user' in privileges|column('name') %}
+										<a href="{{ path('add_responsable') }}">
+											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add Responsable</li>
+										</a>
+									{% endif %}
+									{% if 'List Profile' in privileges|column('name') %}
+										<a href="#">
+											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View List of Responsable</li>
+										</a>
+									{% endif %}
+								</ul>
+							</li>
+						{% endif %}
+					</ul>
+				{% else %}
+					<p>You don't have any privileges assigned.</p>
+				{% endif %}
+				<div class="border-t border-gray-600 pt-4 mt-4">
+					<ul>
+						<a href="{{path('app_profile_show')}}">
+							<li class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
+								<i class="fas fa-user-circle w-4 h-4 ml-3"></i>
+								<span class="text-base font-medium flex-1">Profile</span>
+							</li>
+						</a>
+						<a href="#">
+							<li class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
+								<i class="fas fa-cog w-4 h-4 ml-3"></i>
+								<span class="text-base font-medium flex-1">Settings</span>
+							</li>
+						</a>
+						<a href="#">
+							<li class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
+								<i id="themeToggleIcon" class="fas fa-sun w-4 h-4"></i>
+								<span id="themeToggleText" class="text-base font-medium flex-1">Light Mode</span>
+							</li>
+						</a>
+						<a href="{{ path('app_logout') }}">
+							<li class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
+								<i class="fas fa-sign-out-alt w-4 h-4 ml-3"></i>
+								<span class="text-base font-medium flex-1">Logout</span>
+							</li>
+						</a>
+					</ul>
+				</div>
+			</div>
+			<div
+				id="contentDiv" class="flex-1">
+				<!-- Top Navigation -->
+				<header class="bg-background shadow p-4 flex justify-end items-end">
+					<div class="flex items-center space-x-4 mr-8">
+						<a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
+							<div class="text-text">{{ user.username }}</div>
+							{% if user.profilePicture %}
+								<img class="w-8 h-8 rounded-full" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture"/>
+							{% else %}
+								<img class="w-8 h-8 rounded-full" src="{{ asset('images/user.png') }}" alt="Default Profile Picture"/>
+							{% endif %}
+						</a>
+					</div>
+				</header>
+
+				<div id="bodyDiv" class="p-7 flex-1">
+					<div
+						class="flex-grow flex flex-col">
+						<!-- Main Content Area -->
+						<main class="flex-grow p-4">
+							<div id="main_content_area" class="bg-background rounded-lg h-full ml-64">
+								{% block body %}
+									{% block page_header %}{% endblock %}
+								{% endblock %}
+							</div>
+						</main>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			const toggleBtn = document.getElementById('toggleBtn');
+const mainContentArea = document.getElementById('main_content_area');
+const sidebarDiv = document.getElementById('sidebarDiv');
+const sidebarTitle = document.getElementById('sidebarTitle');
+const searchContainer = document.getElementById('searchContainer');
+const searchInput = document.getElementById('searchInput');
+const searchIcon = document.getElementById('searchIcon');
+const menuItems = document.querySelectorAll('.menu-item');
+const submenuItems = document.querySelectorAll('.submenu-item');
+const themeToggleIcon = document.getElementById('themeToggleIcon');
+const themeToggleText = document.getElementById('themeToggleText');
+let isOpen = true;
+let isDarkMode = true;
+
+function toggleSidebar() {
+isOpen = ! isOpen;
+sidebarDiv.classList.toggle('w-20', ! isOpen);
+sidebarDiv.classList.toggle('w-72', isOpen);
+toggleBtn.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+sidebarTitle.classList.toggle('opacity-0', ! isOpen);
+sidebarTitle.classList.toggle('hidden', ! isOpen);
+
+menuItems.forEach(item => {
+const icon = item.querySelector('img, i');
+const text = item.querySelector('span');
+const chevron = item.querySelector('.fa-chevron-down');
+
+if (! isOpen) {
+item.classList.add('justify-center');
+icon.classList.remove('ml-3');
+icon.classList.add('m-auto');
+mainContentArea.classList.remove('ml-64');
+mainContentArea.classList.add('ml-16');
+text.classList.add('hidden');
+if (chevron) 
+chevron.classList.add('hidden');
+
+
+
+} else {
+item.classList.remove('justify-center');
+icon.classList.add('ml-3');
+icon.classList.remove('m-auto');
+mainContentArea.classList.add('ml-64');
+mainContentArea.classList.remove('ml-16');
+text.classList.remove('hidden');
+if (chevron) 
+chevron.classList.remove('hidden');
+
+
+
+}
+});
+
+submenuItems.forEach(item => {
+if (! isOpen) {
+item.classList.add('hidden');
+} else {
+item.classList.remove('hidden');
+}
+});
+
+if (! isOpen) {
+searchContainer.classList.add('w-10', 'h-10', 'rounded-lg', 'justify-center');
+searchContainer.classList.remove('rounded-md');
+searchInput.classList.add('hidden');
+searchIcon.classList.remove('ml-3');
+searchIcon.classList.add('m-auto');
+} else {
+searchContainer.classList.remove('w-10', 'h-10', 'rounded-lg', 'justify-center');
+searchContainer.classList.add('rounded-md');
+searchInput.classList.remove('hidden');
+searchIcon.classList.add('ml-3');
+searchIcon.classList.remove('m-auto');
+}
+}
+
+toggleBtn.addEventListener('click', toggleSidebar);
+
+// Updated submenu toggle functionality
+const submenuTriggers = document.querySelectorAll('.submenu-trigger');
+const submenus = document.querySelectorAll('.submenu');
+
+submenuTriggers.forEach((trigger, index) => {
+trigger.addEventListener('click', (e) => {
+e.stopPropagation();
+const submenu = trigger.nextElementSibling;
+const chevron = trigger.querySelector('.fa-chevron-down');
+
+submenu.classList.toggle('active');
+chevron.style.transform = submenu.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
+
+// Close other open submenus
+submenus.forEach((otherSubmenu, otherIndex) => {
+if (otherIndex !== index && otherSubmenu.classList.contains('active')) {
+otherSubmenu.classList.remove('active');
+const otherChevron = otherSubmenu.previousElementSibling.querySelector('.fa-chevron-down');
+otherChevron.style.transform = 'rotate(0)';
+}
+});
+});
+});
+
+// Handle menu item clicks for redirection and active state
+function setActiveMenuItem(url) {
+menuItems.forEach(item => {
+item.classList.remove('active');
+if (item.dataset.url === url) {
+item.classList.add('active');
+}
+});
+
+submenuItems.forEach(item => {
+item.classList.remove('active');
+if (item.dataset.url === url) {
+item.classList.add('active');
+item.closest('.submenu').classList.add('active');
+}
+});
+}
+
+
+// Theme toggle functionality
+function toggleTheme() {
+isDarkMode = ! isDarkMode;
+document.documentElement.classList.toggle('dark', isDarkMode);
+
+if (isDarkMode) {
+document.documentElement.style.setProperty;
+themeToggleIcon.classList.replace('fa-moon', 'fa-sun');
+themeToggleText.textContent = 'Light Mode';
+} else {
+themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
+themeToggleText.textContent = 'Dark Mode';
+}
+}
+
+themeToggleIcon.parentElement.addEventListener('click', toggleTheme);
+
+// Initialize theme based on system preference
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+document.documentElement.classList.add('dark');
+} else {
+isDarkMode = false;
+themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
+themeToggleText.textContent = 'Dark Mode';
+}
+
+// Set active state based on the current page
+const currentPage = window.location.pathname.split('/').pop();
+setActiveMenuItem(currentPage);
+		</script>
+	</body>
 
 </html>
