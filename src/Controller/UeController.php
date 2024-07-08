@@ -3,13 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\EC;
+use App\Entity\School;
 use App\Entity\UE;
 use App\Form\EcType;
 use App\Form\UeType;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -84,54 +87,59 @@ class UeController extends AbstractController
 
 
     #[Route('/add/ue/{id?0}', name: 'add_ue')]
-    public function AddUe($id, ManagerRegistry $doctrine, Request $request): Response
+    public function AddUe($id, EntityManagerInterface $entityManager, Request $request, SessionInterface $session): Response
     {
-
         $user = $this->getUser();
 
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
 
-        // Vérifier si l'utilisateur a le privilège "List Student"
-        $hasListStudentPrivilege = false;
+        // Vérifier si l'utilisateur a le privilège "Add UE"
+        $hasAddUePrivilege = false;
         $privileges = [];
         foreach ($user->getRole() as $role) {
             foreach ($role->getPrivileges() as $privilege) {
-                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
+                $privileges[$privilege->getId()] = $privilege;
                 if ($privilege->getName() === 'Add UE') {
-                    $hasListStudentPrivilege = true;
+                    $hasAddUePrivilege = true;
                     break 2;
                 }
             }
         }
-        if (!$hasListStudentPrivilege) {
+        if (!$hasAddUePrivilege) {
             return $this->render('student/error.html.twig', ['message' => 'Access denied']);
-        }        
+        }
 
+        // Récupérer l'école depuis la session
+        $schoolName = $session->get('school_name');
+        $school = null;
+        if ($schoolName) {
+            $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
+        }
 
-        // Check if the user has ROLE_ADMIN
-        $entityManager = $doctrine->getManager();
-    
-        // Vérifier si un ID de l'ue a été fourni
+        // Vérifier si un ID de l'UE a été fourni
         if ($id) {
             $ue = $entityManager->getRepository(UE::class)->find($id);
+            if (!$ue) {
+                throw $this->createNotFoundException('UE not found');
+            }
         } else {
             $ue = new UE();
         }
-    
-        $form = $this->createForm(UeType::class, $ue);
-    
+
+        $form = $this->createForm(UeType::class, $ue, ['school' => $school]);
+
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $entityManager->persist($ue);
                 $entityManager->flush();
-    
+
                 $message = $id ? 'mis à jour' : 'ajouté';
                 $this->addFlash('success', $ue->getName() . " a été $message avec succès !");
-    
+
                 return $this->redirectToRoute("add_ue");
             } catch (\Exception $e) {
                 $this->addFlash('error', 'Une erreur s\'est produite.');
@@ -139,11 +147,11 @@ class UeController extends AbstractController
                 return $this->redirectToRoute('app_home_page');
             }
         }
-    
-        return $this->render('ue/createUe.html.twig', ['form' => $form->createView(), 'user' => $user,            
-         'privileges' => array_values($privileges), // Convertir en tableau indexé
-    ]);
+
+        return $this->render('ue/createUe.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user,
+            'privileges' => array_values($privileges),
+        ]);
     }
-
-
 }

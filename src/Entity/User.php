@@ -53,9 +53,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinTable(name: 'user_role')]
     private Collection $role;
 
+    /**
+     * @var Collection<int, NoteCcTp>
+     */
+    #[ORM\OneToMany(targetEntity: NoteCcTp::class, mappedBy: 'createb_by')]
+    private Collection $noteCcTps;
+
     public function __construct()
     {
         $this->role = new ArrayCollection();
+        $this->noteCcTps = new ArrayCollection();
     }
 
 
@@ -207,6 +214,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeRole(Role $role): static
     {
         $this->role->removeElement($role);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NoteCcTp>
+     */
+    public function getNoteCcTps(): Collection
+    {
+        return $this->noteCcTps;
+    }
+
+    public function addNoteCcTp(NoteCcTp $noteCcTp): static
+    {
+        if (!$this->noteCcTps->contains($noteCcTp)) {
+            $this->noteCcTps->add($noteCcTp);
+            $noteCcTp->setCreatebBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNoteCcTp(NoteCcTp $noteCcTp): static
+    {
+        if ($this->noteCcTps->removeElement($noteCcTp)) {
+            // set the owning side to null (unless already changed)
+            if ($noteCcTp->getCreatebBy() === $this) {
+                $noteCcTp->setCreatebBy(null);
+            }
+        }
 
         return $this;
     }

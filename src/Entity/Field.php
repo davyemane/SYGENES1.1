@@ -40,11 +40,40 @@ class Field
     #[ORM\OneToMany(targetEntity: Level::class, mappedBy: 'field')]
     private Collection $levels;
 
+    //ues
+    #[ORM\ManyToMany(targetEntity: UE::class, inversedBy: 'fields')]
+    private Collection $ues;
+
+     /**
+     * @return Collection<int, UE>
+     */
+    public function getUes(): Collection
+    {
+        return $this->ues;
+    }
+
+    public function addUe(UE $ue): self
+    {
+        if (!$this->ues->contains($ue)) {
+            $this->ues->add($ue);
+        }
+
+        return $this;
+    }
+
+    public function removeUe(UE $ue): self
+    {
+        $this->ues->removeElement($ue);
+
+        return $this;
+    }
+
 
     public function __construct()
     {
         $this->students = new ArrayCollection();
         $this->levels = new ArrayCollection();
+        $this->ues = new ArrayCollection();
     }
 
     public function getId(): ?int
