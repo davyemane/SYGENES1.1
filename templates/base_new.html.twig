@@ -154,7 +154,7 @@
 					</a>
 					{% if privileges is not empty %}
 						{% set student_privileges = ['Add Student', 'List Students', 'Detail Student', 'Validate Student'] %}
-						{% if privileges|filter(p => p.name in student_privileges)|length > 0 %}
+						 {% if privileges|filter(p => p.name in student_privileges)|length > 0 %} 
 							<li class="menu-item text-text text-sm cursor-pointer mt-2">
 								<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
 									<img src="/icons/students.png" alt="students" class="w-4 h-4 ml-3">
@@ -162,27 +162,27 @@
 									<i class="fas fa-chevron-down transition-transform duration-300"></i>
 								</div>
 								<ul class="submenu ml-6 mt-2 ">
-									{% if 'Add Student' in privileges|column('name') %}
+									{% if privileges|filter(p => p.name == 'Add Student')|length > 0 %}
 										<a href="{{path('add_student')}}">
 											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add new student data</li>
 										</a>
 										<a href="{{path('add_student')}}">
 											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Modify a student data</li>
 										</a>
-									{% endif %}
-									{% if 'List Students' in privileges|column('name') %}
+									{% endif %} 
+									{% if privileges|filter(p => p.name == 'List Students')|length > 0 %}
 										<a href="{{ path('list_student_2') }}">
 											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List students</li>
 										</a>
 									{% endif %}
-									{% if 'Add Student' in privileges|column('name') %}
+									{% if privileges|filter(p => p.name == 'Add Student')|length > 0 %}
 										<a href="{{ path('import') }}">
 											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Import excel file</li>
 										</a>
 									{% endif %}
 								</ul>
 							</li>
-						{% endif %}
+						{% endif %} 
 
 						{% set marks_privileges = ['Add Mark', 'View Marks'] %}
 						{% if privileges|filter(p => p.name in marks_privileges)|length > 0 %}
@@ -193,12 +193,12 @@
 									<i class="fas fa-chevron-down transition-transform duration-300"></i>
 								</div>
 								<ul class="submenu ml-6 mt-2">
-									{% if 'Add Mark' in privileges|column('name') %}
+									{% if privileges|filter(p => p.name == 'Add Mark')|length > 0 %}
 										<a href="{{ path('add_note') }}">
 											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add a student's marks</li>
 										</a>
 									{% endif %}
-									{% if 'View Marks' in privileges|column('name') %}
+									{% if privileges|filter(p => p.name == 'View Marks')|length > 0 %}
 										<a href="{{ path('choix_ec') }}">
 											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View students marks</li>
 										</a>
@@ -217,17 +217,17 @@
 									<i class="fas fa-chevron-down transition-transform duration-300"></i>
 								</div>
 								<ul class="submenu ml-6 mt-2">
-									{% if 'Add UE' in privileges|column('name') %}
+									{% if privileges|filter(p => p.name == 'Add UE')|length > 0 %}
 										<a href="{{ path('add_ue') }}">
 											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add an UE</li>
 										</a>
 									{% endif %}
-									{% if 'Add EC' in privileges|column('name') %}
+									{% if privileges|filter(p => p.name == 'Add EC')|length > 0 %}
 										<a href="{{ path('add_ec') }}">
 											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add an EC</li>
 										</a>
 									{% endif %}
-									{% if 'List EC' in privileges|column('name') or 'List UE' in privileges|column('name') %}
+									{% if privileges|filter(p => p.name == 'List EC')|length > 0 or privileges|filter(p => p.name == 'List UE')|length > 0  %}
 										<a href="{{ path('choix_ec') }}">
 											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List of UE & EC</li>
 										</a>
@@ -246,12 +246,12 @@
 									<i class="fas fa-chevron-down transition-transform duration-300"></i>
 								</div>
 								<ul class="submenu ml-6 mt-2">
-									{% if 'Add user' in privileges|column('name') %}
+									{% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
 										<a href="{{ path('add_responsable') }}">
 											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add Responsable</li>
 										</a>
 									{% endif %}
-									{% if 'List Profile' in privileges|column('name') %}
+									{% if privileges|filter(p => p.name == 'List Profile')|length > 0 %}
 										<a href="#">
 											<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View List of Responsable</li>
 										</a>

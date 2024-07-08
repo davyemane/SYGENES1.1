@@ -29,7 +29,7 @@
                 <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {% set actions = [] %}
 
-                    {% if 'Add Mark' in privileges|column('name') %}
+                    {% if privileges|filter(p => p.name == 'Add Mark')|length > 0 %}
                         {% set actions = actions|merge([{
                             path: 'add_note',
                             label: 'Add students marks',
@@ -38,7 +38,7 @@
                         }]) %}
                     {% endif %}
 
-                    {% if 'Validate Student' in privileges|column('name') %}
+                    {% if privileges|filter(p => p.name == 'Validate Student')|length > 0 %}
                         {% set actions = actions|merge([{
                             path: 'list_student_2',
                             label: 'Validate Student\'s entry',
@@ -47,7 +47,7 @@
                         }]) %}
                     {% endif %}
 
-                    {% if 'Add Student' in privileges|column('name') %}
+                    {% if privileges|filter(p => p.name == 'Add Student')|length > 0 %}
                         {% set actions = actions|merge([{
                             path: 'import',
                             label: 'Import Students List',
@@ -56,7 +56,7 @@
                         }]) %}
                     {% endif %}
 
-                    {% if 'Add user' in privileges|column('name') %}
+                    {% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
                         {% set actions = actions|merge([{
                             path: 'add_responsable',
                             label: 'Add an authority',
@@ -65,7 +65,7 @@
                         }]) %}
                     {% endif %}
 
-                    {% if 'View statistics' in privileges|column('name') %}
+                    {% if privileges|filter(p => p.name == 'View statistics')|length > 0 %}
                         {% set actions = actions|merge([{
                             path: 'resp_statistics',
                             label: 'See general stats',
