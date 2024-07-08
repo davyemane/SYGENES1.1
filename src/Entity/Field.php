@@ -40,40 +40,19 @@ class Field
     #[ORM\OneToMany(targetEntity: Level::class, mappedBy: 'field')]
     private Collection $levels;
 
-    //ues
-    #[ORM\ManyToMany(targetEntity: UE::class, inversedBy: 'fields')]
-    private Collection $ues;
-
-     /**
-     * @return Collection<int, UE>
+    /**
+     * @var Collection<int, UE>
      */
-    public function getUes(): Collection
-    {
-        return $this->ues;
-    }
+    #[ORM\ManyToMany(targetEntity: UE::class, mappedBy: 'fields')]
+    private Collection $uEs;
 
-    public function addUe(UE $ue): self
-    {
-        if (!$this->ues->contains($ue)) {
-            $this->ues->add($ue);
-        }
-
-        return $this;
-    }
-
-    public function removeUe(UE $ue): self
-    {
-        $this->ues->removeElement($ue);
-
-        return $this;
-    }
 
 
     public function __construct()
     {
         $this->students = new ArrayCollection();
         $this->levels = new ArrayCollection();
-        $this->ues = new ArrayCollection();
+        $this->uEs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -190,6 +169,33 @@ class Field
             if ($level->getField() === $this) {
                 $level->setField(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UE>
+     */
+    public function getUEs(): Collection
+    {
+        return $this->uEs;
+    }
+
+    public function addUE(UE $uE): static
+    {
+        if (!$this->uEs->contains($uE)) {
+            $this->uEs->add($uE);
+            $uE->addField($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUE(UE $uE): static
+    {
+        if ($this->uEs->removeElement($uE)) {
+            $uE->removeField($this);
         }
 
         return $this;

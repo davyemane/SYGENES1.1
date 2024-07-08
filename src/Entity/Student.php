@@ -78,6 +78,7 @@ class Student
     {
         $this->takeUes = new ArrayCollection();
         $this->notes = new ArrayCollection();
+        $this->notescctps = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -330,8 +331,12 @@ class Student
 
     private $fullGrades;
 
-    #[ORM\OneToOne(mappedBy: 'student', cascade: ['persist', 'remove'])]
-    private ?NoteCcTp $noteCcTp = null;
+    /**
+     * @var Collection<int, NoteCcTp>
+     */
+    #[ORM\OneToMany(targetEntity: NoteCcTp::class, mappedBy: 'student')]
+    private Collection $notescctps;
+
 
     public function setFullGrades(array $fullGrades): self
     {
@@ -344,26 +349,35 @@ class Student
         return $this->fullGrades;
     }
 
-    public function getNoteCcTp(): ?NoteCcTp
+    /**
+     * @return Collection<int, NoteCcTp>
+     */
+    public function getNotescctps(): Collection
     {
-        return $this->noteCcTp;
+        return $this->notescctps;
     }
 
-    public function setNoteCcTp(?NoteCcTp $noteCcTp): static
+    public function addNotescctp(NoteCcTp $notescctp): static
     {
-        // unset the owning side of the relation if necessary
-        if ($noteCcTp === null && $this->noteCcTp !== null) {
-            $this->noteCcTp->setStudent(null);
+        if (!$this->notescctps->contains($notescctp)) {
+            $this->notescctps->add($notescctp);
+            $notescctp->setStudent($this);
         }
-
-        // set the owning side of the relation if necessary
-        if ($noteCcTp !== null && $noteCcTp->getStudent() !== $this) {
-            $noteCcTp->setStudent($this);
-        }
-
-        $this->noteCcTp = $noteCcTp;
 
         return $this;
     }
+
+    public function removeNotescctp(NoteCcTp $notescctp): static
+    {
+        if ($this->notescctps->removeElement($notescctp)) {
+            // set the owning side to null (unless already changed)
+            if ($notescctp->getStudent() === $this) {
+                $notescctp->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
+
 
 }
