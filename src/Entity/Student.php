@@ -330,6 +330,9 @@ class Student
 
     private $fullGrades;
 
+    #[ORM\OneToOne(mappedBy: 'student', cascade: ['persist', 'remove'])]
+    private ?NoteCcTp $noteCcTp = null;
+
     public function setFullGrades(array $fullGrades): self
     {
         $this->fullGrades = $fullGrades;
@@ -339,6 +342,28 @@ class Student
     public function getFullGrades(): ?array
     {
         return $this->fullGrades;
+    }
+
+    public function getNoteCcTp(): ?NoteCcTp
+    {
+        return $this->noteCcTp;
+    }
+
+    public function setNoteCcTp(?NoteCcTp $noteCcTp): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($noteCcTp === null && $this->noteCcTp !== null) {
+            $this->noteCcTp->setStudent(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($noteCcTp !== null && $noteCcTp->getStudent() !== $this) {
+            $noteCcTp->setStudent($this);
+        }
+
+        $this->noteCcTp = $noteCcTp;
+
+        return $this;
     }
 
 }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ECRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ECRepository::class)]
@@ -27,6 +29,31 @@ class EC
 
     #[ORM\Column(nullable: true)]
     private ?string $credit = null;
+    #[ORM\Column(type: 'boolean')]
+    private $hasTp = false;
+
+
+    public function getHasTp(): bool
+    {
+        return $this->hasTp;
+    }
+
+    public function setHasTp(bool $hasTp): self
+    {
+        $this->hasTp = $hasTp;
+
+        return $this;
+    }
+    /**
+     * @var Collection<int, NoteCcTp>
+     */
+    #[ORM\OneToMany(targetEntity: NoteCcTp::class, mappedBy: 'eC')]
+    private Collection $noteCcTps;
+
+    public function __construct()
+    {
+        $this->noteCcTps = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -94,6 +121,36 @@ class EC
     public function setCredit(?string $credit): static
     {
         $this->credit = $credit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, NoteCcTp>
+     */
+    public function getNoteCcTps(): Collection
+    {
+        return $this->noteCcTps;
+    }
+
+    public function addNoteCcTp(NoteCcTp $noteCcTp): static
+    {
+        if (!$this->noteCcTps->contains($noteCcTp)) {
+            $this->noteCcTps->add($noteCcTp);
+            $noteCcTp->setEC($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNoteCcTp(NoteCcTp $noteCcTp): static
+    {
+        if ($this->noteCcTps->removeElement($noteCcTp)) {
+            // set the owning side to null (unless already changed)
+            if ($noteCcTp->getEC() === $this) {
+                $noteCcTp->setEC(null);
+            }
+        }
 
         return $this;
     }
