@@ -30,6 +30,16 @@ class UserController extends AbstractController
         $form = $this->createForm(UserType::class, $user);
         $passwordChangeForm = $this->createForm(PasswordChangeType::class);
 
+
+        $privileges = [];
+
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
+            }
+        }
+
+
         $form->handleRequest($request);
         $passwordChangeForm->handleRequest($request);
 
@@ -37,7 +47,7 @@ class UserController extends AbstractController
             // Traiter la photo de profil
             $profilePictureFile = $form->get('profilePicture')->getData();
             if ($profilePictureFile) {
-                $newFilename = uniqid().'.'.$profilePictureFile->guessExtension();
+                $newFilename = uniqid() . '.' . $profilePictureFile->guessExtension();
                 try {
                     $profilePictureFile->move(
                         $this->getParameter('profile_pictures_directory'),
@@ -76,7 +86,8 @@ class UserController extends AbstractController
         return $this->render('user/edit.html.twig', [
             'form' => $form->createView(),
             'passwordChangeForm' => $passwordChangeForm->createView(),
-            "user" => $user
+            "user" => $user,
+            'privileges' => array_values($privileges), // Convertir en tableau indexé
         ]);
     }
 
@@ -86,11 +97,19 @@ class UserController extends AbstractController
     public function show(): Response
     {
         $user = $this->getUser();
-    
+
         if (!$user) {
             throw $this->createNotFoundException('User not found');
         }
-    
+
+        $privileges = [];
+
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
+            }
+        }
+
         // Load the Student entity if it exists
         $student = $user->getStudent();
 
@@ -98,15 +117,16 @@ class UserController extends AbstractController
         //     return $this->render('user/show.html.twig', [
         //         'user' => $user,
         //     ]);
-    
+
         // }
-        
+
         $template = $student ? 'base_StudentDashboard.html.twig' : 'base_new.html.twig';
 
         return $this->render('user/show.html.twig', [
             'user' => $user,
             'student' => $student,
             'layout_template' => $template,
+            'privileges' => array_values($privileges), // Convertir en tableau indexé
         ]);
-        }
+    }
 }

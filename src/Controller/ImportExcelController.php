@@ -41,9 +41,11 @@ class ImportExcelController extends AbstractController
         }
 
         // Vérifier si l'utilisateur a le privilège "List Student"
+        $privilege=[];
         $hasListStudentPrivilege = false;
         foreach ($user->getRole() as $role) {
             foreach ($role->getPrivileges() as $privilege) {
+                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
                 if ($privilege->getName() === 'Add Student') {
                     $hasListStudentPrivilege = true;
                     break 2;
@@ -134,7 +136,8 @@ class ImportExcelController extends AbstractController
         return $this->render('student/import_excel.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
-            'school'=>$school
+            'school'=>$school,
+            'privileges' => array_values($privileges), // Convertir en tableau indexé
         ]);
     }
 
