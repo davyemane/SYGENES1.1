@@ -7,7 +7,7 @@
 {% block body %}
 <div class="min-h-screen py-12 sm:py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-lg shadow-2xl overflow-hidden">
+        <div class="bg-background rounded-lg shadow-2xl overflow-hidden">
             <div class="px-4 py-5 sm:p-6">
                 <div class="text-center">
                     <div class="inline-flex rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-600 mb-6">
@@ -18,13 +18,13 @@
                         </a>
                     </div>
                     {% set hour = "now"|date("H") %}
-                    <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl mb-2">
+                    <h1 class="text-4xl font-extrabold text-text sm:text-5xl md:text-6xl mb-2">
                         Good {% if hour < 12 %}Morning{% elseif hour < 18 %}Afternoon{% else %}Evening{% endif %},
                     </h1>
                     <h2 class="text-3xl font-bold text-orange-500 sm:text-4xl md:text-5xl mb-4">
                         {{ user.username }}
                     </h2>
-                    <p class="text-xl text-gray-600 mb-8">What would you like to do today?</p>
+                    <p class="text-xl text-text mb-8">What would you like to do today?</p>
                 </div>
                 <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {% set actions = [] %}

@@ -44,6 +44,8 @@ nav:
   login: 'Log in'
   open_menu: 'Open main menu'
   close_menu: 'Close menu'
+  toggle_dark_mode: "Dark Mode"
+  toggle_light_mode: "Light Mode"
 
 footer:
   copyright: '© %year% SYGENES, UIECC.'

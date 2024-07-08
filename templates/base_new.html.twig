@@ -17,43 +17,9 @@
 
 		<style>
 
-			body {
-				background-color: var(--background-color);
-				color: var(--text-color);
-			}
-
-			#sidebarDiv {
-				background-color: var(--primary-color);
-			}
-
-			.menu-item,
-			.submenu-item {
-				color: var(--text-color);
-			}
-
-			.menu-item:hover,
-			.submenu-item:hover,
-			.menu-item.active,
-			.submenu-item.active {
-				background-color: var(--secondary-color);
-			}
-
-			#searchContainer {
-				background-color: var(--secondary-color);
-			}
-
 			#searchInput::placeholder {
 				color: var(--text-color);
 				opacity: 0.7;
-			}
-
-			header {
-				background-color: var(--background-color);
-				border-bottom: 1px solid var(--secondary-color);
-			}
-
-			#main_content_area {
-				background-color: var(--background-color);
 			}
 
 			#searchInput:focus {
@@ -131,25 +97,25 @@
 		</style>
 	</head>
 
-	<body class="font-sans antialiased leading-none h-full w-full">
-		<div class="flex h-full">
+	<body class="font-sans antialiased leading-none h-full w-full bg-background text-text">
+    <div class="flex h-full">
 
-			<div id="sidebarDiv" class="inset-y-0 left-0 fixed bg-primary p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
-				<img id="toggleBtn" src="/icons/previous.png" alt="previous" class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
-				<div class="inline-flex items-center">
-					<img src="/icons/uiecc.svg" alt="uiecc_logo" class="w-12 h-auto cursor-pointer mr-4">
-					<h1 id="sidebarTitle" class="text-text text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
-				</div>
-				<div id="searchContainer" class="flex items-center rounded-md bg-secondary mt-6 transition-all duration-300">
-					<img id="searchIcon" src="/icons/search.png" alt="search" class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
-					<input type="search" id="searchInput" class="text-base bg-transparent w-full text-text border-none focus:outline-none px-3 py-2" placeholder="Search">
-				</div>
+			 <div id="sidebarDiv" class="inset-y-0 left-0 fixed bg-background p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
+            <img id="toggleBtn" src="/icons/previous.png" alt="previous" class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
+            <div class="inline-flex items-center">
+                <img src="/icons/uiecc.svg" alt="uiecc_logo" class="w-12 h-auto cursor-pointer mr-4">
+                <h1 id="sidebarTitle" class="text-text text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
+            </div>
+            <div id="searchContainer" class="flex items-center rounded-md bg-primary mt-6 transition-all duration-300">
+                <img id="searchIcon" src="/icons/search.png" alt="search" class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
+                <input type="search" id="searchInput" class="text-base bg-transparent w-full text-white border-none focus:outline-none px-3 py-2" placeholder="Search">
+            </div>
 
 				<ul class="pt-2 flex-grow overflow-y-auto">
 					<a href="{{ path('app_dashAdmin')}}">
-						<li class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md mt-2">
+						<li class="menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondaryHover rounded-md mt-2">
 							<img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
-							<span class="text-base font-medium flex-1">Dashboard</span>
+							<span class="text-text text-md font-medium flex-1">Dashboard</span>
 						</li>
 					</a>
 					{% if privileges is not empty %}
@@ -293,12 +259,12 @@
 				</div>
 			</div>
 			<div
-				id="contentDiv" class="flex-1">
+				id="contentDiv" class="flex-1 bg-background">
 				<!-- Top Navigation -->
-				<header class="bg-background shadow p-4 flex justify-end items-end">
-					<div class="flex items-center space-x-4 mr-8">
-						<a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
-							<div class="text-text">{{ user.username }}</div>
+				 <header class="bg-background shadow p-4 flex justify-end items-end">
+                <div class="flex items-center space-x-4 mr-8">
+                    <a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
+                        <div class="text-white">{{ user.username }}</div>
 							{% if user.profilePicture %}
 								<img class="w-8 h-8 rounded-full" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture"/>
 							{% else %}
@@ -313,7 +279,7 @@
 						class="flex-grow flex flex-col">
 						<!-- Main Content Area -->
 						<main class="flex-grow p-4">
-							<div id="main_content_area" class="bg-background rounded-lg h-full ml-64">
+							<div id="main_content_area" class="bg-background rounded-lg shadow-md h-full ml-64 p-6">
 								{% block body %}
 									{% block page_header %}{% endblock %}
 								{% endblock %}

@@ -8,19 +8,7 @@
     <link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'dark-purple': '#081A51',
-                        'light-white': 'rgba(255,255,255,0.18)'
-                    }
-                }
-            }
-        }
-    </script>
+
     <style>
         #searchInput:focus {
             outline: none;
@@ -38,9 +26,6 @@
         .submenu-item.hidden {
             display: none;
         }
-        .menu-item.active, .submenu-item.active {
-            background-color: var(--accent-color);
-        }
         .submenu-item {
             padding-left: 2.5rem;
         }
@@ -48,39 +33,6 @@
             position: relative;
         }
 
-        /* Apply colors to the elements */
-        body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-        }
-
-        #sidebarDiv {
-            background-color: var(--background-color);
-        }
-
-        #toggleBtn, .menu-item img, .menu-item i, .submenu-item {
-            color: var(--text-color);
-        }
-
-        .menu-item:hover, .submenu-item:hover {
-            background-color: var(--secondary-color);
-        }
-
-        #sidebarTitle {
-            color: var(--text-color);
-        }
-
-        #searchContainer {
-            background-color: var(--light-white);
-        }
-
-        #searchInput {
-            color: var(--text-color);
-        }
-
-        #themeToggleIcon, #themeToggleText {
-            color: var(--text-color);
-        }
 
         /* Responsive Design */
         @media (max-width: 1024px) {
@@ -119,22 +71,22 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased leading-none h-full w-full">
+<body class="font-sans antialiased leading-none h-full w-full bg-background text-text">
     <div class="flex h-full">
-        <div id="sidebarDiv" class="inset-y-0 left-0 fixed p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
+        <div id="sidebarDiv" class="inset-y-0 left-0 fixed p-5 pt-8 w-72 transition-all duration-300 flex flex-col bg-background-alt">
             <img id="toggleBtn" src="/icons/previous.png" alt="previous" class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
             <div class="inline-flex items-center">
                 <img src="/icons/uiecc_logo.png" alt="uiecc_logo" class="w-16 h-auto cursor-pointer mr-2">
-                <h1 id="sidebarTitle" class="text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
+                <h1 id="sidebarTitle" class="text-2xl font-bold transition-opacity duration-300 text-primary">SYGENES</h1>
             </div>
-            <div id="searchContainer" class="flex items-center rounded-md mt-6 transition-all duration-300">
+            <div id="searchContainer" class="flex items-center rounded-md mt-6 transition-all duration-300 bg-background">
                 <img id="searchIcon" src="/icons/search.png" alt="search" class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
                 <input type="search" id="searchInput" class="text-base bg-transparent w-full border-none focus:outline-none px-3 py-2" placeholder="Search">
             </div>
 
             <ul class="pt-2 flex-grow overflow-y-auto ">
                 <a href="{{ path('app_dashStudent')}}">
-                    <li class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2">
+                    <li class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md mt-2">
                         <img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
                         <span class="text-base font-medium flex-1">Dashboard</span>
                     </li>
@@ -166,7 +118,7 @@
             <div class="border-t border-gray-600 pt-4 mt-4">
                 <ul>
                     <a href="{{path('app_profile_show')}}">
-                    <li class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="profile.html">
+                    <li class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md" data-url="profile.html">
                         <i class="fas fa-user-circle w-4 h-4 ml-3"></i>
                         <span class="text-base font-medium flex-1">Profile</span>
                     </li>
@@ -197,10 +149,10 @@
         </div>
         <div id="contentDiv" class="flex-1">
              <!-- Top Navigation -->
-            <header class=" bg-white-600 shadow p-4 flex justify-end items-end">
+            <header class="bg-background shadow p-4 flex justify-end items-end">
                 <div class="flex items-center space-x-4 mr-8">
                     <a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
-                        <div class="text-gray-500">{{ user.username }}</div>
+                        <div class="text-text">{{ user.username }}</div>
                         {% if user.profilePicture %}
                             <img class="w-8 h-8 rounded-full" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture"/>
                         {% else %}
@@ -216,11 +168,11 @@
 
             <!-- Main Content Area -->
             <main class="flex-grow p-4">
-                <div id="main_content_area" class="bg-white-500 rounded-lg h-full ml-64 ">
-                    {% block body %}
-                        {% block page_header %}{% endblock %}
-                    {% endblock %}
-                </div>
+               <div id="main_content_area" class="bg-background rounded-lg h-full">
+                            {% block body %}
+                                {% block page_header %}{% endblock %}
+                            {% endblock %}
+                        </div>
             </main>
         </div>
     </div>

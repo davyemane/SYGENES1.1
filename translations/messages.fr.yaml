@@ -47,6 +47,15 @@ nav:
   contact_us: 'Contactez-nous'
   documentation: 'Documentation'
   login: 'Connexion'
+  toggle_dark_mode: "Mode Dark"
+  toggle_light_mode: "Mode Light"
+
+language:
+  change: "Choisir langage"
+  english: "Anglais"
+  french: "Francais"
+  spanish: "Espanol"
+  lingala: "Lingala"
 
 footer:
   copyright: '© %year% SYGENES, UIECC.'
