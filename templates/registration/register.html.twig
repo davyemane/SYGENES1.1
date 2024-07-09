@@ -1,81 +1,101 @@
 {% extends 'base_login.html.twig' %}
 
 {% block title %}
-	<title>{{ 'register_page.register'|trans }}</title>
+    <title>{{ 'register_page.register'|trans }}</title>
 {% endblock %}
 
 {% block body %}
-	<div class="min-h-screen bg-gradient-to-br from-blue-100 to-orange-100 dark:from-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300 flex items-center justify-center">
-		<div class="w-full my-5 max-w-3xl mx-auto p-8 bg-background dark:bg-background shadow-xl rounded-lg transition-colors duration-300">
-			<a href="{{ path('level_new') }}" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 focus:ring-opacity-50 shadow-md mb-6 inline-flex items-center">
-				<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-				</svg>
-				{{ 'register_page.back'|trans }}
-			</a>
-			<div class="flex justify-center items-center mb-8">
-				<h2 class="text-3xl font-bold text-text dark:text-text-light">{{ 'register_page.user-registration'|trans }}</h2>
-			</div>
+    <div class="min-h-screen bg-gradient-to-br from-blue-100 to-orange-100 dark:from-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300 flex items-center justify-center">
+        <div class="w-full my-5 max-w-3xl mx-auto p-8 bg-background dark:bg-background shadow-xl rounded-lg transition-colors duration-300">
+            <a href="{{ path('level_new') }}" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 focus:ring-opacity-50 shadow-md mb-6 inline-flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                {{ 'register_page.back'|trans }}
+            </a>
+            <div class="flex justify-center items-center mb-8">
+                <h2 class="text-3xl font-bold text-text dark:text-text-light">{{ 'register_page.user-registration'|trans }}</h2>
+            </div>
 
-			{{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
+            {{ form_start(registrationForm, {'attr': {'class': 'space-y-6', 'id': 'registrationForm'}}) }}
 
+            {% for field in [
+                {'name': 'username', 'label': 'register_page.username'},
+                {'name': 'email', 'label': 'register_page.email'},
+                {'name': 'plainPassword', 'label': 'register_page.password'}
+            ] %}
+                <div class="form-group">
+                    {{ form_label(attribute(registrationForm, field.name), field.label|trans, {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                    {{ form_widget(attribute(registrationForm, field.name), {'attr': {'class': 'block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition duration-300 ease-in-out'}}) }}
+                </div>
+            {% endfor %}
 
-			{% for field in [
-            {'name': 'username', 'label': 'register_page.username'},
-            {'name': 'email', 'label': 'register_page.email'},
-            {'name': 'plainPassword', 'label': 'register_page.password'}
-        ] %}
-				<div class="form-group">
-					{{ form_label(attribute(registrationForm, field.name), field.label|trans, {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'}}) }}
-					{{ form_widget(attribute(registrationForm, field.name), {'attr': {'class': 'block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition duration-300 ease-in-out'}}) }}
-				</div>
-			{% endfor %}
+            <div class="form-group">
+                <label for="confirmPassword" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ 'register_page.confirm-password'|trans }}</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition duration-300 ease-in-out">
+                <p id="passwordError" class="text-red-500 text-sm mt-1 hidden">{{ 'register_page.passwords-dont-match'|trans }}</p>
+            </div>
 
-			<div class="form-group">
-				{{ form_label(registrationForm.profilePicture, 'register_page.profile-picture'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'}}) }}
-				{{ form_widget(registrationForm.profilePicture, {'attr': {'class': 'block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primaryHover cursor-pointer'}}) }}
-			</div>
+            <div class="form-group">
+                {{ form_label(registrationForm.profilePicture, 'register_page.profile-picture'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'}}) }}
+                {{ form_widget(registrationForm.profilePicture, {'attr': {'class': 'block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primaryHover cursor-pointer'}}) }}
+            </div>
 
-			<div class="form-group">
-				<label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ 'register_page.roles'|trans }}</label>
-				<div class="space-y-2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-					{% if existingRoles is defined and existingRoles|length > 0 %}
-						{% for role in existingRoles %}
-							<div class="flex items-center">
-								<input type="checkbox" id="role_{{ role.id }}" name="roles[]" value="{{ role.id }}" class="h-4 w-4 text-primary border-gray-300 dark:border-gray-600 rounded focus:ring-primary">
-								<label for="role_{{ role.id }}" class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ role.name }}</label>
-							</div>
-						{% endfor %}
-					{% else %}
-						<p class="text-sm text-gray-500 dark:text-gray-400">{{ 'register_page.no-roles-available'|trans }}</p>
-					{% endif %}
-				</div>
-			</div>
+            <div class="form-group">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{{ 'register_page.roles'|trans }}</label>
+                <div class="space-y-2 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    {% if existingRoles is defined and existingRoles|length > 0 %}
+                        {% for role in existingRoles %}
+                            <div class="flex items-center">
+                                <input type="checkbox" id="role_{{ role.id }}" name="roles[]" value="{{ role.id }}" class="h-4 w-4 text-primary border-gray-300 dark:border-gray-600 rounded focus:ring-primary">
+                                <label for="role_{{ role.id }}" class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ role.name }}</label>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ 'register_page.no-roles-available'|trans }}</p>
+                    {% endif %}
+                </div>
+            </div>
 
-			<h3 class="text-xl font-bold mt-8 mb-4 text-gray-800 dark:text-gray-200">{{ 'register_page.responsible-information'|trans }}</h3>
+            <h3 class="text-xl font-bold mt-8 mb-4 text-gray-800 dark:text-gray-200">{{ 'register_page.responsible-information'|trans }}</h3>
 
-			<div>
-				{{ form_label(registrationForm.Responsable.name, 'register_page.name'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light mb-1'}}) }}
-				{{ form_widget(registrationForm.Responsable.name, {'attr': {'class': 'block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
-			</div>
+            <div>
+                {{ form_label(registrationForm.Responsable.name, 'register_page.name'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light mb-1'}}) }}
+                {{ form_widget(registrationForm.Responsable.name, {'attr': {'class': 'block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+            </div>
 
-			<div>
-				{{ form_label(registrationForm.Responsable.phoneNumber, 'register_page.phone-number'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light mb-1'}}) }}
-				{{ form_widget(registrationForm.Responsable.phoneNumber, {'attr': {'class': 'block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
-			</div>
+            <div>
+                {{ form_label(registrationForm.Responsable.phoneNumber, 'register_page.phone-number'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light mb-1'}}) }}
+                {{ form_widget(registrationForm.Responsable.phoneNumber, {'attr': {'class': 'block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-secondary focus:border-secondary sm:text-sm bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+            </div>
 
-			<div class="flex items-center">
-				{{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'h-4 w-4 text-secondary border-gray-300 dark:border-gray-600 rounded focus:ring-secondary'}}) }}
-				{{ form_label(registrationForm.agreeTerms, 'register_page.agree-to-terms'|trans, {'label_attr': {'class': 'ml-2 block text-sm text-text dark:text-text-light'}}) }}
-			</div>
+            <div class="flex items-center">
+                {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'h-4 w-4 text-secondary border-gray-300 dark:border-gray-600 rounded focus:ring-secondary'}}) }}
+                {{ form_label(registrationForm.agreeTerms, 'register_page.agree-to-terms'|trans, {'label_attr': {'class': 'ml-2 block text-sm text-text dark:text-text-light'}}) }}
+            </div>
 
-			<button type="submit" class="w-full bg-primary hover:bg-primaryHover text-white py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-300 ease-in-out transform hover:scale-105 inline-flex items-center justify-center">
-				<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
-				</svg>
-				{{ 'register_page.register'|trans }}
-			</button>
-			{{ form_end(registrationForm) }}
-		</div>
-	</div>
+            <button type="submit" class="w-full bg-primary hover:bg-primaryHover text-white py-2 px-4 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-300 ease-in-out transform hover:scale-105 inline-flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"></path>
+                </svg>
+                {{ 'register_page.register'|trans }}
+            </button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            const password = document.getElementById('registrationForm_plainPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const passwordError = document.getElementById('passwordError');
+
+            if (password !== confirmPassword) {
+                event.preventDefault();
+                passwordError.classList.remove('hidden');
+            } else {
+                passwordError.classList.add('hidden');
+            }
+        });
+    </script>
 {% endblock %}
