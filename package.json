@@ -23,6 +23,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@heroicons/react": "^2.1.4",
         "chart.js": "^4.4.3"
     }
 }

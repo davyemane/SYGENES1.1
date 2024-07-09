@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,21 +15,26 @@
             outline: none;
             box-shadow: none;
         }
+
         .submenu {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
         }
+
         .submenu.active {
             max-height: 500px;
             transition: max-height 0.5s ease-in;
         }
+
         .submenu-item.hidden {
             display: none;
         }
+
         .submenu-item {
             padding-left: 2.5rem;
         }
+
         .submenu {
             position: relative;
         }
@@ -39,6 +45,7 @@
             #sidebarDiv {
                 width: 20rem;
             }
+
             #toggleBtn {
                 right: -1rem;
                 top: 1rem;
@@ -53,12 +60,15 @@
                 z-index: 10;
                 transition: left 0.3s ease;
             }
+
             #sidebarDiv.open {
                 left: 0;
             }
+
             #contentDiv {
                 margin-left: 0;
             }
+
             #toggleBtn {
                 display: none;
             }
@@ -71,113 +81,129 @@
         }
     </style>
 </head>
+
 <body class="font-sans antialiased leading-none h-full w-full bg-background text-text">
     <div class="flex h-full">
-        <div id="sidebarDiv" class="inset-y-0 left-0 fixed p-5 pt-8 w-72 transition-all duration-300 flex flex-col bg-background-alt">
-            <img id="toggleBtn" src="/icons/previous.png" alt="previous" class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
+        <div id="sidebarDiv"
+            class="inset-y-0 left-0 fixed p-5 pt-8 w-72 transition-all duration-300 flex flex-col bg-background-alt">
+            <img id="toggleBtn" src="/icons/previous.png" alt="previous"
+                class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
             <div class="inline-flex items-center">
                 <img src="/icons/uiecc_logo.png" alt="uiecc_logo" class="w-16 h-auto cursor-pointer mr-2">
-                <h1 id="sidebarTitle" class="text-2xl font-bold transition-opacity duration-300 text-primary">SYGENES</h1>
+                <h1 id="sidebarTitle" class="text-2xl font-bold transition-opacity duration-300 text-primary">SYGENES
+                </h1>
             </div>
-            <div id="searchContainer" class="flex items-center rounded-md mt-6 transition-all duration-300 bg-background">
-                <img id="searchIcon" src="/icons/search.png" alt="search" class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
-                <input type="search" id="searchInput" class="text-base bg-transparent w-full border-none focus:outline-none px-3 py-2" placeholder="Search">
+            <div id="searchContainer"
+                class="flex items-center rounded-md mt-6 transition-all duration-300 bg-background">
+                <img id="searchIcon" src="/icons/search.png" alt="search"
+                    class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
+                <input type="search" id="searchInput"
+                    class="text-base bg-transparent w-full border-none focus:outline-none px-3 py-2"
+                    placeholder="Search">
             </div>
 
             <ul class="pt-2 flex-grow overflow-y-auto ">
                 <a href="{{ path('app_dashStudent')}}">
-                    <li class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md mt-2">
+                    <li
+                        class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md mt-2">
                         <img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
                         <span class="text-base font-medium flex-1">Dashboard</span>
                     </li>
                 </a>
 
-                
+
                 <li class="menu-item text-sm cursor-pointer mt-2">
                     <a href="{{ path('student_notes', {id: student.id} )}}">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md" >
-                        <img src="/icons/grades.png" alt="students" class="w-4 h-4 ml-3">
-                        <span class="text-base font-medium flex-1">View Marks</span>
-                        <i class="fas transition-transform duration-300"></i>
-                    </div>
+                        <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md">
+                            <img src="/icons/grades.png" alt="students" class="w-4 h-4 ml-3">
+                            <span class="text-base font-medium flex-1">View Marks</span>
+                            <i class="fas transition-transform duration-300"></i>
+                        </div>
                     </a>
                 </li>
 
                 <li class="menu-item text-sm cursor-pointer">
                     <a href="{{path('student_stats', {id: student.id} )}}">
-                    <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md">
-                        <img src="/icons/statistics.png" alt="grades" class="w-4 h-4 ml-3">
-                        <span class="text-base font-medium flex-1">Statistics</span>
-                        <i class="fas transition-transform duration-300"></i>
-                    </div>
+                        <div class="flex items-center gap-x-4 p-2 hover:bg-light-white rounded-md">
+                            <img src="/icons/statistics.png" alt="grades" class="w-4 h-4 ml-3">
+                            <span class="text-base font-medium flex-1">Statistics</span>
+                            <i class="fas transition-transform duration-300"></i>
+                        </div>
                     </a>
                 </li>
-               
+
             </ul>
 
             <div class="border-t border-gray-600 pt-4 mt-4">
                 <ul>
                     <a href="{{path('app_profile_show')}}">
-                    <li class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md" data-url="profile.html">
-                        <i class="fas fa-user-circle w-4 h-4 ml-3"></i>
-                        <span class="text-base font-medium flex-1">Profile</span>
-                    </li>
+                        <li class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md"
+                            data-url="profile.html">
+                            <i class="fas fa-user-circle w-4 h-4 ml-3"></i>
+                            <span class="text-base font-medium flex-1">Profile</span>
+                        </li>
                     </a>
 
                     <a href="#">
-                    <li class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="settings.html">
-                        <i class="fas fa-cog w-4 h-4 ml-3"></i>
-                        <span class="text-base font-medium flex-1">Settings</span>
-                    </li>
+                        <li class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md"
+                            data-url="settings.html">
+                            <i class="fas fa-cog w-4 h-4 ml-3"></i>
+                            <span class="text-base font-medium flex-1">Settings</span>
+                        </li>
                     </a>
 
                     <a href="#">
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white dark:hover:bg-gray-700 rounded-md">
-                        <i id="themeToggleIcon" class="fas fa-sun w-4 h-4"></i>
-                        <span id="themeToggleText" class="text-base font-medium flex-1">Light Mode</span>
-                    </li>
+                        <li
+                            class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white dark:hover:bg-gray-700 rounded-md">
+                            <i id="themeToggleIcon" class="fas fa-sun w-4 h-4"></i>
+                            <span id="themeToggleText" class="text-base font-medium flex-1">Light Mode</span>
+                        </li>
                     </a>
 
                     <a href="{{ path('app_logout') }}">
-                    <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md" data-url="logout.html">
-                        <i class="fas fa-sign-out-alt w-4 h-4 ml-3"></i>
-                        <span class="text-base font-medium flex-1">Logout</span>
-                    </li>
+                        <li class="menu-item text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md"
+                            data-url="logout.html">
+                            <i class="fas fa-sign-out-alt w-4 h-4 ml-3"></i>
+                            <span class="text-base font-medium flex-1">Logout</span>
+                        </li>
                     </a>
                 </ul>
             </div>
         </div>
         <div id="contentDiv" class="flex-1">
-             <!-- Top Navigation -->
+            <!-- Top Navigation -->
             <header class="bg-background shadow p-4 flex justify-end items-end">
                 <div class="flex items-center space-x-4 mr-8">
                     <a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
                         <div class="text-text">{{ user.username }}</div>
                         {% if user.profilePicture %}
-                            <img class="w-8 h-8 rounded-full" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture"/>
+                        <img class="w-8 h-8 rounded-full"
+                            src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}"
+                            alt="Profile Picture" />
                         {% else %}
-                            <img class="w-8 h-8 rounded-full" src="{{ asset('images/user.png') }}" alt="Default Profile Picture"/>
+                        <img class="w-8 h-8 rounded-full" src="{{ asset('images/user.png') }}"
+                            alt="Default Profile Picture" />
                         {% endif %}
                     </a>
                 </div>
             </header>
 
-            <div id="bodyDiv" class="p-7 flex-1" >
-            <div class=" flex-grow flex flex-col">
-           
+            <div id="bodyDiv" class="p-7 flex-1">
+                <div class=" flex-grow flex flex-col">
 
-            <!-- Main Content Area -->
-            <main class="flex-grow p-4">
-               <div id="main_content_area" class="bg-background rounded-lg h-full">
+
+                    <!-- Main Content Area -->
+                    <main class="flex-grow p-4">
+                        <div id="main_content_area" class="bg-background rounded-lg h-full">
                             {% block body %}
-                                {% block page_header %}{% endblock %}
+                            {% block page_header %}{% endblock %}
                             {% endblock %}
                         </div>
-            </main>
+                    </main>
+                </div>
+            </div>
+
         </div>
-    </div>
-        
-    </div>
     </div>
 
     <script>
@@ -260,7 +286,8 @@
             chevron.addEventListener('click', (e) => {
                 e.stopPropagation();
                 submenus[index].classList.toggle('active');
-                chevron.style.transform = submenus[index].classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
+                chevron.style.transform = submenus[index].classList.contains('active') ?
+                    'rotate(180deg)' : 'rotate(0)';
             });
         });
 
@@ -287,7 +314,7 @@
         function toggleTheme() {
             isDarkMode = !isDarkMode;
             document.documentElement.classList.toggle('dark', isDarkMode);
-            
+
             if (isDarkMode) {
                 themeToggleIcon.classList.replace('fa-moon', 'fa-sun');
                 themeToggleText.textContent = 'Light Mode';
@@ -313,4 +340,5 @@
         setActiveMenuItem(currentPage);
     </script>
 </body>
+
 </html>
