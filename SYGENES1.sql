@@ -16,6 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `anonymat`
+--
+
+DROP TABLE IF EXISTS `anonymat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `anonymat` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `student_id` int DEFAULT NULL,
+  `e_c_id` int DEFAULT NULL,
+  `anonymat` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_FC64F1CB944F1A` (`student_id`),
+  KEY `IDX_FC64F1E32B239F` (`e_c_id`),
+  CONSTRAINT `FK_FC64F1CB944F1A` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
+  CONSTRAINT `FK_FC64F1E32B239F` FOREIGN KEY (`e_c_id`) REFERENCES `ec` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `anonymat`
+--
+
+LOCK TABLES `anonymat` WRITE;
+/*!40000 ALTER TABLE `anonymat` DISABLE KEYS */;
+INSERT INTO `anonymat` VALUES (1,2,6,'0012'),(2,3,6,'0013'),(3,4,6,'0015');
+/*!40000 ALTER TABLE `anonymat` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `color_scheme`
 --
 
@@ -48,6 +78,31 @@ INSERT INTO `color_scheme` VALUES (1,1,'#bd8989','#5bfb46','#e65656','#f88282','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `doctrine_migration_versions`
+--
+
+DROP TABLE IF EXISTS `doctrine_migration_versions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `doctrine_migration_versions` (
+  `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
+  `executed_at` datetime DEFAULT NULL,
+  `execution_time` int DEFAULT NULL,
+  PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `doctrine_migration_versions`
+--
+
+LOCK TABLES `doctrine_migration_versions` WRITE;
+/*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
+INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20240709140322','2024-07-09 14:03:46',4000);
+/*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `ec`
 --
 
@@ -76,6 +131,38 @@ LOCK TABLES `ec` WRITE;
 /*!40000 ALTER TABLE `ec` DISABLE KEYS */;
 INSERT INTO `ec` VALUES (4,4,'ISN4121','Gamification, psychologie et sociologie du Gamer',NULL,'3',1),(5,NULL,'ISN4411','Gamification, psychologie et sociologie du Gamer',NULL,'2.5',0),(6,5,'SNA4122','limites',NULL,'2',0);
 /*!40000 ALTER TABLE `ec` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ee`
+--
+
+DROP TABLE IF EXISTS `ee`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ee` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `created_by_id` int DEFAULT NULL,
+  `mark` double DEFAULT NULL,
+  `grade` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `anonymat_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_648B18CA67DDCC43` (`anonymat_id`),
+  KEY `IDX_648B18CAB03A8386` (`created_by_id`),
+  CONSTRAINT `FK_648B18CA67DDCC43` FOREIGN KEY (`anonymat_id`) REFERENCES `anonymat` (`id`),
+  CONSTRAINT `FK_648B18CAB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ee`
+--
+
+LOCK TABLES `ee` WRITE;
+/*!40000 ALTER TABLE `ee` DISABLE KEYS */;
+INSERT INTO `ee` VALUES (1,13,13,'C','2024-07-09 15:19:02',1),(2,13,19,'A','2024-07-09 15:19:02',2),(3,13,17,'A','2024-07-09 15:19:02',3);
+/*!40000 ALTER TABLE `ee` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -576,4 +663,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-09  9:56:55
+-- Dump completed on 2024-07-09 17:16:29

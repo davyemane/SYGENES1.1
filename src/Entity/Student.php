@@ -337,6 +337,9 @@ class Student
     #[ORM\OneToMany(targetEntity: NoteCcTp::class, mappedBy: 'student')]
     private Collection $notescctps;
 
+    #[ORM\OneToOne(mappedBy: 'student', cascade: ['persist', 'remove'])]
+    private ?Anonymat $anonymat = null;
+
 
     public function setFullGrades(array $fullGrades): self
     {
@@ -375,6 +378,28 @@ class Student
                 $notescctp->setStudent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAnonymat(): ?Anonymat
+    {
+        return $this->anonymat;
+    }
+
+    public function setAnonymat(?Anonymat $anonymat): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($anonymat === null && $this->anonymat !== null) {
+            $this->anonymat->setStudent(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($anonymat !== null && $anonymat->getStudent() !== $this) {
+            $anonymat->setStudent($this);
+        }
+
+        $this->anonymat = $anonymat;
 
         return $this;
     }
