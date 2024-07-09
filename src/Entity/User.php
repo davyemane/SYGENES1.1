@@ -59,10 +59,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: NoteCcTp::class, mappedBy: 'createb_by')]
     private Collection $noteCcTps;
 
+    /**
+     * @var Collection<int, EE>
+     */
+    #[ORM\OneToMany(targetEntity: EE::class, mappedBy: 'createdBy')]
+    private Collection $eEs;
+
     public function __construct()
     {
         $this->role = new ArrayCollection();
         $this->noteCcTps = new ArrayCollection();
+        $this->eEs = new ArrayCollection();
     }
 
 
@@ -242,6 +249,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($noteCcTp->getCreatebBy() === $this) {
                 $noteCcTp->setCreatebBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EE>
+     */
+    public function getEEs(): Collection
+    {
+        return $this->eEs;
+    }
+
+    public function addEE(EE $eE): static
+    {
+        if (!$this->eEs->contains($eE)) {
+            $this->eEs->add($eE);
+            $eE->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEE(EE $eE): static
+    {
+        if ($this->eEs->removeElement($eE)) {
+            // set the owning side to null (unless already changed)
+            if ($eE->getCreatedBy() === $this) {
+                $eE->setCreatedBy(null);
             }
         }
 

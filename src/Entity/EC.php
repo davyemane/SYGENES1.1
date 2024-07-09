@@ -50,9 +50,16 @@ class EC
     #[ORM\OneToMany(targetEntity: NoteCcTp::class, mappedBy: 'eC')]
     private Collection $noteCcTps;
 
+    /**
+     * @var Collection<int, Anonymat>
+     */
+    #[ORM\OneToMany(targetEntity: Anonymat::class, mappedBy: 'eC')]
+    private Collection $anonymats;
+
     public function __construct()
     {
         $this->noteCcTps = new ArrayCollection();
+        $this->anonymats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -149,6 +156,36 @@ class EC
             // set the owning side to null (unless already changed)
             if ($noteCcTp->getEC() === $this) {
                 $noteCcTp->setEC(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Anonymat>
+     */
+    public function getAnonymats(): Collection
+    {
+        return $this->anonymats;
+    }
+
+    public function addAnonymat(Anonymat $anonymat): static
+    {
+        if (!$this->anonymats->contains($anonymat)) {
+            $this->anonymats->add($anonymat);
+            $anonymat->setEC($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnonymat(Anonymat $anonymat): static
+    {
+        if ($this->anonymats->removeElement($anonymat)) {
+            // set the owning side to null (unless already changed)
+            if ($anonymat->getEC() === $this) {
+                $anonymat->setEC(null);
             }
         }
 

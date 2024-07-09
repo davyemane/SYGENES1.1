@@ -22,7 +22,7 @@ class NoteCCController extends AbstractController
         ]);
     }
 
-    #[Route('/insert-notes/{ecId}', name: 'insert_notes')]
+    #[Route('/insert-notes/{ecId}', name: 'insert_notes_cc')]
     public function insertNotes(Request $request, EntityManagerInterface $entityManager, int $ecId): Response
     {
         $ec = $entityManager->getRepository(EC::class)->find($ecId);
@@ -112,10 +112,12 @@ class NoteCCController extends AbstractController
             return $this->redirectToRoute('insert_notes', ['ecId' => $ecId]);
         }
     
-        return $this->render('note_cc/insert_notes.html.twig', [
-            'ec' => $ec,
-            'students' => $students,
-            'form' => $form->createView(),
-        ]);
-    }
+
+return $this->render('note_cc/insert_notes.html.twig', [
+    'ec' => $ec,
+    'ue' => $ue,
+    'field' => $ue->getFields()->first(), // Prend la première filière associée à l'UE
+    'students' => $students,
+    'form' => $form->createView(),
+]);    }
 }
