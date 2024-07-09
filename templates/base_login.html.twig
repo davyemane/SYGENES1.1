@@ -19,27 +19,28 @@
             <div class="flex items-center lg:flex-1">
                 <a href="{{ path('app_home_page') }}" class="-m-1.5 p-1.5 flex items-center">
                     <img class="h-12 w-auto" src="{{ asset('images/uiecc_logo.png') }}"
-                        alt="{{ 'app.logo_alt'|trans }}">
-                    <span class="ml-3 text-lg font-semibold text-text dark:text-text">{{ 'app.name'|trans }}</span>
+                        alt="{{ 'home_header.app.logo_alt'|trans }}">
+                    <span class="ml-3 text-lg font-semibold text-text dark:text-text">{{ 'home_header.app.name'|trans }}</span>
                 </a>
             </div>
             <div class="flex lg:hidden">
                 <button type="button"
                     class="inline-flex items-center justify-center p-2 rounded-md text-text dark:text-text hover:bg-primary-light dark:hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary"
                     aria-controls="mobile-menu" aria-expanded="false">
-                    <span class="sr-only">{{ 'login.nav.open_menu'|trans }}</span>
-                    <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    <span class="sr-only">{{ 'home_header.nav.open_menu'|trans }}</span>
+                    <svg class="block h-6 w-6"  fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16m-7 6h7" />
                     </svg>
-                    <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
+
             <div class="hidden lg:flex lg:gap-x-12">
                 <!-- Add your navigation links here -->
             </div>
@@ -61,7 +62,7 @@
             <div class="relative mr-3">
                 <button id="language-toggle" type="button"
                     class="inline-flex items-center text-text dark:text-text focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-                    aria-expanded="false" aria-label="{{ 'language.change'|trans }}">
+                    aria-expanded="false" aria-label="{{ 'home_header.language.change'|trans }}">
                     {{ app.request.locale|upper }}
                     <svg class="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
@@ -74,16 +75,16 @@
                     <div class="py-1" role="none">
                         <a href="{{ path('change_language', {'locale': 'en'}) }}"
                             class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300"
-                            role="menuitem">{{ 'language.english'|trans }}</a>
+                            role="menuitem">{{ 'home_header.language.english'|trans }}</a>
                         <a href="{{ path('change_language', {'locale': 'fr'}) }}"
                             class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300"
-                            role="menuitem">{{ 'language.french'|trans }}</a>
+                            role="menuitem">{{ 'home_header.language.french'|trans }}</a>
                         <a href="{{ path('change_language', {'locale': 'es'}) }}"
                             class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300"
-                            role="menuitem">{{ 'language.spanish'|trans }}</a>
+                            role="menuitem">{{ 'home_header.language.spanish'|trans }}</a>
                         <a href="{{ path('change_language', {'locale': 'ln'}) }}"
                             class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300"
-                            role="menuitem">{{ 'language.lingala'|trans }}</a>
+                            role="menuitem">{{ 'home_header.language.lingala'|trans }}</a>
                         <!-- Add more languages here -->
                     </div>
                 </div>
@@ -103,23 +104,23 @@
             <ul class="flex justify-center border-b pb-3 mb-3 mt-auto">
                 <li class="nav-item">
                     <a class="nav-link px-2 text-text dark:text-text hover:text-primary dark:hover:text-primary-light"
-                        href="{{ path('app_home_page') }}">{{ 'login.nav.home'|trans }}</a>
+                        href="{{ path('app_home_page') }}">{{ 'home_header.nav.home'|trans }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link px-2 text-text dark:text-text hover:text-primary dark:hover:text-primary-light"
-                        href="{{ path('app_about_page') }}">{{ 'login.nav.about'|trans }}</a>
+                        href="{{ path('app_about_page') }}">{{ 'home_header.nav.about'|trans }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link px-2 text-text dark:text-text hover:text-primary dark:hover:text-primary-light"
-                        href="{{ path('app_contact_us_page') }}">{{ 'login.nav.contact_us'|trans }}</a>
+                        href="{{ path('app_contact_us_page') }}">{{ 'home_header.nav.contact_us'|trans }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link px-2 text-text dark:text-text hover:text-primary dark:hover:text-primary-light"
-                        href="{{ path('app_documentation_page') }}">{{ 'login.nav.documentation'|trans }}</a>
+                        href="{{ path('app_documentation_page') }}">{{ 'home_header.nav.documentation'|trans }}</a>
                 </li>
             </ul>
             <p class="text-center text-text dark:text-text">
-                © {{ 'now'|date('Y') }} {{ 'login.app.name'|trans }}, UIECC.
+                © {{ 'now'|date('Y') }} {{ 'home_header.app.name'|trans }}, UIECC.
             </p>
         </footer>
     </div>
@@ -172,7 +173,6 @@
             }
         });
     </script>
-    {% block javascripts %}{% endblock %}
 </body>
 
 </html>

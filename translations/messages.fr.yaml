@@ -62,20 +62,7 @@ footer:
 
 
 
-create-level-title: "Nouveau Niveau"
-edit-level-title: "Modifier Niveau"
-back: "Retour"
-next: "Suivant"
-create-level: "Créer un nouveau niveau"
-edit-level: "Modifier le niveau"
-toggle-existing-levels: "Afficher/Masquer les niveaux existants"
-existing-levels: "Niveaux existants"
-fields: "Filières"
-not-assigned: "Non assignées"
-level-name: "Nom du niveau"
-associated-field: "Champ associé"
-create: "Créer"
-update: "Modifier"
+
 
 register:
   register: "S'inscrire"

@@ -15,6 +15,12 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
+// import { createApp } from 'vue';
+// import IconExample from './components/IconExample.vue';
+
+// const app = createApp({});
+// app.component('icon-example', IconExample);
+// app.mount('#app');
 
 
 
