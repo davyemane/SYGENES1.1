@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Test des icônes</h1>
+
+<p>Cœur : {{ component('UX:Icon', { name: 'bi-heart' }) }}</p>
+<p>Étoile : {{ component('UX:Icon', { name: 'bi-star' }) }}</p>
+<p>Utilisateur : {{ component('UX:Icon', { name: 'bi-person' }) }}</p>
+<p>Maison : {{ component('UX:Icon', { name: 'bi-house' }) }}</p>
+{% endblock %}

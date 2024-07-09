@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240708120902 extends AbstractMigration
+final class Version20240708140258 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,12 +20,12 @@ final class Version20240708120902 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE ec ADD has_tp TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE note_cc_tp DROP INDEX UNIQ_2885A5F9CB944F1A, ADD INDEX IDX_2885A5F9CB944F1A (student_id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE ec DROP has_tp');
+        $this->addSql('ALTER TABLE note_cc_tp DROP INDEX IDX_2885A5F9CB944F1A, ADD UNIQUE INDEX UNIQ_2885A5F9CB944F1A (student_id)');
     }
 }

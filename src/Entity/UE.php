@@ -34,8 +34,6 @@ class UE
     /**
      * @var Collection<int, Field>
      */
-    #[ORM\ManyToMany(targetEntity: Field::class, mappedBy: 'ues')]
-    private Collection $fields;
 
     #[ORM\ManyToOne(inversedBy: 'ues')]
     private ?Level $level = null;
@@ -51,6 +49,12 @@ class UE
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $academicYear = null;
+
+    /**
+     * @var Collection<int, Field>
+     */
+    #[ORM\ManyToMany(targetEntity: Field::class, inversedBy: 'uEs')]
+    private Collection $fields;
 
     public function __construct()
     {
@@ -129,32 +133,6 @@ class UE
         return $this;
     }
 
-    /**
-     * @return Collection<int, Field>
-     */
-    public function getFields(): Collection
-    {
-        return $this->fields;
-    }
-
-    public function addField(Field $field): static
-    {
-        if (!$this->fields->contains($field)) {
-            $this->fields->add($field);
-            $field->addUe($this);
-        }
-
-        return $this;
-    }
-
-    public function removeField(Field $field): static
-    {
-        if ($this->fields->removeElement($field)) {
-            $field->removeUe($this);
-        }
-
-        return $this;
-    }
 
     public function getLevel(): ?Level
     {
@@ -217,6 +195,30 @@ class UE
     public function setAcademicYear(?string $academicYear): static
     {
         $this->academicYear = $academicYear;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Field>
+     */
+    public function getFields(): Collection
+    {
+        return $this->fields;
+    }
+
+    public function addField(Field $field): static
+    {
+        if (!$this->fields->contains($field)) {
+            $this->fields->add($field);
+        }
+
+        return $this;
+    }
+
+    public function removeField(Field $field): static
+    {
+        $this->fields->removeElement($field);
 
         return $this;
     }

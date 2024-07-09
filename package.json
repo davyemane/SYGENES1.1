@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "@heroicons/react": "^2.1.4",
+        "@heroicons/vue": "^2.1.4",
         "chart.js": "^4.4.3"
     }
 }

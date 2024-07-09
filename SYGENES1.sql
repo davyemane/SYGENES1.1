@@ -48,30 +48,6 @@ INSERT INTO `color_scheme` VALUES (1,1,'#bd8989','#5bfb46','#e65656','#f88282','
 UNLOCK TABLES;
 
 --
--- Table structure for table `doctrine_migration_versions`
---
-
-DROP TABLE IF EXISTS `doctrine_migration_versions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `executed_at` datetime DEFAULT NULL,
-  `execution_time` int DEFAULT NULL,
-  PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `doctrine_migration_versions`
---
-
-LOCK TABLES `doctrine_migration_versions` WRITE;
-/*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `ec`
 --
 
@@ -85,10 +61,11 @@ CREATE TABLE `ec` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `credit` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `has_tp` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_8DE8BDFF62E883B1` (`ue_id`),
   CONSTRAINT `FK_8DE8BDFF62E883B1` FOREIGN KEY (`ue_id`) REFERENCES `ue` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,6 +74,7 @@ CREATE TABLE `ec` (
 
 LOCK TABLES `ec` WRITE;
 /*!40000 ALTER TABLE `ec` DISABLE KEYS */;
+INSERT INTO `ec` VALUES (4,4,'ISN4121','Gamification, psychologie et sociologie du Gamer',NULL,'3',1),(5,NULL,'ISN4411','Gamification, psychologie et sociologie du Gamer',NULL,'2.5',0),(6,5,'SNA4122','limites',NULL,'2',0);
 /*!40000 ALTER TABLE `ec` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,7 +94,7 @@ CREATE TABLE `field` (
   PRIMARY KEY (`id`),
   KEY `IDX_5BF54558C32A47EE` (`school_id`),
   CONSTRAINT `FK_5BF54558C32A47EE` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +103,7 @@ CREATE TABLE `field` (
 
 LOCK TABLES `field` WRITE;
 /*!40000 ALTER TABLE `field` DISABLE KEYS */;
-INSERT INTO `field` VALUES (1,1,'CDN','Création et Design Numérique','LNJH'),(2,2,'INS','Igenierie Numerique Sociotechnique','L\'Ingénierie Numérique Sociotechnique est un domaine interdisciplinaire qui combine des compétences en informatique, en ingénierie et en sciences sociales pour concevoir, développer et gérer des systèmes technologiques complexes en tenant compte des implications sociales et éthiques. Les étudiants de cette filière apprennent à intégrer des solutions technologiques innovantes tout en prenant en considération les besoins et les comportements des utilisateurs, ainsi que l\'impact sociétal des technologies numériques. Cela inclut la gestion de projets numériques, la conception de systèmes interactifs, et l\'analyse des interactions entre les technologies et les sociétés.'),(3,1,'CDN','Création et Design Numérique','dfbdf'),(4,2,'CDN','Création et Design Numérique','Création et Design Numérique\r\n\r\nLa filière de Création et Design Numérique est centrée sur l\'utilisation des outils numériques pour concevoir et réaliser des projets créatifs. Elle combine des éléments de design graphique, d\'animation, de modélisation 3D, de développement web et d\'interaction utilisateur. Les étudiants apprennent à maîtriser des logiciels de création tels qu\'Adobe Creative Suite, Blender, et d\'autres outils de design interactif. Ils développent des compétences en conception visuelle, en gestion de projet et en communication visuelle, leur permettant de travailler dans des domaines variés comme la publicité, le jeu vidéo, le cinéma, et les médias numériques. Cette formation prépare les étudiants à des carrières de designer numérique, graphiste, directeur artistique, ou développeur de contenu interactif.'),(5,2,'ISN','Igenierie des Systemes Numeriques','La filière \"Ingénierie des Systèmes Numériques\" se concentre sur la conception, le développement et la gestion de systèmes informatiques complexes et de technologies numériques. Les étudiants apprennent à maîtriser les principes de l\'informatique, de l\'électronique et des réseaux, ainsi que les compétences nécessaires pour concevoir des logiciels, des applications et des systèmes embarqués. Cette filière couvre également des sujets tels que la cybersécurité, l\'intelligence artificielle, l\'Internet des objets (IoT) et l\'analyse de données, préparant les diplômés à une variété de carrières dans le secteur technologique et numérique.');
+INSERT INTO `field` VALUES (1,1,'CDN','Création et Design Numérique','LNJH'),(2,2,'INS','Igenierie Numerique Sociotechnique','L\'Ingénierie Numérique Sociotechnique est un domaine interdisciplinaire qui combine des compétences en informatique, en ingénierie et en sciences sociales pour concevoir, développer et gérer des systèmes technologiques complexes en tenant compte des implications sociales et éthiques. Les étudiants de cette filière apprennent à intégrer des solutions technologiques innovantes tout en prenant en considération les besoins et les comportements des utilisateurs, ainsi que l\'impact sociétal des technologies numériques. Cela inclut la gestion de projets numériques, la conception de systèmes interactifs, et l\'analyse des interactions entre les technologies et les sociétés.'),(3,1,'CDN','Création et Design Numérique','dfbdf'),(4,2,'CDN','Création et Design Numérique','Création et Design Numérique\r\n\r\nLa filière de Création et Design Numérique est centrée sur l\'utilisation des outils numériques pour concevoir et réaliser des projets créatifs. Elle combine des éléments de design graphique, d\'animation, de modélisation 3D, de développement web et d\'interaction utilisateur. Les étudiants apprennent à maîtriser des logiciels de création tels qu\'Adobe Creative Suite, Blender, et d\'autres outils de design interactif. Ils développent des compétences en conception visuelle, en gestion de projet et en communication visuelle, leur permettant de travailler dans des domaines variés comme la publicité, le jeu vidéo, le cinéma, et les médias numériques. Cette formation prépare les étudiants à des carrières de designer numérique, graphiste, directeur artistique, ou développeur de contenu interactif.'),(5,2,'ISN','Igenierie des Systemes Numeriques','La filière \"Ingénierie des Systèmes Numériques\" se concentre sur la conception, le développement et la gestion de systèmes informatiques complexes et de technologies numériques. Les étudiants apprennent à maîtriser les principes de l\'informatique, de l\'électronique et des réseaux, ainsi que les compétences nécessaires pour concevoir des logiciels, des applications et des systèmes embarqués. Cette filière couvre également des sujets tels que la cybersécurité, l\'intelligence artificielle, l\'Internet des objets (IoT) et l\'analyse de données, préparant les diplômés à une variété de carrières dans le secteur technologique et numérique.'),(6,7,'CDN','Création et Design Numérique','sdq');
 /*!40000 ALTER TABLE `field` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,7 +121,7 @@ CREATE TABLE `level` (
   PRIMARY KEY (`id`),
   KEY `IDX_9AEACC13443707B0` (`field_id`),
   CONSTRAINT `FK_9AEACC13443707B0` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +130,7 @@ CREATE TABLE `level` (
 
 LOCK TABLES `level` WRITE;
 /*!40000 ALTER TABLE `level` DISABLE KEYS */;
-INSERT INTO `level` VALUES (1,NULL,'D2'),(2,NULL,'P1'),(3,NULL,'L1'),(4,NULL,'L2'),(5,NULL,'L3'),(6,NULL,'M1'),(7,NULL,'M2');
+INSERT INTO `level` VALUES (1,NULL,'D2'),(2,NULL,'P1'),(3,NULL,'L1'),(4,NULL,'L2'),(5,NULL,'L3'),(6,NULL,'M1'),(7,NULL,'M2'),(8,NULL,'L1'),(9,NULL,'L2');
 /*!40000 ALTER TABLE `level` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -180,7 +158,7 @@ CREATE TABLE `level_fields` (
 
 LOCK TABLES `level_fields` WRITE;
 /*!40000 ALTER TABLE `level_fields` DISABLE KEYS */;
-INSERT INTO `level_fields` VALUES (1,1),(2,1),(3,1),(3,2),(3,3),(3,4),(3,5),(4,1),(4,2),(4,3),(4,5),(5,1),(5,2),(5,3),(5,5),(6,1),(6,2),(6,3),(6,4),(6,5),(7,1),(7,2),(7,3),(7,4),(7,5);
+INSERT INTO `level_fields` VALUES (1,1),(2,1),(3,1),(3,2),(3,3),(3,4),(3,5),(4,1),(4,2),(4,3),(4,5),(5,1),(5,2),(5,3),(5,5),(6,1),(6,2),(6,3),(6,4),(6,5),(7,1),(7,2),(7,3),(7,4),(7,5),(8,6),(9,6);
 /*!40000 ALTER TABLE `level_fields` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,6 +197,42 @@ CREATE TABLE `note` (
 LOCK TABLES `note` WRITE;
 /*!40000 ALTER TABLE `note` DISABLE KEYS */;
 /*!40000 ALTER TABLE `note` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `note_cc_tp`
+--
+
+DROP TABLE IF EXISTS `note_cc_tp`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `note_cc_tp` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `e_c_id` int DEFAULT NULL,
+  `cc` double DEFAULT NULL,
+  `tp` double DEFAULT NULL,
+  `has_tp` tinyint(1) DEFAULT NULL,
+  `student_id` int DEFAULT NULL,
+  `createb_by_id` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_2885A5F9E32B239F` (`e_c_id`),
+  KEY `IDX_2885A5F9D3EAB6BC` (`createb_by_id`),
+  KEY `IDX_2885A5F9CB944F1A` (`student_id`),
+  CONSTRAINT `FK_2885A5F9CB944F1A` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
+  CONSTRAINT `FK_2885A5F9D3EAB6BC` FOREIGN KEY (`createb_by_id`) REFERENCES `user` (`id`),
+  CONSTRAINT `FK_2885A5F9E32B239F` FOREIGN KEY (`e_c_id`) REFERENCES `ec` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `note_cc_tp`
+--
+
+LOCK TABLES `note_cc_tp` WRITE;
+/*!40000 ALTER TABLE `note_cc_tp` DISABLE KEYS */;
+INSERT INTO `note_cc_tp` VALUES (1,4,15,18,1,2,13,'2024-07-08 13:37:52'),(2,4,13,19,1,3,13,'2024-07-08 13:37:52'),(3,4,16,4,1,4,13,'2024-07-08 13:37:52'),(5,6,15,NULL,0,2,13,'2024-07-08 14:20:00'),(6,6,16,NULL,0,3,13,'2024-07-08 14:20:00'),(7,6,17,NULL,0,4,13,'2024-07-08 14:20:00');
+/*!40000 ALTER TABLE `note_cc_tp` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -262,7 +276,7 @@ CREATE TABLE `responsable` (
   PRIMARY KEY (`id`),
   KEY `IDX_52520D07B03A8386` (`created_by_id`),
   CONSTRAINT `FK_52520D07B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -271,7 +285,7 @@ CREATE TABLE `responsable` (
 
 LOCK TABLES `responsable` WRITE;
 /*!40000 ALTER TABLE `responsable` DISABLE KEYS */;
-INSERT INTO `responsable` VALUES (1,NULL,'davyemane2@gmail.com','697379517','Emane Bile Félicien Davy',NULL),(2,NULL,'davyemane2@gmail.com','697379517','Emane Bile Félicien Davy',NULL),(3,NULL,'davyemane@gmail.com','676469014','Emane bile félicien davy',NULL),(4,NULL,'amougou@gmail.com','676469014','Emane bile félicien davy',NULL),(6,NULL,'amougou@gmail.com','676469014','Emane bile félicien davy',NULL),(7,NULL,'amougou@gmail.com','676469014','Emane bile félicien davy',NULL),(8,NULL,'amougou@gmail.com','676469014','Emane bile félicien davy',NULL),(9,NULL,'davyemane2@gmail.com','697379517','Emane Bile Félicien Davy',NULL),(10,NULL,'davyemane2@gmail.com','676469014','Emane bile félicien davy',NULL),(11,NULL,'mendo@gmail.com','697379517','Emane Bile Félicien Davy',NULL),(12,NULL,'agnesgrey@gmail.com','697379517','Ango Brinda',NULL),(13,NULL,'davyemane2@gmail.com','676469014','Emane bile félicien davy',NULL);
+INSERT INTO `responsable` VALUES (1,NULL,'davyemane2@gmail.com','697379517','Emane Bile Félicien Davy',NULL),(2,NULL,'davyemane2@gmail.com','697379517','Emane Bile Félicien Davy',NULL),(3,NULL,'davyemane@gmail.com','676469014','Emane bile félicien davy',NULL),(4,NULL,'amougou@gmail.com','676469014','Emane bile félicien davy',NULL),(6,NULL,'amougou@gmail.com','676469014','Emane bile félicien davy',NULL),(7,NULL,'amougou@gmail.com','676469014','Emane bile félicien davy',NULL),(8,NULL,'amougou@gmail.com','676469014','Emane bile félicien davy',NULL),(9,NULL,'davyemane2@gmail.com','697379517','Emane Bile Félicien Davy',NULL),(10,NULL,'davyemane2@gmail.com','676469014','Emane bile félicien davy',NULL),(11,NULL,'mendo@gmail.com','697379517','Emane Bile Félicien Davy',NULL),(12,NULL,'agnesgrey@gmail.com','697379517','Ango Brinda',NULL),(13,NULL,'davyemane2@gmail.com','676469014','Emane bile félicien davy',NULL),(14,NULL,'desire@gmail.com','699437103','Mavaïwa desire desire',NULL);
 /*!40000 ALTER TABLE `responsable` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -292,7 +306,7 @@ CREATE TABLE `role` (
   PRIMARY KEY (`id`),
   KEY `IDX_57698A6AC32A47EE` (`school_id`),
   CONSTRAINT `FK_57698A6AC32A47EE` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -301,7 +315,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (10,2,NULL,'RES','2024-07-06 09:50:46','2024-07-06 09:50:46'),(11,2,NULL,'SA','2024-07-06 09:52:10','2024-07-06 16:24:31'),(12,2,NULL,'Student','2024-07-06 09:52:36','2024-07-06 09:52:36');
+INSERT INTO `role` VALUES (10,2,NULL,'RES','2024-07-06 09:50:46','2024-07-06 09:50:46'),(11,2,NULL,'SA','2024-07-06 09:52:10','2024-07-06 16:24:31'),(12,2,NULL,'Student','2024-07-06 09:52:36','2024-07-06 09:52:36'),(13,7,NULL,'Directeur','2024-07-08 08:42:37','2024-07-08 08:42:37');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -329,7 +343,7 @@ CREATE TABLE `role_privilege` (
 
 LOCK TABLES `role_privilege` WRITE;
 /*!40000 ALTER TABLE `role_privilege` DISABLE KEYS */;
-INSERT INTO `role_privilege` VALUES (10,3),(10,5),(10,12),(10,13),(10,14),(10,15),(10,16),(10,19),(11,3),(11,4),(11,5),(11,6),(11,7),(11,8),(11,9),(11,10),(11,11),(11,12),(11,13),(11,14),(11,15),(11,16),(11,17),(11,18),(11,19),(11,20),(11,21),(11,22);
+INSERT INTO `role_privilege` VALUES (10,3),(10,5),(10,12),(10,13),(10,14),(10,15),(10,16),(10,19),(11,3),(11,4),(11,5),(11,6),(11,7),(11,8),(11,9),(11,10),(11,11),(11,12),(11,13),(11,14),(11,15),(11,16),(11,17),(11,18),(11,19),(11,20),(11,21),(11,22),(13,3),(13,4),(13,5),(13,6),(13,7),(13,8),(13,9),(13,10),(13,11),(13,12),(13,13),(13,14),(13,15),(13,16),(13,17),(13,18),(13,19),(13,20),(13,21),(13,22);
 /*!40000 ALTER TABLE `role_privilege` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -348,7 +362,7 @@ CREATE TABLE `school` (
   `phone_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -357,7 +371,7 @@ CREATE TABLE `school` (
 
 LOCK TABLES `school` WRITE;
 /*!40000 ALTER TABLE `school` DISABLE KEYS */;
-INSERT INTO `school` VALUES (1,'Langues Maternelles','Langue-Maternelle-6686a805548db.png','12, sang, sud, cmr','676469014','lm-afrique@gmail.com'),(2,'ESIGN','ESIGN-6687cecbdf88f.png','12, sang, sud, cmr','676469014','lm-afrique@gmail.com'),(3,'lybi','lybi-66880141ebbc9.png','12, sang, sud, cmr','676469014','lm-afrique@gmail.com'),(4,'bad','bad-66880cc9cfb62.png','12, sang, sud, cmr','676469014','lm-afrique@gmail.com'),(5,'colim',NULL,'12, sang, sud, cmr','676469014','lm-afrique@gmail.com'),(6,'ESIGN','ESIGN-668911d9cd425.jpg','12, sang, sud, cmr','676469014','lm-afrique@gmail.com');
+INSERT INTO `school` VALUES (1,'Langues Maternelles','Langue-Maternelle-6686a805548db.png','12, sang, sud, cmr','676469014','lm-afrique@gmail.com'),(2,'ESIGN','ESIGN-6687cecbdf88f.png','12, sang, sud, cmr','676469014','lm-afrique@gmail.com'),(3,'lybi','lybi-66880141ebbc9.png','12, sang, sud, cmr','676469014','lm-afrique@gmail.com'),(4,'bad','bad-66880cc9cfb62.png','12, sang, sud, cmr','676469014','lm-afrique@gmail.com'),(5,'colim',NULL,'12, sang, sud, cmr','676469014','lm-afrique@gmail.com'),(6,'ESIGN','ESIGN-668911d9cd425.jpg','12, sang, sud, cmr','676469014','lm-afrique@gmail.com'),(7,'UBW','UBW-668ba615bcbbb.png','12, sang, sud, cmr','676469014','lm-afrique@gmail.com');
 /*!40000 ALTER TABLE `school` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -449,7 +463,7 @@ CREATE TABLE `ue` (
   PRIMARY KEY (`id`),
   KEY `IDX_2E490A9B5FB14BA7` (`level_id`),
   CONSTRAINT `FK_2E490A9B5FB14BA7` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -458,7 +472,36 @@ CREATE TABLE `ue` (
 
 LOCK TABLES `ue` WRITE;
 /*!40000 ALTER TABLE `ue` DISABLE KEYS */;
+INSERT INTO `ue` VALUES (4,3,'SNA411','Systèmes Numériques Avancées I',5,'vfvfg','8',NULL,NULL),(5,5,'IGN411','Réseaux et Systèmes Multimédias II',5,'vfvfg','8',NULL,NULL);
 /*!40000 ALTER TABLE `ue` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ue_field`
+--
+
+DROP TABLE IF EXISTS `ue_field`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ue_field` (
+  `ue_id` int NOT NULL,
+  `field_id` int NOT NULL,
+  PRIMARY KEY (`ue_id`,`field_id`),
+  KEY `IDX_38132BB862E883B1` (`ue_id`),
+  KEY `IDX_38132BB8443707B0` (`field_id`),
+  CONSTRAINT `FK_38132BB8443707B0` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_38132BB862E883B1` FOREIGN KEY (`ue_id`) REFERENCES `ue` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ue_field`
+--
+
+LOCK TABLES `ue_field` WRITE;
+/*!40000 ALTER TABLE `ue_field` DISABLE KEYS */;
+INSERT INTO `ue_field` VALUES (4,2),(4,4),(4,5),(5,2),(5,4),(5,5);
+/*!40000 ALTER TABLE `ue_field` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -483,7 +526,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `UNIQ_8D93D64953C59D72` (`responsable_id`),
   CONSTRAINT `FK_8D93D64953C59D72` FOREIGN KEY (`responsable_id`) REFERENCES `responsable` (`id`),
   CONSTRAINT `FK_8D93D649CB944F1A` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -492,7 +535,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (13,NULL,13,'emane','[]','$2y$13$KQjKbzXKynp4wu.yIyssCeItZVEBIbvS0Wz9XyX6FaA0405LPNMX.','davyemane2@gmail.com','IMG-20231121-WA0043-6689156fb17b7.jpg'),(14,2,NULL,'','[]','$2y$13$JKhSbPDPQJluEb84LnY0deLlB7v2XunxT7TJ37bQTkbrslNrHjifu',NULL,NULL),(15,1,NULL,'681020655','[]','$2y$13$K7L3OKXoYRydgGBW/77GBuzB9./WwW.6q5OsN3vWguCCJVt1clkwK','tapiba@gmail.com',NULL),(16,3,NULL,'676469014','[]','$2y$13$NbfJgxgETg615vSnS0J.HOAxu9ZPaOPlXDqbGk9jaOZP17mOD.M.m','davyemane1@gmail.com',NULL),(17,4,NULL,'davy','[]','$2y$13$vR7htgQnFIj3/6XjxnDlG.B2iW4dBNwHIx9cYLQxxkITsw/Qx6CD2',NULL,NULL);
+INSERT INTO `user` VALUES (13,NULL,13,'emane','[]','$2y$13$KQjKbzXKynp4wu.yIyssCeItZVEBIbvS0Wz9XyX6FaA0405LPNMX.','davyemane2@gmail.com','IMG-20231121-WA0043-6689156fb17b7.jpg'),(14,2,NULL,'','[]','$2y$13$JKhSbPDPQJluEb84LnY0deLlB7v2XunxT7TJ37bQTkbrslNrHjifu',NULL,NULL),(15,1,NULL,'681020655','[]','$2y$13$K7L3OKXoYRydgGBW/77GBuzB9./WwW.6q5OsN3vWguCCJVt1clkwK','tapiba@gmail.com',NULL),(16,3,NULL,'676469014','[]','$2y$13$NbfJgxgETg615vSnS0J.HOAxu9ZPaOPlXDqbGk9jaOZP17mOD.M.m','davyemane1@gmail.com',NULL),(17,4,NULL,'davy','[]','$2y$13$vR7htgQnFIj3/6XjxnDlG.B2iW4dBNwHIx9cYLQxxkITsw/Qx6CD2',NULL,NULL),(18,NULL,14,'Mavaïwa','[]','$2y$13$fiyEFO34lKrKhzZOUVPqq.Vbm35AqB722CIwkbAdMIjK4P3HHWscu','desire@gmail.com','7dd184ec9e98470db6d9f24f1afd6a85-668ba717cc941.jpg');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -520,7 +563,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES `user_role` WRITE;
 /*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
-INSERT INTO `user_role` VALUES (13,10),(13,11),(14,12),(15,12),(16,12),(17,12);
+INSERT INTO `user_role` VALUES (13,10),(13,11),(14,12),(15,12),(16,12),(17,12),(18,13);
 /*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -533,4 +576,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-06 18:11:16
+-- Dump completed on 2024-07-09  9:56:55

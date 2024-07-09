@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Configuration de l'EC</h1>
+    {{ form_start(hasTpForm) }}
+    {{ form_widget(hasTpForm) }}
+    <button type="submit" class="btn btn-primary">Suivant</button>
+    {{ form_end(hasTpForm) }}
+{% endblock %}

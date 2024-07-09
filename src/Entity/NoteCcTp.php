@@ -26,14 +26,15 @@ class NoteCcTp
     #[ORM\ManyToOne(inversedBy: 'noteCcTps')]
     private ?EC $eC = null;
 
-    #[ORM\OneToOne(inversedBy: 'noteCcTp', cascade: ['persist', 'remove'])]
-    private ?Student $student = null;
 
     #[ORM\ManyToOne(inversedBy: 'noteCcTps')]
     private ?User $createb_by = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $created_at = null;
+
+    #[ORM\ManyToOne(inversedBy: 'notescctps')]
+    private ?Student $student = null;
 
     public function getId(): ?int
     {
@@ -88,17 +89,6 @@ class NoteCcTp
         return $this;
     }
 
-    public function getStudent(): ?Student
-    {
-        return $this->student;
-    }
-
-    public function setStudent(?Student $student): static
-    {
-        $this->student = $student;
-
-        return $this;
-    }
 
     public function getCreatebBy(): ?User
     {
@@ -120,6 +110,18 @@ class NoteCcTp
     public function setCreatedAt(?\DateTimeInterface $created_at): static
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    public function setStudent(?Student $student): static
+    {
+        $this->student = $student;
 
         return $this;
     }
