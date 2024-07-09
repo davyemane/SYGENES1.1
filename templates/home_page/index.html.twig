@@ -2,7 +2,7 @@
 
 {% block head %}
     {% block title %}
-        <title>{{ 'home.title'|trans }}</title>
+        <title>{{ 'home_page.title'|trans }}</title>
     {% endblock %}
 {% endblock %}
 
@@ -11,21 +11,20 @@
         <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56 z-10">
             <div class="hidden sm:mb-8 sm:flex sm:justify-center">
                 <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-text ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                    {{ 'home.documentation_prompt'|trans }}
+                    {{ 'home_page.documentation_prompt'|trans }}
                     <a href="{{ path('app_documentation_page') }}" class="font-semibold text-secondary">
-                        <span class="absolute inset-0" aria-hidden="true"></span>{{ 'home.read_more'|trans }}
+                        <span class="absolute inset-0" aria-hidden="true"></span>{{ 'home_page.read_more'|trans }}
                         <span aria-hidden="true">&rarr;</span>
                     </a>
                 </div>
             </div>
-    
             <div class="text-center">
-                <h1 class="text-4xl font-bold tracking-tight text-text sm:text-6xl">{{ 'home.welcome'|trans }}
-                    <span style="color: var(--primary-color);">{{ 'home.name'|trans }}</span>
+                <h1 class="text-4xl font-bold tracking-tight text-text sm:text-6xl">{{ 'home_page.welcome'|trans }}
+                    <span style="color: var(--primary-color);">{{ 'home_page.name'|trans }}</span>
                 </h1>
-                <p class="mt-6 text-lg leading-8 text-text">{{ 'home.description'|trans }}</p>
+                <p class="mt-6 text-lg leading-8 text-text">{{ 'home_page.description'|trans }}</p>
                 <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="{{ path('app_login') }}" class="hover:bg-primaryHover  bg-primary text-background rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary">{{ 'home.log_in'|trans }}
+                    <a href="{{ path('app_login') }}" class="hover:bg-primaryHover  bg-primary text-background rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary">{{ 'home_page.log_in'|trans }}
                     <span aria-hidden="true">→</span>
                     </a>
                 </div>

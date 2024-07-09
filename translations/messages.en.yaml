@@ -1,58 +1,33 @@
-# Language choice text
-language-message: "Please choose your language"
-english-language: "English"
-french-language: "French"
-spanish-language: "Spanish"
-next-language-btn: "Next"
+# base.html.twig & base_login.html.twig header variables
+home_header:
+  app:
+    title: 'SYGENES'
+    name: 'SYGENES'
+    logo_alt: 'UIECC Logo'
 
-language:
-  change: "Change language"
-  english: "English"
-  french: "French"
-  spanish: "Spanish"
-  lingala: "Lingala"
+  nav:
+    home: 'Home'
+    about: 'About'
+    contact_us: 'Contact us'
+    documentation: 'Documentation'
+    login: 'Log in'
+    open_menu: 'Open main menu'
+    close_menu: 'Close menu'
+    toggle_dark_mode: "Dark Mode"
+    toggle_light_mode: "Light Mode"
 
-# Create school text
-create-school-title: "New School"
-edit-school-title: "Edit School"
-create-school: "Create a new school"
-edit-school: "Edit school"
-school-name: "School Name"
-logo: "Logo"
-address: "Address"
-phone-number: "Phone Number"
-email: "Email"
-color-schemes: "Color Schemes"
-add-color-scheme: "Add Color Scheme"
-remove-color-scheme: "Remove Color Scheme"
-create-school-btn: "Create School"
-update-school-btn: "Update School"
-success-message: ""
-error-message: ""
+  language:
+    change: "Change language"
+    english: "English"
+    french: "French"
+    spanish: "Spanish"
+    lingala: "Lingala"
 
-# Base.html.twig page variables
-app:
-  title: 'SYGENES'
-  name: 'SYGENES'
-  logo_alt: 'UIECC Logo'
+  footer:
+    copyright: '© %year% SYGENES, UIECC.'
 
-nav:
-  home: 'Home'
-  about: 'About'
-  contact_us: 'Contact us'
-  documentation: 'Documentation'
-  login: 'Log in'
-  open_menu: 'Open main menu'
-  close_menu: 'Close menu'
-  toggle_dark_mode: "Dark Mode"
-  toggle_light_mode: "Light Mode"
-
-footer:
-  copyright: '© %year% SYGENES, UIECC.'
-
-
-#  index and other welcome pages
-home:
+# Home pages [about, documentation, contact us and home]
+home_page:
   name: "SYGENES"
   title: 'Home'
   documentation_prompt: 'Consult our documentation if you are lost.'
@@ -67,76 +42,187 @@ home:
   learn_more: 'Learn more'
   app_screenshot: 'App screenshot'
 
-about:
-  title: 'About'
-  sygenes_title: 'About SYGENES'
-  sygenes_description: "We're passionate about simplifying grade management for educators, students, and parents alike. Our robust web application offers a comprehensive suite of tools designed to streamline the grading process, enhance communication, and empower educational institutions to achieve academic excellence."
-  origin_title: 'Origin'
-  origin_description: 'Designed by UIECC.'
-  mission_title: 'Mission'
-  mission_description: 'To revolutionize grade management by providing intuitive, efficient, and reliable solutions tailored to the needs of modern educational environments.'
-  user_centric_title: 'User-Centric Design'
-  user_centric_description: "SYGENES is built with the end-user in mind. We understand the diverse needs of educators, students, and parents, and we've crafted our platform to be intuitive and easy to use for all stakeholders."
-  integration_title: 'Seamless Integration'
-  integration_description: 'SYGENES seamlessly integrates with existing educational platforms and systems, ensuring a smooth transition and minimal disruption to your workflow.'
-  image1_alt: 'Front view of the SYGENES system'
-  image2_alt: 'Long side view of the SYGENES system'
-  image3_alt: 'Water tank of the SYGENES system'
-  image4_alt: 'Green view of the SYGENES system'
-  get_started_title: 'Get Started Today'
-  get_started_description: 'Ready to experience the benefits of SYGENES for yourself? Sign up today and discover how our grade management solution can transform your educational institution.'
-  get_access: 'Get access'
+  about:
+    title: 'About'
+    sygenes_title: 'About SYGENES'
+    sygenes_description: "We're passionate about simplifying grade management for educators, students, and parents alike. Our robust web application offers a comprehensive suite of tools designed to streamline the grading process, enhance communication, and empower educational institutions to achieve academic excellence."
+    origin_title: 'Origin'
+    origin_description: 'Designed by UIECC.'
+    mission_title: 'Mission'
+    mission_description: 'To revolutionize grade management by providing intuitive, efficient, and reliable solutions tailored to the needs of modern educational environments.'
+    user_centric_title: 'User-Centric Design'
+    user_centric_description: "SYGENES is built with the end-user in mind. We understand the diverse needs of educators, students, and parents, and we've crafted our platform to be intuitive and easy to use for all stakeholders."
+    integration_title: 'Seamless Integration'
+    integration_description: 'SYGENES seamlessly integrates with existing educational platforms and systems, ensuring a smooth transition and minimal disruption to your workflow.'
+    image1_alt: 'Front view of the SYGENES system'
+    image2_alt: 'Long side view of the SYGENES system'
+    image3_alt: 'Water tank of the SYGENES system'
+    image4_alt: 'Green view of the SYGENES system'
+    get_started_title: 'Get Started Today'
+    get_started_description: 'Ready to experience the benefits of SYGENES for yourself? Sign up today and discover how our grade management solution can transform your educational institution.'
+    get_access: 'Get access'
 
-contact:
-  title: 'Contact Us'
-  heading: 'Contact Us'
-  description: 'Have questions or need assistance? Our dedicated support team is here to help. Contact us via email or phone, and we''ll be happy to assist you.'
-  first_name: 'First name'
-  last_name: 'Last name'
-  company: 'Company'
-  email: 'Email'
-  phone_number: 'Phone number'
-  country: 'Country'
-  message: 'Message'
-  submit: 'Let''s talk'
+  contact:
+    title: 'Contact Us'
+    heading: 'Contact Us'
+    description: 'Have questions or need assistance? Our dedicated support team is here to help. Contact us via email or phone, and we''ll be happy to assist you.'
+    first_name: 'First name'
+    last_name: 'Last name'
+    company: 'Company'
+    email: 'Email'
+    phone_number: 'Phone number'
+    country: 'Country'
+    message: 'Message'
+    submit: "Let's talk"
 
-documentation:
-  title: "Documentation"
-  manage_grades_faster: "Manage grades faster"
-  intro_text: "Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam eget aliquam. Quisque id at vitae feugiat egestas."
-  section1_text: "Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius sit"
-  push_to_deploy: ""
-  push_to_deploy_text: ""
+  documentation:
+    title: "Documentation"
+    manage_grades_faster: "Manage grades faster"
+    intro_text: "Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam eget aliquam. Quisque id at vitae feugiat egestas."
+    section1_text: "Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius sit"
+    push_to_deploy: ""
+    push_to_deploy_text: ""
 
-  ssl_certificates: ""
-  ssl_certificates_text: ""
+    ssl_certificates: ""
+    ssl_certificates_text: ""
 
-  database_backups: ""
-  database_backups_text: ""
+    database_backups: ""
+    database_backups_text: ""
 
-  section2_text: ""
+    section2_text: ""
 
-  no_server_no_problem: ""
-  no_server_no_problem_text: ""
+    no_server_no_problem: ""
+    no_server_no_problem_text: ""
 
 
-# Base Login and Login Page  
-login:
-  app:
-    title: 'SYGENES'
-    name: 'SYGENES'
-    logo_alt: 'UIECC Logo'
 
-  nav:
-    open_menu: 'Open main menu'
-    home: 'Home'
-    about: 'About'
-    contact_us: 'Contact Us'
-    documentation: 'Documentation'
+# Here is the app proper pages and their various modifications
+# Modify only when neccesary.
+# This seperation is to make a clear distinction
 
-  footer:
-    copyright: '© %year% SYGENES, UIECC.'
 
+
+# Welcome Page [welcome.index.html.twig] variables
+welcome_page:
+  title: 'SYGENES'
+  name: 'SYGENES'
+  logo_alt: 'UIECC Logo'
+  description: "The ESIGN Marks Management System"
+  language_choice: "Choisir Langage / Choose Language"
+  all_rights: "All rights reserved"
+
+
+# Language choice page text
+language_choice_page:
+  language-message: "Please choose your language"
+  english-language: "English"
+  french-language: "French"
+  spanish-language: "Spanish"
+  next-language-btn: "Next"
+  copyright: " 2024 ESIGN. All rights reserved"
+
+# School Creation page text
+create_school_page:
+  create-school-title: "New School"
+  edit-school-title: "Edit School"
+  create-school: "Create a new school"
+  edit-school: "Edit school"
+  school-name: "School Name"
+  logo: "Logo"
+  address: "Address"
+  phone-number: "Phone Number"
+  email: "Email"
+  color-schemes: "Color Schemes"
+  add-color-scheme: "Add Color Scheme"
+  remove-color-scheme: "Remove Color Scheme"
+  create-school-btn: "Create School"
+  update-school-btn: "Update School"
+  success-message: "Success"
+  error-message: "Error"
+  next: "Next"
+  back: "Back"
+  message: ""
+  browse: "Browse for pictures..."
+
+
+# Create Field Page 
+field_page: 
+  create-field-title: "Create Field"
+  edit-field-title: "Edit Field"
+  next: "Next"
+  create-field: "Create Field"
+  edit-field: "Edit Field"
+  toggle-existing-fields: "Show/Hide Existing Fields"
+  existing-fields: "Existing Fields"
+  code: "Code"
+  edit: "Edit"
+  success: "Success"
+  error: "Error"
+  name: "Name"
+  description: "Description"
+  create: "Create"
+  update: "Update"
+  message: ""
+
+
+
+# Create Level Page
+level_page:
+  create-level-title: "Nouveau Niveau"
+  edit-level-title: "Modifier Niveau"
+  back: "Retour"
+  next: "Suivant"
+  create-level: "Créer un nouveau niveau"
+  edit-level: "Modifier le niveau"
+  toggle-existing-levels: "Afficher/Masquer les niveaux existants"
+  existing-levels: "Niveaux existants"
+  fields: "Filières"
+  not-assigned: "Non assignées"
+  level-name: "Nom du niveau"
+  associated-field: "Champ associé"
+  create: "Créer"
+  update: "Modifier"
+
+
+# Create Profile Page
+role_page:
+  edit-role-title: "Edit Role"
+  create-role-title: "Create Role"
+  back: "Back"
+  next: "Next"
+  edit-role: "Edit Role"
+  create-role: "Create Role"
+  toggle-existing-roles: "Show/Hide Existing Roles"
+  existing-roles: "Existing Roles"
+  school: "School"
+  not-assigned: "Not assigned"
+  privileges: "Privileges"
+  success: "Success"
+  error: "Error"
+  name: "Name"
+  update: "Update"
+  create: "Create"
+
+
+# Create Responsable Account
+register_page:
+  register: "Register"
+  user-registration: "User Registration"
+  back: "Back"
+  username: "Username"
+  email: "Email"
+  password: "Password"
+  profile-picture: "Profile Picture"
+  roles: "Roles"
+  no-roles-available: "No roles available for this school."
+  responsible-information: "Responsible Information"
+  name: "Name"
+  phone-number: "Phone Number"
+  agree-to-terms: "I agree to the terms"
+  confirm-password: "Confirm your password"
+
+
+# Login Page variables text
 login_page:
   title: 'Login'
   logo_alt: 'UIECC Logo'
@@ -154,8 +240,6 @@ login_page:
   sign_up: 'Sign Up'
 
 
-
-
 # Error Page
 error_page:
   title: "Error Occurred - We're Sorry!"
@@ -165,9 +249,7 @@ error_page:
   contact_support: "Need help? Contact support"
 
 
-
 # Admin Dashboard Page and subpages
-
 admin_dash:
   SYGENES: "SYGENES"
   'Profile Picture': 'Profile Picture'
@@ -195,60 +277,9 @@ admin_dash:
   Logout: Logout
 
 
+student_dash:
+  'Student Dashboard': 'Student Dashboard'
 
-field: 
-  create-field-title: "Create Field"
-  edit-field-title: "Edit Field"
-  next: "Next"
-  create-field: "Create Field"
-  edit-field: "Edit Field"
-  toggle-existing-fields: "Show/Hide Existing Fields"
-  existing-fields: "Existing Fields"
-  code: "Code"
-  edit: "Edit"
-  success: "Success"
-  error: "Error"
-  name: "Name"
-  description: "Description"
-  create: "Create"
-  update: "Update"
-
-
-role:
-  edit-role-title: "Edit Role"
-  create-role-title: "Create Role"
-  back: "Back"
-  next: "Next"
-  edit-role: "Edit Role"
-  create-role: "Create Role"
-  toggle-existing-roles: "Show/Hide Existing Roles"
-  existing-roles: "Existing Roles"
-  school: "School"
-  not-assigned: "Not assigned"
-  privileges: "Privileges"
-  success: "Success"
-  error: "Error"
-  name: "Name"
-  update: "Update"
-  create: "Create"
 
 # Student Dashboard Page and subpages
-register:
-  register: "Register"
-  user-registration: "User Registration"
-  back: "Back"
-  username: "Username"
-  email: "Email"
-  password: "Password"
-  profile-picture: "Profile Picture"
-  roles: "Roles"
-  no-roles-available: "No roles available for this school."
-  responsible-information: "Responsible Information"
-  name: "Name"
-  phone-number: "Phone Number"
-  agree-to-terms: "I agree to the terms"
-
-
-
-# Initialisation Pages
 

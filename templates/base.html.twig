@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="h-full">
+<html class="h-full" lang="{{ app.request.locale }}">
 
 <head>
   <meta charset="utf-8">
@@ -8,15 +8,13 @@
   <link rel="stylesheet" href="{{ asset('build/app.css') }}">
 	<script src="{{ asset('build/app.js') }}"></script>
   {% block stylesheets %}
-  {{ encore_entry_link_tags('app') }}
+    {{ encore_entry_link_tags('app') }}
   {% endblock %}
   {% block script %}
-  {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('app') }}
   {% endblock %}
 
-  {% block head %}{% block title %}<title>{{ 'app.title'|trans }}</title>{% endblock %}{% endblock %}
-
-
+  {% block head %}{% block title %}<title>{{ 'home_header.app.title'|trans }}</title>{% endblock %}{% endblock %}
 </head>
 
 <body class="h-full bg-background dark:bg-background text-text dark:text-text">
@@ -25,17 +23,17 @@
       <div class="flex items-center lg:flex-1">
         <a href="{{ path('app_home_page') }}" class="-m-1.5 p-1.5 flex items-center hover:text-secondary">
           <img id="logo-light" class="h-12 w-auto" src="{{ asset('images/uiecc_logo.png') }}"
-            alt="{{ 'app.logo_alt'|trans }}">
+            alt="{{ 'home_header.app.logo_alt'|trans }}">
           <img id="logo-dark" class="h-12 w-auto hidden" src="{{ asset('/images/uiecc_logo_dark.svg') }}"
-            alt="{{ 'app.logo_alt'|trans }}">
-          <span class="ml-3 text-lg font-semibold">{{ 'app.name'|trans }}</span>
+            alt="{{ 'home_header.app.logo_alt'|trans }}">
+          <span class="ml-3 text-lg font-semibold">{{ 'home_header.app.name'|trans }}</span>
         </a>
       </div>
 
       <div class="flex lg:hidden">
         <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5"
           id="mobile-menu-button" style="color: var(--secondary-color);">
-          <span class="sr-only">{{ 'nav.open_menu'|trans }}</span>
+          <span class="sr-only">{{ 'home_header.nav.open_menu'|trans }}</span>
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
             aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -46,28 +44,26 @@
         <div class="relative">
           <a href="{{ path('app_home_page') }}"
             class="hover:text-secondary flex items-center gap-x-1 font-semibold leading-6">
-            {{ 'nav.home'|trans }}
+            {{ 'home_header.nav.home'|trans }}
             <div id="bottom-bar" class="hidden h-1 w-4/2 mx-auto rounded-full bar"></div>
           </a>
         </div>
         <a href="{{ path('app_about_page') }}"
-          class="hover:text-secondary font-semibold leading-6">{{ 'nav.about'|trans }}</a>
+          class="hover:text-secondary font-semibold leading-6">{{ 'home_header.nav.about'|trans }}</a>
         <a href="{{ path('app_contact_us_page') }}"
-          class="hover:text-secondary font-semibold leading-6">{{ 'nav.contact_us'|trans }}</a>
+          class="hover:text-secondary font-semibold leading-6">{{ 'home_header.nav.contact_us'|trans }}</a>
         <a href="{{ path('app_documentation_page') }}"
-          class="hover:text-secondary font-semibold leading-6">{{ 'nav.documentation'|trans }}</a>
+          class="hover:text-secondary font-semibold leading-6">{{ 'home_header.nav.documentation'|trans }}</a>
       </div>
 
       <div class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center">
         <div class="flex items-center space-x-4 mr-8">
           <button id="theme-toggle"
             class="text-text dark:text-text-light hover:bg-primary-light dark:hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary rounded-lg text-sm p-2.5">
-            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg">
+            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
             </svg>
-            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg">
+            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
               <path
                 d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
                 fill-rule="evenodd" clip-rule="evenodd"></path>
@@ -77,9 +73,9 @@
           <div class="relative">
             <button id="language-toggle" type="button"
               class="inline-flex items-center text-text dark:text-text focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-              aria-expanded="false" aria-label="{{ 'language.change'|trans }}">
+              aria-expanded="false" aria-label="{{ 'home_header.language.change'|trans }}">
               {{ app.request.locale|upper }}
-              <svg class="ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              <svg class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
               </svg>
@@ -90,22 +86,22 @@
               <div class="py-1" role="none">
                 <a href="{{ path('change_language', {'locale': 'en'}) }}"
                   class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300"
-                  role="menuitem">{{ 'language.english'|trans }}</a>
+                  role="menuitem">{{ 'home_header.language.english'|trans }}</a>
                 <a href="{{ path('change_language', {'locale': 'fr'}) }}"
                   class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300"
-                  role="menuitem">{{ 'language.french'|trans }}</a>
+                  role="menuitem">{{ 'home_header.language.french'|trans }}</a>
                 <a href="{{ path('change_language', {'locale': 'es'}) }}"
                   class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300"
-                  role="menuitem">{{ 'language.spanish'|trans }}</a>
+                  role="menuitem">{{ 'home_header.language.spanish'|trans }}</a>
                 <a href="{{ path('change_language', {'locale': 'ln'}) }}"
                   class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300"
-                  role="menuitem">{{ 'language.lingala'|trans }}</a>
+                  role="menuitem">{{ 'home_header.language.lingala'|trans }}</a>
 
                 <!-- Add more languages here -->
               </div>
             </div>
             <a href="{{ path('app_login') }}"
-              class="hover:text-secondary login-button rounded-md px-3.5 py-2.5 font-semibold leading-6">{{ 'nav.login'|trans }}
+              class="hover:text-secondary login-button rounded-md px-3.5 py-2.5 font-semibold leading-6">{{ 'home_header.nav.login'|trans }}
               <span aria-hidden="true">&rarr;</span></a>
           </div>
         </div>
@@ -122,7 +118,7 @@
           </a>
           <button type="button" class="-m-2.5 rounded-md p-2.5" id="mobile-menu-close"
             style="color: var(--secondary-color);">
-            <span class="sr-only">{{ 'nav.close_menu'|trans }}</span>
+            <span class="sr-only">{{ 'home_header.nav.close_menu'|trans }}</span>
             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
               aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -133,39 +129,39 @@
           <div class="-my-6 divide-y divide-gray-500/10">
             <div class="space-y-2 py-6">
               <a href="{{ path('app_home_page') }}"
-                class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'nav.home'|trans }}</a>
+                class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'home_header.nav.home'|trans }}</a>
               <a href="{{ path('app_about_page') }}"
-                class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'nav.about'|trans }}</a>
+                class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'home_header.nav.about'|trans }}</a>
               <a href="{{ path('app_contact_us_page') }}"
-                class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'nav.contact_us'|trans }}</a>
+                class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'home_header.nav.contact_us'|trans }}</a>
               <a href="{{ path('app_documentation_page') }}"
-                class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'nav.documentation'|trans }}</a>
+                class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'home_header.nav.documentation'|trans }}</a>
             </div>
             <div class="py-6">
               <a href="{{ path('app_login') }}"
-                class="block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'nav.login'|trans }}</a>
+                class="block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'home_header.nav.login'|trans }}</a>
 
               <!-- Dark mode toggle -->
               <button id="mobile-theme-toggle"
                 class="mt-4 w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">
-                <span id="mobile-theme-toggle-text">{{ 'nav.toggle_dark_mode'|trans }}</span>
+                <span id="mobile-theme-toggle-text">{{ 'home_header.nav.toggle_dark_mode'|trans }}</span>
               </button>
 
               <!-- Language dropdown -->
               <div class="mt-4">
                 <button id="mobile-language-toggle"
                   class="w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">
-                  {{ 'language.change'|trans }}
+                  {{ 'home_header.language.change'|trans }}
                 </button>
                 <div id="mobile-language-menu" class="hidden mt-2">
                   <a href="{{ path('change_language', {'locale': 'en'}) }}"
-                    class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'language.english'|trans }}</a>
+                    class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'home_header.language.english'|trans }}</a>
                   <a href="{{ path('change_language', {'locale': 'fr'}) }}"
-                    class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'language.french'|trans }}</a>
+                    class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'home_header.language.french'|trans }}</a>
                   <a href="{{ path('change_language', {'locale': 'es'}) }}"
-                    class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'language.spanish'|trans }}</a>
+                    class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'home_header.language.spanish'|trans }}</a>
                   <a href="{{ path('change_language', {'locale': 'ln'}) }}"
-                    class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'language.lingala'|trans }}</a>
+                    class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 hover:bg-gray-100 dark:hover:bg-gray-700">{{ 'home_header.language.lingala'|trans }}</a>
                 </div>
               </div>
             </div>
@@ -182,20 +178,20 @@
     <footer class="footer py-3 my-4 mt-auto z-20">
       <ul class="flex justify-center border-b pb-3 mb-3" style="border-color: rgba(71, 71, 71, 0.1);">
         <li class="nav-item">
-          <a class="hover:text-secondary px-2" href="{{ path('app_home_page') }}">{{ 'nav.home'|trans }}</a>
+          <a class="hover:text-secondary px-2" href="{{ path('app_home_page') }}">{{ 'home_header.nav.home'|trans }}</a>
         </li>
         <li class="nav-item">
-          <a class="hover:text-secondary px-2" href="{{ path('app_about_page') }}">{{ 'nav.about'|trans }}</a>
+          <a class="hover:text-secondary px-2" href="{{ path('app_about_page') }}">{{ 'home_header.nav.about'|trans }}</a>
         </li>
         <li class="nav-item">
-          <a class="hover:text-secondary px-2" href="{{ path('app_contact_us_page') }}">{{ 'nav.contact_us'|trans }}</a>
+          <a class="hover:text-secondary px-2" href="{{ path('app_contact_us_page') }}">{{ 'home_header.nav.contact_us'|trans }}</a>
         </li>
         <li class="nav-item">
           <a class="hover:text-secondary px-2"
-            href="{{ path('app_documentation_page') }}">{{ 'nav.documentation'|trans }}</a>
+            href="{{ path('app_documentation_page') }}">{{ 'home_header.nav.documentation'|trans }}</a>
         </li>
       </ul>
-      <p class="text-center">{{ 'footer.copyright'|trans({'%year%': 'now'|date('Y')}) }}</p>
+      <p class="text-center">{{ 'home_header.footer.copyright'|trans({'%year%': 'now'|date('Y')}) }}</p>
     </footer>
   </div>
 
