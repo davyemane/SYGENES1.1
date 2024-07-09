@@ -46,6 +46,35 @@ INSERT INTO `anonymat` VALUES (1,2,6,'0012'),(2,3,6,'0013'),(3,4,6,'0015');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `anonymat_rattrapage`
+--
+
+DROP TABLE IF EXISTS `anonymat_rattrapage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `anonymat_rattrapage` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `student_id` int DEFAULT NULL,
+  `e_c_id` int DEFAULT NULL,
+  `code_anonymat` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_3E2D843DCB944F1A` (`student_id`),
+  KEY `IDX_3E2D843DE32B239F` (`e_c_id`),
+  CONSTRAINT `FK_3E2D843DCB944F1A` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
+  CONSTRAINT `FK_3E2D843DE32B239F` FOREIGN KEY (`e_c_id`) REFERENCES `ec` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `anonymat_rattrapage`
+--
+
+LOCK TABLES `anonymat_rattrapage` WRITE;
+/*!40000 ALTER TABLE `anonymat_rattrapage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `anonymat_rattrapage` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `color_scheme`
 --
 
@@ -98,7 +127,7 @@ CREATE TABLE `doctrine_migration_versions` (
 
 LOCK TABLES `doctrine_migration_versions` WRITE;
 /*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
-INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20240709140322','2024-07-09 14:03:46',4000);
+INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20240709140322','2024-07-09 14:03:46',4000),('DoctrineMigrations\\Version20240709164057','2024-07-09 16:41:19',12248);
 /*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -344,6 +373,37 @@ LOCK TABLES `privilege` WRITE;
 /*!40000 ALTER TABLE `privilege` DISABLE KEYS */;
 INSERT INTO `privilege` VALUES (3,'Add user'),(4,'Add Field'),(5,'Add Profile'),(6,'Add Mark'),(7,'Add UE'),(8,'Add EC'),(9,'Add Level'),(10,'Generate PV '),(11,'Generate Transcript of notes'),(12,'Validate Student'),(13,'Add Student'),(14,'View statistics'),(15,'List Students'),(16,'List Fields'),(17,'List Profile'),(18,'Add School'),(19,'Detail Student'),(20,'List EC'),(21,'List UE'),(22,'View Marks');
 /*!40000 ALTER TABLE `privilege` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rattrapage`
+--
+
+DROP TABLE IF EXISTS `rattrapage`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rattrapage` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `created_by_id` int DEFAULT NULL,
+  `anonymat_rattrapage_id` int DEFAULT NULL,
+  `mark` double DEFAULT NULL,
+  `grade` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_BDE5586D50C2B2F7` (`anonymat_rattrapage_id`),
+  KEY `IDX_BDE5586DB03A8386` (`created_by_id`),
+  CONSTRAINT `FK_BDE5586D50C2B2F7` FOREIGN KEY (`anonymat_rattrapage_id`) REFERENCES `anonymat_rattrapage` (`id`),
+  CONSTRAINT `FK_BDE5586DB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rattrapage`
+--
+
+LOCK TABLES `rattrapage` WRITE;
+/*!40000 ALTER TABLE `rattrapage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rattrapage` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -663,4 +723,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-09 17:16:29
+-- Dump completed on 2024-07-09 17:52:38
