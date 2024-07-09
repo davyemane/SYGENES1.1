@@ -1,71 +1,203 @@
-# Language choice text
-language-message: "Veuillez choisir votre langue"
-english-language: "Anglais"
-french-language: "Français"
-spanish-language: "Espagnol"
-next-language-btn: "Suivant"
+# base.html.twig & base_login.html.twig header variables
+home_header:
+  app:
+    title: 'SYGENES'
+    name: 'SYGENES'
+    logo_alt: 'Logo UIECC'
 
-# Create school text
-create-school-title: "Nouvelle École"
-edit-school-title: "Modifier l'École"
-create-school: "Créer une nouvelle école"
-edit-school: "Modifier l'école"
-school-name: "Nom de l'école"
-logo: "Logo"
-address: "Adresse"
-phone-number: "Numero de telephone"
-email: "Email"
-color-schemes: "Schema de Couleurs"
-add-color-scheme: "Ajouter un schema de couleurs"
-remove-color-scheme: "Supprimer le schema de couleurs"
-create-school-btn: "Creer l'ecole"
-update-school-btn: "Mettre a jour l'ecole"
-success-message: ""
-error-message: ""
+  nav:
+    home: 'Accueil'
+    about: 'À propos'
+    contact_us: 'Nous contacter'
+    documentation: 'Documentation'
+    login: 'Connexion'
+    open_menu: 'Ouvrir le menu principal'
+    close_menu: 'Fermer le menu'
+    toggle_dark_mode: "Mode sombre"
+    toggle_light_mode: "Mode clair"
 
+  language:
+    change: "Changer de langue"
+    english: "Anglais"
+    french: "Français"
+    spanish: "Espagnol"
+    lingala: "Lingala"
 
-# Create a Role Text
-create-role-title: "Créer un profile"
-edit-role-title: "Modifier un profile"
-create-role: "Créer un profile"
-edit-role: "Modifier un profile"
-role-name: "Nom du profile"
-role-school: "Ecole" 
-role-privileges: ""
-create-role-btn: ""
+  footer:
+    copyright: '© %year% SYGENES, UIECC.'
 
+# Home pages [about, documentation, contact us and home]
+home_page:
+  name: "SYGENES"
+  title: 'Accueil'
+  documentation_prompt: 'Consultez notre documentation si vous êtes perdu.'
+  read_more: 'Lire la suite'
+  welcome: 'Bienvenue à'
+  description: "Votre système de gestion des notes tout-en-un, conçu pour et par l'École Superieur Internationale du Genie Numérique."
+  sign_up: 'Inscription'
+  log_in: 'Connexion'
+  register_prompt: "Nouveau à l'école? Inscrivez-vous maintenant."
+  register_description: "Vous venez de réussir le concours d'entrée. Cliquez ci-dessous pour vous inscrire administrativement."
+  student_registration: 'Inscription Étudiante'
+  learn_more: 'En savoir plus'
+  app_screenshot: "Capture d'écran de l'application"
 
-# Base.html.twig page
-app:
+  about:
+    title: 'À propos'
+    sygenes_title: 'À propos de SYGENES'
+    sygenes_description: "Nous sommes passionnés par la simplification de la gestion des notes pour les enseignants, les étudiants et les parents. Notre application web robuste offre une suite complète d'outils conçus pour rationaliser le processus de notation, améliorer la communication et permettre aux établissements éducatifs d'atteindre l'excellence académique."
+    origin_title: 'Origine'
+    origin_description: 'Conçu par UIECC.'
+    mission_title: 'Mission'
+    mission_description: 'Révolutionner la gestion des notes en fournissant des solutions intuitives, efficaces et fiables adaptées aux besoins des environnements éducatifs modernes.'
+    user_centric_title: "Conception Centrée sur l'Utilisateur"
+    user_centric_description: "SYGENES est conçu en pensant à l'utilisateur final. Nous comprenons les besoins divers des enseignants, des étudiants et des parents, et nous avons conçu notre plateforme pour être intuitive et facile à utiliser pour tous les intervenants."
+    integration_title: 'Intégration Transparente'
+    integration_description: "SYGENES s'intègre parfaitement aux plateformes et systèmes éducatifs existants, assurant une transition en douceur et une perturbation minimale de votre flux de travail."
+    image1_alt: 'Vue de face du système SYGENES'
+    image2_alt: 'Vue de côté longue du système SYGENES'
+    image3_alt: "Réservoir d'eau du système SYGENES"
+    image4_alt: 'Vue verte du système SYGENES'
+    get_started_title: "Commencez Aujourd'hui"
+    get_started_description: "Prêt à découvrir les avantages de SYGENES par vous-même? Inscrivez-vous dès aujourd'hui et découvrez comment notre solution de gestion des notes peut transformer votre établissement éducatif."
+    get_access: 'Obtenez un accès'
+
+  contact:
+    title: 'Nous contacter'
+    heading: 'Nous contacter'
+    description: "Des questions ou besoin d'aide? Notre équipe de support dédiée est là pour vous aider. Contactez-nous par email ou par téléphone, et nous serons heureux de vous assister."
+    first_name: 'Prénom'
+    last_name: 'Nom'
+    company: 'Entreprise'
+    email: 'Email'
+    phone_number: 'Numéro de téléphone'
+    country: 'Pays'
+    message: 'Message'
+    submit: "Discutons"
+
+  documentation:
+    title: "Documentation"
+    manage_grades_faster: "Gérer les notes plus rapidement"
+    intro_text: "Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam eget aliquam. Quisque id at vitae feugiat egestas."
+    section1_text: "Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius sit"
+    push_to_deploy: ""
+    push_to_deploy_text: ""
+
+    ssl_certificates: ""
+    ssl_certificates_text: ""
+
+    database_backups: ""
+    database_backups_text: ""
+
+    section2_text: ""
+
+    no_server_no_problem: ""
+    no_server_no_problem_text: ""
+
+# Here is the app proper pages and their various modifications
+# Modify only when neccesary.
+# This seperation is to make a clear distinction
+
+# Welcome Page [welcome.index.html.twig] variables
+welcome_page:
   title: 'SYGENES'
   name: 'SYGENES'
   logo_alt: 'Logo UIECC'
-
-nav:
-  home: 'Accueil'
-  about: 'À propos'
-  contact_us: 'Contactez-nous'
-  documentation: 'Documentation'
-  login: 'Connexion'
-  toggle_dark_mode: "Mode Dark"
-  toggle_light_mode: "Mode Light"
-
-language:
-  change: "Choisir langage"
-  english: "Anglais"
-  french: "Francais"
-  spanish: "Espanol"
-  lingala: "Lingala"
-
-footer:
-  copyright: '© %year% SYGENES, UIECC.'
+  description: "Le système de gestion des notes ESIGN"
+  language_choice: "Choisir Langage / Choose Language"
+  all_rights: "Tous droits réservés"
 
 
+# Language choice page text
+language_choice_page:
+  language-message: "Veuillez choisir votre langue"
+  english-language: "Anglais"
+  french-language: "Français"
+  spanish-language: "Espagnol"
+  next-language-btn: "Suivant"
+  copyright: " 2024 ESIGN. Tous droits réservés"
 
+# School Creation page text
+create_school_page:
+  create-school-title: "Nouvelle école"
+  edit-school-title: "Modifier l'école"
+  create-school: "Créer une nouvelle école"
+  edit-school: "Modifier l'école"
+  school-name: "Nom de l'école"
+  logo: "Logo"
+  address: "Adresse"
+  phone-number: "Numéro de téléphone"
+  email: "Email"
+  color-schemes: "Schémas de couleurs"
+  add-color-scheme: "Ajouter un schéma de couleurs"
+  remove-color-scheme: "Supprimer un schéma de couleurs"
+  create-school-btn: "Créer l'école"
+  update-school-btn: "Mettre à jour l'école"
+  success-message: "Succès"
+  error-message: "Erreur"
+  next: "Suivant"
+  back: "Retour"
+  message: ""
+  browse: "Parcourir pour des photos..."
 
+# Create Field Page 
+field_page: 
+  create-field-title: "Créer un champ"
+  edit-field-title: "Modifier un champ"
+  next: "Suivant"
+  create-field: "Créer un champ"
+  edit-field: "Modifier un champ"
+  toggle-existing-fields: "Afficher/Masquer les champs existants"
+  existing-fields: "Champs existants"
+  code: "Code"
+  edit: "Modifier"
+  success: "Succès"
+  error: "Erreur"
+  name: "Nom"
+  description: "Description"
+  create: "Créer"
+  update: "Mettre à jour"
+  message: ""
 
-register:
-  register: "S'inscrire"
+# Create Level Page
+level_page:
+  create-level-title: "Nouveau niveau"
+  edit-level-title: "Modifier le niveau"
+  back: "Retour"
+  next: "Suivant"
+  create-level: "Créer un nouveau niveau"
+  edit-level: "Modifier le niveau"
+  toggle-existing-levels: "Afficher/Masquer les niveaux existants"
+  existing-levels: "Niveaux existants"
+  fields: "Champs"
+  not-assigned: "Non assignés"
+  level-name: "Nom du niveau"
+  associated-field: "Champ associé"
+  create: "Créer"
+  update: "Mettre à jour"
+
+# Create Profile Page
+role_page:
+  edit-role-title: "Modifier le rôle"
+  create-role-title: "Créer un rôle"
+  back: "Retour"
+  next: "Suivant"
+  edit-role: "Modifier le rôle"
+  create-role: "Créer un rôle"
+  toggle-existing-roles: "Afficher/Masquer les rôles existants"
+  existing-roles: "Rôles existants"
+  school: "École"
+  not-assigned: "Non assigné"
+  privileges: "Privilèges"
+  success: "Succès"
+  error: "Erreur"
+  name: "Nom"
+  update: "Mettre à jour"
+  create: "Créer"
+
+# Create Responsable Account
+register_page:
+  register: "Inscription"
   user-registration: "Inscription de l'utilisateur"
   back: "Retour"
   username: "Nom d'utilisateur"
@@ -78,84 +210,59 @@ register:
   name: "Nom"
   phone-number: "Numéro de téléphone"
   agree-to-terms: "J'accepte les conditions"
+  confirm-password: "Confirmez votre mot de passe"
 
+# Login Page variables text
+login_page:
+  title: 'Connexion'
+  logo_alt: 'Logo UIECC'
+  heading: 'Connectez-vous à votre compte'
+  username_label: "Nom d'utilisateur"
+  password_label: 'Mot de passe'
+  forgot_password: 'Mot de passe oublié?'
+  show_password: 'Afficher le mot de passe'
+  hide_password: 'Masquer le mot de passe'
+  remember_me: 'Se souvenir de moi'
+  sign_in_button: 'Connexion'
+  logged_in_as: 'Vous êtes connecté en tant que %username%,'
+  logout: 'Déconnexion'
+  no_account: 'Pas de compte?'
+  sign_up: 'Inscription'
 
+# Error Page
+error_page:
+  title: "Une erreur est survenue - Nous sommes désolés!"
+  image_alt: "Erreur survenue"
+  heading: "Oups! Quelque chose a mal tourné"
+  go_back: "Retour"
+  contact_support: "Besoin d'aide? Contactez le support"
 
+# Admin Dashboard Page and subpages
+admin_dash:
+  SYGENES: "SYGENES"
+  'Profile Picture': 'Photo de profil'
+  'Default Profile Picture': 'Photo de profil par défaut'
+  Dashboard: Tableau de bord
+  Students: Étudiants
+  'Add new student data': 'Ajouter de nouvelles données étudiant'
+  'Modify a student data': "Modifier les données d'un étudiant"
+  'List students': 'Lister les étudiants'
+  'Import excel file': 'Importer un fichier excel'
+  Marks: Notes
+  "Add a student's marks": "Ajouter les notes d'un étudiant"
+  'View students marks': 'Voir les notes des étudiants'
+  'UE & EC': 'UE & EC'
+  'Add an UE': 'Ajouter une UE'
+  'Add an EC': 'Ajouter une EC'
+  'List of UE & EC': 'Liste des UE & EC'
+  Responsable: Responsable
+  'Add Responsable': 'Ajouter un Responsable'
+  'View List of Responsable': 'Voir la liste des Responsables'
+  Profile: Profil
+  Settings: Paramètres
+  'Light Mode': 'Mode clair'
+  'Dark Mode': 'Mode sombre'
+  Logout: Déconnexion
 
-
-# Home page
-
-home:
-  name: "SYGENES"
-  title: 'Accueil'
-  documentation_prompt: 'Consultez notre documentation si vous êtes perdu.'
-  read_more: 'En savoir plus'
-  welcome: 'Bienvenue à'
-  description: "Votre système de gestion des notes tout-en-un, conçu pour et par l'École Superieure Internationale du Génie Numérique."
-  sign_up: "S'inscrire"
-  log_in: 'Se connecter'
-  register_prompt: "Nouveau à l'École ? Inscrivez-vous maintenant."
-  register_description: "Vous venez de passer l'examen d'entrée compétitif. Cliquez ci-dessous pour vous inscrire administrativement."
-  student_registration: 'Inscription des étudiants'
-  learn_more: 'En savoir plus'
-  app_screenshot: "Capture d'écran de l'application"
-
-about:
-  title: 'À propos'
-  sygenes_title: 'À propos de SYGENES'
-  sygenes_description: "Nous sommes passionnés par la simplification de la gestion des notes pour les éducateurs, les étudiants et les parents. Notre robuste application web offre une gamme complète d'outils conçus pour rationaliser le processus de notation, améliorer la communication et permettre aux institutions éducatives d'atteindre l'excellence académique."
-  origin_title: 'Origine'
-  origin_description: 'Conçu par UIECC.'
-  mission_title: 'Mission'
-  mission_description: 'Révolutionner la gestion des notes en fournissant des solutions intuitives, efficaces et fiables adaptées aux besoins des environnements éducatifs modernes.'
-  user_centric_title: "Conception centrée sur l'utilisateur"
-  user_centric_description: "SYGENES est construit en pensant à l'utilisateur final. Nous comprenons les besoins diversifiés des éducateurs, des étudiants et des parents, et nous avons conçu notre plateforme pour qu'elle soit intuitive et facile à utiliser pour toutes les parties prenantes."
-  integration_title: 'Intégration transparente'
-  integration_description: "SYGENES s'intègre parfaitement aux plates-formes et systèmes éducatifs existants, garantissant une transition fluide et une perturbation minimale de votre flux de travail."
-  image1_alt: 'Vue de face du système SYGENES'
-  image2_alt: 'Vue latérale longue du système SYGENES'
-  image3_alt: "Réservoir d'eau du système SYGENES"
-  image4_alt: 'Vue verte du système SYGENES'
-  get_started_title: "Commencez dès aujourd'hui"
-  get_started_description: "Prêt à découvrir par vous-même les avantages de SYGENES ? Inscrivez-vous dès aujourd'hui et découvrez comment notre solution de gestion des notes peut transformer votre institution éducative."
-  get_access: "Obtenez l'accès"
-
-contact:
-  title: 'Contactez-nous'
-  heading: 'Contactez-nous'
-  description: "Vous avez des questions ou avez besoin d'aide ? Notre équipe de support dédiée est là pour vous aider. Contactez-nous par e-mail ou par téléphone, et nous serons heureux de vous assister."
-  first_name: 'Prénom'
-  last_name: 'Nom de famille'
-  company: 'Entreprise'
-  email: 'E-mail'
-  phone_number: 'Numéro de téléphone'
-  country: 'Pays'
-  message: 'Message'
-  submit: 'Parlons-en'
-
-documentation:
-  title: "Documentation"
-  manage_grades_faster: "Gérez les notes plus rapidement"
-  intro_text: "Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam eget aliquam. Quisque id at vitae feugiat egestas."
-  section1_text: "Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius sit"
-  push_to_deploy: ""
-  push_to_deploy_text: ""
-
-  ssl_certificates: ""
-  ssl_certificates_text: ""
-
-  database_backups: ""
-  database_backups_text: ""
-
-  section2_text: ""
-
-  no_server_no_problem: ""
-  no_server_no_problem_text: ""
-
-# Dashboard Text
-
-
-
-
-
-# Others
+student_dash:
+  'Student Dashboard': 'Tableau de bord étudiant'
