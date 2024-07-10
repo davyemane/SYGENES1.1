@@ -13,10 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-#[Route('/role')]
+#[Route('/admin')]
 class RoleController extends AbstractController
 {
-    #[Route('/new/{id?0}', name: 'role_new', methods: ['GET', 'POST'])]
+    #[Route('/new_role/{id?0}', name: 'role_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, RoleRepository $roleRepository, SessionInterface $session, int $id = 0): Response
     {
         // Récupérer le nom de l'école depuis la session

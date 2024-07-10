@@ -3,62 +3,71 @@
 {% block body %}
 <div class="bg-white flex flex-col justify-start items-start mr-10">
     {% block page_header %}
-        <div class="container mt-6 ml-3">
-            <h1 class="text-4xl font-semibold text-blue-600">List of students and their marks</h1>
-            <h3 class="text-xl font-semibold text-blue-600">Field Title</h3>
-            <h3 class="text-xl font-semibold text-blue-600">Subject Title</h3>
-            <p class="text-sm text-text mt-1">This is where you can find the list of students and marks</p>
-        </div>
+    <div class="container mt-6 ml-3">
+        <h1 class="text-4xl font-semibold text-blue-600">List of students and their marks</h1>
+        <h3 class="text-xl font-semibold text-blue-600">Field Title</h3>
+        <h3 class="text-xl font-semibold text-blue-600">Subject Title</h3>
+        <p class="text-sm text-text mt-1">This is where you can find the list of students and marks</p>
+    </div>
     {% endblock %}
 
     <div class="flex flex-wrap mx-2 mt-4">
-    <div class="flex w-full flex-col md:flex-row items-start justify-between">
-        <form action="{{ path('list_student_notes') }}" method="GET" class="w-full flex-col md:w-2/3 md:mr-5 flex md:flex-row ">
-            <div class=" w-full flex items-center mb-2">
-                <input type="text" id="name" placeholder="Search by name..." name="name" value="{{ currentName }}" class="border rounded-md p-2 pl-3 w-full md:w-7/8 mr-4 mb-2 md:mb-0 focus:outline-none focus:border-blue-500">
-            </div>
-            <div class="flex items-center mb-2">
-                <select id="field" name="field" class="w-full flex form-control mr-4 border rounded-md md:w-7/8 focus:outline-none focus:border-blue-500">
-                    <option value="">All Fields</option>
-                    {% for field in fields %}
-                        <option value="{{ field.id }}" {% if currentField == field.id %}selected{% endif %}>{{ field.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <button type="submit" class="w-full block md:w-4/6 lg:w-1/6 xl:w-4/12 rounded-md border bg-orange-600 px-2 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-700 hover:text-white-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:px-5">Search</button>
-        </form>
-     </div>   
+        <div class="flex w-full flex-col md:flex-row items-start justify-between">
+            <form action="{{ path('list_student_notes') }}" method="GET"
+                class="w-full flex-col md:w-2/3 md:mr-5 flex md:flex-row ">
+                <div class=" w-full flex items-center mb-2">
+                    <input type="text" id="name" placeholder="Search by name..." name="name" value="{{ currentName }}"
+                        class="border rounded-md p-2 pl-3 w-full md:w-7/8 mr-4 mb-2 md:mb-0 focus:outline-none focus:border-blue-500">
+                </div>
+                <div class="flex items-center mb-2">
+                    <select id="field" name="field"
+                        class="w-full flex form-control mr-4 border rounded-md md:w-7/8 focus:outline-none focus:border-blue-500">
+                        <option value="">All Fields</option>
+                        {% for field in fields %}
+                        <option value="{{ field.id }}" {% if currentField==field.id %}selected{% endif %}>{{ field.name
+                            }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit"
+                    class="w-full block md:w-4/6 lg:w-1/6 xl:w-4/12 rounded-md border bg-orange-600 px-2 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-700 hover:text-white-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:px-5">Search</button>
+            </form>
+        </div>
 
         {% for student in students %}
-            <div class=" px-2 mb-4 w-96 h-64">
-                <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                    <div class="p-6 h-full flex flex-col justify-between">
-                        <div>
-                            <h5 class="text-xl font-semibold mb-2">{{ student.name }}</h5>
-                            <h6 class="text-sm text-gray-600 mb-2">StudentID: {{ student.studentID }}</h6>
-                            <p class="text-gray-700 mb-2">Field: {{ student.field.name }}</p>
-                            <p class="text-gray-700 mb-4">Level: {{ student.level }}</p>
-                            <ul class="list-disc pl-3">
-                                {% if student.notescctps is not empty %}
-                                    {% for note in student.notescctps %}
-                                        <li class="mb-2">
-                                            CC: {{ note.cc }} | TP: {{ note.tp }} 
-                                        </li>
-                                        <a href="{{ path('add_note', {id: note.id}) }}" class="block py-2 px-3 border border-orange-500 text-orange-500 rounded-md text-sm hover:bg-orange-500 hover:text-white mt-2">
-                                            Edit marks
-                                        </a>
-                                    {% endfor %}
-                                    <a href="{{ path('pdf_student', {id: student.id}) }}" class="block py-2 px-3 border border-orange-500 text-orange-500 rounded-md text-sm hover:bg-orange-500 hover:text-white mt-2">
-                                        PV
-                                    </a>
-                                {% else %}
-                                    <li class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">No notes available for this student.</li>
-                                {% endif %}
-                            </ul>
-                        </div>
+        <div class=" px-2 mb-4 w-96 h-64">
+            <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                <div class="p-6 h-full flex flex-col justify-between">
+                    <div>
+                        <h5 class="text-xl font-semibold mb-2">{{ student.name }}</h5>
+                        <h6 class="text-sm text-gray-600 mb-2">StudentID: {{ student.studentID }}</h6>
+                        <p class="text-gray-700 mb-2">Field: {{ student.field.name }}</p>
+                        <p class="text-gray-700 mb-4">Level: {{ student.level }}</p>
+                        <ul class="list-disc pl-3">
+                            {% if student.notescctps is not empty %}
+                            {% for note in student.notescctps %}
+                            <li class="mb-2">
+                                CC: {{ note.cc }} | TP: {{ note.tp }}
+                            </li>
+                            <a href="{{ path('edit_note', {
+                                ecId: note.ec.id, 
+                                studentId: student.id
+                            }) }}" class="block py-2 px-3 border border-orange-500 text-orange-500 rounded-md text-sm hover:bg-orange-500 hover:text-white mt-2">
+                                Edit marks
+                            </a> {% endfor %}
+                            <a href="{{ path('pdf_student', {id: student.id}) }}"
+                                class="block py-2 px-3 border border-orange-500 text-orange-500 rounded-md text-sm hover:bg-orange-500 hover:text-white mt-2">
+                                PV
+                            </a>
+                            {% else %}
+                            <li class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                                role="alert">No notes available for this student.</li>
+                            {% endif %}
+                        </ul>
                     </div>
                 </div>
             </div>
+        </div>
         {% endfor %}
     </div>
 
@@ -67,28 +76,30 @@
         <nav aria-label="Page navigation">
             <ul class="inline-flex -space-x-px mb-4">
                 {% if page > 1 %}
-                    <li>
-                        <a href="{{ path('list_student_notes', {page: page - 1, nbre: nbre, name: currentName, field: currentField}) }}" class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
-                            Previous
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{ path('list_student_notes', {page: page - 1, nbre: nbre, name: currentName, field: currentField}) }}"
+                        class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                        Previous
+                    </a>
+                </li>
                 {% endif %}
 
                 {% for i in 1..nbPage %}
-                    <li>
-                        <a href="{{ path('list_student_notes', {page: i, nbre: nbre, name: currentName, field: currentField}) }}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 {% if i == page %}font-bold{% endif %}">
-                            {{ i }}
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{ path('list_student_notes', {page: i, nbre: nbre, name: currentName, field: currentField}) }}"
+                        class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 {% if i == page %}font-bold{% endif %}">
+                        {{ i }}
+                    </a>
+                </li>
                 {% endfor %}
 
-                {% if page < nbPage %}
-                    <li>
-                        <a href="{{ path('list_student_notes', {page: page + 1, nbre: nbre, name: currentName, field: currentField}) }}" class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
-                            Next
-                        </a>
+                {% if page < nbPage %} <li>
+                    <a href="{{ path('list_student_notes', {page: page + 1, nbre: nbre, name: currentName, field: currentField}) }}"
+                        class="py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                        Next
+                    </a>
                     </li>
-                {% endif %}
+                    {% endif %}
             </ul>
         </nav>
     </div>
@@ -97,5 +108,5 @@
 {% endblock %}
 
 {% block head %}
-  {% block title %}<title>List of Students</title>{% endblock %}
+{% block title %}<title>List of Students</title>{% endblock %}
 {% endblock %}

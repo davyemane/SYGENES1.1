@@ -10,10 +10,14 @@ use App\Entity\Student;
 use App\Entity\UE;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\HttpFoundation\JsonResponse;
+#[Route('admin')]
 
 class NoteCCController extends AbstractController
 {
@@ -25,6 +29,36 @@ class NoteCCController extends AbstractController
         ]);
     }
 
+    #[Route('/edit-note/{ecId}/{studentId}', name: 'edit_note', methods: ['GET'])]
+    public function editNote(EntityManagerInterface $entityManager, int $ecId, int $studentId): Response
+    {
+        $user = $this->getUser();
+        $ec = $entityManager->getRepository(EC::class)->find($ecId);
+        $student = $entityManager->getRepository(Student::class)->find($studentId);
+    
+        if (!$ec || !$student) {
+            throw $this->createNotFoundException('EC ou étudiant non trouvé');
+        }
+    
+        $noteCcTp = $entityManager->getRepository(NoteCcTp::class)->findOneBy([
+            'student' => $student,
+            'eC' => $ec
+        ]);
+    
+        // Create a form for editing the note
+        $form = $this->createFormBuilder($noteCcTp)
+            ->add('cc', NumberType::class, ['required' => false])
+            ->add('tp', NumberType::class, ['required' => false])
+            ->add('hasTp', CheckboxType::class, ['required' => false])
+            ->getForm();
+    
+        return $this->render('note_cc/edit_note.html.twig', [
+            'form' => $form->createView(),
+            'student' => $student,
+            'ec' => $ec,
+            'user'=> $user
+        ]);
+    }
     #[Route('/insert-notes/{ecId}', name: 'insert_notes_cc')]
     public function insertNotes(Request $request, EntityManagerInterface $entityManager, int $ecId): Response
     {
@@ -116,16 +150,15 @@ class NoteCCController extends AbstractController
             return $this->redirectToRoute('app_dashAdmin');
         }
     
-
-return $this->render('note_cc/insert_notes.html.twig', [
-    'ec' => $ec,
-    'user' =>$user,
-    'ue' => $ue,
-    'field' => $ue->getFields()->first(), // Prend la première filière associée à l'UE
-    'students' => $students,
-    'form' => $form->createView(),
-]);    }
-
+        return $this->render('note_cc/insert_notes.html.twig', [
+            'ec' => $ec,
+            'user' => $user,
+            'ue' => $ue,
+            'field' => $ue->getFields()->first(),
+            'students' => $students,
+            'form' => $form->createView(),
+        ]);
+    }
 
 #[Route('/cc/fields', name: 'cc_filieres')]
 public function listFilieres(Request $request, EntityManagerInterface $entityManager): Response
