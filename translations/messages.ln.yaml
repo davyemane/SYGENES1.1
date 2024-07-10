@@ -19,7 +19,7 @@ home_header:
   language:
     change: "Kobongola lokota"
     english: "Lingelesi"
-    french: "Lingala"
+    french: "Falansé"
     spanish: "Lispania"
     lingala: "Lingala"
 
@@ -191,12 +191,77 @@ role_page:
 
 # Create Responsable Account
 register_page:
-  register: "Kokoma"
-  user_name: "Kombo ya utilisateur"
-  email: "Email"
+  register: "Inskription"
+  user-registration: "Inskription ya moninga"
+  back: "Kozonga"
+  username: "Kombo ya kosala"
+  email: "Imeli"
   password: "Mot de passe"
-  confirm_password: "Kokangola mot de passe"
-  register_btn: "Kokoma"
-  back: "Sikoyo"
-  success: "Eleki malamu"
-  error: "Esuki na mabe"
+  profile-picture: "Elili ya profili"
+  roles: "Rôle"
+  no-roles-available: "Rôle te mpo na ecole oyo."
+  responsible-information: "Tina ya responsable"
+  name: "Kombo"
+  phone-number: "Numéro ya telefone"
+  agree-to-terms: "Naza na boyokani"
+  confirm-password: "Kosala mot de passe"
+
+
+# Login Page variables text
+login_page:
+  title: 'Kota'
+  logo_alt: 'UIECC Logo'
+  heading: 'Kota na compte na yo'
+  username_label: 'Kombo ya kosala'
+  password_label: 'Mot de passe'
+  forgot_password: 'Mot de passe ebungi?'
+  show_password: 'Lakisa mot de passe'
+  hide_password: 'Kokuta mot de passe'
+  remember_me: 'Komibuka ngai'
+  sign_in_button: 'Kota'
+  logged_in_as: 'Oza na compte lokola %username%,'
+  logout: 'Kobima'
+  no_account: 'Oza na compte te?'
+  sign_up: 'Inskription'
+
+
+# Error Page
+error_page:
+  title: "Mabe esalami - Tolimbisa!"
+  image_alt: "Mabe esalami"
+  heading: "Pardon! Eloko moko esalami"
+  go_back: "Kozonga"
+  contact_support: "Posa ya lisalisi? Kende na support"
+
+
+# Admin Dashboard Page and subpages
+admin_dash:
+  SYGENES: "SYGENES"
+  'Profile Picture': 'Elili ya profili'
+  'Default Profile Picture': 'Elili ya profili'
+  Dashboard: Dashboard
+  Students: Ba Moyekoli
+  'Add new student data': 'Kobakisa ba données ya moyekoli ya sika'
+  'Modify a student data': 'Kokoma ba données ya moyekoli'
+  'List students': 'Liste ya ba Moyekoli'
+  'Import excel file': 'Importer fichier ya excel'
+  Marks: Ba Notes
+  'Add a student''s marks': 'Kobakisa ba notes ya moyekoli'
+  'View students marks': 'Talisa ba notes ya moyekoli'
+  'UE & EC': 'UE & EC'
+  'Add an UE': 'Kobakisa UE'
+  'Add an EC': 'Kobakisa EC'
+  'List of UE & EC': 'Liste ya UE & EC'
+  Responsable: Responsable
+  'Add Responsable': 'Kobakisa Responsable'
+  'View List of Responsable': 'Liste ya Responsable'
+  Profile: Profil
+  Settings: Paramètres
+  'Light Mode': 'Mode ya pole'
+  'Dark Mode': 'Mode ya molili'
+  Logout: Kobima
+
+
+student_dash:
+  'Dashboard ya Moyekoli': 'Dashboard ya Moyekoli'
+
