@@ -30,7 +30,7 @@ class RattrapageController extends AbstractController
     {        // Récupérer la session de l'utilisateur
         $session = $request->getSession();
         $schoolName = $session->get('school_name');
-
+        $user = $this->getUser();
         if (!$schoolName) {
             throw $this->createAccessDeniedException('Aucune école sélectionnée dans la session.');
         }
@@ -114,6 +114,8 @@ class RattrapageController extends AbstractController
             'ec' => $ec,
             'ue' => $ue,
             'fieldName' => $fieldName,
+            'user' =>$user,
+
         ]);
     }
 
@@ -130,6 +132,7 @@ class RattrapageController extends AbstractController
     #[Route('/rattrapage/fields', name: 'rattrapage_filieres')]
     public function listFilieres(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $session = $request->getSession();
         $schoolName = $session->get('school_name');
 
@@ -146,12 +149,14 @@ class RattrapageController extends AbstractController
 
         return $this->render('rattrapage/fields.html.twig', [
             'filieres' => $filieres,
+            'user' =>$user,
         ]);
     }
 
     #[Route('/rattrapage/Fileds/{id}', name: 'rattrapage_filiere_ues')]
     public function listUEsAndECs(Field $filiere, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $ues = $entityManager->createQueryBuilder()
             ->select('u')
             ->from(UE::class, 'u')
@@ -173,6 +178,8 @@ class RattrapageController extends AbstractController
         return $this->render('rattrapage/ues_ecs.html.twig', [
             'filiere' => $filiere,
             'uesWithECs' => $uesWithECs,
+            'user' =>$user,
+
         ]);
     }
 }

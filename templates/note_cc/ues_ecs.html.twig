@@ -1,0 +1,31 @@
+{% extends 'base_new.html.twig' %}
+
+{% block title %}<title>UEs et ECs de {{ filiere.name }}</title>{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">UEs et ECs de {{ filiere.name }}</h1>
+        
+
+        <div class="space-y-6">
+            {% for ueWithECs in uesWithECs %}
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h2 class="text-xl font-semibold mb-2">{{ ueWithECs.ue.name }}</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                        {% for ec in ueWithECs.ecs %}
+                            <a href="{{ path ('insert_notes_cc', {ecId: ec.id})}}" 
+                               class="ec-link bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition duration-300" 
+                               data-ec-id="{{ ec.id }}"
+                               data-anonymat-url="{{ path('attribuer_anonymats', {'ecId': ec.id}) }}"
+                               data-notes-url="{{ path('inserer_notes', {'ecId': ec.id}) }}">
+                                {{ ec.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}
