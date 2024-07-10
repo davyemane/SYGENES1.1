@@ -29,6 +29,7 @@ class AnonymatController extends AbstractController
 #[Route('/anonymats/{ecId<\d+>}', name: 'attribuer_anonymats')]
 public function attribuerAnonymats(Request $request, EntityManagerInterface $entityManager, int $ecId): Response
 {
+    $user = $this->getUser();
     $ec = $entityManager->getRepository(EC::class)->find($ecId);
     if (!$ec) {
         throw $this->createNotFoundException('EC non trouvé');
@@ -66,5 +67,6 @@ public function attribuerAnonymats(Request $request, EntityManagerInterface $ent
         'form' => $form->createView(),
         'students' => $students,
         'ec' => $ec,
+        'user' =>$user,
     ]);
 }}

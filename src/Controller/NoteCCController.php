@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\EC;
+use App\Entity\Field;
 use App\Entity\NoteCcTp;
+use App\Entity\School;
 use App\Entity\Student;
+use App\Entity\UE;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +33,7 @@ class NoteCCController extends AbstractController
             throw $this->createNotFoundException('EC non trouvé');
         }
     
+        $user = $this->getUser();
         $ue = $ec->getUe();
         if (!$ue) {
             throw $this->createNotFoundException('UE non trouvée pour cet EC');
@@ -115,9 +119,66 @@ class NoteCCController extends AbstractController
 
 return $this->render('note_cc/insert_notes.html.twig', [
     'ec' => $ec,
+    'user' =>$user,
     'ue' => $ue,
     'field' => $ue->getFields()->first(), // Prend la première filière associée à l'UE
     'students' => $students,
     'form' => $form->createView(),
 ]);    }
+
+
+#[Route('/cc/fields', name: 'cc_filieres')]
+public function listFilieres(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $user = $this->getUser();
+    $session = $request->getSession();
+    $schoolName = $session->get('school_name');
+
+    if (!$schoolName) {
+        throw $this->createAccessDeniedException('Aucune école sélectionnée dans la session.');
+    }
+
+    $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
+    if (!$school) {
+        throw $this->createNotFoundException('École non trouvée.');
+    }
+
+    $filieres = $entityManager->getRepository(Field::class)->findBy(['school' => $school]);
+
+    return $this->render('note_cc/fields.html.twig', [
+        'filieres' => $filieres,
+        'user' =>$user,
+
+    ]);
+}
+
+#[Route('/cc/Fileds/{id}', name: 'cc_filiere_ues')]
+public function listUEsAndECs(Field $filiere, EntityManagerInterface $entityManager): Response
+{
+    $user = $this->getUser();
+    $ues = $entityManager->createQueryBuilder()
+        ->select('u')
+        ->from(UE::class, 'u')
+        ->innerJoin('u.fields', 'f')
+        ->where('f.id = :filiereId')
+        ->setParameter('filiereId', $filiere->getId())
+        ->getQuery()
+        ->getResult();
+
+    $uesWithECs = [];
+    foreach ($ues as $ue) {
+        $ecs = $entityManager->getRepository(EC::class)->findBy(['ue' => $ue]);
+        $uesWithECs[] = [
+            'ue' => $ue,
+            'ecs' => $ecs,
+        ];
+    }
+
+    return $this->render('note_cc/ues_ecs.html.twig', [
+        'filiere' => $filiere,
+        'user' =>$user,
+        'uesWithECs' => $uesWithECs,
+    ]);
+}
+
 }

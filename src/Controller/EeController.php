@@ -28,6 +28,8 @@ class EeController extends AbstractController
     #[Route('/ee/{ecId<\d+>}', name: 'inserer_notes')]
     public function insererNotes(Request $request, EntityManagerInterface $entityManager, int $ecId): Response
     {
+
+        $user = $this->getUser();
         // Récupérer la session de l'utilisateur
         $session = $request->getSession();
         $schoolName = $session->get('school_name');
@@ -115,6 +117,8 @@ class EeController extends AbstractController
             'ec' => $ec,
             'ue' => $ue,
             'fieldName' => $fieldName,
+            'user' =>$user,
+
         ]);
     }
 
@@ -130,6 +134,7 @@ class EeController extends AbstractController
     #[Route('/ee/fields', name: 'ee_filieres')]
     public function listFilieres(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $session = $request->getSession();
         $schoolName = $session->get('school_name');
 
@@ -146,12 +151,15 @@ class EeController extends AbstractController
 
         return $this->render('ee/fields.html.twig', [
             'filieres' => $filieres,
+            'user' =>$user,
+
         ]);
     }
 
     #[Route('/ee/Fileds/{id}', name: 'ee_filiere_ues')]
     public function listUEsAndECs(Field $filiere, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
         $ues = $entityManager->createQueryBuilder()
             ->select('u')
             ->from(UE::class, 'u')
@@ -173,6 +181,8 @@ class EeController extends AbstractController
         return $this->render('ee/ues_ecs.html.twig', [
             'filiere' => $filiere,
             'uesWithECs' => $uesWithECs,
+            'user' =>$user,
+
         ]);
     }
 }

@@ -27,6 +27,7 @@ class AnonymatRattrapageController extends AbstractController
     #[Route('/anonymats-rattrapage/{ecId<\d+>}', name: 'attribuer_anonymats_rattrapage')]
     public function attribuerAnonymats(Request $request, EntityManagerInterface $entityManager, int $ecId): Response
     {
+        $user = $this->getUser();
         // Récupérer la session de l'utilisateur
         $session = $request->getSession();
         $schoolName = $session->get('school_name');
@@ -106,6 +107,7 @@ class AnonymatRattrapageController extends AbstractController
             'students' => $studentsWithoutExam,
             'ec' => $ec,
             'ue' => $ue,
+            'user' =>$user,
             'fieldName' => $fieldName,
         ]);
     }

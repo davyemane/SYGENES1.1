@@ -41,7 +41,7 @@
                 </select>
             </div>
 
-            <div class="mb-6" id="tp_max_container" style="display: none;">
+            <div class="mb-6" id="tp_max_container">
                 <label for="tp_max" class="block text-gray-700 text-sm font-bold mb-2">Note maximale TP :</label>
                 <select id="tp_max" name="tp_max" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 transition duration-300">
                     {% for i in range(20, 100, 10) %}
@@ -94,31 +94,95 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('anonymat-form');
-    const anonymatInputs = document.querySelectorAll('input[name^="form[anonymats]"][name$="[anonymat]"]');
+    const form = document.getElementById('note-form');
+    const hasTpCheckbox = document.querySelector('input[name="form[hasTp]"]');
+    const tpMaxContainer = document.getElementById('tp_max_container');
+    const tpInputs = document.querySelectorAll('.tp-input');
+    const ccInputs = document.querySelectorAll('.cc-input');
+    const ccMaxSelect = document.getElementById('cc_max');
+    const tpMaxSelect = document.getElementById('tp_max');
+
+    function toggleTpFields() {
+        if (hasTpCheckbox.checked) {
+            tpMaxContainer.style.display = 'block';
+            tpInputs.forEach(input => {
+                input.style.display = 'block';
+                input.disabled = false;
+            });
+        } else {
+            tpMaxContainer.style.display = 'none';
+            tpInputs.forEach(input => {
+                input.style.display = 'none';
+                input.disabled = true;
+                input.value = '';
+            });
+        }
+    }
+
+    // Initial call to set the correct state
+    toggleTpFields();
+
+    // Event listener for checkbox change
+    hasTpCheckbox.addEventListener('change', toggleTpFields);
 
     form.addEventListener('submit', function(e) {
         let isValid = true;
-        const usedAnonymats = new Set();
+        const ccMax = parseInt(ccMaxSelect.value);
+        const tpMax = parseInt(tpMaxSelect.value);
 
-        anonymatInputs.forEach(input => {
-            const value = input.value.trim();
-            if (value === '') {
-                isValid = false;
-                input.classList.add('border-red-500');
-            } else if (usedAnonymats.has(value)) {
+        ccInputs.forEach(input => {
+            const value = parseFloat(input.value);
+            if (isNaN(value) || value > ccMax) {
                 isValid = false;
                 input.classList.add('border-red-500');
             } else {
                 input.classList.remove('border-red-500');
-                usedAnonymats.add(value);
             }
         });
 
+        if (hasTpCheckbox.checked) {
+            tpInputs.forEach(input => {
+                const value = parseFloat(input.value);
+                if (isNaN(value) || value > tpMax) {
+                    isValid = false;
+                    input.classList.add('border-red-500');
+                } else {
+                    input.classList.remove('border-red-500');
+                }
+            });
+        }
+
         if (!isValid) {
             e.preventDefault();
-            alert('Veuillez vérifier que tous les anonymats sont remplis et uniques.');
+            alert('Veuillez vérifier que toutes les notes sont valides et inférieures ou égales à la note maximale.');
         }
     });
+
+    function validateInput(input, maxValue) {
+        const value = parseFloat(input.value);
+        if (isNaN(value) || value > maxValue) {
+            input.classList.add('border-red-500');
+        } else {
+            input.classList.remove('border-red-500');
+        }
+    }
+
+    ccInputs.forEach(input => {
+        input.addEventListener('input', () => validateInput(input, parseInt(ccMaxSelect.value)));
+    });
+
+    tpInputs.forEach(input => {
+        input.addEventListener('input', () => validateInput(input, parseInt(tpMaxSelect.value)));
+    });
+
+    ccMaxSelect.addEventListener('change', () => {
+        ccInputs.forEach(input => validateInput(input, parseInt(ccMaxSelect.value)));
+    });
+
+    tpMaxSelect.addEventListener('change', () => {
+        tpInputs.forEach(input => validateInput(input, parseInt(tpMaxSelect.value)));
+    });
 });
-</script>{% endblock %}
+</script>
+
+{% endblock %}
