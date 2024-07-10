@@ -304,11 +304,11 @@
 						</a>
 						{% endif %}
 
-						{# {% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
+						{% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
 						<a href="{{ path('add_responsable') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add user</li>
 						</a>
-						{% endif %} #}
+						{% endif %} 
 						{% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
 						<a href="{{ path('app_register') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add user </li>
