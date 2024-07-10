@@ -5,72 +5,83 @@
 {% endblock %}
 
 {% block body %}
-  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-gradient-to-br from-blue-100 to-orange-100 dark:from-gray-800 dark:to-gray-900 h-full">
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <img class="h-18 w-auto light-mode-logo" src="{{ asset('/images/uiecc_logo.png') }}" alt="{{ 'login_page.logo_alt'|trans }}">
-      <img class="h-18 w-auto dark-mode-logo hidden" src="{{ asset('/images/uiecc_logo_dark.svg') }}" alt="{{ 'login_page.logo_alt'|trans }}">
-      <h2 class="mt-10 text-center text-4xl font-bold leading-9 tracking-tight text-text dark:text-text-light">{{ 'login_page.heading'|trans }}</h2>
+  <div class="flex min-h-screen flex-col justify-center px-4 py-12 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-100 to-orange-100 dark:from-gray-800 dark:to-gray-900">
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+      <img class="mx-auto h-96 w-96 sm:h-auto light-mode-logo" src="{{ asset('/images/uiecc_logo.png') }}" alt="{{ 'login_page.logo_alt'|trans }}">
+      <img class="mx-auto h-12 w-auto sm:h-16 dark-mode-logo hidden" src="{{ asset('/images/uiecc_logo_dark.svg') }}" alt="{{ 'login_page.logo_alt'|trans }}">   
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-text dark:text-text-light sm:text-4xl">{{ 'login_page.heading'|trans }}</h2>
     </div>
 
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form class="space-y-6" method="post" action="{{ path('app_login') }}">
-        <div>
-          <label for="inputUsername" class="block text-sm font-medium leading-6 text-text dark:text-text-light">{{ 'login_page.username_label'|trans }}</label>
-          <div class="mt-2">
-            <input id="inputUsername" name="username" value="{{ last_username }}" type="text" autocomplete="username" required autofocus class="block w-full rounded-md border-0 py-1.5 pl-3 text-text dark:text-text-light bg-background dark:bg-background-alt shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6">
-          </div>
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between">
-            <label for="inputPassword" class="block text-sm font-medium leading-6 text-text dark:text-text-light">{{ 'login_page.password_label'|trans }}</label>
-            <div class="text-sm">
-              <a href="#" class="font-semibold text-primary hover:text-primary-light">{{ 'login_page.forgot_password'|trans }}</a>
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div class="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <form class="space-y-6" method="post" action="{{ path('app_login') }}">
+          <div>
+            <label for="inputUsername" class="block text-sm font-medium text-text dark:text-text-light">{{ 'login_page.username_label'|trans }}</label>
+            <div class="mt-1">
+              <input id="inputUsername" name="username" value="{{ last_username }}" type="text" autocomplete="username" required autofocus class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             </div>
           </div>
-          <div class="mt-2 relative">
-            <input id="inputPassword" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 pl-3 text-text dark:text-text-light bg-background dark:bg-background-alt shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6">
-            <span id="toggle-password" class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
-            <img class="h-5 w-5 text-gray-500" fill="none" id="eye-icon" src="{{ asset('icons/view.png') }}" alt="{{ 'login_page.show_password'|trans }}">
-            <img class="hidden h-5 w-5 text-gray-500" fill="none" id="eye-off-icon" src="{{ asset('icons/hide.png') }}" alt="{{ 'login_page.hide_password'|trans }}">  
-            </span>
+
+          <div>
+            <label for="inputPassword" class="block text-sm font-medium text-text dark:text-text-light">{{ 'login_page.password_label'|trans }}</label>
+            <div class="mt-1 relative">
+              <input id="inputPassword" name="password" type="password" autocomplete="current-password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+              <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <img class="h-5 w-5 text-gray-500" id="eye-icon" src="{{ asset('icons/view.png') }}" alt="{{ 'login_page.show_password'|trans }}">
+                <img class="hidden h-5 w-5 text-gray-500" id="eye-off-icon" src="{{ asset('icons/hide.png') }}" alt="{{ 'login_page.hide_password'|trans }}">  
+              </button>
+            </div>
           </div>
-        </div>
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input id="remember_me" name="_remember_me" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+              <label for="remember_me" class="ml-2 block text-sm text-text dark:text-text-light">
+                {{ 'login_page.remember_me'|trans }}
+              </label>
+            </div>
 
-        <div class="checkbox mb-3">
-          <label class="text-text dark:text-text-light">
-            <input type="checkbox" name="_remember_me"> {{ 'login_page.remember_me'|trans }}
-          </label>
-        </div>
+            <div class="text-sm">
+              <a href="#" class="font-medium text-primary hover:text-primary-light">
+                {{ 'login_page.forgot_password'|trans }}
+              </a>
+            </div>
+          </div>
 
-        <div>
-          <button type="submit" class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">{{ 'login_page.sign_in_button'|trans }}</button>
-        </div>
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+          <div>
+            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+              {{ 'login_page.sign_in_button'|trans }}
+            </button>
+          </div>
+        </form>
 
         {% if error %}
-          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
             <span class="block sm:inline">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
           </div>
         {% endif %}
 
         {% if app.user %}
-          <div class="m-1 h6 text-sm text-text dark:text-text-light">
-            {{ 'login_page.logged_in_as'|trans({'%username%': app.user.userIdentifier}) }} <a href="{{ path('app_logout') }}" class="font-semibold leading-6 text-sm text-primary hover:text-primary-light">{{ 'login_page.logout'|trans }}</a>
+          <div class="mt-4 text-sm text-text dark:text-text-light">
+            {{ 'login_page.logged_in_as'|trans({'%username%': app.user.userIdentifier}) }} 
+            <a href="{{ path('app_logout') }}" class="font-medium text-primary hover:text-primary-light">{{ 'login_page.logout'|trans }}</a>
           </div>
         {% endif %}
-      </form>
 
-      <p class="mt-10 text-center text-sm text-text dark:text-text-light">
-        {{ 'login_page.no_account'|trans }}
-        <a href="#" class="font-semibold leading-6 text-primary hover:text-primary-light">{{ 'login_page.sign_up'|trans }}</a>
-      </p>
+        <p class="mt-6 text-center text-sm text-text dark:text-text-light">
+          {{ 'login_page.no_account'|trans }}
+          <a href="#" class="font-medium text-primary hover:text-primary-light">
+            {{ 'login_page.sign_up'|trans }}
+          </a>
+        </p>
+      </div>
     </div>
   </div>
 
   <script>
-     // Password toggle functionality
+    // Password toggle functionality
     document.getElementById('toggle-password').addEventListener('click', function() {
       var passwordInput = document.getElementById('inputPassword');
       var eyeIcon = document.getElementById('eye-icon');
@@ -116,7 +127,5 @@
       attributes: true,
       attributeFilter: ['class'],
     });
-  </script>
-    
   </script>
 {% endblock %}
