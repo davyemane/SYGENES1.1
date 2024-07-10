@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/field')]
+#[Route('/admin')]
 class FieldController extends AbstractController
 {
-    #[Route('/', name: 'app_field')]
+    #[Route('/field', name: 'app_field')]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $fields = $entityManager->getRepository(Field::class)->findAll();

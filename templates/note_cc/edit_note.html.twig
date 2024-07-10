@@ -1,0 +1,95 @@
+{% extends 'base_new.html.twig' %}
+
+{% block title %}<title>Edit Note - {{ student.name }}</title>{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8 bg-gray-100 min-h-screen">
+    <h1 class="text-4xl font-bold mb-6 text-indigo-800 text-center">Edit Note for {{ student.name }}</h1>
+
+    <div class="mb-8 text-center">
+        <p class="text-lg text-gray-700">
+            <span class="font-semibold">EC :</span> {{ ec.name }}
+        </p>
+    </div>
+
+    <div class="bg-white shadow-lg rounded-lg p-8 mb-8">
+        {{ form_start(form, {'action': path('edit_note', {'ecId': ec.id, 'studentId': student.id}), 'method': 'POST', 'attr': {'class': 'space-y-6'}}) }}
+            
+            <div class="mb-6">
+                {{ form_label(form.cc, 'Note CC', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                {{ form_widget(form.cc, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 transition duration-300'}}) }}
+            </div>
+
+            <div class="mb-6">
+                {{ form_label(form.tp, 'Note TP', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                {{ form_widget(form.tp, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 transition duration-300'}}) }}
+            </div>
+
+            <div class="mb-6">
+                {{ form_label(form.hasTp, 'Has TP?', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                {{ form_widget(form.hasTp, {'attr': {'class': 'mt-1 block'}}) }}
+            </div>
+
+            <div class="flex justify-end mt-6">
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 transform hover:scale-105">
+                    Update Note
+                </button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const hasTpCheckbox = document.querySelector('input[name="{{ form.hasTp.vars.full_name }}"]');
+    const tpInput = document.querySelector('input[name="{{ form.tp.vars.full_name }}"]');
+
+    function toggleTpField() {
+        if (hasTpCheckbox.checked) {
+            tpInput.parentElement.style.display = 'block';
+            tpInput.disabled = false;
+        } else {
+            tpInput.parentElement.style.display = 'none';
+            tpInput.disabled = true;
+            tpInput.value = '';
+        }
+    }
+
+    // Initial call to set the correct state
+    toggleTpField();
+
+    // Event listener for checkbox change
+    hasTpCheckbox.addEventListener('change', toggleTpField);
+
+    form.addEventListener('submit', function(e) {
+        let isValid = true;
+        const ccInput = document.querySelector('input[name="{{ form.cc.vars.full_name }}"]');
+        const ccValue = parseFloat(ccInput.value);
+
+        if (isNaN(ccValue) || ccValue < 0 || ccValue > 20) {
+            isValid = false;
+            ccInput.classList.add('border-red-500');
+        } else {
+            ccInput.classList.remove('border-red-500');
+        }
+
+        if (hasTpCheckbox.checked) {
+            const tpValue = parseFloat(tpInput.value);
+            if (isNaN(tpValue) || tpValue < 0 || tpValue > 20) {
+                isValid = false;
+                tpInput.classList.add('border-red-500');
+            } else {
+                tpInput.classList.remove('border-red-500');
+            }
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            alert('Please check that all notes are valid and between 0 and 20.');
+        }
+    });
+});
+</script>
+
+{% endblock %}

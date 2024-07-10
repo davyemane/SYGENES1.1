@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-    #[Route('/level')]
+#[Route('/admin')]
     class LevelController extends AbstractController
     {
-        #[Route('/new/{id?0}', name: 'level_new', methods: ['GET', 'POST'])]
+        #[Route('/new_level/{id?0}', name: 'level_new', methods: ['GET', 'POST'])]
         public function new(Request $request, EntityManagerInterface $entityManager, LevelRepository $levelRepository, int $id = 0): Response
         {
             // Récupérer l'école de la session
