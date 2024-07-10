@@ -107,31 +107,6 @@ INSERT INTO `color_scheme` VALUES (1,1,'#bd8989','#5bfb46','#e65656','#f88282','
 UNLOCK TABLES;
 
 --
--- Table structure for table `doctrine_migration_versions`
---
-
-DROP TABLE IF EXISTS `doctrine_migration_versions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `doctrine_migration_versions` (
-  `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `executed_at` datetime DEFAULT NULL,
-  `execution_time` int DEFAULT NULL,
-  PRIMARY KEY (`version`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `doctrine_migration_versions`
---
-
-LOCK TABLES `doctrine_migration_versions` WRITE;
-/*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
-INSERT INTO `doctrine_migration_versions` VALUES ('DoctrineMigrations\\Version20240709140322','2024-07-09 14:03:46',4000),('DoctrineMigrations\\Version20240709164057','2024-07-09 16:41:19',12248);
-/*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `ec`
 --
 
@@ -723,4 +698,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-09 17:52:38
+-- Dump completed on 2024-07-10  3:01:46

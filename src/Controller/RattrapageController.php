@@ -2,33 +2,32 @@
 
 namespace App\Controller;
 
-use App\Entity\Anonymat;
+use App\Entity\AnonymatRattrapage;
 use App\Entity\EC;
-use App\Entity\EE;
 use App\Entity\Field;
+use App\Entity\Rattrapage;
 use App\Entity\School;
 use App\Entity\UE;
-use App\Form\EECollectionType;
+use App\Form\RattrapageCollectionType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-class EeController extends AbstractController
+class RattrapageController extends AbstractController
 {
-    #[Route('/ee', name: 'app_ee')]
+    #[Route('/rattrapage', name: 'app_rattrapage')]
     public function index(): Response
     {
-        return $this->render('ee/index.html.twig', [
-            'controller_name' => 'EeController',
+        return $this->render('rattrapage/index.html.twig', [
+            'controller_name' => 'RattrapageController',
         ]);
     }
 
-    #[Route('/ee/{ecId<\d+>}', name: 'inserer_notes')]
-    public function insererNotes(Request $request, EntityManagerInterface $entityManager, int $ecId): Response
-    {
-        // Récupérer la session de l'utilisateur
+    #[Route('/rattrapage/{ecId<\d+>}', name: 'inserer_notes_rattrapage')]
+    public function insererNotesRattrapage(Request $request, EntityManagerInterface $entityManager, int $ecId): Response
+    {        // Récupérer la session de l'utilisateur
         $session = $request->getSession();
         $schoolName = $session->get('school_name');
 
@@ -66,52 +65,52 @@ class EeController extends AbstractController
         $field = $fields->first();
         $fieldName = $field ? $field->getName() : 'Non spécifié';
 
-        $anonymats = $entityManager->getRepository(Anonymat::class)->findBy(['eC' => $ec]);
+        $anonymatsRattrapage = $entityManager->getRepository(AnonymatRattrapage::class)->findBy(['eC' => $ec]);
 
-        $eeData = ['ees' => []];
-        foreach ($anonymats as $anonymat) {
-            $ee = new EE();
-            $ee->setAnonymat($anonymat);
-            $ee->setCreatedBy($this->getUser());
-            $ee->setCreatedAt(new \DateTime());
-            $eeData['ees'][] = $ee;
+        $rattrapageData = ['rattrapages' => []];
+        foreach ($anonymatsRattrapage as $anonymatRattrapage) {
+            $rattrapage = new Rattrapage();
+            $rattrapage->setAnonymatRattrapage($anonymatRattrapage);
+            $rattrapage->setCreatedBy($this->getUser());
+            $rattrapage->setCreatedAt(new \DateTime());
+            $rattrapageData['rattrapages'][] = $rattrapage;
         }
 
-        $form = $this->createForm(EECollectionType::class, $eeData);
+        $form = $this->createForm(RattrapageCollectionType::class, $rattrapageData);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $ees = $form->getData()['ees'];
+            $rattrapages = $form->getData()['rattrapages'];
             $totalPoints = $form->get('totalPoints')->getData();
 
-            foreach ($ees as $ee) {
-                $originalMark = $ee->getMark();
+            foreach ($rattrapages as $rattrapage) {
+                $originalMark = $rattrapage->getMark();
                 if ($originalMark > $totalPoints) {
                     $this->addFlash('error', 'Une note dépasse le maximum autorisé.');
-                    return $this->redirectToRoute('inserer_notes', ['ecId' => $ecId]);
+                    return $this->redirectToRoute('inserer_notes_rattrapage', ['ecId' => $ecId]);
                 }
 
                 // Convertir la note sur 20
                 $convertedMark = ($originalMark / $totalPoints) * 20;
-                $ee->setMark($convertedMark);
+                $rattrapage->setMark($convertedMark);
 
                 // Calculer et définir le grade (exemple simplifié)
                 $grade = $this->calculateGrade($convertedMark);
-                $ee->setGrade($grade);
+                $rattrapage->setGrade($grade);
 
-                $entityManager->persist($ee);
+                $entityManager->persist($rattrapage);
             }
             $entityManager->flush();
 
-            $this->addFlash('success', 'Les notes ont été insérées avec succès.');
+            $this->addFlash('success', 'Les notes de rattrapage ont été insérées avec succès.');
             return $this->redirectToRoute('app_dashAdmin');
         }
 
-        return $this->render('ee/notes.html.twig', [
+        return $this->render('rattrapage/notes.html.twig', [
             'form' => $form->createView(),
-            'ees' => $eeData['ees'],
-            'anonymats' => $anonymats,
+            'rattrapages' => $rattrapageData['rattrapages'],
+            'anonymatsRattrapage' => $anonymatsRattrapage,
             'ec' => $ec,
             'ue' => $ue,
             'fieldName' => $fieldName,
@@ -127,7 +126,8 @@ class EeController extends AbstractController
         return 'E';
     }
 
-    #[Route('/ee/fields', name: 'ee_filieres')]
+
+    #[Route('/rattrapage/fields', name: 'rattrapage_filieres')]
     public function listFilieres(Request $request, EntityManagerInterface $entityManager): Response
     {
         $session = $request->getSession();
@@ -144,12 +144,12 @@ class EeController extends AbstractController
 
         $filieres = $entityManager->getRepository(Field::class)->findBy(['school' => $school]);
 
-        return $this->render('ee/fields.html.twig', [
+        return $this->render('rattrapage/fields.html.twig', [
             'filieres' => $filieres,
         ]);
     }
 
-    #[Route('/ee/Fileds/{id}', name: 'ee_filiere_ues')]
+    #[Route('/rattrapage/Fileds/{id}', name: 'rattrapage_filiere_ues')]
     public function listUEsAndECs(Field $filiere, EntityManagerInterface $entityManager): Response
     {
         $ues = $entityManager->createQueryBuilder()
@@ -170,7 +170,7 @@ class EeController extends AbstractController
             ];
         }
     
-        return $this->render('ee/ues_ecs.html.twig', [
+        return $this->render('rattrapage/ues_ecs.html.twig', [
             'filiere' => $filiere,
             'uesWithECs' => $uesWithECs,
         ]);

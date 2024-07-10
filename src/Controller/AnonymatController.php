@@ -26,7 +26,7 @@ class AnonymatController extends AbstractController
 
 // Dans AnonymatController.php
 
-#[Route('/anonymats/{ecId}', name: 'attribuer_anonymats')]
+#[Route('/anonymats/{ecId<\d+>}', name: 'attribuer_anonymats')]
 public function attribuerAnonymats(Request $request, EntityManagerInterface $entityManager, int $ecId): Response
 {
     $ec = $entityManager->getRepository(EC::class)->find($ecId);

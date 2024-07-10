@@ -124,7 +124,6 @@ class UE
     public function removeEC(EC $eC): static
     {
         if ($this->eCs->removeElement($eC)) {
-            // set the owning side to null (unless already changed)
             if ($eC->getUe() === $this) {
                 $eC->setUe(null);
             }
@@ -218,9 +217,10 @@ class UE
 
     public function removeField(Field $field): static
     {
-        $this->fields->removeElement($field);
-
+        if ($this->fields->removeElement($field)) {
+            $field->removeUE($this);
+        }
+    
         return $this;
     }
-
 }

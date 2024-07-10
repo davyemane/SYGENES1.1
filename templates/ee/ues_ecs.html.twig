@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UEs et ECs de {{ filiere.name }}{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">UEs et ECs de {{ filiere.name }}</h1>
+        
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Choisissez une action :</h2>
+            <div class="flex space-x-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="action" value="anonymat" class="form-radio h-5 w-5 text-blue-600">
+                    <span class="ml-2 text-gray-700">Remplir les anonymats</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="action" value="notes" class="form-radio h-5 w-5 text-green-600">
+                    <span class="ml-2 text-gray-700">Remplir les notes</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="space-y-6">
+            {% for ueWithECs in uesWithECs %}
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <h2 class="text-xl font-semibold mb-2">{{ ueWithECs.ue.name }}</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                        {% for ec in ueWithECs.ecs %}
+                            <a href="#" 
+                               class="ec-link bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded transition duration-300" 
+                               data-ec-id="{{ ec.id }}"
+                               data-anonymat-url="{{ path('attribuer_anonymats', {'ecId': ec.id}) }}"
+                               data-notes-url="{{ path('inserer_notes', {'ecId': ec.id}) }}">
+                                {{ ec.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const radioButtons = document.querySelectorAll('input[name="action"]');
+        const ecLinks = document.querySelectorAll('.ec-link');
+
+        radioButtons.forEach(radio => {
+            radio.addEventListener('change', function() {
+                radioButtons.forEach(rb => rb.parentElement.classList.remove('font-bold'));
+                this.parentElement.classList.add('font-bold');
+            });
+        });
+
+        ecLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const selectedAction = document.querySelector('input[name="action"]:checked');
+                if (selectedAction) {
+                    if (selectedAction.value === 'anonymat') {
+                        window.location.href = this.getAttribute('data-anonymat-url');
+                    } else if (selectedAction.value === 'notes') {
+                        window.location.href = this.getAttribute('data-notes-url');
+                    }
+                } else {
+                    alert('Veuillez choisir une action (anonymat ou notes) avant de sélectionner un EC.');
+                }
+            });
+        });
+    });
+    </script>
+{% endblock %}

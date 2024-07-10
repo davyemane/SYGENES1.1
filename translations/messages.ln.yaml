@@ -11,8 +11,8 @@ home_header:
     contact_us: 'Kokanisa biso'
     documentation: 'Mayele'
     login: 'Kokota'
-    open_menu: 'Ouvrir menu monene'
-    close_menu: 'Kokanga menu'
+    open_menu: 'Fungola menu monene'
+    close_menu: 'Kanga menu'
     toggle_dark_mode: "Mode ya molili"
     toggle_light_mode: "Mode ya pole"
 
@@ -109,7 +109,18 @@ welcome_page:
 
 
 # Language choice page text
-language_choice_page:\'
+language_choice_page:
+  language-message: "Poná lokota na yo"
+  english-language: "Lingelesi"
+  french-language: "Lingala"
+  spanish-language: "Lispania"
+  next-language-btn: "Sima"
+  copyright: " 2024 ESIGN. Makoki nyonso ebombami"
+
+# School Creation page text
+create_school_page:
+  create-school-title: "Eteyelo ya sika"
+  edit-school-title: "Kobongola eteyelo"
   create-school: "Kobonga eteyelo ya sika"
   edit-school: "Kobongola eteyelo"
   school-name: "Kombo ya eteyelo"
@@ -177,3 +188,15 @@ role_page:
   school: "Eteyelo"
   not-assigned: "Bato te"
   privileges: "Makoki"
+
+# Create Responsable Account
+register_page:
+  register: "Kokoma"
+  user_name: "Kombo ya utilisateur"
+  email: "Email"
+  password: "Mot de passe"
+  confirm_password: "Kokangola mot de passe"
+  register_btn: "Kokoma"
+  back: "Sikoyo"
+  success: "Eleki malamu"
+  error: "Esuki na mabe"
