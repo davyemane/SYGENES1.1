@@ -36,8 +36,8 @@
                         {% for existingRole in existingRoles %}
                             <div class="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-lg p-4 shadow-md hover:shadow-lg transition duration-300">
                                 <h3 class="font-bold text-lg text-text dark:text-text-light mb-2">{{ existingRole.name }}</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-300">{{ "role.school"|trans }}: {{ existingRole.school ? existingRole.school.name : "role_page.not-assigned"|trans }}</p>
-                                <p class="text-sm text-gray-600 dark:text-gray-300">{{ "role.privileges"|trans }}: {{ existingRole.privileges|length }}</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">{{ "role_page.school"|trans }}: {{ existingRole.school ? existingRole.school.name : "role_page.not-assigned"|trans }}</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">{{ "role_page.privileges"|trans }}: {{ existingRole.privileges|length }}</p>
                             </div>
                         {% endfor %}
                     </div>

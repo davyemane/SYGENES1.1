@@ -200,7 +200,7 @@ register_page:
   register: "Inscription"
   user-registration: "Inscription de l'utilisateur"
   back: "Retour"
-  username: "Nom d'utilisateur"
+  username: "Login"
   email: "Email"
   password: "Mot de passe"
   profile-picture: "Photo de profil"
