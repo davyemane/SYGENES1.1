@@ -2,14 +2,15 @@
 
 {% block head %}
   {% block title %}<title>{{ 'login_page.title'|trans }}</title>{% endblock %}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% endblock %}
 
 {% block body %}
   <div class="flex min-h-screen flex-col justify-center px-4 py-12 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-100 to-orange-100 dark:from-gray-800 dark:to-gray-900">
-        <div class="sm:mx-auto sm:w-full sm:max-w-md">
-      <img class="mx-auto h-96 w-96 sm:h-auto light-mode-logo" src="{{ asset('/images/uiecc_logo.png') }}" alt="{{ 'login_page.logo_alt'|trans }}">
-      <img class="mx-auto h-96 w-96 sm:h-auto dark-mode-logo hidden" src="{{ asset('/images/uiecc_logo_dark.svg') }}" alt="{{ 'login_page.logo_alt'|trans }}">   
-      <h2 class="mt-6 text-center text-3xl font-extrabold text-text dark:text-text-light sm:text-4xl">{{ 'login_page.heading'|trans }}</h2>
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+      <img class="mx-auto h-24 w-auto sm:h-32 light-mode-logo" src="{{ asset('/images/uiecc_logo.png') }}" alt="{{ 'login_page.logo_alt'|trans }}">
+      <img class="mx-auto h-24 w-auto sm:h-32 dark-mode-logo hidden" src="{{ asset('/images/uiecc_logo_dark.svg') }}" alt="{{ 'login_page.logo_alt'|trans }}">   
+      <h2 class="mt-6 text-center text-2xl font-extrabold text-text dark:text-text-light sm:text-3xl">{{ 'login_page.heading'|trans }}</h2>
     </div>
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -27,8 +28,13 @@
             <div class="mt-1 relative">
               <input id="inputPassword" name="password" type="password" autocomplete="current-password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
               <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                <img class="h-5 w-5 text-gray-500" id="eye-icon" src="{{ asset('icons/view.png') }}" alt="{{ 'login_page.show_password'|trans }}">
-                <img class="hidden h-5 w-5 text-gray-500" id="eye-off-icon" src="{{ asset('icons/hide.png') }}" alt="{{ 'login_page.hide_password'|trans }}">  
+                <svg class="h-5 w-5 text-gray-500" fill="none" id="eye-icon" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <svg class="h-5 w-5 text-gray-500 hidden" fill="none" id="eye-off-icon" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                </svg>
               </button>
             </div>
           </div>
