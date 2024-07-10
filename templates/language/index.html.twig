@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Choose Language - SYGENES</title>
     {% block stylesheets %}
-    {{ encore_entry_link_tags('app') }}
+        {{ encore_entry_link_tags('app') }}
     {% endblock %}
     {{ encore_entry_script_tags('app') }}
     <style>
-       
         .text-shadow {
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
@@ -32,25 +31,36 @@
             border-radius: 1rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
+        @media (max-width: 640px) {
+            .language-switcher {
+                padding: 1rem;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .btn {
+                padding: 0.75rem 1rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-blue-100 to-orange-100 text-gray-900 min-h-screen flex flex-col">
-    <main class="flex-grow flex items-center justify-center px-4 py-12">
-        <div class="text-center language-switcher p-8 w-full max-w-4xl">
-            <h1 class="text-4xl font-bold mb-10 text-shadow text-gray-800">{{ 'language_choice_page.language-message'|trans }}</h1>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-10">
-                <a href="{{ path('change_language', {'locale': 'en'}) }}" class="btn font-semibold py-4 px-6 rounded-lg {{ app.request.locale == 'en' ? 'active' : '' }} flex items-center justify-center">
+    <main class="flex-grow flex items-center justify-center px-4 py-8 sm:py-12">
+        <div class="text-center language-switcher p-4 sm:p-8 w-full max-w-4xl">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-10 text-shadow text-gray-800">{{ 'language_choice_page.language-message'|trans }}</h1>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-10">
+                <a href="{{ path('change_language', {'locale': 'en'}) }}" class="btn font-semibold py-3 px-4 sm:py-4 sm:px-6 rounded-lg {{ app.request.locale == 'en' ? 'active' : '' }} flex items-center justify-center">
                     <span class="mr-2">🇬🇧</span> {{ 'language_choice_page.english-language'|trans }}
                 </a>
-                <a href="{{ path('change_language', {'locale': 'fr'}) }}" class="btn font-semibold py-4 px-6 rounded-lg {{ app.request.locale == 'fr' ? 'active' : '' }} flex items-center justify-center">
+                <a href="{{ path('change_language', {'locale': 'fr'}) }}" class="btn font-semibold py-3 px-4 sm:py-4 sm:px-6 rounded-lg {{ app.request.locale == 'fr' ? 'active' : '' }} flex items-center justify-center">
                     <span class="mr-2">🇫🇷</span> {{ 'language_choice_page.french-language'|trans }}
                 </a>
-                <a href="{{ path('change_language', {'locale': 'ln'}) }}" class="btn font-semibold py-4 px-6 rounded-lg {{ app.request.locale == 'es' ? 'active' : '' }} flex items-center justify-center">
+                <a href="{{ path('change_language', {'locale': 'ln'}) }}" class="btn font-semibold py-3 px-4 sm:py-4 sm:px-6 rounded-lg {{ app.request.locale == 'es' ? 'active' : '' }} flex items-center justify-center">
                     <span class="mr-2">🇨🇬</span> {{ 'language_choice_page.lingala-language'|trans }}
                 </a>
             </div>
             <div>
-                <a href="{{path('school_new')}}" class="btn font-semibold py-4 px-8 rounded-lg inline-flex items-center">
+                <a href="{{path('school_new')}}" class="btn font-semibold py-3 px-6 sm:py-4 sm:px-8 rounded-lg inline-flex items-center">
                     {{ 'language_choice_page.next-language-btn'|trans }}
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -59,8 +69,8 @@
             </div>
         </div>
     </main>
-    <footer class="p-6 text-center text-gray-600">
-        <p class="text-sm">&copy;{{ 'language_choice_page.copyright'|trans }}.</p>
+    <footer class="p-4 sm:p-6 text-center text-gray-600">
+        <p class="text-xs sm:text-sm">&copy;{{ 'language_choice_page.copyright'|trans }}.</p>
     </footer>
 </body>
 </html>
