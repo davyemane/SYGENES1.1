@@ -47,9 +47,9 @@
     </div>
 
     {% if isPaginated %}
-    <div class="flex justify-center mt-8 w-5/6">
-      <nav aria-label="Page navigation">
-        <ul class="inline-flex rounded-md shadow">
+    <div class="flex justify-center mt-8 w-fit">
+      <nav aria-label="Page navigation" class="w-fit">
+        <ul class="inline-flex rounded-md shadow ">
           {% if page > 1 %}
           <li>
             <a href="{{ path('list_student_2', { page: page - 1, nbre: nbre, name: currentName, field: currentField }) }}" class="py-2 px-4 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">Précédent</a>

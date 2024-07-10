@@ -96,7 +96,7 @@
 	</style>
 </head>
 
-<body class="font-sans antialiased leading-none h-full bg-white	 w-full ">
+<body class="font-sans antialiased leading-none h-full bg-white	 w-full overflow-x-hidden ">
 	<div class="flex h-full z-10">
 		<div id="sidebarDiv"
 			class="inset-y-0 left-0 fixed bg-gray-900 shadow-xl p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
@@ -124,7 +124,7 @@
 						<span class="text-white text-md font-medium flex-1">Dashboard</span>
 					</li>
 				</a>
-				{% if privileges is defined %}
+				{% if privileges is defined and privileges is not empty %}
 				{% set student_privileges = ['Add Student', 'List Students', 'Detail Student', 'Validate Student', 'Generate PV', 'Generate Transcript of notes'] %}
 				{% if privileges|filter(p => p.name in student_privileges)|length > 0 %}
 				<li class="menu-item text-white text-sm cursor-pointer mt-2">
@@ -193,13 +193,13 @@
 					<ul class="submenu ml-6 mt-2">
 						{% if privileges|filter(p => p.name == 'Add Profile')|length > 0 %}
 						<a href="{{path('role_new')}}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add A Profile</li>
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add/Edit A Profile</li>
 						</a>
 						{% endif %}
 						{% if privileges|filter(p => p.name == 'List Profile')|length > 0 %}
-						<a href="{{path('role_new')}}">
+						{# <a href="{{path('role_new')}}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Edit a Profile</li>
-						</a>
+						</a> #}
 						{% endif %}
 						{% if privileges|filter(p => p.name == 'List Profile')|length > 0 %}
 						{# <a href="#">
@@ -324,7 +324,7 @@
 				{% endif %}
 			</ul>
 			{% else %}
-			<p>You don't have any privileges assigned.</p>
+			
 			{% endif %}
 			</ul>
 			<div class="border-t border-gray-600 pt-4 mt-4 text-white">
@@ -381,7 +381,7 @@
 			<div id="bodyDiv" class="p-7 flex-1 ">
 				<div class="flex-grow flex flex-col ">
 					<!-- Main Content Area -->
-					<main class="flex-grow p-4 ">
+					<main class="flex-grow p-4 overflow-x-hidden">
 						<div id="main_content_area" class="bg-white rounded-lg shadow-md h-full ml-64 p-6 ">
 							{% block body %}
 							{% block page_header %}{% endblock %}
