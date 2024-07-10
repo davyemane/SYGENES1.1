@@ -118,10 +118,8 @@
 				<a href="{{ path('app_dashAdmin') }}">
 					<li
 						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondaryHover rounded-md mt-2">
-						<!-- <img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">  -->
-						<HomeIcon class="h-96 w-96 text-black"/>
-        				<UserIcon class="h-5 w-5 text-blue-500"/>
-        				<SearchIcon class="h-5 w-5 text-blue-500"/>
+						<img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
+						
 						<span class="text-text text-md font-medium flex-1">Dashboard</span>
 					</li>
 				</a>
@@ -136,14 +134,14 @@
 					</div>
 					<ul class="submenu ml-6 mt-2">
 						{% if privileges|filter(p => p.name == 'Add Student')|length > 0 %}
-						<a href="#">
+						{# <a href="#">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add new student data
 							</li>
-						</a>
+						</a> #}
 						<a href="#">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Modify a student
 								data</li>
-						</a>
+						</a> 
 						{% endif %}
 						{% if privileges|filter(p => p.name == 'List Students')|length > 0 %}
 						<a href="{{ path('list_student_2') }}">
@@ -224,7 +222,7 @@
 						</a>
 						{% endif %}
 						{% if privileges|filter(p => p.name == 'Add Mark')|length > 0 %}
-						<a href="{{ path('add_note') }}">
+						<a href="{{ path('') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add a student's
 								marks</li>
 						</a>
