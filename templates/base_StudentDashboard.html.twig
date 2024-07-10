@@ -82,19 +82,19 @@
     </style>
 </head>
 
-<body class="font-sans antialiased leading-none h-full w-full bg-background text-text">
+<body class="font-sans antialiased leading-none h-full w-full bg-white text-text">
     <div class="flex h-full">
         <div id="sidebarDiv"
-            class="inset-y-0 left-0 fixed p-5 pt-8 w-72 transition-all duration-300 flex flex-col bg-background-alt">
+            class="inset-y-0 left-0 fixed p-5 pt-8 w-72 transition-all duration-300 flex flex-col bg-gray-900">
             <img id="toggleBtn" src="/icons/previous.png" alt="previous"
                 class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
-            <div class="inline-flex items-center">
+            <div class="inline-flex items-center ">
                 <img src="/icons/uiecc_logo.png" alt="uiecc_logo" class="w-16 h-auto cursor-pointer mr-2">
                 <h1 id="sidebarTitle" class="text-2xl font-bold transition-opacity duration-300 text-primary">SYGENES
                 </h1>
             </div>
             <div id="searchContainer"
-                class="flex items-center rounded-md mt-6 transition-all duration-300 bg-background">
+                class="flex items-center rounded-md mt-6 transition-all duration-300 bg-gray-600">
                 <img id="searchIcon" src="/icons/search.png" alt="search"
                     class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
                 <input type="search" id="searchInput"
@@ -102,7 +102,7 @@
                     placeholder="Search">
             </div>
 
-            <ul class="pt-2 flex-grow overflow-y-auto ">
+            <ul class="pt-2 flex-grow overflow-y-auto text-white ">
                 <a href="{{ path('app_dashStudent')}}">
                     <li
                         class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md mt-2">
@@ -134,7 +134,7 @@
 
             </ul>
 
-            <div class="border-t border-gray-600 pt-4 mt-4">
+            <div class="border-t border-gray-600 pt-4 mt-4 text-white">
                 <ul>
                     <a href="{{path('app_profile_show')}}">
                         <li class="menu-item text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md"
@@ -311,29 +311,29 @@
 
 
         // Theme toggle functionality
-        function toggleTheme() {
-            isDarkMode = !isDarkMode;
-            document.documentElement.classList.toggle('dark', isDarkMode);
+        // function toggleTheme() {
+        //     isDarkMode = !isDarkMode;
+        //     document.documentElement.classList.toggle('dark', isDarkMode);
 
-            if (isDarkMode) {
-                themeToggleIcon.classList.replace('fa-moon', 'fa-sun');
-                themeToggleText.textContent = 'Light Mode';
-            } else {
-                themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
-                themeToggleText.textContent = 'Dark Mode';
-            }
-        }
+        //     if (isDarkMode) {
+        //         themeToggleIcon.classList.replace('fa-moon', 'fa-sun');
+        //         themeToggleText.textContent = 'Light Mode';
+        //     } else {
+        //         themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
+        //         themeToggleText.textContent = 'Dark Mode';
+        //     }
+        // }
 
-        themeToggleIcon.parentElement.addEventListener('click', toggleTheme);
+        // themeToggleIcon.parentElement.addEventListener('click', toggleTheme);
 
-        // Initialize theme based on system preference
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        } else {
-            isDarkMode = false;
-            themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
-            themeToggleText.textContent = 'Dark Mode';
-        }
+        // // Initialize theme based on system preference
+        // if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        //     document.documentElement.classList.add('dark');
+        // } else {
+        //     isDarkMode = false;
+        //     themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
+        //     themeToggleText.textContent = 'Dark Mode';
+        // }
 
         // Set active state based on the current page
         const currentPage = window.location.pathname.split('/').pop();
