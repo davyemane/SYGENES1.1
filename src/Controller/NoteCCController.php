@@ -131,6 +131,13 @@ return $this->render('note_cc/insert_notes.html.twig', [
 public function listFilieres(Request $request, EntityManagerInterface $entityManager): Response
 {
     $user = $this->getUser();
+     // Collect all unique privileges of the user
+     $privileges = [];
+     foreach ($user->getRole() as $role) {
+         foreach ($role->getPrivileges() as $privilege) {
+             $privileges[$privilege->getId()] = $privilege; // Use ID as key to avoid duplicates
+         }
+     }
     $session = $request->getSession();
     $schoolName = $session->get('school_name');
 
@@ -148,6 +155,7 @@ public function listFilieres(Request $request, EntityManagerInterface $entityMan
     return $this->render('note_cc/fields.html.twig', [
         'filieres' => $filieres,
         'user' =>$user,
+        'privileges' => $privileges
 
     ]);
 }
@@ -156,6 +164,13 @@ public function listFilieres(Request $request, EntityManagerInterface $entityMan
 public function listUEsAndECs(Field $filiere, EntityManagerInterface $entityManager): Response
 {
     $user = $this->getUser();
+     // Collect all unique privileges of the user
+     $privileges = [];
+     foreach ($user->getRole() as $role) {
+         foreach ($role->getPrivileges() as $privilege) {
+             $privileges[$privilege->getId()] = $privilege; // Use ID as key to avoid duplicates
+         }
+     }
     $ues = $entityManager->createQueryBuilder()
         ->select('u')
         ->from(UE::class, 'u')
@@ -178,6 +193,7 @@ public function listUEsAndECs(Field $filiere, EntityManagerInterface $entityMana
         'filiere' => $filiere,
         'user' =>$user,
         'uesWithECs' => $uesWithECs,
+        'privileges' => $privileges
     ]);
 }
 

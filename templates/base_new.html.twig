@@ -144,17 +144,18 @@
 								data</li>
 						</a> 
 						{% endif %} #} 
-						{% if privileges|filter(p => p.name == 'List Students')|length > 0 %}
-						<a href="{{ path('fields_index') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List students</li>
-						</a>
-						{% endif %}
 						{% if privileges|filter(p => p.name == 'Add Student')|length > 0 %}
 						<a href="{{ path('import') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Import excel file
 							</li>
 						</a>
 						{% endif %}
+						{% if privileges|filter(p => p.name == 'List Students')|length > 0 %}
+						<a href="{{ path('fields_index') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List students</li>
+						</a>
+						{% endif %}
+						
 					</ul>
 				</li>
 				{% endif %}

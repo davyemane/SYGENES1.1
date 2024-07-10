@@ -30,6 +30,13 @@ class ResponsableController extends AbstractController
     {
         // Check if the user has ROLE_ADMIN
         $user = $this->getUser();
+        // Collect all unique privileges of the user
+    $privileges = [];
+    foreach ($user->getRole() as $role) {
+        foreach ($role->getPrivileges() as $privilege) {
+            $privileges[$privilege->getId()] = $privilege; // Use ID as key to avoid duplicates
+        }
+    }
 
         if (!$user) {
             return $this->redirectToRoute('app_login');
@@ -39,7 +46,7 @@ class ResponsableController extends AbstractController
         $hasListStudentPrivilege = false;
         foreach ($user->getRole() as $role) {
             foreach ($role->getPrivileges() as $privilege) {
-                if ($privilege->getName() === 'View stitistics') {
+                if ($privilege->getName() === 'View statistics') {
                     $hasListStudentPrivilege = true;
                     break 2;
                 }
@@ -53,7 +60,8 @@ class ResponsableController extends AbstractController
         $user = $this->getUser();
         return $this->render('responsable/resp_statistics.html.twig', [
             'controller_name' => 'ResponsableController',
-            'user' => $user
+            'user' => $user,
+            'privileges' => $privileges,
         ]);
     }
 
