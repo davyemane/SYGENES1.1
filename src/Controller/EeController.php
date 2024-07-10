@@ -30,6 +30,13 @@ class EeController extends AbstractController
     {
 
         $user = $this->getUser();
+        // Collect all unique privileges of the user
+        $privileges = [];
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                $privileges[$privilege->getId()] = $privilege; // Use ID as key to avoid duplicates
+            }
+        }
         // Récupérer la session de l'utilisateur
         $session = $request->getSession();
         $schoolName = $session->get('school_name');
@@ -56,7 +63,7 @@ class EeController extends AbstractController
             throw $this->createNotFoundException('Aucun champ trouvé pour cette UE.');
         }
 
-        $belongsToSchool = $fields->exists(function($key, $field) use ($school) {
+        $belongsToSchool = $fields->exists(function ($key, $field) use ($school) {
             return $field->getSchool() === $school;
         });
 
@@ -117,8 +124,8 @@ class EeController extends AbstractController
             'ec' => $ec,
             'ue' => $ue,
             'fieldName' => $fieldName,
-            'user' =>$user,
-
+            'user' => $user,
+            'privileges' => $privileges,
         ]);
     }
 
@@ -138,6 +145,15 @@ class EeController extends AbstractController
         $session = $request->getSession();
         $schoolName = $session->get('school_name');
 
+
+        // Collect all unique privileges of the user
+        $privileges = [];
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                $privileges[$privilege->getId()] = $privilege; // Use ID as key to avoid duplicates
+            }
+        }
+
         if (!$schoolName) {
             throw $this->createAccessDeniedException('Aucune école sélectionnée dans la session.');
         }
@@ -151,8 +167,8 @@ class EeController extends AbstractController
 
         return $this->render('ee/fields.html.twig', [
             'filieres' => $filieres,
-            'user' =>$user,
-
+            'user' => $user,
+            'privileges' => $privileges,
         ]);
     }
 
@@ -168,7 +184,7 @@ class EeController extends AbstractController
             ->setParameter('filiereId', $filiere->getId())
             ->getQuery()
             ->getResult();
-    
+
         $uesWithECs = [];
         foreach ($ues as $ue) {
             $ecs = $entityManager->getRepository(EC::class)->findBy(['ue' => $ue]);
@@ -177,11 +193,11 @@ class EeController extends AbstractController
                 'ecs' => $ecs,
             ];
         }
-    
+
         return $this->render('ee/ues_ecs.html.twig', [
             'filiere' => $filiere,
             'uesWithECs' => $uesWithECs,
-            'user' =>$user,
+            'user' => $user,
 
         ]);
     }
