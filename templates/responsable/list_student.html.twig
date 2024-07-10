@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="container mx-auto px-4 md:px-8 mt-8 mb-16">
+<div class="container w-5/6 px-4 mt-8 mb-16  ">
   {% block page_header %}
   <div class="mb-8">
     <h1 class="text-4xl font-semibold text-blue-600">Liste des étudiants à accepter</h1>
@@ -47,7 +47,7 @@
     </div>
 
     {% if isPaginated %}
-    <div class="flex justify-center mt-8">
+    <div class="flex justify-center mt-8 w-5/6">
       <nav aria-label="Page navigation">
         <ul class="inline-flex rounded-md shadow">
           {% if page > 1 %}
