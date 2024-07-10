@@ -31,6 +31,13 @@ class RattrapageController extends AbstractController
         $session = $request->getSession();
         $schoolName = $session->get('school_name');
         $user = $this->getUser();
+        // Collect all unique privileges of the user
+        $privileges = [];
+        foreach ($user->getRole() as $role) {
+        foreach ($role->getPrivileges() as $privilege) {
+            $privileges[$privilege->getId()] = $privilege; // Use ID as key to avoid duplicates
+        }
+    }
         if (!$schoolName) {
             throw $this->createAccessDeniedException('Aucune école sélectionnée dans la session.');
         }
@@ -115,7 +122,7 @@ class RattrapageController extends AbstractController
             'ue' => $ue,
             'fieldName' => $fieldName,
             'user' =>$user,
-
+            'privileges' => $privileges
         ]);
     }
 
@@ -133,6 +140,13 @@ class RattrapageController extends AbstractController
     public function listFilieres(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
+        // Collect all unique privileges of the user
+        $privileges = [];
+        foreach ($user->getRole() as $role) {
+        foreach ($role->getPrivileges() as $privilege) {
+            $privileges[$privilege->getId()] = $privilege; // Use ID as key to avoid duplicates
+        }
+    }
         $session = $request->getSession();
         $schoolName = $session->get('school_name');
 
@@ -150,6 +164,7 @@ class RattrapageController extends AbstractController
         return $this->render('rattrapage/fields.html.twig', [
             'filieres' => $filieres,
             'user' =>$user,
+            'privileges' => $privileges,
         ]);
     }
 

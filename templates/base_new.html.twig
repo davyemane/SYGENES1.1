@@ -96,15 +96,15 @@
 	</style>
 </head>
 
-<body class="font-sans antialiased leading-none h-full bg-background w-full text-text">
-	<div class="flex h-full z-10	">
+<body class="font-sans antialiased leading-none h-full bg-white	 w-full overflow-x-hidden ">
+	<div class="flex h-full z-10">
 		<div id="sidebarDiv"
-			class="inset-y-0 left-0 fixed bg-background shadow-xl p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
+			class="inset-y-0 left-0 fixed bg-gray-900 shadow-xl p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
 			<img id="toggleBtn" src="/icons/previous.png" alt="previous"
 				class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
 			<div class="inline-flex items-center">
 				<img src="/icons/uiecc.svg" alt="uiecc_logo" class="w-12 h-auto cursor-pointer mr-4">
-				<h1 id="sidebarTitle" class="text-text text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
+				<h1 id="sidebarTitle" class="text-white text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
 				
 			</div>
 			<div id="searchContainer"
@@ -121,29 +121,29 @@
 						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondaryHover rounded-md mt-2">
 						<img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
 						
-						<span class="text-text text-md font-medium flex-1">Dashboard</span>
+						<span class="text-white text-md font-medium flex-1">Dashboard</span>
 					</li>
 				</a>
-				{% if privileges is defined %}
+				{% if privileges is defined and privileges is not empty %}
 				{% set student_privileges = ['Add Student', 'List Students', 'Detail Student', 'Validate Student', 'Generate PV', 'Generate Transcript of notes'] %}
 				{% if privileges|filter(p => p.name in student_privileges)|length > 0 %}
-				<li class="menu-item text-text text-sm cursor-pointer mt-2">
+				<li class="menu-item text-white text-sm cursor-pointer mt-2">
 					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
 						<img src="/icons/students.png" alt="students" class="w-4 h-4 ml-3">
 						<span class="text-base font-medium flex-1">Students</span>
 						<i class="fas fa-chevron-down transition-transform duration-300"></i>
 					</div>
 					<ul class="submenu ml-6 mt-2">
-						{% if privileges|filter(p => p.name == 'Add Student')|length > 0 %}
-						{# <a href="#">
+						{# {% if privileges|filter(p => p.name == 'Add Student')|length > 0 %}
+						{# <a href="{{ path('add_student', {id: student.id}) }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add new student data
 							</li>
 						</a> #}
-						{# <a href="{{ path('add_student', {id: student.id}) }}"> #}
+						 {# <a href="{{ path('add_student')}}"> 
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Modify a student
 								data</li>
 						</a> 
-						{% endif %}
+						{% endif %} #} 
 						{% if privileges|filter(p => p.name == 'List Students')|length > 0 %}
 						<a href="{{ path('fields_index') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List students</li>
@@ -161,7 +161,7 @@
 
 				{% set field_privileges = ['Add Field', 'List Fields'] %}
 				{% if privileges|filter(p => p.name in field_privileges)|length > 0 %}
-				<li class="menu-item text-text text-sm cursor-pointer">
+				<li class="menu-item text-white text-sm cursor-pointer">
 					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
 						<img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
 						<span class="text-base font-medium flex-1">Field</span>
@@ -184,7 +184,7 @@
 
 				{% set profile_privileges = ['Add Profile', 'List Profile'] %}
 				{% if privileges|filter(p => p.name in profile_privileges)|length > 0 %}
-				<li class="menu-item text-text text-sm cursor-pointer">
+				<li class="menu-item text-white text-sm cursor-pointer">
 					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
 						<img src="/icons/grades.png" alt="grades" class="w-4 h-4 ml-3">
 						<span class="text-base font-medium flex-1">Profile</span>
@@ -193,13 +193,13 @@
 					<ul class="submenu ml-6 mt-2">
 						{% if privileges|filter(p => p.name == 'Add Profile')|length > 0 %}
 						<a href="{{path('role_new')}}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add A Profile</li>
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add/Edit A Profile</li>
 						</a>
 						{% endif %}
 						{% if privileges|filter(p => p.name == 'List Profile')|length > 0 %}
-						<a href="{{path('role_new')}}">
+						{# <a href="{{path('role_new')}}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Edit a Profile</li>
-						</a>
+						</a> #}
 						{% endif %}
 						{% if privileges|filter(p => p.name == 'List Profile')|length > 0 %}
 						{# <a href="#">
@@ -214,7 +214,7 @@
 
 				{% set marks_privileges = ['Add Mark', 'View Marks'] %}
 				{% if privileges|filter(p => p.name in marks_privileges)|length > 0 %}
-				<li class="menu-item text-text text-sm cursor-pointer">
+				<li class="menu-item text-white text-sm cursor-pointer">
 					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
 						<img src="/icons/grades.png" alt="grades" class="w-4 h-4 ml-3">
 						<span class="text-base font-medium flex-1">Marks</span>
@@ -257,7 +257,7 @@
 
 				{% set ue_ec_privileges = ['Add UE', 'Add EC', 'List EC', 'List UE'] %}
 				{% if privileges|filter(p => p.name in ue_ec_privileges)|length > 0 %}
-				<li class="menu-item text-text text-sm cursor-pointer">
+				<li class="menu-item text-white text-sm cursor-pointer">
 					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
 						<img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
 						<span class="text-base font-medium flex-1">UE & EC</span>
@@ -286,7 +286,7 @@
 
 				{% set school_privileges = ['Add user','Add School','View statistics','Add Level'] %}
 				{% if privileges|filter(p => p.name in school_privileges)|length > 0 %}
-				<li class="menu-item text-text text-sm cursor-pointer">
+				<li class="menu-item text-white text-sm cursor-pointer">
 					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
 						<img src="/icons/responsable.png" alt="grades" class="w-4 h-4 ml-3">
 						<span class="text-base font-medium flex-1">School</span>
@@ -304,11 +304,11 @@
 						</a>
 						{% endif %}
 
-						{% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
+						{# {% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
 						<a href="{{ path('add_responsable') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add user</li>
 						</a>
-						{% endif %} 
+						{% endif %}  #}
 						{% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
 						<a href="{{ path('app_register') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add user </li>
@@ -324,48 +324,48 @@
 				{% endif %}
 			</ul>
 			{% else %}
-			<p>You don't have any privileges assigned.</p>
+			
 			{% endif %}
 			</ul>
-			<div class="border-t border-gray-600 pt-4 mt-4">
-				<ul>
+			<div class="border-t border-gray-600 pt-4 mt-4 text-white">
+				<ul class="text-white">
 					<a href="{{path('app_profile_show')}}">
 						<li
 							class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
-							<i class="fas fa-user-circle w-4 h-4 ml-3"></i>
-							<span class="text-base font-medium flex-1">Profile</span>
+							<i class="fas fa-user-circle w-4 h-4 ml-3 text-white"></i>
+							<span class="text-white font-medium flex-1">Profile</span>
 						</li>
 					</a>
 					<a href="#">
 						<li
 							class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
-							<i class="fas fa-cog w-4 h-4 ml-3"></i>
-							<span class="text-base font-medium flex-1">Settings</span>
+							<i class="fas fa-cog w-4 h-4 ml-3 text-white"></i>
+							<span class="text-white font-medium flex-1">Settings</span>
 						</li>
 					</a>
 					<a href="#">
 						<li
 							class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
-							<i id="themeToggleIcon" class="fas fa-sun w-4 h-4"></i>
-							<span id="themeToggleText" class="text-base font-medium flex-1">Light Mode</span>
+							<i id="themeToggleIcon" class="fas fa-sun w-4 h-4 text-white"></i>
+							<span id="themeToggleText" class="text-white font-medium flex-1">Light Mode</span>
 						</li>
 					</a>
 					<a href="{{ path('app_logout') }}">
 						<li
 							class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
-							<i class="fas fa-sign-out-alt w-4 h-4 ml-3"></i>
-							<span class="text-base font-medium flex-1">Logout</span>
+							<i class="fas fa-sign-out-alt w-4 h-4 ml-3 text-white	"></i>
+							<span class="text-white font-medium flex-1">Logout</span>
 						</li>
 					</a>
 				</ul>
 			</div>
 		</div>
-		<div id="contentDiv" class="flex-1 bg-background">
+		<div id="contentDiv" class="flex-1 bg-white">
 			<!-- Top Navigation -->
-			<header class="bg-background shadow p-4 flex justify-end items-end">
+			<header class="bg-white shadow p-4 flex justify-end items-end">
 				<div class="flex items-center space-x-4 mr-8">
 					<a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
-						<div class="text-white">{{ user.username }}</div>
+						<div class="text-gray-900">{{ user.username }}</div>
 						{% if user.profilePicture %}
 						<img class="w-8 h-8 rounded-full"
 							src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}"
@@ -378,11 +378,11 @@
 				</div>
 			</header>
 
-			<div id="bodyDiv" class="p-7 flex-1">
-				<div class="flex-grow flex flex-col">
+			<div id="bodyDiv" class="p-7 flex-1 ">
+				<div class="flex-grow flex flex-col ">
 					<!-- Main Content Area -->
-					<main class="flex-grow p-4">
-						<div id="main_content_area" class="bg-background rounded-lg shadow-md h-full ml-64 p-6">
+					<main class="flex-grow p-4 overflow-x-hidden">
+						<div id="main_content_area" class="bg-white rounded-lg shadow-md h-full ml-64 p-6 ">
 							{% block body %}
 							{% block page_header %}{% endblock %}
 							{% endblock %}
@@ -535,14 +535,14 @@
 
 		themeToggleIcon.parentElement.addEventListener('click', toggleTheme);
 
-		// Initialize theme based on system preference
-		if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-			document.documentElement.classList.add('dark');
-		} else {
-			isDarkMode = false;
-			themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
-			themeToggleText.textContent = 'Dark Mode';
-		}
+		// // Initialize theme based on system preference
+		// if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		// 	document.documentElement.classList.add('dark');
+		// } else {
+		// 	isDarkMode = false;
+		// 	themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
+		// 	themeToggleText.textContent = 'Dark Mode';
+		// }
 
 		// Set active state based on the current page
 		const currentPage = window.location.pathname.split('/').pop();
