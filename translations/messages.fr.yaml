@@ -8,7 +8,7 @@ home_header:
   nav:
     home: 'Accueil'
     about: 'À propos'
-    contact_us: 'Nous contacter'
+    contact_us: 'Contactez nous'
     documentation: 'Documentation'
     login: 'Connexion'
     open_menu: 'Ouvrir le menu principal'
