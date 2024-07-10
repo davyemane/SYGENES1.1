@@ -12,6 +12,7 @@ use App\Entity\User;
 use App\Event\AddStudentEvent;
 use App\Form\StudentType;
 use App\Repository\LevelRepository;
+use App\Repository\NoteCcTpRepository;
 use App\Repository\NoteRepository;
 use App\Repository\StudentRepository;
 use App\Repository\UERepository;
@@ -398,75 +399,68 @@ class StudentController extends AbstractController
 
 
     #[Route('/{id}/notes', name: 'student_notes')]
-    public function studentNotes(Request $request, StudentRepository $studentRepository, NoteRepository $noteRepository, $id, LevelRepository $levelRepository, UERepository $ueRepository)
+    public function studentNotes(Request $request, StudentRepository $studentRepository, NoteCcTpRepository $noteRepository, $id, LevelRepository $levelRepository, UERepository $ueRepository)
     {
-
-
         // Récupérer l'étudiant connecté
         $currentUser = $this->getUser();
         $message = '';
-
-
+    
         // Vérifier si l'utilisateur connecté est autorisé à accéder aux notes demandées
         if ($currentUser->getStudent()->getId() != $id) {
-
-            $message = 'acces refusé';
-
+            $message = 'Accès refusé';
             return $this->render('student/error.html.twig', ['message' => $message]);
-            // L'utilisateur connecté n'est pas autorisé à accéder à ces notes
-            // Rediriger vers une page d'erreur ou afficher un message approprié
-            // par exemple : throw $this->createAccessDeniedException('You are not allowed to access these notes.');
         }
-
-
+    
         $student = $studentRepository->find($id);
         if (!$student) {
-            throw $this->createNotFoundException('Student not found.');
-        }
-        $student = $studentRepository->find($id);
-        if (!$student) {
-            $message = "Pas d'etudiant avec cet identifiant";
-
+            $message = "Pas d'étudiant avec cet identifiant";
             return $this->render('student/error.html.twig', [
                 'message' => $message,
                 'user' => $currentUser
             ]);
         }
-
+    
+        $currentLevel = $student->getLevel();
+        $allLevels = $levelRepository->findAll();
+        
+        // Trouver l'index du niveau actuel
+        $currentLevelIndex = array_search($currentLevel, $allLevels);
+        
+        // Sélectionner le niveau actuel et les niveaux précédents
+        $relevantLevels = array_slice($allLevels, 0, $currentLevelIndex + 1);
+    
         $notes = $noteRepository->findBy(['student' => $student]);
-
-        $notesByUe = []; // Changed to notesByUe for clarity
+    
+        $notesByLevelAndUe = [];
         foreach ($notes as $note) {
-            $ue = $note->getEc()->getUe(); // Assuming relationships are set correctly
-
-            $notesByUe[$ue->getId()][] = $note;
-        }
-
-        $levels = $levelRepository->findAll();
-
-        // Process notesByUe to group by level, UE, and add validation status
-        $processedNotes = [];
-        foreach ($notesByUe as $ueId => $ueNotes) {
-            $levelId = $ue->getLevel()->getId();
-            foreach ($ueNotes as $note) {
-                $totalScore = $note->getCc() + $note->getTp() + $note->getSn();
-                $validated = $totalScore >= 50 && $totalScore <= 100;
-                $processedNotes[$levelId][$ueId][] = [
-                    'note' => $note,
-                    'validated' => $validated,
-                ];
+            $ue = $note->getEc()->getUe();
+            $level = $ue->getLevel();
+            if (in_array($level, $relevantLevels)) {
+                $notesByLevelAndUe[$level->getId()][$ue->getId()][] = $note;
             }
         }
-
+    
+        // Traiter les notes pour les regrouper par niveau et UE
+        $processedNotes = [];
+        foreach ($notesByLevelAndUe as $levelId => $levelNotes) {
+            foreach ($levelNotes as $ueId => $ueNotes) {
+                foreach ($ueNotes as $note) {
+                    $processedNotes[$levelId][$ueId][] = [
+                        'note' => $note,
+                        'cc' => $note->getCc(),
+                        'tp' => $note->getTp(),
+                    ];
+                }
+            }
+        }
+    
         return $this->render('student/notes.html.twig', [
             'user' => $currentUser,
             'student' => $student,
             'processedNotes' => $processedNotes,
-            'levels' => $levels,
-            'ueRepository' => $ueRepository, // Pass ueRepository to the template
-        ]);
-    }
-
+            'relevantLevels' => $relevantLevels,
+            'ueRepository' => $ueRepository,
+        ]);    }
 
 
     //creer automatiquement un compte a un etudiant 

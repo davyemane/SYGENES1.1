@@ -17,7 +17,7 @@ class NoteController extends AbstractController
 {
 
     #[Route('/add/note/{id?0}', name: 'add_note')]
-    public function AddNote($id, ManagerRegistry $doctrine, Request $request, SystemNotation $systemNotation): Response
+    public function AddNote($id, ManagerRegistry $doctrine, Request $request): Response
     {
 
         // Check if the user has ROLE_ADMIN
