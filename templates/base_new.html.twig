@@ -168,12 +168,12 @@
 					</div>
 					<ul class="submenu ml-6 mt-2">
 						{% if privileges|filter(p => p.name == 'Add Field')|length > 0 %}
-						<a href="#">
+						<a href="{{ path('field_new') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add A Field</li>
 						</a>
 						{% endif %}
 						{% if privileges|filter(p => p.name == 'List Fields')|length > 0 %}
-						<a href="#">
+						<a href="{{ path('') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List Fields</li>
 						</a>
 						{% endif %}
