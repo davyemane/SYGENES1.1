@@ -1,9 +1,8 @@
 {% extends 'base_StudentDashboard.html.twig' %}
 
 {% block head %}
-  {% block title %}<title> Notes de {{ student.name }}</title>{% endblock %}
+  {% block title %}<title>Notes de {{ student.name }}</title>{% endblock %}
 {% endblock %}
-
 
 {% block body %}
 <div class="bg-background flex flex-col justify-start items-start ml-64 mr-10">
@@ -11,82 +10,61 @@
     {% block page_header %}
     <div class="container mt-16 ml-8 ">
         <h1 class="text-4xl font-bold mb-5 tracking-tight text-text sm:text-6xl">Academic Profile</h1>
-        <p></p>
         <span class="font-semibold mb-1 mt-5 text-3xl text-blue-600">{{ student.name }}</span>
-        <p class="text-sm text-text mt-1 mb-10">This is where you see your various grades per year.</p>
+        <p class="text-sm text-text mt-1 mb-10">Notes pour le niveau actuel ({{ student.level.name }}) et les niveaux précédents</p>
     </div>
     {% endblock %}
 
     {% if processedNotes is empty %}
-    <p class="bg-red-100 ml-8 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">No marks found for
-        this student.</p>
+    <p class="bg-red-100 ml-8 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">Aucune note trouvée pour cet étudiant.</p>
     {% else %}
 
     <div class="space-y-6 ml-3 w-full" id="accordionNotes">
-        {% for level in levels %}
-        <div class="border border-gray-200 rounded-md ">
-            <h2 id="heading-{{ level.id }}" class="">
-                <button
-                    class="w-full flex text-left px-4 py-2 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ level.id }}"
-                    aria-expanded="false" aria-controls="collapse-{{ level.id }}">
-                    {{ level.name }}
-                    <svg class="h-5 w-5 text-blue-500 transform -rotate-120 " viewBox="0 0 20 20" fill="currentColor"
-                        aria-hidden="true">
-                        <path fill-rule="evenodd"
-                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </button>
-
-            </h2>
-            <div id="collapse-{{ level.id }}" class="hidden" aria-labelledby="heading-{{ level.id }}"
-                data-bs-parent="#accordionNotes">
-                <div class="p-4">
-                    {% if processedNotes[level.id] is defined %}
-                    <h3 class="text-lg font-semibold mb-2 text-black">UEs</h3>
-                    {% for ueId, ueNotes in processedNotes[level.id] %}
-                    <h4 class="text-md font-medium mb-1">{{ ueRepository.find(ueId).name }}</h4>
-                    <table class="w-full table-auto border-collapse border border-gray-200">
-                        <thead>
-                            <tr class="bg-gray-100">
-                                <th class="border border-gray-200 px-4 py-2">EC</th>
-                                <th class="border border-gray-200 px-4 py-2">CC</th>
-                                <th class="border border-gray-200 px-4 py-2">TP</th>
-                                <th class="border border-gray-200 px-4 py-2">SN</th>
-                                <th class="border border-gray-200 px-4 py-2">Validé</th>
-                                <th class="border border-gray-200 px-4 py-2">Rattrapage</th>
-                                <th class="border border-gray-200 px-4 py-2">Semestre</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for processedNote in ueNotes %}
-                            <tr class="odd:bg-white even:bg-gray-50">
-                                <td class="border border-gray-200 px-4 py-2">{{ processedNote['note'].ec.codeEc }} -
-                                    {{ processedNote['note'].ec.name }}</td>
-                                <td class="border border-gray-200 px-4 py-2">{{ processedNote['note'].cc }}</td>
-                                <td class="border border-gray-200 px-4 py-2">{{ processedNote['note'].tp }}</td>
-                                <td class="border border-gray-200 px-4 py-2">{{ processedNote['note'].sn }}</td>
-                                <td class="border border-gray-200 px-4 py-2">
-                                    {% if processedNote['validated'] %}
-                                    <i class="bi bi-check-circle-fill text-green-500">yes</i>
-                                    {% else %}
-                                    <i class="bi bi-check-circle text-gray-400"> no</i>
-                                    {% endif %}
-                                </td>
-                                <td class="border border-gray-200 px-4 py-2">{{ processedNote['note'].rattrapage }}</td>
-                                <td class="border border-gray-200 px-4 py-2">{{ processedNote['note'].semester }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    {% endfor %}
-                    {% else %}
-                    <p class="text-black-700">Aucune note trouvée pour ce niveau.</p>
-                    {% endif %}
+        {% for level in relevantLevels|reverse %}
+            {% if processedNotes[level.id] is defined %}
+            <div class="border border-gray-200 rounded-md ">
+                <h2 id="heading-{{ level.id }}" class="">
+                    <button
+                        class="w-full flex text-left px-4 py-2 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ level.id }}"
+                        aria-expanded="{{ level == student.level ? 'true' : 'false' }}" aria-controls="collapse-{{ level.id }}">
+                        {{ level.name }}
+                        <svg class="h-5 w-5 text-blue-500 transform -rotate-120 " viewBox="0 0 20 20" fill="currentColor"
+                            aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </h2>
+                <div id="collapse-{{ level.id }}" class="{{ level == student.level ? '' : 'hidden' }}" aria-labelledby="heading-{{ level.id }}"
+                    data-bs-parent="#accordionNotes">
+                    <div class="p-4">
+                        {% for ueId, ueNotes in processedNotes[level.id] %}
+                        <h4 class="text-md font-medium mb-1">{{ ueRepository.find(ueId).name }}</h4>
+                        <table class="w-full table-auto border-collapse border border-gray-200 mb-4">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="border border-gray-200 px-4 py-2">EC</th>
+                                    <th class="border border-gray-200 px-4 py-2">CC</th>
+                                    <th class="border border-gray-200 px-4 py-2">TP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for noteData in ueNotes %}
+                                <tr class="odd:bg-white even:bg-gray-50">
+                                    <td class="border border-gray-200 px-4 py-2">{{ noteData.note.ec.codeEc }} - {{ noteData.note.ec.name }}</td>
+                                    <td class="border border-gray-200 px-4 py-2">{{ noteData.cc }}</td>
+                                    <td class="border border-gray-200 px-4 py-2">{{ noteData.tp }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
+            {% endif %}
         {% endfor %}
     </div>
 
@@ -94,13 +72,6 @@
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Collapse all accordion items by default
-        var collapseElementList = document.querySelectorAll('.hidden');
-        var collapseList = [].slice.call(collapseElementList);
-        collapseList.forEach(function (collapseEl) {
-            collapseEl.classList.add('hidden');
-        });
-
         var buttons = document.querySelectorAll('[data-bs-toggle="collapse"]');
         buttons.forEach(function (button) {
             button.addEventListener('click', function () {

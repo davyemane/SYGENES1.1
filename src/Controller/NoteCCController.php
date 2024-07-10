@@ -113,7 +113,7 @@ class NoteCCController extends AbstractController
             $entityManager->flush();
     
             $this->addFlash('success', 'Les notes ont été enregistrées avec succès.');
-            return $this->redirectToRoute('insert_notes', ['ecId' => $ecId]);
+            return $this->redirectToRoute('app_dashAdmin');
         }
     
 

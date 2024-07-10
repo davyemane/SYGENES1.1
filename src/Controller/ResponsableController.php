@@ -248,7 +248,7 @@ class ResponsableController extends AbstractController
                     ->setParameter('field', $fieldId);
             }
             if ($name) {
-                $queryBuilder->andWhere('s.name LIKE :name OR s.firstName LIKE :name')
+                $queryBuilder->andWhere('s.name LIKE :name')
                     ->setParameter('name', '%' . $name . '%');
             }
 
