@@ -112,8 +112,9 @@ welcome_page:
 language_choice_page:
   language-message: "Poná lokota na yo"
   english-language: "Lingelesi"
-  french-language: "Lingala"
+  french-language: "Falansé"
   spanish-language: "Lispania"
+  lingala-language: "Lingala"
   next-language-btn: "Sima"
   copyright: " 2024 ESIGN. Makoki nyonso ebombami"
 
