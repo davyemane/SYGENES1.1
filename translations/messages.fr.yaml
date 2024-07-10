@@ -142,13 +142,13 @@ create_school_page:
 
 # Create Field Page 
 field_page: 
-  create-field-title: "Créer un champ"
-  edit-field-title: "Modifier un champ"
+  create-field-title: "Créer un filiere"
+  edit-field-title: "Modifier un filiere"
   next: "Suivant"
-  create-field: "Créer un champ"
-  edit-field: "Modifier un champ"
-  toggle-existing-fields: "Afficher/Masquer les champs existants"
-  existing-fields: "Champs existants"
+  create-field: "Créer un filiere"
+  edit-field: "Modifier un filiere"
+  toggle-existing-fields: "Afficher/Masquer les filieres existants"
+  existing-fields: "filiere existants"
   code: "Code"
   edit: "Modifier"
   success: "Succès"
@@ -200,7 +200,7 @@ register_page:
   register: "Inscription"
   user-registration: "Inscription de l'utilisateur"
   back: "Retour"
-  username: "Nom d'utilisateur"
+  username: "Login"
   email: "Email"
   password: "Mot de passe"
   profile-picture: "Photo de profil"

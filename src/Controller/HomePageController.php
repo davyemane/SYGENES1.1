@@ -128,5 +128,26 @@ public function StudentDashboard(SessionInterface $session, EntityManagerInterfa
     }
 }
 
+public function someAction(): Response
+{
+    $user = $this->getUser();
+    if (!$user) {
+        return $this->redirectToRoute('app_login');
+    }
+    
+    // Collect all unique privileges of the user
+    $privileges = [];
+    foreach ($user->getRole() as $role) {
+        foreach ($role->getPrivileges() as $privilege) {
+            $privileges[$privilege->getId()] = $privilege; // Use ID as key to avoid duplicates
+        }
+    }
+    
+    return $this->render('base_new.html.twig', [
+        "user" => $user,
+        'privileges' => array_values($privileges), // This line is important
+    ]);
+}
+
 }
 

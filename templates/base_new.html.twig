@@ -105,6 +105,7 @@
 			<div class="inline-flex items-center">
 				<img src="/icons/uiecc.svg" alt="uiecc_logo" class="w-12 h-auto cursor-pointer mr-4">
 				<h1 id="sidebarTitle" class="text-text text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
+				
 			</div>
 			<div id="searchContainer"
 				class="flex items-center rounded-md bg-secondary mt-6 transition-all duration-300">
@@ -123,7 +124,7 @@
 						<span class="text-text text-md font-medium flex-1">Dashboard</span>
 					</li>
 				</a>
-				{% if privileges is not empty %}
+				{% if privileges is defined %}
 				{% set student_privileges = ['Add Student', 'List Students', 'Detail Student', 'Validate Student', 'Generate PV', 'Generate Transcript of notes'] %}
 				{% if privileges|filter(p => p.name in student_privileges)|length > 0 %}
 				<li class="menu-item text-text text-sm cursor-pointer mt-2">
@@ -227,7 +228,7 @@
 						</a>
 						{% endif %} #}
 						{% if privileges|filter(p => p.name == 'Add Mark')|length > 0 %}
-						{# <a href="{{ path('') }}"> #}
+						<a href="#">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add CC Mark
 								</li>
 						</a>
@@ -303,18 +304,18 @@
 						</a>
 						{% endif %}
 
-						{% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
+						{# {% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
 						<a href="{{ path('add_responsable') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add user</li>
 						</a>
-						{% endif %}
+						{% endif %} #}
 						{% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
 						<a href="{{ path('app_register') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add user 2</li>
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add user </li>
 						</a>
 						{% endif %}
 						{% if privileges|filter(p => p.name == 'View statistics')|length > 0 %}
-						<a href="#">
+						<a href="{{ path('resp_statistics') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View statistics</li>
 						</a>
 						{% endif %}
