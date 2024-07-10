@@ -9,10 +9,10 @@
   {% block page_header %}
   <div class="mb-8">
     <h1 class="text-4xl font-semibold text-blue-600">Liste des étudiants à accepter</h1>
-    <p class="text-sm text-gray-600 mt-2">Accepter ou refuser l'admission basée sur les dossiers présentés</p>
+    <p class="text-sm text-text mt-2">Accepter ou refuser l'admission basée sur les dossiers présentés</p>
 
     <!-- Search Bar -->
-    <div class="bg-white mt-6 p-4 rounded-lg shadow">
+    <div class="bg-background mt-6 p-4 rounded-lg shadow">
       <form action="{{ path('list_student_2') }}" method="get" class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
         <input type="search" name="name" placeholder="Rechercher par nom..." class="border rounded-md p-2 w-full md:w-1/3" value="{{ currentName|default('') }}">
         <select class="form-control border rounded-md p-2 w-full md:w-1/3" name="field">
