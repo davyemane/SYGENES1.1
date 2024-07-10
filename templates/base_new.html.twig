@@ -138,9 +138,8 @@
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add new student data
 							</li>
 						</a> #}
-						<a href="{{path(add_student), {id: student.id}}}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Modify a student
-								data</li>
+						<a href="{{path('add_student')}}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Modify a student</li>
 						</a> 
 						{% endif %}
 						{% if privileges|filter(p => p.name == 'List Students')|length > 0 %}
@@ -227,7 +226,7 @@
 						</a>
 						{% endif %} #}
 						{% if privileges|filter(p => p.name == 'Add Mark')|length > 0 %}
-						<a href="{{ path('') }}">
+						<a href="#">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add CC Mark
 								</li>
 						</a>
@@ -314,7 +313,7 @@
 						</a>
 						{% endif %}
 						{% if privileges|filter(p => p.name == 'View statistics')|length > 0 %}
-						<a href="#">
+						<a href="{{ path('resp_statistics') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View statistics</li>
 						</a>
 						{% endif %}

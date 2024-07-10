@@ -1,6 +1,6 @@
 {% extends 'base_login.html.twig' %}
 
-{% block title %}<title>{{ (role.id ? "role.edit-role-title" : "role.create-role-title")|trans }}</title>{% endblock %}
+{% block title %}<title>{{ (role.id ? "role_page.edit-role-title" : "role_page.create-role-title")|trans }}</title>{% endblock %}
 
 {% block body %}
 <div class="min-h-screen bg-gradient-to-br from-blue-100 to-orange-100 dark:from-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300 flex items-center justify-center">
@@ -8,7 +8,7 @@
         <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-xl overflow-hidden">
             <div class="px-6 py-8 sm:px-10">
                 <h1 class="text-3xl font-extrabold text-text dark:text-text-light text-center mb-8">
-                    {{ (role.id ? "role.edit-role" : "role.create-role")|trans }}
+                    {{ (role.id ? "role_page.edit-role" : "role_page.create-role")|trans }}
                 </h1>
 
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-8 space-y-4 sm:space-y-0">
@@ -16,10 +16,10 @@
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
-                        {{ "role.back"|trans }}
+                        {{ "role_page.back"|trans }}
                     </a>
                     <a href="{{ path('level_new') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-secondary hover:bg-secondaryHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary transition duration-300">
-                        {{ "role.next"|trans }}
+                        {{ "role_page.next"|trans }}
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
@@ -27,16 +27,16 @@
                 </div>
 
                 <button id="toggleExistingRoles" class="w-full mb-8 bg-secondary hover:bg-secondaryHover text-white font-semibold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50 shadow-md">
-                    {{ "role.toggle-existing-roles"|trans }}
+                    {{ "role_page.toggle-existing-roles"|trans }}
                 </button>
 
                 <div id="existingRolesContainer" class="mb-8 hidden">
-                    <h2 class="text-2xl font-bold text-text dark:text-text-light mb-4">{{ "role.existing-roles"|trans }}</h2>
+                    <h2 class="text-2xl font-bold text-text dark:text-text-light mb-4">{{ "role_page.existing-roles"|trans }}</h2>
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {% for existingRole in existingRoles %}
                             <div class="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-lg p-4 shadow-md hover:shadow-lg transition duration-300">
                                 <h3 class="font-bold text-lg text-text dark:text-text-light mb-2">{{ existingRole.name }}</h3>
-                                <p class="text-sm text-gray-600 dark:text-gray-300">{{ "role.school"|trans }}: {{ existingRole.school ? existingRole.school.name : "role.not-assigned"|trans }}</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">{{ "role.school"|trans }}: {{ existingRole.school ? existingRole.school.name : "role_page.not-assigned"|trans }}</p>
                                 <p class="text-sm text-gray-600 dark:text-gray-300">{{ "role.privileges"|trans }}: {{ existingRole.privileges|length }}</p>
                             </div>
                         {% endfor %}
@@ -46,7 +46,7 @@
                 {% for label, messages in app.flashes %}
                     {% for message in messages %}
                         <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 dark:bg-{{ label == 'success' ? 'green' : 'red' }}-900 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 dark:text-{{ label == 'success' ? 'green' : 'red' }}-100 p-4 mb-6 rounded-lg shadow-md" role="alert">
-                            <p class="font-bold">{{ (label == 'success' ? "role.success" : "role.error")|trans }}</p>
+                            <p class="font-bold">{{ (label == 'success' ? "role_page.success" : "role_page.error")|trans }}</p>
                             <p>{{message|trans }}</p>
                         </div>
                     {% endfor %}
@@ -55,14 +55,14 @@
                 {{ form_start(form, {'attr': {'class': 'space-y-8'}}) }}
                     <div class="space-y-6">
                         <div>
-                            {{ form_label(form.name, 'role.name'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
+                            {{ form_label(form.name, 'role_page.name'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
                             {{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-secondary focus:ring focus:ring-secondary focus:ring-opacity-50 transition bg-white dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4'}}) }}
                             {{ form_errors(form.name, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
                         </div>
                     </div>
 
                     <div class="mt-8">
-                        <h3 class="text-xl font-semibold text-text dark:text-text-light mb-4">{{ "role.privileges"|trans }}</h3>
+                        <h3 class="text-xl font-semibold text-text dark:text-text-light mb-4">{{ "role_page.privileges"|trans }}</h3>
                         <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 shadow-inner">
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {% for privilege in form.privileges %}
@@ -81,17 +81,17 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                             </svg>
-                            {{ "role.back"|trans }}
+                            {{ "role_page.back"|trans }}
                         </a>
                         <div class="flex space-x-4">
                             <a href="{{ path('level_new') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-secondary hover:bg-secondaryHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary transition duration-300">
-                                {{ "role.next"|trans }}
+                                {{ "role_page.next"|trans }}
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                 </svg>
                             </a>
                             <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primaryHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition duration-300">
-                                {{ (role.id ? "role.update" : "role.create")|trans }}
+                                {{ (role.id ? "role_page.update" : "role_page.create")|trans }}
                             </button>
                         </div>
                     </div>
