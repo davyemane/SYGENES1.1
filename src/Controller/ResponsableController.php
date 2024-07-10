@@ -125,8 +125,10 @@ class ResponsableController extends AbstractController
         // Vérifier si l'utilisateur a le privilège "List Student"
         $user = $this->getUser();
         $hasListStudentPrivilege = false;
+        $privileges = [];
         foreach ($user->getRole() as $role) {
             foreach ($role->getPrivileges() as $privilege) {
+                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
                 if ($privilege->getName() === 'List EC') {
                     $hasListStudentPrivilege = true;
                     break 2;
@@ -152,7 +154,13 @@ class ResponsableController extends AbstractController
 
         return $this->render(
             'ue/listEc.html.twig',
-            ['data' => $data, 'user' => $user]
+            [
+                'data' => $data, 
+                'user' => $user,
+                'privileges' => array_values($privileges), // Convertir en tableau indexé
+
+            ]
+            
         );
     }
 
@@ -301,11 +309,21 @@ class ResponsableController extends AbstractController
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
-
-        // Vérification du privilège de manière optimisée
-        $listFieldsPrivilege = $privilegeRepository->findOneBy(['name' => 'List Fields']);
-        if (!$listFieldsPrivilege) {
-            return $this->render('student/error.html.twig', ['message' => 'Privilege not found']);
+        // Vérifier si l'utilisateur a le privilège "List Student"
+        $user = $this->getUser();
+        $hasListStudentPrivilege = false;
+        $privileges = [];
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
+                if ($privilege->getName() === 'List EC') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
         }
 
         $hasPrivilege = $entityManager->getRepository(User::class)
@@ -316,7 +334,7 @@ class ResponsableController extends AbstractController
             ->where('u.id = :userId')
             ->andWhere('p.id = :privilegeId')
             ->setParameter('userId', $user->getId())
-            ->setParameter('privilegeId', $listFieldsPrivilege->getId())
+            ->setParameter('privilegeId', $privilege->getId())
             ->getQuery()
             ->getSingleScalarResult() > 0;
 
@@ -342,7 +360,9 @@ class ResponsableController extends AbstractController
 
         return $this->render('responsable/field.html.twig', [
             'fields' => $fields,
-            'user' => $user
+            'user' => $user,
+            'privileges' => array_values($privileges), // Convertir en tableau indexé
+
         ]);
     }    //list des etudiants en attente de validation d'inscription 
 
@@ -362,10 +382,21 @@ class ResponsableController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        // Vérification du privilège de manière optimisée
-        $listStudentsPrivilege = $privilegeRepository->findOneBy(['name' => 'List Students']);
-        if (!$listStudentsPrivilege) {
-            return $this->render('student/error.html.twig', ['message' => 'Privilege not found']);
+        // Vérifier si l'utilisateur a le privilège "List Student"
+        $user = $this->getUser();
+        $hasListStudentPrivilege = false;
+        $privileges = [];
+        foreach ($user->getRole() as $role) {
+            foreach ($role->getPrivileges() as $privilege) {
+                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
+                if ($privilege->getName() === 'List EC') {
+                    $hasListStudentPrivilege = true;
+                    break 2;
+                }
+            }
+        }
+        if (!$hasListStudentPrivilege) {
+            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
         }
 
         $hasPrivilege = $entityManager->getRepository(User::class)
@@ -376,7 +407,7 @@ class ResponsableController extends AbstractController
             ->where('u.id = :userId')
             ->andWhere('p.id = :privilegeId')
             ->setParameter('userId', $user->getId())
-            ->setParameter('privilegeId', $listStudentsPrivilege->getId())
+            ->setParameter('privilegeId', $privilege->getId())
             ->getQuery()
             ->getSingleScalarResult() > 0;
 
@@ -454,6 +485,8 @@ class ResponsableController extends AbstractController
             'currentField' => $fieldId,
             'fields' => $fields,
             'user' => $user,
+            'privileges' => array_values($privileges), // Convertir en tableau indexé
+
         ]);
     }
 }

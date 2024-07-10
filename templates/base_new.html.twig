@@ -139,12 +139,13 @@
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add new student data
 							</li>
 						</a> #}
-						<a href="{{path('add_student')}}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Modify a student</li>
+						{# <a href="{{ path('add_student', {id: student.id}) }}"> #}
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Modify a student
+								data</li>
 						</a> 
 						{% endif %}
 						{% if privileges|filter(p => p.name == 'List Students')|length > 0 %}
-						<a href="{{ path('list_student_2') }}">
+						<a href="{{ path('fields_index') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List students</li>
 						</a>
 						{% endif %}

@@ -470,9 +470,10 @@ class StudentController extends AbstractController
 
 
     //creer automatiquement un compte a un etudiant 
-    #[Route('/create-account/{studentId}', name: 'create_student_account')]
+    #[Route('/create-account/{studentId}/{fieldId}', name: 'create_student_account')]
     public function createAccountForStudent(
         int $studentId,
+        int $fieldId,
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface $entityManager,
     ): Response {
@@ -573,10 +574,16 @@ class StudentController extends AbstractController
         $entityManager->flush();
 
 
+        $routeParams = [];
+
+        if ($fieldId) {
+            $routeParams['fieldId'] = $fieldId;
+        }
+    
         // Ajouter un message flash de succès
         $this->addFlash('success', 'Account created successfully');
-
-        // Rediriger vers une autre page
-        return $this->redirectToRoute('list_student_2');
-    }
+    
+        // Rediriger vers list_student_2 avec l'identifiant de la filière
+        return $this->redirectToRoute('list_student_2', $routeParams);
+        }
 }
