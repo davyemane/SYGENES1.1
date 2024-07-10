@@ -172,11 +172,11 @@
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add A Field</li>
 						</a>
 						{% endif %}
-						{% if privileges|filter(p => p.name == 'List Fields')|length > 0 %}
+						{# {% if privileges|filter(p => p.name == 'List Fields')|length > 0 %}
 						<a href="{{ path('') }}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List Fields</li>
 						</a>
-						{% endif %}
+						{% endif %} #}
 					</ul>
 				</li>
 				{% endif %}
@@ -191,14 +191,19 @@
 					</div>
 					<ul class="submenu ml-6 mt-2">
 						{% if privileges|filter(p => p.name == 'Add Profile')|length > 0 %}
-						<a href="#">
+						<a href="{{path('role_new')}}">
 							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add A Profile</li>
 						</a>
 						{% endif %}
 						{% if privileges|filter(p => p.name == 'List Profile')|length > 0 %}
-						<a href="#">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List Profiles</li>
+						<a href="{{path('role_new')}}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Edit a Profile</li>
 						</a>
+						{% endif %}
+						{% if privileges|filter(p => p.name == 'List Profile')|length > 0 %}
+						{# <a href="#">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List Profiles</li>
+						</a> #}
 						{% endif %}
 
 					</ul>
