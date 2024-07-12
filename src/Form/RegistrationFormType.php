@@ -70,19 +70,13 @@ class RegistrationFormType extends AbstractType
                         'mimeTypesMessage' => 'Please upload a valid image file (JPG or PNG)',
                     ])
                 ],
-            ])
+            ]);
 
-            ->add('role', HiddenType::class, [
-                'mapped' => false,
-            ])
-            ->add('Responsable', ResponsableType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
-            'school_roles' => [],
         ]);
     }
 }

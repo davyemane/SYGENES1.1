@@ -11,13 +11,13 @@ security:
                 class: App\Entity\User
                 property: username
     role_hierarchy: 
-        ROLE_TEACHER: ROLE_USER
-        ROLE_AAT:  ROLE_TEACHER
-        ROLE_AATP: ROLE_AAT
-        ROLE_RPA: ROLE_AATP
-        ROLE_CEP: ROLE_RPA
-        ROLE_SA: ROLE_CEP
-        ROLE_ADMIN: [ROLE_SA, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_TEACHER: ROLE_STUDENT
+        ROLE_RESPUE:  ROLE_TEACHER
+        ROLE_RESLEVEL: ROLE_RESPUE
+        ROLE_RESPFIELD: ROLE_RESLEVEL
+        ROLE_RESPSCHOOL: ROLE_RESPFIELD
+        ROLE_ADMIN: ROLE_RESPSCHOOL
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/

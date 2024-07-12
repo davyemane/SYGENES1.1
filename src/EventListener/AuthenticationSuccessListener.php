@@ -26,15 +26,14 @@ class AuthenticationSuccessListener
         $user = $event->getAuthenticationToken()->getUser();
         
         // Récupérer les rôles de l'utilisateur
-        $roles = $user->getRole();
         
-        foreach ($roles as $role) {
-            $school = $role->getSchool();
-            if ($school !== null) {
-                // Stocker le nom de l'école en session
-                $session->set('school_name', $school->getName());
-                break; // On prend la première école trouvée
-            }
-        }
+        // foreach ($roles as $role) {
+        //     $school = $role->getSchool();
+        //     if ($school !== null) {
+        //         // Stocker le nom de l'école en session
+        //         $session->set('school_name', $school->getName());
+        //         break; // On prend la première école trouvée
+        //     }
+        // }
     }
 }

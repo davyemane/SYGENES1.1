@@ -62,31 +62,33 @@ class SecurityController extends AbstractController
     #[Route(path: '/redirect', name: 'app_redirect')]
     public function redirectUser(): Response
     {
-        // Récupérer l'utilisateur connecté
-        $user = $this->security->getUser();
+        return $this->redirectToRoute('app_dashAdmin');
+
+    //     // Récupérer l'utilisateur connecté
+    //     $user = $this->security->getUser();
     
-        if (!$user) {
-            // Si aucun utilisateur n'est connecté, rediriger vers la page d'accueil
-            return $this->redirectToRoute('app_home');
-        }
+    //     if (!$user) {
+    //         // Si aucun utilisateur n'est connecté, rediriger vers la page d'accueil
+    //         return $this->redirectToRoute('app_home');
+    //     }
     
-        // Récupérer les rôles de l'utilisateur
-        $userRoles = $user->getRole();
+    //     // Récupérer les rôles de l'utilisateur
     
-        if ($userRoles->isEmpty()) {
-            // Si l'utilisateur n'a pas de rôles, rediriger vers la page d'accueil
-            return $this->redirectToRoute('app_home');
-        }
+    //     if ($security) {
+    //         // Si l'utilisateur n'a pas de rôles, rediriger vers la page d'accueil
+    //         return $this->redirectToRoute('app_home');
+    //     }
     
-        // Vérifier si l'utilisateur a le rôle "Student"
-        $isStudent = $userRoles->exists(function($key, Role $role) {
-            return $role->getName() === 'Student';
-        });
+    //     // Vérifier si l'utilisateur a le rôle "Student"
+    //     $isStudent = $userRoles->exists(function($key, Role $role) {
+    //         return $role->getName() === 'Student';
+    //     });
     
-        if ($isStudent) {
-            return $this->redirectToRoute('app_dashStudent');
-        } else {
-            // Tous les autres rôles sont redirigés vers le dashboard Admin
-            return $this->redirectToRoute('app_dashAdmin');
-        }
-    }}
+    //     if ($isStudent) {
+    //         return $this->redirectToRoute('app_dashStudent');
+    //     } else {
+    //         // Tous les autres rôles sont redirigés vers le dashboard Admin
+    //         return $this->redirectToRoute('app_dashAdmin');
+    //     }
+     }
+}

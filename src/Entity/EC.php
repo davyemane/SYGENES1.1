@@ -56,6 +56,9 @@ class EC
     #[ORM\OneToMany(targetEntity: Anonymat::class, mappedBy: 'eC')]
     private Collection $anonymats;
 
+    #[ORM\ManyToOne(inversedBy: 'ecs')]
+    private ?Teacher $teacher = null;
+
     public function __construct()
     {
         $this->noteCcTps = new ArrayCollection();
@@ -188,6 +191,18 @@ class EC
                 $anonymat->setEC(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTeacher(): ?Teacher
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(?Teacher $teacher): static
+    {
+        $this->teacher = $teacher;
 
         return $this;
     }

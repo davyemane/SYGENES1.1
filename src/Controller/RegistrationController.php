@@ -2,9 +2,11 @@
 namespace App\Controller;
 
 use App\Entity\Responsable;
+use App\Entity\RespSchool;
 use App\Entity\School;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Form\RespSchoolType;
 use App\Repository\RoleRepository;
 use App\Security\EmailVerifier;
 use App\Security\LoginAuthenticator;
@@ -19,6 +21,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use App\Repository\SchoolRepository;
+
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 #[Route('/admin')]
 
@@ -138,4 +142,95 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('list_student');
     }
 
+    
+    #[Route('/register/respschool/{id<\d+>?0}', name: 'app_register_respschool')]
+    public function manageRespSchool(
+        Request $request, 
+        UserPasswordHasherInterface $userPasswordHasher, 
+        EntityManagerInterface $entityManager, 
+        SchoolRepository $schoolRepository,
+        Security $security,
+        $id
+    ): Response
+    {
+        $isEdit = false;
+        if ($id) {
+            $isEdit = true;
+        }
+    
+        if ($isEdit) {
+            $user = $entityManager->getRepository(User::class)->find($id);
+            if (!$user) {
+                throw $this->createNotFoundException('Utilisateur non trouvé');
+            }
+            $respSchool = $user->getRespSchool();
+            if (!$respSchool) {
+                $respSchool = new RespSchool();
+                $user->setRespSchool($respSchool);
+            }
+        } else {
+            $user = new User();
+            $respSchool = new RespSchool();
+        }
+    
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->add('respSchool', RespSchoolType::class);
+    
+        if ($isEdit) {
+            $form->remove('plainPassword');
+        }
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!$isEdit) {
+                // Encode the password only for new users
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+                $user->setRoles(['ROLE_ADMIN']);
+                $respSchool->setCreatedAt(new \DateTime());
+                
+                // Set the creator as the currently logged-in user
+                $currentUser = $security->getUser();
+                if ($currentUser) {
+                    $respSchool->setCreatedBy($currentUser);
+                } else {
+                    return $this->redirectToRoute('app_login');
+                }
+            }
+    
+            $email = $form->get('email')->getData();
+            $user->setEmail($email);
+    
+            // Set RespSchool data
+            $respSchool->setName($form->get('respSchool')->get('name')->getData());
+            $respSchool->setCni($form->get('respSchool')->get('cni')->getData());
+            $respSchool->setPhoneNumber($form->get('respSchool')->get('phone_number')->getData());
+            $respSchool->setEmail($email);
+            
+            // Set the school
+            $school = $schoolRepository->find($form->get('respSchool')->get('school')->getData());
+            $respSchool->setSchool($school);
+    
+            // Link User and RespSchool
+            $user->setRespSchool($respSchool);
+    
+            // Save to database
+            $entityManager->persist($user);
+            $entityManager->persist($respSchool);
+            $entityManager->flush();
+    
+            // Redirect or render success message
+            return $this->redirectToRoute('some_success_route');
+        }
+    
+        return $this->render('resp_school/register_respschool.html.twig', [
+            'registrationForm' => $form->createView(),
+            'isEdit' => $isEdit,
+        ]);
+    }
 }
