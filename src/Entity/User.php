@@ -37,21 +37,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(inversedBy: 'userAccount', cascade: ['persist', 'remove'])]
     private ?Student $student = null;
 
-    #[ORM\OneToOne(inversedBy: 'userAccount', cascade: ['persist', 'remove'])]
-    private ?Responsable $Responsable = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $profilePicture = null;
 
-    /**
-     * @var Collection<int, Role>
-     */
-    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
-    #[ORM\JoinTable(name: 'user_role')]
-    private Collection $role;
 
     /**
      * @var Collection<int, NoteCcTp>
@@ -65,11 +56,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: EE::class, mappedBy: 'createdBy')]
     private Collection $eEs;
 
+    /**
+     * @var Collection<int, RespSchool>
+     */
+    #[ORM\OneToMany(targetEntity: RespSchool::class, mappedBy: 'created_by')]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
+    private Collection $respSchools;
+
+    /**
+     * @var Collection<int, RespField>
+     */
+    #[ORM\OneToMany(targetEntity: RespField::class, mappedBy: 'created_by')]
+    private Collection $respFields;
+
+    /**
+     * @var Collection<int, RespLevel>
+     */
+    #[ORM\OneToMany(targetEntity: RespLevel::class, mappedBy: 'created_by')]
+    private Collection $respLevels;
+
+    /**
+     * @var Collection<int, RespUe>
+     */
+    #[ORM\OneToMany(targetEntity: RespUe::class, mappedBy: 'created_by')]
+    private Collection $respUes;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?RespField $respfield = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?RespSchool $respschool = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?RespLevel $resplevel = null;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?RespUe $respue = null;
+
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Teacher $teacher = null;
+
     public function __construct()
     {
-        $this->role = new ArrayCollection();
         $this->noteCcTps = new ArrayCollection();
         $this->eEs = new ArrayCollection();
+        $this->respSchools = new ArrayCollection();
+        $this->respFields = new ArrayCollection();
+        $this->respLevels = new ArrayCollection();
+        $this->respUes = new ArrayCollection();
     }
 
 
@@ -160,17 +194,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getResponsable(): ?Responsable
-    {
-        return $this->Responsable;
-    }
-
-    public function setResponsable(?Responsable $Responsable): static
-    {
-        $this->Responsable = $Responsable;
-
-        return $this;
-    }
 
     public function getEmail(): ?string
     {
@@ -201,29 +224,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Role>
-     */
-    public function getRole(): Collection
-    {
-        return $this->role;
-    }
-
-    public function addRole(Role $role): static
-    {
-        if (!$this->role->contains($role)) {
-            $this->role->add($role);
-        }
-
-        return $this;
-    }
-
-    public function removeRole(Role $role): static
-    {
-        $this->role->removeElement($role);
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, NoteCcTp>
@@ -281,6 +281,186 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $eE->setCreatedBy(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RespSchool>
+     */
+    public function getRespSchools(): Collection
+    {
+        return $this->respSchools;
+    }
+
+    public function addRespSchool(RespSchool $respSchool): static
+    {
+        if (!$this->respSchools->contains($respSchool)) {
+            $this->respSchools->add($respSchool);
+            $respSchool->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRespSchool(RespSchool $respSchool): static
+    {
+        if ($this->respSchools->removeElement($respSchool)) {
+            // set the owning side to null (unless already changed)
+            if ($respSchool->getCreatedBy() === $this) {
+                $respSchool->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RespField>
+     */
+    public function getRespFields(): Collection
+    {
+        return $this->respFields;
+    }
+
+    public function addRespField(RespField $respField): static
+    {
+        if (!$this->respFields->contains($respField)) {
+            $this->respFields->add($respField);
+            $respField->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRespField(RespField $respField): static
+    {
+        if ($this->respFields->removeElement($respField)) {
+            // set the owning side to null (unless already changed)
+            if ($respField->getCreatedBy() === $this) {
+                $respField->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RespLevel>
+     */
+    public function getRespLevels(): Collection
+    {
+        return $this->respLevels;
+    }
+
+    public function addRespLevel(RespLevel $respLevel): static
+    {
+        if (!$this->respLevels->contains($respLevel)) {
+            $this->respLevels->add($respLevel);
+            $respLevel->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRespLevel(RespLevel $respLevel): static
+    {
+        if ($this->respLevels->removeElement($respLevel)) {
+            // set the owning side to null (unless already changed)
+            if ($respLevel->getCreatedBy() === $this) {
+                $respLevel->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RespUe>
+     */
+    public function getRespUes(): Collection
+    {
+        return $this->respUes;
+    }
+
+    public function addRespUe(RespUe $respUe): static
+    {
+        if (!$this->respUes->contains($respUe)) {
+            $this->respUes->add($respUe);
+            $respUe->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRespUe(RespUe $respUe): static
+    {
+        if ($this->respUes->removeElement($respUe)) {
+            // set the owning side to null (unless already changed)
+            if ($respUe->getCreatedBy() === $this) {
+                $respUe->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRespfield(): ?RespField
+    {
+        return $this->respfield;
+    }
+
+    public function setRespfield(?RespField $respfield): static
+    {
+        $this->respfield = $respfield;
+
+        return $this;
+    }
+
+    public function getRespschool(): ?RespSchool
+    {
+        return $this->respschool;
+    }
+
+    public function setRespschool(?RespSchool $respschool): static
+    {
+        $this->respschool = $respschool;
+
+        return $this;
+    }
+
+    public function getResplevel(): ?RespLevel
+    {
+        return $this->resplevel;
+    }
+
+    public function setResplevel(?RespLevel $resplevel): static
+    {
+        $this->resplevel = $resplevel;
+
+        return $this;
+    }
+
+    public function getRespue(): ?RespUe
+    {
+        return $this->respue;
+    }
+
+    public function setRespue(?RespUe $respue): static
+    {
+        $this->respue = $respue;
+
+        return $this;
+    }
+
+    public function getTeacher(): ?Teacher
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(?Teacher $teacher): static
+    {
+        $this->teacher = $teacher;
 
         return $this;
     }

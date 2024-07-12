@@ -48,6 +48,9 @@ class School
     #[ORM\OneToMany(targetEntity: ColorScheme::class, mappedBy: 'school', cascade: ['persist', 'remove'])]
     private Collection $colors;
 
+    #[ORM\OneToOne(mappedBy: 'school', cascade: ['persist', 'remove'])]
+    private ?RespSchool $respSchool = null;
+
     public function __construct()
     {
         $this->fields = new ArrayCollection();
@@ -214,5 +217,27 @@ class School
     public function __toString(): string
     {
         return $this->name ?? '';
+    }
+
+    public function getRespSchool(): ?RespSchool
+    {
+        return $this->respSchool;
+    }
+
+    public function setRespSchool(?RespSchool $respSchool): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($respSchool === null && $this->respSchool !== null) {
+            $this->respSchool->setSchool(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($respSchool !== null && $respSchool->getSchool() !== $this) {
+            $respSchool->setSchool($this);
+        }
+
+        $this->respSchool = $respSchool;
+
+        return $this;
     }
 }
