@@ -8,6 +8,7 @@ body {
 }
 
 :root {
+      --dark-gray: #1f2937;
       --primary-color: #f97316;
       --primary-color-hover: rgb(251 146 60);
       --secondary-color: rgb(52, 128, 251);

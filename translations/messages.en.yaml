@@ -125,6 +125,8 @@ language_choice_page:
 # School Creation page text
 create_school_page:
   create-school-title: "New School"
+  cancel: "Cancel"
+  finish: "Finish"
   edit-school-title: "Edit School"
   create-school: "Create a new school"
   edit-school: "Edit school"

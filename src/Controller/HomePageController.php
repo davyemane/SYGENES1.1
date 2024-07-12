@@ -15,6 +15,15 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class HomePageController extends AbstractController
 {
+    #[Route('/super_admin', name: 'app_super_admin_dash')]
+    public function index1(): Response
+    {
+        $user = $this->getUser();
+        return $this->render('super_admin_dashboard/index.html.twig', [
+            'controller_name' => 'HomePageController', 'user'=>$user
+        ]);
+    }
+
     #[Route('/welcome', name: 'app_home_page')]
     public function index(): Response
     {
