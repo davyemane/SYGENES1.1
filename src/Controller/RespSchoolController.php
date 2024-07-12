@@ -30,38 +30,32 @@ class RespSchoolController extends AbstractController
         try {
             $entityManager->beginTransaction();
     
-            // 1. Trouver tous les utilisateurs liés à ce RespSchool
-            $users = $entityManager->getRepository(User::class)->findBy(['respschool' => $respSchool]);
+            // 1. Trouver l'utilisateur lié à ce RespSchool
+            $user = $entityManager->getRepository(User::class)->findOneBy(['respschool' => $respSchool]);
     
-            // 2. Pour chaque utilisateur lié
-            foreach ($users as $user) {
-                // Supprimer toutes les relations de l'utilisateur
+            if ($user) {
+                // Supprimer la relation de l'utilisateur avec RespSchool
                 $user->setRespschool(null);
-                $user->setRespfield(null);
-                $user->setResplevel(null);
-                $user->setRespue(null);
-                $user->setStudent(null);
-                $user->setTeacher(null);
-    
-                // Supprimer l'utilisateur de la collection dans RespSchool
-                $respSchool->removeRespSchool($user);
-    
-                // Supprimer l'utilisateur
-                $entityManager->remove($user);
+                $entityManager->persist($user);
+                $this->addFlash('info', 'Relation utilisateur-respschool supprimée.');
+            } else {
+                $this->addFlash('info', 'Aucun utilisateur trouvé pour ce RespSchool.');
             }
     
-            // 3. Supprimer toutes les relations de RespSchool
+            // 2. Supprimer la relation de RespSchool avec User
             $respSchool->setCreatedBy(null);
-            $respSchool->setSchool(null);
+            $entityManager->persist($respSchool);
+            $this->addFlash('info', 'Relation respschool-user supprimée.');
     
-            // 4. Supprimer le RespSchool
+            // 3. Supprimer le RespSchool
             $entityManager->remove($respSchool);
+            $this->addFlash('info', 'RespSchool marqué pour suppression.');
     
-            // 5. Appliquer les changements
+            // 4. Appliquer les changements
             $entityManager->flush();
             $entityManager->commit();
     
-            $this->addFlash('success', 'Le responsable d\'école et les comptes utilisateurs associés ont été supprimés avec succès.');
+            $this->addFlash('success', 'Le responsable d\'école a été supprimé avec succès.');
         } catch (\Exception $e) {
             $entityManager->rollback();
             $this->addFlash('error', 'Une erreur est survenue lors de la suppression : ' . $e->getMessage());
