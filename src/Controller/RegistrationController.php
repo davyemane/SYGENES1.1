@@ -44,24 +44,20 @@ class RegistrationController extends AbstractController
     ): Response
     {
         $user = new User();
-        $responsable = new Responsable();
-        $user->setResponsable($responsable);
     
-        // Get the school from the session
-        $schoolName = $session->get('school_name');
-        $school = null;
-        $schoolRoles = [];
+        // // Get the school from the session
+        // $schoolName = $session->get('school_name');
+        // $school = null;
+        // $schoolRoles = [];
     
-        if ($schoolName) {
-            $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
-            if ($school) {
-                $schoolRoles = $roleRepository->findBy(['school' => $school]);
-            }
-        }
+        // if ($schoolName) {
+        //     $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
+        //     if ($school) {
+        //         $schoolRoles = $roleRepository->findBy(['school' => $school]);
+        //     }
+        // }
     
-        $form = $this->createForm(RegistrationFormType::class, $user, [
-            'school_roles' => $schoolRoles, // Pass school roles to the form
-        ]);
+        $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
@@ -76,16 +72,9 @@ class RegistrationController extends AbstractController
                 )
             );
     
-            // Set roles
-            foreach ($schoolRoles as $role) {
-                $user->addRole($role);
-            }
             // Set the email for the responsable
-            $responsable->setEmail($user->getEmail());
-            $session->clear();
             // Persist both User and Responsable
             $entityManager->persist($user);
-            $entityManager->persist($responsable);
             $entityManager->flush();
     
             // Log the user in
@@ -95,8 +84,6 @@ class RegistrationController extends AbstractController
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
             'user' => $user,
-            'school' => $school,
-            'existingRoles' => $schoolRoles
         ]);
     }
     

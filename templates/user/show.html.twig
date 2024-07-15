@@ -47,9 +47,6 @@
         <p class="text-lg flex justify-center"><strong class="mr-2">Field: </strong> {{ student.field }}</p>
         <p class="text-lg flex justify-center"><strong class="mr-2">Date of Birth:</strong> {{ student.dateOfBirth|date('d-m-Y') }}</p>
         {% endif %}
-        {% if user.Responsable %}
-        <p class="text-lg flex justify-center"><strong class="mr-2">Responsable:</strong> {{ user.Responsable }}</p>
-        {% endif %}
         <a href="{{ path('app_profile_edit') }}" class="block w-full md:w-4/6 lg:w-1/6 xl:w-4/12 rounded-md border bg-orange-600 px-4 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-orange-700 hover:text-white-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:px-5">Modify my profile</a>
     </div>
 </div>
