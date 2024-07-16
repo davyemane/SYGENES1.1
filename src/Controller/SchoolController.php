@@ -139,7 +139,7 @@ class SchoolController extends AbstractController
         return $this->redirectToRoute('admin_dashboard'); // Assurez-vous que cette route existe
     }
 
-    #[Route('/dashboard', name: 'admin_dashboard')]
+    #[Route('/dashboard', name: 'super_admin_dashboard')]
 public function dashboard(SchoolRepository $schoolRepository, RespSchoolRepository $respSchoolRepository): Response
 {
     $user = $this->getUser();
