@@ -29,9 +29,9 @@
                             <div class="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-lg p-4 shadow-md hover:shadow-lg transition duration-300">
                                 <h3 class="font-bold text-lg text-text dark:text-text-light mb-2">{{ existingLevel.name }}</h3>
                                 <p class="text-sm text-gray-600 dark:text-gray-300">
-                                    {{ 'level_page.fields' | trans }}:
-                                    {% if existingLevel.fields|length > 0 %}
-                                        {{ existingLevel.fields|map(field => field.name)|join(', ') }}
+                                    {{ 'level_page.field' | trans }}:
+                                    {% if existingLevel.field|length > 0 %}
+                                        {{ existingLevel.field|map(field => field.name)|join(', ') }}
                                     {% else %}
                                         {{ 'not-assigned' | trans }}
                                     {% endif %}
@@ -44,9 +44,9 @@
                 {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
                     <div class="space-y-6">
                          <div>
-                            {{ form_label(form.fields, 'level_page.associated-field' | trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
-                            {{ form_widget(form.fields, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-secondary focus:ring focus:ring-secondary focus:ring-opacity-50 transition bg-white dark:bg-background text-text dark:text-text custom-checkbox-class'}}) }}
-                            {{ form_errors(form.fields, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+                            {{ form_label(form.field, 'level_page.associated-field' | trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
+                            {{ form_widget(form.field, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-secondary focus:ring focus:ring-secondary focus:ring-opacity-50 transition bg-white dark:bg-background text-text dark:text-text custom-checkbox-class'}}) }}
+                            {{ form_errors(form.field, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
                         </div>
                         <div>
                             {{ form_label(form.name, 'level_page.level-name' | trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}

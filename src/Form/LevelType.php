@@ -15,20 +15,23 @@ class LevelType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $schoolName = $options['school_name'];
+        $userField = $options['user_field'];
 
         $builder
             ->add('name')
-            ->add('fields', EntityType::class, [
+            ->add('field', EntityType::class, [
                 'class' => Field::class,
                 'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true,
-                'query_builder' => function (EntityRepository $er) use ($schoolName) {
+                'query_builder' => function (EntityRepository $er) use ($schoolName, $userField) {
                     return $er->createQueryBuilder('f')
                         ->join('f.school', 's')
                         ->where('s.name = :schoolName')
-                        ->setParameter('schoolName', $schoolName);
+                        ->andWhere('f = :userField')
+                        ->setParameter('schoolName', $schoolName)
+                        ->setParameter('userField', $userField);
                 },
+                'placeholder' => 'Sélectionnez une filière',
+                'required' => true,
             ])
         ;
     }
@@ -38,8 +41,9 @@ class LevelType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Level::class,
             'school_name' => null,
+            'user_field' => null,
         ]);
 
-        $resolver->setRequired('school_name');
+        $resolver->setRequired(['school_name', 'user_field']);
     }
 }
