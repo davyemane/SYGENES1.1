@@ -24,7 +24,7 @@ class FieldController extends AbstractController
         ]);
     }
 
-    #[Route('/new/{id?0}', name: 'field_new', methods: ['GET', 'POST'])]
+    #[Route('/new_field/{id?0}', name: 'field_new', methods: ['GET', 'POST'])]
     public function new(Request $request, SessionInterface $session, EntityManagerInterface $entityManager, int $id = 0): Response
     {
         $schoolName = $session->get('school_name');
@@ -33,6 +33,7 @@ class FieldController extends AbstractController
         if ($schoolName) {
             $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
             if (!$school) {
+                return $this->redirectToRoute('app_login');
                 throw $this->createNotFoundException('École non trouvée');
             }
         } else {
@@ -81,4 +82,35 @@ class FieldController extends AbstractController
             'existingFields' => $existingFields,
             'color_scheme'=>$colorScheme,
         ]);
-    }}
+    }
+
+
+    #[Route('/delete_field/{id}', name: 'delete_field')]
+    public function deleteField(Field $field, EntityManagerInterface $entityManager): Response
+    {
+        try {
+            $entityManager->beginTransaction();
+
+            // Handle the relationship with RespField
+            $respField = $field->getRespField();
+            if ($respField) {
+                $respField->setField(null);
+                $entityManager->remove($respField);
+            }
+
+            // Remove the field
+            $entityManager->remove($field);
+
+            // Apply changes
+            $entityManager->flush();
+            $entityManager->commit();
+
+            $this->addFlash('success', 'The field has been successfully deleted.');
+        } catch (\Exception $e) {
+            $entityManager->rollback();
+            $this->addFlash('error', 'An error occurred during deletion: ' . $e->getMessage());
+        }
+
+        return $this->redirectToRoute('admin_dashboard');
+    }
+}

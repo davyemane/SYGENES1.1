@@ -103,14 +103,6 @@ class UserController extends AbstractController
             throw $this->createNotFoundException('User not found');
         }
 
-        $privileges = [];
-
-        foreach ($user->getRole() as $role) {
-            foreach ($role->getPrivileges() as $privilege) {
-                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
-            }
-        }
-
         // Load the Student entity if it exists
         $student = $user->getStudent();
 
@@ -127,7 +119,6 @@ class UserController extends AbstractController
             'user' => $user,
             'student' => $student,
             'layout_template' => $template,
-            'privileges' => array_values($privileges), // Convertir en tableau indexé
         ]);
     }
 }

@@ -19,7 +19,7 @@ class RespSchoolController extends AbstractController
     {
         $respSchools = $respSchoolRepository->findAll();
     
-        return $this->render('resp_school/index.html.twig', [
+        return $this->render('super_admin_dashboard/index.html.twig', [
             'resp_schools' => $respSchools,
         ]);
     }

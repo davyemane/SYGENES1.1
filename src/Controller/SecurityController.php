@@ -62,33 +62,32 @@ class SecurityController extends AbstractController
     #[Route(path: '/redirect', name: 'app_redirect')]
     public function redirectUser(): Response
     {
-        return $this->redirectToRoute('app_dashAdmin');
+        if (!$this->security->getUser()) {
+            // Si aucun utilisateur n'est connecté, rediriger vers la page d'accueil
+            return $this->redirectToRoute('app_home');
+        }
 
-    //     // Récupérer l'utilisateur connecté
-    //     $user = $this->security->getUser();
-    
-    //     if (!$user) {
-    //         // Si aucun utilisateur n'est connecté, rediriger vers la page d'accueil
-    //         return $this->redirectToRoute('app_home');
-    //     }
-    
-    //     // Récupérer les rôles de l'utilisateur
-    
-    //     if ($security) {
-    //         // Si l'utilisateur n'a pas de rôles, rediriger vers la page d'accueil
-    //         return $this->redirectToRoute('app_home');
-    //     }
-    
-    //     // Vérifier si l'utilisateur a le rôle "Student"
-    //     $isStudent = $userRoles->exists(function($key, Role $role) {
-    //         return $role->getName() === 'Student';
-    //     });
-    
-    //     if ($isStudent) {
-    //         return $this->redirectToRoute('app_dashStudent');
-    //     } else {
-    //         // Tous les autres rôles sont redirigés vers le dashboard Admin
-    //         return $this->redirectToRoute('app_dashAdmin');
-    //     }
-     }
-}
+        
+
+        // Vérifier les rôles en utilisant isGranted(), du plus élevé au plus bas
+        if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
+            return $this->redirectToRoute('admin_dashboard');
+        } elseif ($this->security->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_dashAdmin');
+        } elseif ($this->security->isGranted('ROLE_RESPSCHOOL')) {
+            return $this->redirectToRoute('app_dashRespSchool');
+        } elseif ($this->security->isGranted('ROLE_RESPFIELD')) {
+            return $this->redirectToRoute('app_dashRespField');
+        } elseif ($this->security->isGranted('ROLE_RESLEVEL')) {
+            return $this->redirectToRoute('app_dashResLevel');
+        } elseif ($this->security->isGranted('ROLE_RESPUE')) {
+            return $this->redirectToRoute('app_dashRespUE');
+        } elseif ($this->security->isGranted('ROLE_TEACHER')) {
+            return $this->redirectToRoute('app_dashTeacher');
+        } elseif ($this->security->isGranted('ROLE_STUDENT')) {
+            return $this->redirectToRoute('app_dashStudent');
+        } else {
+            // Si aucun rôle correspondant n'est trouvé, rediriger vers la page d'accueil
+            return $this->redirectToRoute('app_home');
+        }
+    }}
