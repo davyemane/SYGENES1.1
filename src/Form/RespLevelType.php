@@ -18,17 +18,9 @@ class RespLevelType extends AbstractType
             ->add('name')
             ->add('cni')
             ->add('phone_number')
-            ->add('email')
-            ->add('created_at', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('created_by', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
             ->add('level', EntityType::class, [
                 'class' => Level::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
         ;
     }

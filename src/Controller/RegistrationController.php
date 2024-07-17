@@ -3,14 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\RespField;
+use App\Entity\RespLevel;
 use App\Entity\Responsable;
 use App\Entity\RespSchool;
 use App\Entity\School;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\RespFieldType;
+use App\Form\RespLevelType;
 use App\Form\RespSchoolType;
 use App\Repository\FieldRepository;
+use App\Repository\LevelRepository;
 use App\Repository\RoleRepository;
 use App\Security\EmailVerifier;
 use App\Security\LoginAuthenticator;
@@ -213,7 +216,7 @@ class RegistrationController extends AbstractController
     }
 
 
-
+//add or modify RespFiléld
     #[Route('/register/respfield/{id<\d+>?0}', name: 'app_register_respfield')]
     public function manageRespField(
         Request $request,
@@ -313,6 +316,97 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+
+    #[Route('/register/resplevel/{id<\d+>?0}', name: 'app_register_resplevel')]
+    public function manageRespLevel(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface $entityManager,
+        LevelRepository $levelRepository,
+        Security $security,
+        SluggerInterface $slugger,
+        $id
+    ): Response {
+        $isEdit = false;
+        if ($id) {
+            $isEdit = true;
+        }
+    
+        if ($isEdit) {
+            $user = $entityManager->getRepository(User::class)->find($id);
+            if (!$user) {
+                throw $this->createNotFoundException('Utilisateur non trouvé');
+            }
+            $respLevel = $user->getRespLevel();
+            if (!$respLevel) {
+                $respLevel = new RespLevel();
+                $user->setRespLevel($respLevel);
+            }
+        } else {
+            $user = new User();
+            $respLevel = new RespLevel();
+        }
+    
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->add('respLevel', RespLevelType::class);
+    
+        if ($isEdit) {
+            $form->remove('plainPassword');
+        }
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!$isEdit) {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+                $user->setRoles(['ROLE_RESPLEVEL']);
+                $respLevel->setCreatedAt(new \DateTime());
+    
+                $currentUser = $security->getUser();
+                if ($currentUser) {
+                    $respLevel->setCreatedBy($currentUser);
+                } else {
+                    return $this->redirectToRoute('app_login');
+                }
+            }
+            $this->handleProfilePictureUpload($form, $user, $slugger);
+    
+            $email = $form->get('email')->getData();
+            $user->setEmail($email);
+    
+            $respLevel->setName($form->get('respLevel')->get('name')->getData());
+            $respLevel->setCni($form->get('respLevel')->get('cni')->getData());
+            $respLevel->setPhoneNumber($form->get('respLevel')->get('phone_number')->getData());
+            $respLevel->setEmail($email);
+    
+            $level = $levelRepository->find($form->get('respLevel')->get('level')->getData());
+            $respLevel->setLevel($level);
+    
+            $user->setRespLevel($respLevel);
+    
+            $entityManager->persist($user);
+            $entityManager->persist($respLevel);
+            $entityManager->flush();
+    
+            if ($isEdit) {
+                $this->addFlash('success', 'Level Responsible information has been successfully updated.');
+            } else {
+                $this->addFlash('success', 'Level Responsible has been successfully registered.');
+            }
+            
+            return $this->redirectToRoute('app_register_resplevel');
+        }
+    
+        return $this->render('resp_level/register_resplevel.html.twig', [
+            'registrationForm' => $form->createView(),
+            'isEdit' => $isEdit,
+        ]);
+    }
 
 
 

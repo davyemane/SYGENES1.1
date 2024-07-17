@@ -33,18 +33,11 @@ class Level
     #[ORM\ManyToOne(inversedBy: 'levels')]
     private ?Field $field = null;
 
-    /**
-     * @var Collection<int, Field>
-     */
-    #[ORM\ManyToMany(targetEntity: Field::class)]
-    #[ORM\JoinTable(name: "level_fields")]
-    private Collection $fields;
 
     public function __construct()
     {
         $this->students = new ArrayCollection();
         $this->ues = new ArrayCollection();
-        $this->fields = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -136,29 +129,6 @@ class Level
         return $this;
     }
 
-    /**
-     * @return Collection<int, Field>
-     */
-    public function getFields(): Collection
-    {
-        return $this->fields;
-    }
-
-    public function addField(Field $field): static
-    {
-        if (!$this->fields->contains($field)) {
-            $this->fields->add($field);
-        }
-
-        return $this;
-    }
-
-    public function removeField(Field $field): static
-    {
-        $this->fields->removeElement($field);
-
-        return $this;
-    }
 
     public function __toString(): string
     {
