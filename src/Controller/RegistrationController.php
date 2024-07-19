@@ -116,7 +116,7 @@ class RegistrationController extends AbstractController
 
 
     //creation du responsable de l'etablissement 
-    #[Route('/register/respschool/{id<\d+>?0}', name: 'app_register_respschool')]
+    #[Route('/register/respschool/{id<\d+>?0}', name: 'new_school_resp')]
     public function manageRespSchool(
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,

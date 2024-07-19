@@ -11,6 +11,12 @@
         <h1 class="text-5xl font-bold mb-2">Welcome to UIECC</h1>
         <p class="text-lg opacity-80">Today is {{ "now"|date("l, F j, Y") }}</p>
     </header>
+	<div class="min-h-screen bg-white p-8">
+		<header class=" w-screentext-dark-gray p-5 rounded-lg shadow-2xl mb-6 items-center container text-center border-b-4 border-dark-gray">
+			<h1 class="text-5xl font-bold mb-2">Welcome to UIECC</h1>
+			<p class="text-lg opacity-80">Today is
+				{{ "now"|date("l, F j, Y") }}</p>
+		</header>
 
     <div class="flex gap-6 mb-6 flex-grow overflow-hidden">
         <!-- Left Section: Create a school -->
@@ -151,6 +157,28 @@
         </div>
     </div>
 </div>
+		<div
+			class="flex gap-6">
+			<!-- Left Section: Create an authority -->
+			<div class="w-1/4 bg-white rounded-lg shadow-lg p-6">
+				<div class="text-center mb-6 mt-8">
+					<div class="group relative">
+						<h2 class="text-2xl font-semibold text-gray-800 mb-2">Create an authority</h2>
+						<div class="absolute z-10 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-gray-800 border border-gray-300 rounded-sm shadow-lg p-2 w-48 mt-2 left-1/2 transform -translate-x-1/2">
+							<p>Add an authority with specific privileges to manage schools</p>
+						</div>
+					</div>
+					<p class="mb-6 text-sm text-gray-600">Click below to add an authority with privileges</p>
+					<form action="{{path('new_school_resp')}}" method="GET">
+						<button id="createAuthorityBtn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow mb-4 transition duration-300 ease-in-out transform hover:scale-105">
+							<svg class="h-6 w-6 inline-block mr-2" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+							</svg>
+							Create Authority
+						</button>
+					</form>
+				</div>
+			</div>
 
 <!-- Popup Form for add authority -->
 <div id="authorityFormPopup" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
@@ -193,6 +221,74 @@
     const authorityFormPopup = document.getElementById('authorityFormPopup');
     const authorityForm = document.getElementById('authorityForm');
     const closeAuthorityForm = document.getElementById('closeAuthorityForm');
+
+			<!-- Right Section -->
+			<div class="flex-1 bg-white rounded-lg shadow-lg p-6 flex flex-col">
+				<div class="flex justify-between items-center mb-4">
+					<div>
+						<h2 class="text-2xl font-semibold text-gray-800">Authority Information</h2>
+						<p class="text-xs text-gray-600">Below are the authorities you've created so far</p>
+					</div>
+					{# <div class="relative">
+						<input type="text" class="border border-gray-300 rounded-lg py-2 px-4 w-64 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Search authorities...">
+						<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+							<svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m1.34-5.15A7 7 0 1110 3a7 7 0 018.49 8.49z"/>
+							</svg>
+						</div>
+					</div> #}
+				</div>
+				<div
+					class="overflow-hidden" style="height: 145px;">
+					<!-- Adjusted height -->
+					<div class="overflow-x-auto h-full">
+						<div class="overflow-y-auto h-full">
+							<table class="min-w-full bg-white border-collapse">
+								<thead class="sticky top-0 bg-gray-200 z-10">
+									<tr>
+										<th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">School Name</th>
+										<th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Location</th>
+										<th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Students</th>
+										<th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Phone Number</th>
+										<th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Email</th>
+										<th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Logo</th>
+										<th class="py-3 px-4 text-left text-sm font-semibold text-gray-700 border-b">Actions</th>
+									</tr>
+								</thead>
+								<tbody class="bg-white">
+									{% for i in range(1, 20) %}
+										<!-- This will create 20 rows -->
+										<tr class="hover:bg-gray-50 transition-colors duration-200">
+											<td class="py-3 px-4 border-b text-sm">School
+												{{ i }}</td>
+											<td class="py-3 px-4 border-b text-sm">Location
+												{{ i }}</td>
+											<td class="py-3 px-4 border-b text-sm">{{ i * 100 }}</td>
+											<td class="py-3 px-4 border-b text-sm">+237 68102{{ 1000 + i }}</td>
+											<td class="py-3 px-4 border-b text-sm">school{{ i }}@example.com</td>
+											<td class="py-3 px-4 border-b">
+												<img class="h-8 w-8 object-contain" src="images/uiecc_logo.png" alt="school{{ i }}_logo">
+											</td>
+											<td class="py-3 px-4 border-b">
+												<button class="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold py-1 px-2 rounded mr-1 transition-colors duration-200">Edit</button>
+												<button class="bg-red-500 hover:bg-red-600 text-white text-xs font-bold py-1 px-2 rounded transition-colors duration-200">Delete</button>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div></div>
+<script>
+const createAuthorityBtn = document.getElementById('createAuthorityBtn');
+const authorityFormPopup = document.getElementById('authorityFormPopup');
+const authorityForm = document.getElementById('authorityForm');
+const closeAuthorityForm = document.getElementById('closeAuthorityForm');
 
     createAuthorityBtn.addEventListener('click', () => {
         authorityFormPopup.classList.remove('hidden');
