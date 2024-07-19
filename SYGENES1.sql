@@ -184,7 +184,7 @@ CREATE TABLE `field` (
   PRIMARY KEY (`id`),
   KEY `IDX_5BF54558C32A47EE` (`school_id`),
   CONSTRAINT `FK_5BF54558C32A47EE` FOREIGN KEY (`school_id`) REFERENCES `school` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -193,6 +193,7 @@ CREATE TABLE `field` (
 
 LOCK TABLES `field` WRITE;
 /*!40000 ALTER TABLE `field` DISABLE KEYS */;
+INSERT INTO `field` VALUES (1,1,'CDN','Création et Design Numérique','Création et Design Numérique'),(2,1,'INS','Igenierie Numerique Sociotechnique','Igenierie Numerique Sociotechnique');
 /*!40000 ALTER TABLE `field` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -210,7 +211,7 @@ CREATE TABLE `level` (
   PRIMARY KEY (`id`),
   KEY `IDX_9AEACC13443707B0` (`field_id`),
   CONSTRAINT `FK_9AEACC13443707B0` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -219,34 +220,8 @@ CREATE TABLE `level` (
 
 LOCK TABLES `level` WRITE;
 /*!40000 ALTER TABLE `level` DISABLE KEYS */;
+INSERT INTO `level` VALUES (6,1,'L1'),(7,2,'L1'),(8,1,'L2');
 /*!40000 ALTER TABLE `level` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `level_fields`
---
-
-DROP TABLE IF EXISTS `level_fields`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `level_fields` (
-  `level_id` int NOT NULL,
-  `field_id` int NOT NULL,
-  PRIMARY KEY (`level_id`,`field_id`),
-  KEY `IDX_75382295FB14BA7` (`level_id`),
-  KEY `IDX_7538229443707B0` (`field_id`),
-  CONSTRAINT `FK_7538229443707B0` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_75382295FB14BA7` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `level_fields`
---
-
-LOCK TABLES `level_fields` WRITE;
-/*!40000 ALTER TABLE `level_fields` DISABLE KEYS */;
-/*!40000 ALTER TABLE `level_fields` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -396,7 +371,7 @@ CREATE TABLE `resp_field` (
   KEY `IDX_A97AB707B03A8386` (`created_by_id`),
   CONSTRAINT `FK_A97AB707443707B0` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`),
   CONSTRAINT `FK_A97AB707B03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -405,6 +380,7 @@ CREATE TABLE `resp_field` (
 
 LOCK TABLES `resp_field` WRITE;
 /*!40000 ALTER TABLE `resp_field` DISABLE KEYS */;
+INSERT INTO `resp_field` VALUES (3,1,3,'Amougou Ngoumou','100258963','697379517','amougou@gmail.com','2024-07-16 10:22:32'),(4,2,3,'Emane Bile Félicien Davy','123456789','697379517','davyemane2@gmail.com','2024-07-16 13:54:59');
 /*!40000 ALTER TABLE `resp_field` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -429,7 +405,7 @@ CREATE TABLE `resp_level` (
   KEY `IDX_68653E4CB03A8386` (`created_by_id`),
   CONSTRAINT `FK_68653E4C5FB14BA7` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`),
   CONSTRAINT `FK_68653E4CB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -438,6 +414,7 @@ CREATE TABLE `resp_level` (
 
 LOCK TABLES `resp_level` WRITE;
 /*!40000 ALTER TABLE `resp_level` DISABLE KEYS */;
+INSERT INTO `resp_level` VALUES (1,3,1,'Eloundou Telesphore','100258963','697379517','mendo@gmail.com','2024-07-16 12:31:06'),(2,7,6,'Emane bile félicien davy','100258963','676469014','desire@gmail.com','2024-07-16 15:45:44'),(3,7,8,'Emane bile félicien davy','100258963','676469014','amougou@gmail.com','2024-07-16 15:46:18');
 /*!40000 ALTER TABLE `resp_level` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -471,7 +448,7 @@ CREATE TABLE `resp_school` (
 
 LOCK TABLES `resp_school` WRITE;
 /*!40000 ALTER TABLE `resp_school` DISABLE KEYS */;
-INSERT INTO `resp_school` VALUES (2,2,NULL,'DESIRE','1002356889','697379517','tapiba@gmail.com','2024-07-12 13:51:54'),(3,1,2,'Emane Bile Félicien Davy','1002356889','697379517','davyemane2@gmail.com','2024-07-12 14:29:48');
+INSERT INTO `resp_school` VALUES (3,1,2,'Emane Bile Félicien Davy','1002356889','697379517','davyemane2@gmail.com','2024-07-12 14:29:48');
 /*!40000 ALTER TABLE `resp_school` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -608,7 +585,7 @@ CREATE TABLE `school` (
   `phone_number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -617,7 +594,7 @@ CREATE TABLE `school` (
 
 LOCK TABLES `school` WRITE;
 /*!40000 ALTER TABLE `school` DISABLE KEYS */;
-INSERT INTO `school` VALUES (1,'ESIGN','ESIGN-66912fef85530.jpg','Cameroun, sud, Sangmelima','697379517','lm-afrique@gmail.com'),(2,'FASA','FASA-669134b69a83b.jpg','Cameroun, sud, Sangmelima','697379517','lm-afrique@gmail.com');
+INSERT INTO `school` VALUES (1,'ESIGN','ESIGN-66912fef85530.jpg','Cameroun, sud, Sangmelima','697379517','lm-afrique@gmail.com'),(5,'FASA','FASA-6695043ca7a6e.png','Cameroun, sud, Sangmelima','697379517','lm-afrique@gmail.com'),(6,'FMSB','FMSB-66950455dc8db.png','Cameroun, sud, Sangmelima','697379517','lm-afrique@gmail.com'),(7,'IDES','IDES-6695047038b21.png','Cameroun, sud, Sangmelima','697379517','uieccesign@gmail.com'),(8,'IRIC',NULL,'12, sang, sud, cmr','676469014','lm-afrique@gmail.com');
 /*!40000 ALTER TABLE `school` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -811,7 +788,7 @@ CREATE TABLE `user` (
   CONSTRAINT `FK_8D93D649CB944F1A` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
   CONSTRAINT `FK_8D93D649D187767F` FOREIGN KEY (`respschool_id`) REFERENCES `resp_school` (`id`),
   CONSTRAINT `FK_8D93D649D23FE2F9` FOREIGN KEY (`respue_id`) REFERENCES `resp_ue` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -820,7 +797,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (2,NULL,NULL,2,NULL,NULL,NULL,'Mavaïwa','[\"ROLE_ADMIN\"]','$2y$13$J5q.OreU06FllJw69afR7.66tXrqvivtbvT3x1Cy0.sh.z2/rkVqC','davyemane2@gmail.com',NULL),(3,NULL,NULL,3,NULL,NULL,NULL,'emane','[\"ROLE_ADMIN\"]','$2y$13$NAncgkaeYrbSm3l0WVCGzuSTWsWBpefOnoaK7AbKkNqjipNR.OW/O','davyemane2@gmail.com',NULL);
+INSERT INTO `user` VALUES (2,NULL,NULL,NULL,NULL,NULL,NULL,'Mavaïwa','[\"ROLE_ADMIN\"]','$2y$13$J5q.OreU06FllJw69afR7.66tXrqvivtbvT3x1Cy0.sh.z2/rkVqC','davyemane2@gmail.com',NULL),(3,NULL,NULL,3,NULL,NULL,NULL,'emane','[\"ROLE_ADMIN\"]','$2y$13$NAncgkaeYrbSm3l0WVCGzuSTWsWBpefOnoaK7AbKkNqjipNR.OW/O','davyemane2@gmail.com',NULL),(4,NULL,NULL,NULL,NULL,NULL,NULL,'superAdmin237','[\"ROLE_SUPER_ADMIN\"]','$2y$13$t2UfYCY8NEDpBRZgvg9kquzCiu051GYf6kZYO5SG4EcCjQmQdMs2.','davyemane2@gmail.com','LogoLM-6694fc4e5cdc5.png'),(7,NULL,3,NULL,NULL,NULL,NULL,'amougou','[\"ROLE_RESPFIELD\"]','$2y$13$6uCqfSVWj030Wln.qDxEeeEK0y7fQoRlNsSvo8mBBxzfYoIT7T8RW','amougou@gmail.com','google1-669649e8ad5d9.png'),(8,NULL,NULL,NULL,1,NULL,NULL,'Eloundou','[\"ROLE_RESPLEVEL\"]','$2y$13$O9COjI2Bjpovam6PFk.U6OHlyYgnAVWg7VjGthNZ8uogkBaV8PLpu','mendo@gmail.com','2-6696680a1ae86.jpg'),(9,NULL,4,NULL,NULL,NULL,NULL,'eyenga','[\"ROLE_RESPFIELD\"]','$2y$13$E.kbnlwCrEP3Ww2vzREgc.uC0JYm6a69pFF2c8m//yFBRD.lKTNAa','davyemane2@gmail.com','2-66967bb3bdf9e.jpg'),(10,NULL,NULL,NULL,2,NULL,NULL,'desire','[\"ROLE_RESPLEVEL\"]','$2y$13$0KXHKXzmm4Pw/m9CeYVbX.84t5q1larIYvFQubQqjoPjG0jWIR7vG','desire@gmail.com','7454d6ad22384ffa839548d7c7fb8238-669695a85b66f.jpg'),(11,NULL,NULL,NULL,3,NULL,NULL,'amougou2','[\"ROLE_RESPLEVEL\"]','$2y$13$hiM4svXtYohh6RgNzQ5ouOT1dnWUAeECgdLH6Qycbccv54Gp2QNyC','amougou@gmail.com','apiRest-669695cace858.png');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -833,4 +810,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-12 17:06:42
+-- Dump completed on 2024-07-19 10:47:36
