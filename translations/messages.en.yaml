@@ -287,3 +287,47 @@ student_dash:
 
 # Student Dashboard Page and subpages
 
+#register school gestionnaire page
+register_responsible:
+  header: Create a school manager
+  username: "Username"
+  email: "Email"
+  password: "Password"
+  name: "Full name"
+  cni: "CNI"
+  phone_number: "Phone Number"
+  school: "School"
+  agree_terms: "Agree Terms"
+  profile_picture: "Profile Picture"
+  submit: "Submit"
+  finish: "Finish"
+
+# school manager dashboard
+school_manager:
+  UIECC Dashboard: "UIECC Dashboard"
+  Welcome to UIECC: "Welcome to UIECC"
+  Today is: "Today is"
+  Create a School: "Create a School"
+  Easily add a new school to the university with just a click: "Easily add a new school to the university with just a click"
+  Click below to add a school to the university: "Click below to add a school to the university"
+  Create School: "Create School"
+  School List: "School List"
+  Below is the list of schools you've created so far: "Below is the list of schools you've created so far"
+  Name: "Name"
+  Address: "Address"
+  Phone Number: "Phone Number"
+  Email: "Email"
+  Logo: "Logo"
+  Actions: "Actions"
+  Delete: "Delete"
+  Are you sure you want to delete this school?: "Are you sure you want to delete this school?"
+  No schools found: "No schools found"
+  Create an Authority: "Create an Authority"
+  Add an authority with specific privileges to manage schools: "Add an authority with specific privileges to manage schools"
+  Click below to add an authority with privileges: "Click below to add an authority with privileges"
+  Create Authority: "Create Authority"
+  School Responsibles: "School Responsibles"
+  Below is the list of school responsibles: "Below is the list of school responsibles"
+  Are you sure you want to delete this responsible?: "Are you sure you want to delete this responsible?"
+  No responsibles found: "No responsibles found"
+

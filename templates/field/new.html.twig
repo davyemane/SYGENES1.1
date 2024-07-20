@@ -79,11 +79,9 @@
 								</svg>
 								{{ (isNew ? "field_page.create" : "field_page.update")|trans }}
 							</button>
-							<a href="{{path('role_new')}}" class="inline-flex justify-center items-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-secondary hover:bg-secondaryHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary transition-colors duration-300">
-								{{ "field_page.next"|trans }}
-								<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" viewbox="0 0 20 20" fill="currentColor">
-									<path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-								</svg>
+							<a href="{{path('admin_dashboard')}}" class="inline-flex justify-center items-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-secondary hover:bg-secondaryHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary transition-colors duration-300">
+								{# {{ "field_page.next"|trans }} #}
+								Finish
 							</a>
 						</div>
 					</div>
