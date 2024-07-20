@@ -17,17 +17,9 @@ class RespUeType extends AbstractType
         $builder
             ->add('name')
             ->add('cni')
-            ->add('email')
             ->add('phone_number')
-            ->add('created_at', null, [
-                'widget' => 'single_text',
-            ])
             ->add('ue', EntityType::class, [
                 'class' => UE::class,
-                'choice_label' => 'id',
-            ])
-            ->add('created_by', EntityType::class, [
-                'class' => User::class,
                 'choice_label' => 'id',
             ])
         ;

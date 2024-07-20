@@ -1,0 +1,103 @@
+{# templates/resp_ue/register_respue.html.twig #}
+
+{% extends 'base_login.html.twig' %}
+
+{% block title %}<title>{{ isEdit ? 'Edit' : 'Register' }} UE Responsible</title>{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-gradient-to-br from-blue-100 to-orange-100 dark:from-gray-800 dark:to-gray-900 py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center transition-colors duration-300">
+    <div class="max-w-6xl w-full space-y-8">
+        <div>
+            <h2 class="text-center text-3xl font-extrabold text-gray-900 dark:text-text-light">
+                {{ isEdit ? 'Edit' : 'Register' }} UE Responsible
+            </h2>
+        </div>
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 dark:bg-{{ label == 'success' ? 'green' : 'red' }}-900 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 dark:text-{{ label == 'success' ? 'green' : 'red' }}-100 p-4 mb-6 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md" role="alert">
+                    <p class="font-bold">{{ (label == 'success' ? 'flash.success' : 'flash.error')|trans }}</p>
+                    <p>{{ message|trans }}</p>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <div class="bg-white dark:bg-gray-800 py-8 px-6 shadow-2xl rounded-lg">
+            {{ form_start(registrationForm, {'attr': {'class': 'grid grid-cols-1 md:grid-cols-2 gap-6'}}) }}
+
+            <div class="space-y-2">
+                {{ form_label(registrationForm.username, 'Username', {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+                {{ form_widget(registrationForm.username, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                {{ form_errors(registrationForm.username, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+            </div>
+
+            <div class="space-y-2">
+                {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+                {{ form_widget(registrationForm.email, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                {{ form_errors(registrationForm.email, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+            </div>
+
+            {% if not isEdit %}
+            <div class="space-y-2">
+                {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                {{ form_errors(registrationForm.plainPassword, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+            </div>
+            {% endif %}
+
+            <div class="space-y-2">
+                {{ form_label(registrationForm.respUe.name, 'Name', {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+                {{ form_widget(registrationForm.respUe.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                {{ form_errors(registrationForm.respUe.name, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+            </div>
+
+            <div class="space-y-2">
+                {{ form_label(registrationForm.respUe.cni, 'CNI', {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+                {{ form_widget(registrationForm.respUe.cni, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                {{ form_errors(registrationForm.respUe.cni, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+            </div>
+
+            <div class="space-y-2">
+                {{ form_label(registrationForm.respUe.phone_number, 'Phone Number', {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+                {{ form_widget(registrationForm.respUe.phone_number, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                {{ form_errors(registrationForm.respUe.phone_number, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+            </div>
+
+            <div class="space-y-2">
+                {{ form_label(registrationForm.respUe.ue, 'UE', {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+                {{ form_widget(registrationForm.respUe.ue, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                {{ form_errors(registrationForm.respUe.ue, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+            </div>
+
+            {% if registrationForm.agreeTerms is defined %}
+            <div class="col-span-2">
+                <label class="inline-flex items-center">
+                    {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'rounded border-gray-300 text-primary focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50'}}) }}
+                    <span class="ml-2 text-sm text-text dark:text-text-light">{{ 'I agree to the terms'|trans }}</span>
+                </label>
+                {{ form_errors(registrationForm.agreeTerms, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+            </div>
+            {% endif %}
+
+            {% if registrationForm.profilePicture is defined %}
+            <div class="space-y-2 col-span-2">
+                {{ form_label(registrationForm.profilePicture, 'Profile Picture', {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+                {{ form_widget(registrationForm.profilePicture, {'attr': {'class': 'mt-1 block w-full px-3 py-2 rounded-md shadow-sm border-gray-300 dark:border-gray-600 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                {{ form_errors(registrationForm.profilePicture, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+            </div>
+            {% endif %}
+
+            <div class="col-span-2 mt-6 flex justify-center space-x-4">
+                <button type="submit" class="w-1/3 py-4 px-6 border border-transparent rounded-md shadow-sm text-md font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-transform hover:scale-105 duration-300">
+                    {{ isEdit ? 'Update' : 'Register' }}
+                </button>
+                <a href="{{ path('admin_dashboard') }}" class="w-1/3 py-4 px-6 border border-transparent rounded-md shadow-sm text-md font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-transform hover:scale-105 duration-300 text-center">
+                    {{ 'Finish'|trans }}
+                </a>
+            </div>
+
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

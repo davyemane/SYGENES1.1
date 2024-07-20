@@ -353,32 +353,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->respLevels;
     }
 
-    public function addRespLevel(RespLevel $respLevel): static
+    public function addRespLevel(RespLevel $respLevel): self
     {
         if (!$this->respLevels->contains($respLevel)) {
-            $this->respLevels->add($respLevel);
+            $this->respLevels[] = $respLevel;
             $respLevel->setCreatedBy($this);
         }
-
+    
         return $this;
     }
-
-    public function removeRespLevel(RespLevel $respLevel): static
+    
+    public function removeRespLevel(RespLevel $respLevel): self
     {
         if ($this->respLevels->removeElement($respLevel)) {
-            // set the owning side to null (unless already changed)
             if ($respLevel->getCreatedBy() === $this) {
                 $respLevel->setCreatedBy(null);
             }
         }
-
-        // Gérer la relation OneToOne
-        if ($this->resplevel === $respLevel) {
-            $this->resplevel = null;
-        }
-
+    
         return $this;
     }
+    
     /**
      * @return Collection<int, RespUe>
      */

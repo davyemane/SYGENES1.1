@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\EC;
+use App\Entity\RespLevel;
 use App\Entity\School;
 use App\Entity\UE;
 use App\Form\EcType;
@@ -31,21 +32,6 @@ class UeController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $privileges = [];
-        // Vérifier si l'utilisateur a le privilège "List Student"
-        $hasListStudentPrivilege = false;
-        foreach ($user->getRole() as $role) {
-            foreach ($role->getPrivileges() as $privilege) {
-                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
-                if ($privilege->getName() === 'Add EC') {
-                    $hasListStudentPrivilege = true;
-                    break 2;
-                }
-            }
-        }
-        if (!$hasListStudentPrivilege) {
-            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
-        }        
 
 
         $entityManager = $doctrine->getManager();
@@ -80,78 +66,134 @@ class UeController extends AbstractController
         return $this->render('ue/createEC.html.twig', 
         ['form' => $form->createView(),
     'user' => $user,
-    'privileges' => array_values($privileges) // Convertir en tableau indexé
     ]);
     }
 
 
 
-    #[Route('/add/ue/{id?0}', name: 'add_ue')]
-    public function AddUe($id, EntityManagerInterface $entityManager, Request $request, SessionInterface $session): Response
+    #[Route('/add/ue/{id<\d+>?0}', name: 'add_ue')]
+    public function AddUe(
+        EntityManagerInterface $entityManager, 
+        Request $request,
+        int $id = 0
+    ): Response
     {
         $user = $this->getUser();
-
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
-
-        // Vérifier si l'utilisateur a le privilège "Add UE"
-        $hasAddUePrivilege = false;
-        $privileges = [];
-        foreach ($user->getRole() as $role) {
-            foreach ($role->getPrivileges() as $privilege) {
-                $privileges[$privilege->getId()] = $privilege;
-                if ($privilege->getName() === 'Add UE') {
-                    $hasAddUePrivilege = true;
-                    break 2;
-                }
-            }
+    
+        // Récupérer le RespLevel de l'utilisateur connecté
+        $respLevel = $user->getRespLevel();
+        if (!$respLevel) {
+            throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour créer une UE.');
         }
-        if (!$hasAddUePrivilege) {
-            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
+    
+        // Récupérer le Level associé au RespLevel
+        $level = $respLevel->getLevel();
+        if (!$level) {
+            throw $this->createNotFoundException('Aucun niveau n\'est associé à ce responsable de niveau.');
         }
-
-        // Récupérer l'école depuis la session
-        $schoolName = $session->get('school_name');
-        $school = null;
-        if ($schoolName) {
-            $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
+    
+        // Récupérer toutes les UE du niveau actuel
+        $existingUEs = $entityManager->getRepository(UE::class)->findBy(['level' => $level]);
+    
+        // Fetch or create UE
+        $ue = $id 
+            ? $entityManager->getRepository(UE::class)->find($id) 
+            : new UE();
+    
+        if ($id && !$ue) {
+            throw $this->createNotFoundException('UE not found');
         }
-
-        // Vérifier si un ID de l'UE a été fourni
-        if ($id) {
-            $ue = $entityManager->getRepository(UE::class)->find($id);
-            if (!$ue) {
-                throw $this->createNotFoundException('UE not found');
-            }
-        } else {
-            $ue = new UE();
-        }
-
-        $form = $this->createForm(UeType::class, $ue, ['school' => $school]);
-
+    
+        $form = $this->createForm(UeType::class, $ue);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             try {
+                // Set the Level automatically
+                $ue->setLevel($level);
+    
+                // Add the UE to all fields associated with the level
+                foreach ($level->getField() as $field) {
+                    $ue->addField($field);
+                }
+    
                 $entityManager->persist($ue);
                 $entityManager->flush();
-
-                $message = $id ? 'mis à jour' : 'ajouté';
-                $this->addFlash('success', $ue->getName() . " a été $message avec succès !");
-
-                return $this->redirectToRoute("add_ue");
-            } catch (\Exception $e) {
-                $this->addFlash('error', 'Une erreur s\'est produite.');
-                error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3, 'chemin/vers/votre/error.log');
-                return $this->redirectToRoute('app_home_page');
+    
+                $message = $id ? 'mise à jour' : 'ajoutée';
+                $this->addFlash('success', sprintf('L\'UE "%s" a été %s avec succès !', $ue->getName(), $message));
+    
+                return $this->redirectToRoute('add_ue');
+            } 
+            catch (\Exception $e) {
+                $this->addFlash('error', $e->getMessage());
+                // Log the error
+                error_log($e->getMessage());
             }
         }
-
+    
         return $this->render('ue/createUe.html.twig', [
             'form' => $form->createView(),
-            'user' => $user,
-            'privileges' => array_values($privileges),
+            'ue' => $ue,
+            'isEdit' => $id !== 0,
+            'existingUEs' => $existingUEs, // Passer les UE existantes à la vue
         ]);
     }
+
+
+    #[Route('/delete/ue/{id}', name: 'delete_ue')]
+public function deleteUe(
+    EntityManagerInterface $entityManager,
+    int $id
+): Response
+{
+    $user = $this->getUser();
+    if (!$user) {
+        return $this->redirectToRoute('app_login');
+    }
+
+    // Récupérer le RespLevel de l'utilisateur connecté
+    $respLevel = $user->getRespLevel();
+    if (!$respLevel) {
+        throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour supprimer une UE.');
+    }
+
+    // Récupérer l'UE
+    $ue = $entityManager->getRepository(UE::class)->find($id);
+    if (!$ue) {
+        throw $this->createNotFoundException('UE non trouvée');
+    }
+
+    // Vérifier si l'UE appartient au niveau du responsable
+    if ($ue->getLevel() !== $respLevel->getLevel()) {
+        throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour supprimer cette UE.');
+    }
+
+    try {
+        // Supprimer l'UE de tous les champs associés
+        foreach ($ue->getFields() as $field) {
+            $ue->removeField($field);
+        }
+
+        // Supprimer les ECs associés à l'UE
+        foreach ($ue->getECs() as $ec) {
+            $entityManager->remove($ec);
+        }
+
+        // Supprimer l'UE
+        $entityManager->remove($ue);
+        $entityManager->flush();
+
+        $this->addFlash('success', sprintf('L\'UE "%s" a été supprimée avec succès !', $ue->getName()));
+    } catch (\Exception $e) {
+        $this->addFlash('error', 'Une erreur est survenue lors de la suppression de l\'UE : ' . $e->getMessage());
+        // Log the error
+        error_log($e->getMessage());
+    }
+
+    return $this->redirectToRoute('ue_dashboards'); // Assurez-vous d'avoir une route pour lister les UEs
+}
 }

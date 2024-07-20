@@ -28,7 +28,7 @@ class RespLevelController extends AbstractController
     }
 
 
-    #[Route('/leveldashboard', name: 'level_dashboard')]
+    #[Route('/fielddashboard', name: 'level_dashboard')]
     public function dashboard(
         LevelRepository $levelRepository,
         RespLevelRepository $respLevelRepository,

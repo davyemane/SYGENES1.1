@@ -6,12 +6,14 @@ use App\Entity\RespField;
 use App\Entity\RespLevel;
 use App\Entity\Responsable;
 use App\Entity\RespSchool;
+use App\Entity\RespUe;
 use App\Entity\School;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\RespFieldType;
 use App\Form\RespLevelType;
 use App\Form\RespSchoolType;
+use App\Form\RespUeType;
 use App\Repository\FieldRepository;
 use App\Repository\LevelRepository;
 use App\Repository\RoleRepository;
@@ -28,7 +30,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\SchoolRepository;
-
+use App\Repository\UERepository;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 #[Route('/admin')]
@@ -411,6 +413,96 @@ class RegistrationController extends AbstractController
 
 
 
+    #[Route('/register/respue/{id<\d+>?0}', name: 'register_respue')]
+    public function manageRespUe(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface $entityManager,
+        UERepository $ueRepository,
+        Security $security,
+        SluggerInterface $slugger,
+        $id
+    ): Response {
+        $isEdit = false;
+        if ($id) {
+            $isEdit = true;
+        }
+    
+        if ($isEdit) {
+            $user = $entityManager->getRepository(User::class)->find($id);
+            if (!$user) {
+                throw $this->createNotFoundException('Utilisateur non trouvé');
+            }
+            $respUe = $user->getRespUe();
+            if (!$respUe) {
+                $respUe = new RespUe();
+                $user->setRespUe($respUe);
+            }
+        } else {
+            $user = new User();
+            $respUe = new RespUe();
+        }
+    
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->add('respUe', RespUeType::class);
+    
+        if ($isEdit) {
+            $form->remove('plainPassword');
+        }
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!$isEdit) {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+                $user->setRoles(['ROLE_RESPUE']);
+                $respUe->setCreatedAt(new \DateTime());
+    
+                $currentUser = $security->getUser();
+                if ($currentUser instanceof User) {
+                    $respUe->setCreatedBy($currentUser);
+                } else {
+                    return $this->redirectToRoute('app_login');
+                }
+            }
+            $this->handleProfilePictureUpload($form, $user, $slugger);
+    
+            $email = $form->get('email')->getData();
+            $user->setEmail($email);
+    
+            $respUe->setName($form->get('respUe')->get('name')->getData());
+            $respUe->setCni($form->get('respUe')->get('cni')->getData());
+            $respUe->setPhoneNumber($form->get('respUe')->get('phone_number')->getData());
+            $respUe->setEmail($email);
+    
+            $ue = $ueRepository->find($form->get('respUe')->get('ue')->getData());
+            $respUe->setUe($ue);
+    
+            $user->setRespUe($respUe);
+    
+            $entityManager->persist($user);
+            $entityManager->persist($respUe);
+            $entityManager->flush();
+    
+            if ($isEdit) {
+                $this->addFlash('success', 'UE Responsible information has been successfully updated.');
+            } else {
+                $this->addFlash('success', 'UE Responsible has been successfully registered.');
+            }
+            
+            return $this->redirectToRoute('register_respue');
+        }
+    
+        return $this->render('resp_ue/register_respue.html.twig', [
+            'registrationForm' => $form->createView(),
+            'isEdit' => $isEdit,
+        ]);
+    }
 
     private function handleProfilePictureUpload($form, $user, $slugger): void
     {

@@ -107,21 +107,22 @@ class RespLevel
 
     public function setCreatedBy(?User $created_by): static
     {
-        // Si l'ancien créateur existe, on retire ce RespLevel de sa collection
-        if ($this->created_by !== null) {
-            $this->created_by->removeRespLevel($this);
-        }
+        if ($this->created_by !== $created_by) {
+            $oldCreatedBy = $this->created_by;
+            $this->created_by = $created_by;
     
-        $this->created_by = $created_by;
+            if ($oldCreatedBy !== null) {
+                $oldCreatedBy->removeRespLevel($this);
+            }
     
-        // Si le nouveau créateur n'est pas null, on ajoute ce RespLevel à sa collection
-        if ($created_by !== null) {
-            $created_by->addRespLevel($this);
+            if ($created_by !== null) {
+                $created_by->addRespLevel($this);
+            }
         }
     
         return $this;
-    }
-    
+    }  
+      
     public function getLevel(): ?Level
     {
         return $this->level;

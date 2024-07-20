@@ -1,80 +1,111 @@
-{% extends 'base_new.html.twig' %}
+{% extends 'base_login.html.twig' %}
 
-{% block head %}
-  {% block title %}<title>UE</title>{% endblock %}
+{% block title %}
+    <title>{{ (ue.id ? "edit-ue-title" : "create-ue-title")|trans }}</title>
 {% endblock %}
 
 {% block body %}
-<div class="min-h-screen flex justify-center items-center py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-4xl w-full space-y-8 bg-background p-10 rounded-lg shadow-2xl">
-    <div>
-      <h1 class="text-4xl font-bold text-blue-600 text-center">Add UE</h1>
-      <p class="mt-2 text-center text-sm text-gray-600">This is where you add the various UEs.</p>
+    <div class="min-h-screen bg-gradient-to-br from-blue-100 to-orange-100 dark:from-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center transition-colors duration-300">
+        <div class="max-w-3xl w-full">
+            <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-lg overflow-hidden">
+                <div class="px-6 py-8 sm:px-10">
+                    <div class="flex flex-col items-center mb-8 space-y-4">
+                        <h1 class="text-3xl font-extrabold text-text dark:text-text-light text-center">
+                            {{ (ue.id ? "edit-ue" : "create-ue")|trans }}
+                        </h1>
+                    </div>
+
+                    <div class="mb-8">
+                        <button id="toggleExistingUEs" class="w-full bg-primary text-white font-semibold py-2 px-4 rounded-md hover:bg-primaryHover ease-in-out focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 shadow-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                            </svg>
+                            {{ "toggle-existing-ues"|trans }}
+                        </button>
+                    </div>
+
+                    <div id="existingUEsContainer" class="mb-8 hidden transition-all duration-300 ease-in-out">
+                        <h2 class="text-2xl font-bold text-text dark:text-text-light mb-4">{{ "existing-ues"|trans }}</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {% for existingUE in existingUEs %}
+                                <div class="bg-gradient-to-r from-orange-100 to-orange-200 dark:from-gray-700 dark:to-gray-600 rounded-lg p-4 shadow-md hover:shadow-lg">
+                                    <h3 class="font-bold text-lg text-text dark:text-text-light mb-2">{{ existingUE.name }}</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">{{ "code"|trans }}: {{ existingUE.codeUE }}</p>
+                                    <a href="{{ path('add_ue', {'id': existingUE.id}) }}" class="text-secondary hover:text-secondaryHover dark:text-blue-400 dark:hover:text-blue-300 text-sm transition duration-300 ease-in-out hover:underline">{{ "edit"|trans }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% for label, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 dark:bg-{{ label == 'success' ? 'green' : 'red' }}-900 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 dark:text-{{ label == 'success' ? 'green' : 'red' }}-100 p-4 mb-6 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md" role="alert">
+                                <p class="font-bold">{{ (label == 'success' ? "success" : "error")|trans }}</p>
+                                <p>{{ message|trans }}</p>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+
+                    {{ form_start(form, {'attr': {'class': 'space-y-8'}}) }}
+                    <div class="space-y-6">
+                        <div class="">
+                            {{ form_label(form.codeUE, 'code'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
+                            {{ form_widget(form.codeUE, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                            {{ form_errors(form.codeUE, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+                        </div>
+
+                        <div class="">
+                            {{ form_label(form.name, 'name'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
+                            {{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                            {{ form_errors(form.name, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+                        </div>
+
+                        <div class="">
+                            {{ form_label(form.description, 'description'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
+                            {{ form_widget(form.description, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white', 'rows': '4'}}) }}
+                            {{ form_errors(form.description, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+                        </div>
+
+                        <div class="">
+                            {{ form_label(form.credit, 'credit'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
+                            {{ form_widget(form.credit, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                            {{ form_errors(form.credit, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+                        </div>
+
+                        <div class="">
+                            {{ form_label(form.semester, 'semester'|trans, {'label_attr': {'class': 'block text-sm font-semibold text-text dark:text-text-light mb-2'}}) }}
+                            {{ form_widget(form.semester, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+                            {{ form_errors(form.semester, {'attr': {'class': 'text-red-500 text-sm mt-1'}}) }}
+                        </div>
+
+
+                    </div>
+
+                    <div class="pt-8">
+                        <div class="flex justify-end space-x-4">
+                            <button type="submit" class="inline-flex justify-center items-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-primaryHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 3a1 1 0 00-1 1v5H4a1 1 0 100 2h5v5a1 1 0 102 0v-5h5a1 1 0 100-2h-5V4a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                </svg>
+                                {{ (ue.id ? "update" : "create")|trans }}
+                            </button>
+                            <a href="{{ path('admin_dashboard') }}" class="inline-flex justify-center items-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-secondary hover:bg-secondaryHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary transition-colors duration-300">
+                                {{ "finish"|trans }}
+                            </a>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
     </div>
-    
-    {% if app.session.flashBag.has('error') %}
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-        <strong class="font-bold">Error!</strong>
-        <span class="block sm:inline">{{ app.session.flashBag.get('error')[0] }}</span>
-      </div>
-    {% endif %}
-    
-    <form class="mt-8 space-y-6" method="post" id="ue-form">
-      {{ form_start(form) }}
-      <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
-        
-        <div>
-          {{ form_label(form.codeUE, 'Code UE', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-          {{ form_widget(form.codeUE, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm'}}) }}
-        </div>
 
-        <div class="sm:col-span-2">
-          {{ form_label(form.name, 'UE Name', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-          {{ form_widget(form.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm'}}) }}
-        </div>
-
-        <div class="sm:col-span-2">
-          {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-          {{ form_widget(form.description, {'attr': {'class': 'p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm'}}) }}
-        </div>
-
-        <div>
-          {{ form_label(form.credit, 'Credit', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-          {{ form_widget(form.credit, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm'}}) }}
-        </div>
-        
-        <div>
-          {{ form_label(form.semester, 'Semester', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-          {{ form_widget(form.semester, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm'}}) }}
-        </div>
-
-        <div class="sm:col-span-2">
-          {{ form_label(form.level, 'Level', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-          {{ form_widget(form.level, {'attr': {'class': 'p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm'}}) }}
-        </div>
-
-        <div class="sm:col-span-2">
-          {{ form_label(form.fields, 'Fields', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-          {{ form_widget(form.fields, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm'}}) }}
-        </div>
-        
-      </div>
-
-      <div class="mt-6 flex justify-end space-x-3">
-        <button type="button" onclick="resetForm()" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-          Cancel
-        </button>
-        {{ form_widget(form.submit, {'attr': {'class': 'px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'}}) }}
-      </div>
-      
-      {{ form_end(form) }}
-    </form>
-  </div>
-</div>
-
-<script>
-  function resetForm() {
-    document.getElementById('ue-form').reset();
-  }
-</script>
+    <script>
+        document.getElementById('toggleExistingUEs').addEventListener('click', function () {
+            var container = document.getElementById('existingUEsContainer');
+            container.classList.toggle('hidden');
+            container.classList.toggle('opacity-0');
+            container.classList.toggle('opacity-100');
+        });
+    </script>
 {% endblock %}

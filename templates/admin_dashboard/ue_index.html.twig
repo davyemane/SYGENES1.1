@@ -1,0 +1,138 @@
+{% extends "base_super_admin.html.twig" %}
+
+{% block title %}
+    <title>UIECC Dashboard - {{ level.name }}</title>
+{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen bg-white p-8 flex flex-col overflow-hidden">
+        <header class="text-gray-900 p-5 rounded-lg mb-6 flex flex-col items-center justify-center container mx-auto text-center border-b-4 border-gray-900">
+            <h1 class="text-4xl font-bold mb-1">Welcome to {{ level.name }} Dashboard</h1>
+            <p class="text-md opacity-80">Today is {{ "now"|date("l, F j, Y") }}</p>
+        </header>
+
+        <div class="flex flex-col md:flex-row gap-6 flex-grow overflow-hidden -mb-10">
+            <!-- Left Section: Create a UE -->
+            <div class="w-full md:w-1/4 bg-white rounded-lg p-4 h-auto md:h-[280px] flex flex-col justify-center overflow-y-auto shadow-xl">
+                <div class="text-center place-items-center">
+                    <div class="group relative justify-center">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-2">Create a UE</h2>
+                        <div class="absolute z-10 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-gray-800 border border-gray-300 rounded-sm shadow-lg p-2 w-48 mt-2 left-1/2 transform -translate-x-1/2">
+                            <p>Easily add a new UE to the level with just a click</p>
+                        </div>
+                    </div>
+                    <p class="mb-4 text-sm text-gray-600">Click below to add a new UE</p>
+                    <form action="{{ path('add_ue') }}" method="GET">
+                        <input type="hidden" name="level_id" value="{{ level.id }}">
+                        <button class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg mb-4 transition duration-300 ease-in-out transform hover:scale-105">
+                            <svg class="h-5 w-5 inline-block mr-2" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Create UE
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Section: UE List -->
+            <div class="w-full md:flex-1 bg-white rounded-lg p-6 overflow-visible flex flex-col h-auto md:h-[280px] shadow-xl">
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-800">UE List</h2>
+                    <p class="mb-4 text-xs">Below is the list of UEs for {{ level.name }}</p>
+                </div>
+
+                <div class="overflow-y-auto flex-grow">
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal sticky top-0">
+                            <tr>
+                                <th class="py-3 px-6 text-left">Name</th>
+                                <th class="py-3 px-6 text-left">Code</th>
+                                <th class="py-3 px-6 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-600 text-sm font-light">
+                            {% for ueData in uesData %}
+                                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ ueData.ue.name }}</td>
+                                    <td class="py-3 px-6 text-left">{{ ueData.ue.codeUe }}</td>
+                                    <td class="py-3 px-6 text-center">
+                                        <a href="{{ path('delete_ue', {'id': ueData.ue.id}) }}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-xs" onclick="return confirm('Are you sure you want to delete this UE?');">Delete</a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="py-3 px-6 text-center">No UEs found for this level</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-6 flex-grow overflow-hidden mt-4">
+            <!-- Left Section: Create a UE responsible -->
+            <div class="w-full md:w-1/4 bg-white rounded-lg p-4 h-auto md:h-[280px] flex flex-col justify-center overflow-y-auto shadow-xl">
+                <div class="text-center mb-4">
+                    <div class="group relative">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-2">Create a UE Responsible</h2>
+                        <div class="absolute z-10 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-gray-800 border border-gray-300 rounded-sm shadow-xl p-2 w-48 mt-2 left-1/2 transform -translate-x-1/2">
+                            <p>Add a responsible to manage a specific UE</p>
+                        </div>
+                    </div>
+                    <p class="mb-4 text-sm text-gray-600">Click below to add a UE responsible</p>
+                    <form action="{{ path('register_respue') }}" method="GET">
+                        <input type="hidden" name="level_id" value="{{ level.id }}">
+                        <button class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow mb-4 transition duration-300 ease-in-out transform hover:scale-105">
+                            <svg class="h-5 w-5 inline-block mr-2" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Create UE Responsible
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Section: UE Responsible List -->
+            <div class="w-full md:flex-1 bg-white rounded-lg p-6 overflow-hidden flex flex-col h-auto md:h-[280px] shadow-xl">
+                <div>
+                    <h2 class="text-2xl font-semibold text-gray-800">UE Responsibles</h2>
+                    <p class="mb-4 text-xs">Below is the list of UE responsibles for {{ level.name }}</p>
+                </div>
+
+                <div class="overflow-y-auto flex-grow">
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal sticky top-0">
+                            <tr>
+                                <th class="py-3 px-6 text-left">Name</th>
+                                <th class="py-3 px-6 text-left">UE</th>
+                                <th class="py-3 px-6 text-left">Phone Number</th>
+                                <th class="py-3 px-6 text-left">Email</th>
+                                <th class="py-3 px-6 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-600 text-sm font-light">
+                            {% for ueData in uesData %}
+                                {% if ueData.respUE %}
+                                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                        <td class="py-3 px-6 text-left whitespace-nowrap">{{ ueData.respUE.name }}</td>
+                                        <td class="py-3 px-6 text-left">{{ ueData.ue.name }}</td>
+                                        <td class="py-3 px-6 text-left">{{ ueData.respUE.phoneNumber }}</td>
+                                        <td class="py-3 px-6 text-left">{{ ueData.respUE.email }}</td>
+                                        <td class="py-3 px-6 text-center">
+                                            <a href="{{ path('delete_respue', {'id': ueData.respUE.id}) }}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-xs" onclick="return confirm('Are you sure you want to delete this responsible?');">Delete</a>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="py-3 px-6 text-center">No UE responsibles found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
