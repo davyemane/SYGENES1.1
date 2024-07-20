@@ -24,18 +24,18 @@
 							<span class="absolute -inset-0.5"></span>
 							<span class="sr-only">Open main menu</span>
 							<!--
-																					            Icon when menu is closed.
-																					
-																					            Menu open: "hidden", Menu closed: "block"
-																					          -->
+																																			            Icon when menu is closed.
+																																			
+																																			            Menu open: "hidden", Menu closed: "block"
+																																			          -->
 							<svg class="block h-6 w-6" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
 								<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
 							</svg>
 							<!--
-																					            Icon when menu is open.
-																					
-																					            Menu open: "block", Menu closed: "hidden"
-																					          -->
+																																			            Icon when menu is open.
+																																			
+																																			            Menu open: "block", Menu closed: "hidden"
+																																			          -->
 							<svg class="hidden h-6 w-6" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
 								<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
 							</svg>
@@ -48,60 +48,50 @@
 						<div class="hidden sm:ml-6 sm:block">
 							<div class="flex space-x-4">
 								{% if is_granted('ROLE_SUPER_ADMIN') %}
-									<a href="{{ path('app_super_admin_dash') }}" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Dashboard</a>
+									<a href="{{ path('super_admin_dashboard') }}" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Dashboard</a>
 									<a href="{{ path('school_new') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new school</a>
 									<a href="{{ path('new_school_resp') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new authority</a>
 									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List Schools</a>
-									<a href="{{ path('resp_school') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List authorities</a>
-								{% endif %}
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List authorities</a>
 
-								{% if is_granted('ROLE_ADMIN') %}
-									<a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Admin Dashboard</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Users</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>
-								{% endif %}
+								{% elseif is_granted('ROLE_ADMIN') %}
+									<a href="{{ path('admin_dashboard') }}" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Dashboard</a>
+									<a href="{{ path('field_new') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new field</a>
+									<a href="{{ path('app_register_respfield') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new manager</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List Fields</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List managers</a>
 
-								{% if is_granted('ROLE_RESPSCHOOL') %}
-									<a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">School Dashboard</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Teachers</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Students</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Students</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Students</a>
-								{% endif %}
+								{% elseif is_granted('ROLE_RESPFIELD') %}
+									<a href="{{path('level_dashboard')}}" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Dashboard</a>
+									<a href="{{path('level_new')}}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new level</a>
+									<a href="{{path('app_register_resplevel')}}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new level manager</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List Levels</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List managers</a>
 
-								{% if is_granted('ROLE_RESPFIELD') %}
-									<a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Teacher Dashboard</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Classes</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grade Book</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grade Book</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grade Book</a>
-								{% endif %}
+								{% elseif is_granted('ROLE_RESLEVEL') %}
+									<a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">
+										Dashboard</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new UE</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new UE manager</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List UEs</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List Managers</a>
 
-								{% if is_granted('ROLE_RESLEVEL') %}
+								{% elseif is_granted('ROLE_RESPUE') %}
+									<a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Dashboard</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create an Ec</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a teacher</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List ECs</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List Teachers</a>
+
+								{% elseif is_granted('ROLE_TEACHER') %}
+									<a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">
+										Dashboard</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Add CC Marks</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Add Anonymats</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Add Anonymats</a>
+
+								{% elseif is_granted('ROLE_STUDENT') %}
 									<a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Student Dashboard</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Courses</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grades</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grades</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grades</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grades</a>
-								{% endif %}
-
-								{% if is_granted('ROLE_RESPUE') %}
-									<a href="{{ path('app_respue_dash') }}" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">UE Dashboard</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Teachers</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Teachers</a>
-								{% endif %}
-
-								{% if is_granted('ROLE_TEACHER') %}
-									<a href="{{ path('app_teacher_dash') }}" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Teacher Dashboard</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Classes</a>
-									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grade Book</a>
-								{% endif %}
-
-								{% if is_granted('ROLE_STUDENT') %}
-									<a href="{{ path('app_student_dash') }}" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Student Dashboard</a>
 									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Courses</a>
 									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Grades</a>
 								{% endif %}
@@ -135,15 +125,15 @@
 							</div>
 
 							<!--
-																					            Dropdown menu, show/hide based on menu state.
-																					
-																					            Entering: "transition ease-out duration-100"
-																					              From: "transform opacity-0 scale-95"
-																					              To: "transform opacity-100 scale-100"
-																					            Leaving: "transition ease-in duration-75"
-																					              From: "transform opacity-100 scale-100"
-																					              To: "transform opacity-0 scale-95"
-																					          -->
+																											Dropdown menu, show/hide based on menu state.
+																																			
+																									    Entering: "transition ease-out duration-100"
+																											From: "transform opacity-0 scale-95"
+																											To: "transform opacity-100 scale-100"
+																											Leaving: "transition ease-in duration-75"
+																											From: "transform opacity-100 scale-100"
+																											To: "transform opacity-0 scale-95"
+																					-->
 							<div
 								class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
 								<!-- Active: "bg-gray-100", Not Active: "" -->
@@ -160,45 +150,46 @@
 			<div class="sm:hidden" id="mobile-menu">
 				<div class="space-y-1 px-2 pb-3 pt-2">
 					{% if is_granted('ROLE_SUPER_ADMIN') %}
-						<a href="{{ path('app_super_admin_dash') }}" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Super Admin Dashboard</a>
-						<a href="{{ path('school_new') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create School</a>
-						<a href="{{ path('new_school_resp') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create Authority</a>
-						<a href="{{path('resp_school')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List authorities</a>
-            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage All</a>
-					{% endif %}
+						<a href="{{ path('super_admin_dashboard') }}" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
+						<a href="{{ path('school_new') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new school</a>
+						<a href="{{ path('new_school_resp') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new authority</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List Schools</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List authorities</a>
 
-					{% if is_granted('ROLE_ADMIN') %}
-						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Admin Dashboard</a>
-						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Schools</a>
-					{% endif %}
+					{% elseif is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('admin_dashboard') }}" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
+						<a href="{{ path('field_new') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new field</a>
+						<a href="{{ path('app_register_respfield') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new manager</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List Fields</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List managers</a>
 
-					{% if is_granted('ROLE_RESPSCHOOL') %}
-						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">School Dashboard</a>
-						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Fields</a>
-					{% endif %}
+					{% elseif is_granted('ROLE_RESPFIELD') %}
+						<a href="{{path('level_dashboard')}}" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
+						<a href="{{path('level_new')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new level</a>
+						<a href="{{path('app_register_resplevel')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new level manager</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List Levels</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List managers</a>
 
-					{% if is_granted('ROLE_RESPFIELD') %}
-						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Field Dashboard</a>
-						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Levels</a>
-					{% endif %}
+					{% elseif is_granted('ROLE_RESLEVEL') %}
+						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new UE</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new UE manager</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List UEs</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List Managers</a>
 
-					{% if is_granted('ROLE_RESLEVEL') %}
-						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Level Dashboard</a>
-						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage UEs</a>
-					{% endif %}
+					{% elseif is_granted('ROLE_RESPUE') %}
+						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create an Ec</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a teacher</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List ECs</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List Teachers</a>
 
-					{% if is_granted('ROLE_RESPUE') %}
-						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">UE Dashboard</a>
-						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Teachers</a>
-					{% endif %}
+					{% elseif is_granted('ROLE_TEACHER') %}
+						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Add CC Marks</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Add Anonymats</a>
 
-					{% if is_granted('ROLE_TEACHER') %}
-						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Teacher Dashboard</a>
-						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Classes</a>
-						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grade Book</a>
-					{% endif %}
-
-					{% if is_granted('ROLE_STUDENT') %}
+					{% elseif is_granted('ROLE_STUDENT') %}
 						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Student Dashboard</a>
 						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Courses</a>
 						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Grades</a>
