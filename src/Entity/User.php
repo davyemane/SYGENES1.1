@@ -207,7 +207,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function __toString():string
+    public function __toString(): string
     {
         return $this->username;
     }
@@ -372,9 +372,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
 
+        // Gérer la relation OneToOne
+        if ($this->resplevel === $respLevel) {
+            $this->resplevel = null;
+        }
+
         return $this;
     }
-
     /**
      * @return Collection<int, RespUe>
      */
@@ -464,8 +468,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-
-
-
 }

@@ -28,15 +28,10 @@ class Student
     #[ORM\ManyToOne(inversedBy: 'students', targetEntity:Field::class)]
     private $field = null;
 
-    #[ORM\ManyToOne(inversedBy: 'students', targetEntity:Level::class)]
-    private $level = null;
-
-    /**
-     * @var Collection<int, TakeUe>
-     */
-    #[ORM\OneToMany(targetEntity: TakeUe::class, mappedBy: 'student')]
-    private Collection $takeUes;
-
+    #[ORM\ManyToOne(inversedBy: 'students')]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
+    private ?Level $level = null;
+    
     #[Assert\Email(message:'veuillez entrer un email corect!')]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
@@ -76,7 +71,6 @@ class Student
 
     public function __construct()
     {
-        $this->takeUes = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->notescctps = new ArrayCollection();
     }
@@ -134,35 +128,6 @@ class Student
         return $this;
     }
 
-    /**
-     * @return Collection<int, TakeUe>
-     */
-    public function getTakeUes(): Collection
-    {
-        return $this->takeUes;
-    }
-
-    public function addTakeUe(TakeUe $takeUe): static
-    {
-        if (!$this->takeUes->contains($takeUe)) {
-            $this->takeUes->add($takeUe);
-            $takeUe->setStudent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTakeUe(TakeUe $takeUe): static
-    {
-        if ($this->takeUes->removeElement($takeUe)) {
-            // set the owning side to null (unless already changed)
-            if ($takeUe->getStudent() === $this) {
-                $takeUe->setStudent(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getEmail(): ?string
     {
@@ -404,5 +369,13 @@ class Student
         return $this;
     }
 
-
+    public function removeLevel(Level $level): static
+    {
+        if ($this->level === $level) {
+            $this->level = null;
+        }
+    
+        return $this;
+    }
+    
 }

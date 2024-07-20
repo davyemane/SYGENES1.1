@@ -18,21 +18,17 @@ class Level
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
-    /**
-     * @var Collection<int, Student>
-     */
-    #[ORM\OneToMany(targetEntity: Student::class, mappedBy: 'level')]
+    #[ORM\OneToMany(targetEntity: Student::class, mappedBy: 'level', orphanRemoval: true)]
     private Collection $students;
 
-    /**
-     * @var Collection<int, UE>
-     */
-    #[ORM\OneToMany(targetEntity: UE::class, mappedBy: 'level')]
+    #[ORM\OneToMany(targetEntity: UE::class, mappedBy: 'level', orphanRemoval: true)]
     private Collection $ues;
 
     #[ORM\ManyToOne(inversedBy: 'levels')]
     private ?Field $field = null;
 
+    #[ORM\OneToOne(mappedBy: 'level', cascade: ['persist', 'remove'])]
+    private ?RespLevel $respLevel = null;
 
     public function __construct()
     {
@@ -53,13 +49,9 @@ class Level
     public function setName(?string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Student>
-     */
     public function getStudents(): Collection
     {
         return $this->students;
@@ -71,25 +63,19 @@ class Level
             $this->students->add($student);
             $student->setLevel($this);
         }
-
         return $this;
     }
 
     public function removeStudent(Student $student): static
     {
         if ($this->students->removeElement($student)) {
-            // set the owning side to null (unless already changed)
             if ($student->getLevel() === $this) {
                 $student->setLevel(null);
             }
         }
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, UE>
-     */
     public function getUes(): Collection
     {
         return $this->ues;
@@ -101,19 +87,16 @@ class Level
             $this->ues->add($ue);
             $ue->setLevel($this);
         }
-
         return $this;
     }
 
     public function removeUe(UE $ue): static
     {
         if ($this->ues->removeElement($ue)) {
-            // set the owning side to null (unless already changed)
             if ($ue->getLevel() === $this) {
                 $ue->setLevel(null);
             }
         }
-
         return $this;
     }
 
@@ -125,13 +108,56 @@ class Level
     public function setField(?Field $field): static
     {
         $this->field = $field;
+        return $this;
+    }
+
+    public function getRespLevel(): ?RespLevel
+    {
+        return $this->respLevel;
+    }
+
+    public function setRespLevel(?RespLevel $respLevel): self
+    {
+        if ($respLevel === null && $this->respLevel !== null) {
+            $this->respLevel->setLevel(null);
+        }
+
+        if ($respLevel !== null && $respLevel->getLevel() !== $this) {
+            $respLevel->setLevel($this);
+        }
+
+        $this->respLevel = $respLevel;
 
         return $this;
     }
 
-
     public function __toString(): string
     {
         return $this->name ?? '';
+    }
+
+    public function remove(): void
+    {
+        // Supprimer tous les étudiants associés
+        foreach ($this->students as $student) {
+            $this->removeStudent($student);
+        }
+
+        // Supprimer toutes les UEs associées
+        foreach ($this->ues as $ue) {
+            $this->removeUe($ue);
+        }
+
+        // Dissocier le champ (Field)
+        if ($this->field !== null) {
+            $this->field->removeLevel($this);
+            $this->field = null;
+        }
+
+        // Supprimer le RespLevel associé
+        if ($this->respLevel !== null) {
+            $this->respLevel->setLevel(null);
+            $this->respLevel = null;
+        }
     }
 }
