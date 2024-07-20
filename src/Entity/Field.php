@@ -162,18 +162,19 @@ class Field
         return $this;
     }
 
-    public function removeLevel(Level $level): static
+    public function removeLevel(Level $level): self
     {
-        if ($this->levels->removeElement($level)) {
+        if ($this->levels->contains($level)) {
+            $this->levels->removeElement($level);
             // set the owning side to null (unless already changed)
             if ($level->getField() === $this) {
                 $level->setField(null);
             }
         }
-
+    
         return $this;
     }
-
+    
     /**
      * @return Collection<int, UE>
      */

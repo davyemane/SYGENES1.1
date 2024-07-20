@@ -36,7 +36,9 @@ class UE
      */
 
     #[ORM\ManyToOne(inversedBy: 'ues')]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private ?Level $level = null;
+
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
@@ -169,7 +171,7 @@ class UE
         return $this;
     }
 
-    public function __toString():string
+    public function __toString(): string
     {
         return $this->name;
     }
@@ -220,7 +222,17 @@ class UE
         if ($this->fields->removeElement($field)) {
             $field->removeUE($this);
         }
-    
+
+        return $this;
+    }
+
+
+    public function removeLevel(Level $level): static
+    {
+        if ($this->level === $level) {
+            $this->level = null;
+        }
+
         return $this;
     }
 }

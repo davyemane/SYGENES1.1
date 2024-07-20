@@ -85,15 +85,6 @@ class SchoolController extends AbstractController
 
 
 
-    // #[Route('/list_school', name: 'list_school')]
-    // public function list(SchoolRepository $schoolRepository): Response
-    // {
-    //     $schools = $schoolRepository->findAll();
-    
-    //     return $this->render('super_admin_dashboard/index.html.twig', [
-    //         'school' => $schools,
-    //     ]);
-    // }
     
     #[Route('/delete_school/{id}', name: 'delete_school')]
     public function deleteSchool(School $school, EntityManagerInterface $entityManager): Response

@@ -21,25 +21,25 @@ class LevelController extends AbstractController
         // Récupérer l'école de la session
         $session = $request->getSession();
         $schoolName = $session->get('school_name');
-    
+
         if (!$schoolName) {
             throw $this->createNotFoundException('Aucune école trouvée dans la session');
         }
-    
+
         // Récupérer l'utilisateur connecté
         $user = $security->getUser();
-    
+
         if (!$user) {
             throw $this->createAccessDeniedException('Vous devez être connecté pour créer un niveau.');
         }
-    
+
         // Récupérer la filière de l'utilisateur connecté
         $field = $user->getRespfield()->getField();
-    
+
         if (!$field) {
             throw $this->createNotFoundException('Aucune filière trouvée pour l\'utilisateur connecté.');
         }
-    
+
         if ($id > 0) {
             $level = $entityManager->getRepository(Level::class)->find($id);
             if (!$level) {
@@ -48,21 +48,21 @@ class LevelController extends AbstractController
         } else {
             $level = new Level();
         }
-    
+
         // Passer la filière de l'utilisateur au formulaire
         $form = $this->createForm(LevelType::class, $level, ['school_name' => $schoolName, 'user_field' => $field]);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$level->getId()) {
                 $entityManager->persist($level);
             }
             $entityManager->flush();
-    
+
             $this->addFlash('success', $id > 0 ? 'Le niveau a été mis à jour avec succès.' : 'Le niveau a été créé avec succès.');
             return $this->redirectToRoute('level_new');
         }
-    
+
         // Récupérer tous les niveaux existants pour l'école en session
         $existingLevels = $entityManager->getRepository(Level::class)
             ->createQueryBuilder('l')
@@ -74,7 +74,7 @@ class LevelController extends AbstractController
             ->setParameter('userField', $field)
             ->getQuery()
             ->getResult();
-    
+
         return $this->render('level/new.html.twig', [
             'level' => $level,
             'form' => $form->createView(),
@@ -83,45 +83,17 @@ class LevelController extends AbstractController
             'schoolName' => $schoolName // Passer le nom de l'école à la vue
         ]);
     }
-        
+
 
     #[Route('/delete_level/{id}', name: 'delete_level')]
     public function deleteLevel(Level $level, EntityManagerInterface $entityManager): Response
     {
-        try {
-            $entityManager->beginTransaction();
+        $level->remove();
+        $entityManager->remove($level);
+        $entityManager->flush();
 
-            // Remove associations with Students
-            foreach ($level->getStudents() as $student) {
-                $student->setLevel(null);
-            }
+        $this->addFlash('success', 'Le niveau a été supprimé avec succès.');
 
-            // Remove associations with UEs
-            foreach ($level->getUes() as $ue) {
-                $ue->setLevel(null);
-            }
-
-            // Remove associations with Fields
-            foreach ($level->getField() as $field) {
-                $level->removeField($field);
-            }
-
-            // Set the main Field to null
-            $level->setField(null);
-
-            // Remove the Level
-            $entityManager->remove($level);
-
-            // Apply changes
-            $entityManager->flush();
-            $entityManager->commit();
-
-            $this->addFlash('success', 'The level has been successfully deleted.');
-        } catch (\Exception $e) {
-            $entityManager->rollback();
-            $this->addFlash('error', 'An error occurred during deletion: ' . $e->getMessage());
-        }
-
-        return $this->redirectToRoute('admin_level_dashboard');
+        return $this->redirectToRoute('level_dashboard');
     }
 }
