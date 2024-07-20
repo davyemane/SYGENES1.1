@@ -200,13 +200,13 @@ class RegistrationController extends AbstractController
 
 
             if ($isEdit) {
-                $this->addFlash('success', 'Field Responsible information has been successfully updated.');
+                $this->addFlash('success', 'School Responsible information has been successfully updated.');
             } else {
-                $this->addFlash('success', 'Field Responsible has been successfully registered.');
+                $this->addFlash('success', 'School Responsible has been successfully registered.');
             }
 
             // Redirect or render success message
-            return $this->redirectToRoute('some_success_route');
+            return $this->redirectToRoute('new_school_resp');
         }
 
         return $this->render('resp_school/register_respschool.html.twig', [

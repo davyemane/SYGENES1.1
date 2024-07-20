@@ -1,100 +1,97 @@
-{# templates/registration/register_respschool.html.twig #}
+{% extends 'base_login.html.twig' %}
 
-{% extends 'base_super_admin.html.twig' %}
-
-{% block title %}<title>Register School Responsible</title>{% endblock %}
+{% block title %}
+	<title>{{ 'register_responsible.title'|trans }}</title>
+{% endblock %}
 
 {% block body %}
-<div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Register School Responsible
-        </h2>
-    </div>
+	<div class="min-h-screen bg-gradient-to-br from-blue-100 to-orange-100 dark:from-gray-800 dark:to-gray-900 py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center transition-colors duration-300">
+		<div class="max-w-6xl w-full space-y-8">
+			<div>
+				<h2 class="text-start text-4xl font-extrabold text-text dark:text-text-light">
+					{{ 'register_responsible.header'|trans }}
+				</h2>
+			</div>
 
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="flash-{{ label }} bg-{{ label == 'success' ? 'green' : 'red' }}-100 border border-{{ label == 'success' ? 'green' : 'red' }}-400 text-{{ label == 'success' ? 'green' : 'red' }}-700 px-4 py-3 rounded relative" role="alert">
-                    <span class="block sm:inline">{{ message }}</span>
-                </div>
-            {% endfor %}
-        {% endfor %}
+			{% for label, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 dark:bg-{{ label == 'success' ? 'green' : 'red' }}-900 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 dark:text-{{ label == 'success' ? 'green' : 'red' }}-100 p-4 mb-6 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md" role="alert">
+						<p class="font-bold">{{ (label == 'success' ? 'flash.success' : 'flash.error')|trans }}</p>
+						<p>{{ message|trans }}</p>
+					</div>
+				{% endfor %}
+			{% endfor %}
 
+			<div class="bg-white dark:bg-gray-800 py-8 px-6 shadow-2xl rounded-lg">
+				{{ form_start(registrationForm, {'attr': {'class': 'grid grid-cols-1 md:grid-cols-2 gap-6'}}) }}
 
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            {{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
-                <div>
-                    {{ form_label(registrationForm.username, 'Username', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    <div class="mt-1">
-                        {{ form_widget(registrationForm.username, {'attr': {'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
-                    </div>
-                </div>
+				<div class="space-y-2">
+					{{ form_label(registrationForm.username, 'register_responsible.username'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+					{{ form_widget(registrationForm.username, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+					{{ form_errors(registrationForm.username, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+				</div>
 
-                <div>
-                    {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    <div class="mt-1">
-                        {{ form_widget(registrationForm.email, {'attr': {'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
-                    </div>
-                </div>
+				<div class="space-y-2">
+					{{ form_label(registrationForm.email, 'register_responsible.email'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+					{{ form_widget(registrationForm.email, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+					{{ form_errors(registrationForm.email, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+				</div>
 
-                <div>
-                    {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    <div class="mt-1">
-                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
-                    </div>
-                </div>
+				<div class="space-y-2">
+					{{ form_label(registrationForm.plainPassword, 'register_responsible.password'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+					{{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+					{{ form_errors(registrationForm.plainPassword, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+				</div>
 
-                <div>
-                    {{ form_label(registrationForm.respSchool.name, 'Name', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    <div class="mt-1">
-                        {{ form_widget(registrationForm.respSchool.name, {'attr': {'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
-                    </div>
-                </div>
+				<div class="space-y-2">
+					{{ form_label(registrationForm.respSchool.name, 'register_responsible.name'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+					{{ form_widget(registrationForm.respSchool.name, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+					{{ form_errors(registrationForm.respSchool.name, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+				</div>
 
-                <div>
-                    {{ form_label(registrationForm.respSchool.cni, 'CNI', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    <div class="mt-1">
-                        {{ form_widget(registrationForm.respSchool.cni, {'attr': {'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
-                    </div>
-                </div>
+				<div class="space-y-2">
+					{{ form_label(registrationForm.respSchool.cni, 'register_responsible.cni'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+					{{ form_widget(registrationForm.respSchool.cni, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+					{{ form_errors(registrationForm.respSchool.cni, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+				</div>
 
-                <div>
-                    {{ form_label(registrationForm.respSchool.phone_number, 'Phone Number', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    <div class="mt-1">
-                        {{ form_widget(registrationForm.respSchool.phone_number, {'attr': {'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
-                    </div>
-                </div>
+				<div class="space-y-2">
+					{{ form_label(registrationForm.respSchool.phone_number, 'register_responsible.phone_number'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+					{{ form_widget(registrationForm.respSchool.phone_number, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+					{{ form_errors(registrationForm.respSchool.phone_number, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+				</div>
 
-                <div>
-                    {{ form_label(registrationForm.respSchool.school, 'School', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    <div class="mt-1">
-                        {{ form_widget(registrationForm.respSchool.school, {'attr': {'class': 'mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
-                    </div>
-                </div>
+				<div class="space-y-2">
+					{{ form_label(registrationForm.respSchool.school, 'register_responsible.school'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+					{{ form_widget(registrationForm.respSchool.school, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+					{{ form_errors(registrationForm.respSchool.school, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+				</div>
 
-                {# Add the new fields here #}
-                <div>
-                    {{ form_label(registrationForm.agreeTerms, 'I agree to the terms', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    <div class="mt-1">
-                        {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded'}}) }}
-                    </div>
-                </div>
+				<div class="space-y-2 col-span-2">
+					{{ form_label(registrationForm.profilePicture, 'register_responsible.profile_picture'|trans, {'label_attr': {'class': 'block text-sm font-medium text-text dark:text-text-light'}}) }}
+					{{ form_widget(registrationForm.profilePicture, {'attr': {'class': 'mt-1 block w-full px-3 py-2 rounded-md shadow-sm border-gray-300 dark:border-gray-600 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 bg-background dark:bg-gray-700 text-text dark:text-white'}}) }}
+					{{ form_errors(registrationForm.profilePicture, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+				</div>
 
-                <div>
-                    {{ form_label(registrationForm.profilePicture, 'Profile Picture', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
-                    <div class="mt-1">
-                        {{ form_widget(registrationForm.profilePicture, {'attr': {'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
-                    </div>
-                </div>
+				<div class="col-span-2">
+					<label class="inline-flex items-center">
+						{{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'rounded border-gray-300 text-primary focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50'}}) }}
+						<span class="ml-2 text-sm text-text dark:text-text-light">{{ 'register_responsible.agree_terms'|trans }}</span>
+					</label>
+					{{ form_errors(registrationForm.agreeTerms, {'attr': {'class': 'text-red-500 text-xs mt-1'}}) }}
+				</div>
 
-                <div>
-                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Register
-                    </button>
-                </div>
-            {{ form_end(registrationForm) }}
-        </div>
-    </div>
-</div>
+				<div class="col-span-2 mt-6 flex justify-center space-x-4">
+					<button type="submit" class="w-1/3 py-4 px-6 border border-transparent rounded-md shadow-sm text-md font-medium text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-transform hover:scale-105 duration-300">
+						{{ 'register_responsible.submit'|trans }}
+					</button>
+                    <a href="{{ path('super_admin_dashboard') }}" class="w-1/3 py-4 px-6 border border-transparent rounded-md shadow-sm text-md font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-transform hover:scale-105 duration-300 text-center">
+						{{ 'register_responsible.finish'|trans }}
+					</a>
+				</div>
+				
+				{{ form_end(registrationForm) }}
+			</div>
+		</div>
+	</div>
 {% endblock %}
