@@ -1,179 +1,272 @@
 <!DOCTYPE html>
 <html lang="{{ app.request.locale }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{ asset('images/uiecc_logo.png') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
-    {% block head %}{% block title %}<title>Super Admin Dashboard</title>{% endblock %}{% endblock %}
-    {{ encore_entry_script_tags('app') }}
-    {{ encore_entry_link_tags('app') }}
-</head>
-<body class="overflow-hidden">
-<nav class="bg-dark-gray">
-  <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-6">
-    <div class="relative flex h-16 items-center justify-between">
-      <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-        <!-- Mobile menu button-->
-        <button type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
-          <span class="absolute -inset-0.5"></span>
-          <span class="sr-only">Open main menu</span>
-          <!--
-            Icon when menu is closed.
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" href="{{ asset('images/uiecc_logo.png') }}" type="image/x-icon">
+		<link rel="stylesheet" href="{{ asset('build/app.css') }}">
+		{% block head %}
+			{% block title %}
+				<title>Super Admin Dashboard</title>
+			{% endblock %}
+		{% endblock %}
+		{{ encore_entry_script_tags('app') }}
+		{{ encore_entry_link_tags('app') }}
+	</head>
+	<body class="overflow-hidden">
+		<nav class="bg-dark-gray">
+			<div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-6">
+				<div class="relative flex h-16 items-center justify-between">
+					<div
+						class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+						<!-- Mobile menu button-->
+						<button type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+							<span class="absolute -inset-0.5"></span>
+							<span class="sr-only">Open main menu</span>
+							<!--
+																					            Icon when menu is closed.
+																					
+																					            Menu open: "hidden", Menu closed: "block"
+																					          -->
+							<svg class="block h-6 w-6" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+							</svg>
+							<!--
+																					            Icon when menu is open.
+																					
+																					            Menu open: "block", Menu closed: "hidden"
+																					          -->
+							<svg class="hidden h-6 w-6" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+							</svg>
+						</button>
+					</div>
+					<div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+						<div class="flex flex-shrink-0 items-center">
+							<img class="h-8 w-auto" src="/images/uiecc_logo_dark.svg" alt="uiecc logo">
+						</div>
+						<div class="hidden sm:ml-6 sm:block">
+							<div class="flex space-x-4">
+								{% if is_granted('ROLE_SUPER_ADMIN') %}
+									<a href="{{ path('app_super_admin_dash') }}" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Dashboard</a>
+									<a href="{{ path('school_new') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new school</a>
+									<a href="{{ path('new_school_resp') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new authority</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List Schools</a>
+									<a href="{{ path('resp_school') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List authorities</a>
+								{% endif %}
 
-            Menu open: "hidden", Menu closed: "block"
-          -->
-          <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-          </svg>
-          <!--
-            Icon when menu is open.
+								{% if is_granted('ROLE_ADMIN') %}
+									<a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Admin Dashboard</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Users</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Reports</a>
+								{% endif %}
 
-            Menu open: "block", Menu closed: "hidden"
-          -->
-          <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-      <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-        <div class="flex flex-shrink-0 items-center">
-          <img class="h-8 w-auto" src="/images/uiecc_logo_dark.svg" alt="uiecc logo">
-        </div>
-        <div class="hidden sm:ml-6 sm:block">
-          <div class="flex space-x-4">
-            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a href="{{path('app_super_admin_dash')}}" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Dashboard</a>
-            <a href="{{path('school_new')}}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new school</a>
-            <a href="{{path('new_school_resp')}}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new authority</a>
-            <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List Schools</a>
-            <a href="{{path('resp_school')}}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List authorities</a>
-          </div>
-        </div>
-      </div>
-      <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-        <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-          <span class="absolute -inset-1.5"></span>
-          <span class="sr-only">View notifications</span>
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-          </svg>
-        </button>
+								{% if is_granted('ROLE_RESPSCHOOL') %}
+									<a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">School Dashboard</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Teachers</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Students</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Students</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Students</a>
+								{% endif %}
 
-        <!-- Profile dropdown -->
-        <div class="relative ml-3">
-          <div>
-            <button type="button" class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-              <span class="absolute -inset-1.5"></span>
-              <span class="sr-only">Open user menu</span>
+								{% if is_granted('ROLE_RESPFIELD') %}
+									<a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Teacher Dashboard</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Classes</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grade Book</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grade Book</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grade Book</a>
+								{% endif %}
 
-              {% if user.profilePicture %}
-              <img class="profile-picture h-8 w-8 rounded-full shadow" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture" />
-              {% else %}
-              <img class="profile-picture h-8 w-8 rounded-full shadow" src="{{ asset('images/user.png') }}" alt="Default Profile Picture" />
-              {% endif %}
+								{% if is_granted('ROLE_RESLEVEL') %}
+									<a href="#" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Student Dashboard</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Courses</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grades</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grades</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grades</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grades</a>
+								{% endif %}
 
-            </button>
-          </div>
+								{% if is_granted('ROLE_RESPUE') %}
+									<a href="{{ path('app_respue_dash') }}" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">UE Dashboard</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Teachers</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Teachers</a>
+								{% endif %}
 
-          <!--
-            Dropdown menu, show/hide based on menu state.
+								{% if is_granted('ROLE_TEACHER') %}
+									<a href="{{ path('app_teacher_dash') }}" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Teacher Dashboard</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Classes</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grade Book</a>
+								{% endif %}
 
-            Entering: "transition ease-out duration-100"
-              From: "transform opacity-0 scale-95"
-              To: "transform opacity-100 scale-100"
-            Leaving: "transition ease-in duration-75"
-              From: "transform opacity-100 scale-100"
-              To: "transform opacity-0 scale-95"
-          -->
-          <div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-            <!-- Active: "bg-gray-100", Not Active: "" -->
-            <a href="{{ path('app_profile_show') }}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-            <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-            <a href="{{ path('app_logout') }}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+								{% if is_granted('ROLE_STUDENT') %}
+									<a href="{{ path('app_student_dash') }}" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white" aria-current="page">Student Dashboard</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Courses</a>
+									<a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Grades</a>
+								{% endif %}
 
-  <!-- Mobile menu, show/hide based on menu state. -->
-  <div class="sm:hidden" id="mobile-menu">
-    <div class="space-y-1 px-2 pb-3 pt-2">
-      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-      <a href="{{path('app_super_admin_dash')}}" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
-      <a href="{{path('school_new')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new School</a>
-      <a href="{{path('new_school_resp')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create a new authority</a>
-      <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List Schools</a>
-      <a href="{{path('resp_school')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List authorities</a>
-      <a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
-      <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">School</a>
-      <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Responsable</a>
-      <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Lists</a>
-    </div>
-  </div>
-</nav>
+							</div>
+						</div>
+					</div>
+					<div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+						<button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+							<span class="absolute -inset-1.5"></span>
+							<span class="sr-only">View notifications</span>
+							<svg class="h-6 w-6" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
+							</svg>
+						</button>
 
-{% block body %}{% endblock %}
-    
-{% block footer %}{% endblock %}
+						<!-- Profile dropdown -->
+						<div class="relative ml-3">
+							<div>
+								<button type="button" class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+									<span class="absolute -inset-1.5"></span>
+									<span class="sr-only">Open user menu</span>
 
-{% block script %}{% endblock %}
-</body>
+									{% if user.profilePicture %}
+										<img class="profile-picture h-8 w-8 rounded-full shadow" src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}" alt="Profile Picture"/>
+									{% else %}
+										<img class="profile-picture h-8 w-8 rounded-full shadow" src="{{ asset('images/user.png') }}" alt="Default Profile Picture"/>
+									{% endif %}
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const mobileMenuButton = document.querySelector('button[aria-controls="mobile-menu"]');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const userMenuButton = document.getElementById('user-menu-button');
-    const userMenu = document.querySelector('div[role="menu"]');
+								</button>
+							</div>
 
-    // Ensure menus are hidden on page load
-    mobileMenu.classList.add('hidden');
-    userMenu.classList.add('hidden');
+							<!--
+																					            Dropdown menu, show/hide based on menu state.
+																					
+																					            Entering: "transition ease-out duration-100"
+																					              From: "transform opacity-0 scale-95"
+																					              To: "transform opacity-100 scale-100"
+																					            Leaving: "transition ease-in duration-75"
+																					              From: "transform opacity-100 scale-100"
+																					              To: "transform opacity-0 scale-95"
+																					          -->
+							<div
+								class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+								<!-- Active: "bg-gray-100", Not Active: "" -->
+								<a href="{{ path('app_profile_show') }}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+								<a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
+								<a href="{{ path('app_logout') }}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-    // Toggle mobile menu
-    mobileMenuButton.addEventListener('click', (event) => {
-        event.stopPropagation();
-        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-        mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
-        mobileMenu.classList.toggle('hidden');
-        // Toggle icons
-        mobileMenuButton.querySelector('svg.block').classList.toggle('hidden');
-        mobileMenuButton.querySelector('svg.hidden').classList.toggle('hidden');
-    });
+			<!-- Mobile menu, show/hide based on menu state. 	-->
+			<div class="sm:hidden" id="mobile-menu">
+				<div class="space-y-1 px-2 pb-3 pt-2">
+					{% if is_granted('ROLE_SUPER_ADMIN') %}
+						<a href="{{ path('app_super_admin_dash') }}" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Super Admin Dashboard</a>
+						<a href="{{ path('school_new') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create School</a>
+						<a href="{{ path('new_school_resp') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Create Authority</a>
+						<a href="{{path('resp_school')}}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">List authorities</a>
+            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage All</a>
+					{% endif %}
 
-    // Toggle user profile menu
-    userMenuButton.addEventListener('click', (event) => {
-        event.stopPropagation();
-        const isExpanded = userMenuButton.getAttribute('aria-expanded') === 'true';
-        userMenuButton.setAttribute('aria-expanded', !isExpanded);
-        userMenu.classList.toggle('hidden');
-    });
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Admin Dashboard</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Schools</a>
+					{% endif %}
 
-    // Close menus when clicking outside
-    document.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-        mobileMenuButton.setAttribute('aria-expanded', 'false');
-        mobileMenuButton.querySelector('svg.block').classList.remove('hidden');
-        mobileMenuButton.querySelector('svg.hidden').classList.add('hidden');
+					{% if is_granted('ROLE_RESPSCHOOL') %}
+						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">School Dashboard</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Fields</a>
+					{% endif %}
 
-        userMenu.classList.add('hidden');
-        userMenuButton.setAttribute('aria-expanded', 'false');
-    });
+					{% if is_granted('ROLE_RESPFIELD') %}
+						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Field Dashboard</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Levels</a>
+					{% endif %}
 
-    // Prevent clicks inside menus from closing them
-    mobileMenu.addEventListener('click', (event) => event.stopPropagation());
-    userMenu.addEventListener('click', (event) => event.stopPropagation());
+					{% if is_granted('ROLE_RESLEVEL') %}
+						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Level Dashboard</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage UEs</a>
+					{% endif %}
 
-    // Set active state for menu items
-    const navLinks = document.querySelectorAll('.space-x-4 a, .space-y-1 a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navLinks.forEach(item => item.classList.remove('bg-gray-900', 'text-white'));
-            link.classList.add('bg-gray-900', 'text-white');
-        });
-    });
+					{% if is_granted('ROLE_RESPUE') %}
+						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">UE Dashboard</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Manage Teachers</a>
+					{% endif %}
+
+					{% if is_granted('ROLE_TEACHER') %}
+						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Teacher Dashboard</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Classes</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Grade Book</a>
+					{% endif %}
+
+					{% if is_granted('ROLE_STUDENT') %}
+						<a href="#" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Student Dashboard</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Courses</a>
+						<a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">My Grades</a>
+					{% endif %}
+				</div>
+			</div>
+		</nav>
+
+		{% block body %}{% endblock %}
+
+		{% block footer %}{% endblock %}
+
+		{% block script %}{% endblock %}
+	</body>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+const mobileMenuButton = document.querySelector('button[aria-controls="mobile-menu"]');
+const mobileMenu = document.getElementById('mobile-menu');
+const userMenuButton = document.getElementById('user-menu-button');
+const userMenu = document.querySelector('div[role="menu"]');
+
+// Ensure menus are hidden on page load
+mobileMenu.classList.add('hidden');
+userMenu.classList.add('hidden');
+
+// Toggle mobile menu
+mobileMenuButton.addEventListener('click', (event) => {
+event.stopPropagation();
+const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+mobileMenuButton.setAttribute('aria-expanded', ! isExpanded);
+mobileMenu.classList.toggle('hidden');
+// Toggle icons
+mobileMenuButton.querySelector('svg.block').classList.toggle('hidden');
+mobileMenuButton.querySelector('svg.hidden').classList.toggle('hidden');
 });
-</script>
+
+// Toggle user profile menu
+userMenuButton.addEventListener('click', (event) => {
+event.stopPropagation();
+const isExpanded = userMenuButton.getAttribute('aria-expanded') === 'true';
+userMenuButton.setAttribute('aria-expanded', ! isExpanded);
+userMenu.classList.toggle('hidden');
+});
+
+// Close menus when clicking outside
+document.addEventListener('click', () => {
+mobileMenu.classList.add('hidden');
+mobileMenuButton.setAttribute('aria-expanded', 'false');
+mobileMenuButton.querySelector('svg.block').classList.remove('hidden');
+mobileMenuButton.querySelector('svg.hidden').classList.add('hidden');
+
+userMenu.classList.add('hidden');
+userMenuButton.setAttribute('aria-expanded', 'false');
+});
+
+// Prevent clicks inside menus from closing them
+mobileMenu.addEventListener('click', (event) => event.stopPropagation());
+userMenu.addEventListener('click', (event) => event.stopPropagation());
+
+// Set active state for menu items
+const navLinks = document.querySelectorAll('.space-x-4 a, .space-y-1 a');
+navLinks.forEach(link => {
+link.addEventListener('click', () => {
+navLinks.forEach(item => item.classList.remove('bg-gray-900', 'text-white'));
+link.classList.add('bg-gray-900', 'text-white');
+});
+});
+});
+	</script>
 </html>
