@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RespLevelType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name')
@@ -20,15 +20,16 @@ class RespLevelType extends AbstractType
             ->add('phone_number')
             ->add('level', EntityType::class, [
                 'class' => Level::class,
+                'choices' => $options['level_choices'],
                 'choice_label' => 'name',
-            ])
-        ;
+            ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => RespLevel::class,
+            'level_choices' => null,
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Field;
 use App\Entity\RespField;
 use App\Entity\RespLevel;
 use App\Entity\Responsable;
@@ -329,11 +330,32 @@ class RegistrationController extends AbstractController
         SluggerInterface $slugger,
         $id
     ): Response {
+        // Vérifier si l'utilisateur connecté est un ROLE_RESPFIELD
+        $currentUser = $security->getUser();
+        if (!$currentUser || !in_array('ROLE_RESPFIELD', $currentUser->getRoles())) {
+            throw $this->createAccessDeniedException('Access denied. You must be a ROLE_RESPFIELD.');
+        }
+
+        // Obtenir la filière du RESPFIELD connecté
+        $respField = $currentUser->getRespField();
+        $entityManager->refresh($respField);  // Rafraîchir l'entité depuis la base de données
+        $respFieldField = $respField->getField();
+        
+        if (!$respFieldField) {
+            throw $this->createNotFoundException('No field found for the connected RESPFIELD.');
+        }
+
+        // Détacher l'entité Field pour éviter les conflits
+        $entityManager->detach($respFieldField);
+        
+        // Recharger l'entité Field
+        $respFieldField = $entityManager->find(Field::class, $respFieldField->getId());
+
         $isEdit = false;
         if ($id) {
             $isEdit = true;
         }
-    
+
         if ($isEdit) {
             $user = $entityManager->getRepository(User::class)->find($id);
             if (!$user) {
@@ -348,16 +370,23 @@ class RegistrationController extends AbstractController
             $user = new User();
             $respLevel = new RespLevel();
         }
-    
+
+        // Créer le formulaire avec une query builder personnalisée pour les niveaux
         $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->add('respLevel', RespLevelType::class);
-    
+        $form->add('respLevel', RespLevelType::class, [
+            'level_choices' => $levelRepository->createQueryBuilder('l')
+                ->where('l.field = :field')
+                ->setParameter('field', $respFieldField)
+                ->getQuery()
+                ->getResult()
+        ]);
+
         if ($isEdit) {
             $form->remove('plainPassword');
         }
-    
+
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$isEdit) {
                 $user->setPassword(
@@ -368,33 +397,28 @@ class RegistrationController extends AbstractController
                 );
                 $user->setRoles(['ROLE_RESPLEVEL']);
                 $respLevel->setCreatedAt(new \DateTime());
-    
-                $currentUser = $security->getUser();
-                if ($currentUser) {
-                    $respLevel->setCreatedBy($currentUser);
-                } else {
-                    return $this->redirectToRoute('app_login');
-                }
+
+                $respLevel->setCreatedBy($currentUser);
             }
             $this->handleProfilePictureUpload($form, $user, $slugger);
-    
+
             $email = $form->get('email')->getData();
             $user->setEmail($email);
-    
+
             $respLevel->setName($form->get('respLevel')->get('name')->getData());
             $respLevel->setCni($form->get('respLevel')->get('cni')->getData());
             $respLevel->setPhoneNumber($form->get('respLevel')->get('phone_number')->getData());
             $respLevel->setEmail($email);
-    
-            $level = $levelRepository->find($form->get('respLevel')->get('level')->getData());
+
+            $level = $form->get('respLevel')->get('level')->getData();
             $respLevel->setLevel($level);
-    
+
             $user->setRespLevel($respLevel);
-    
+
             $entityManager->persist($user);
             $entityManager->persist($respLevel);
             $entityManager->flush();
-    
+
             if ($isEdit) {
                 $this->addFlash('success', 'Level Responsible information has been successfully updated.');
             } else {
@@ -403,13 +427,12 @@ class RegistrationController extends AbstractController
             
             return $this->redirectToRoute('app_register_resplevel');
         }
-    
+
         return $this->render('resp_level/register_resplevel.html.twig', [
             'registrationForm' => $form->createView(),
             'isEdit' => $isEdit,
         ]);
     }
-
 
 
     #[Route('/register/respue/{id<\d+>?0}', name: 'register_respue')]
