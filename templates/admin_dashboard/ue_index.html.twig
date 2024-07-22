@@ -11,36 +11,72 @@
             <p class="text-md opacity-80">Today is {{ "now"|date("l, F j, Y") }}</p>
         </header>
 
-        <div class="flex flex-col md:flex-row gap-6 flex-grow overflow-hidden -mb-10">
-            <!-- Left Section: Create a UE -->
-            <div class="w-full md:w-1/4 bg-white rounded-lg p-4 h-auto md:h-[280px] flex flex-col justify-center overflow-y-auto shadow-xl">
-                <div class="text-center place-items-center">
-                    <div class="group relative justify-center">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-2">Create a UE</h2>
-                        <div class="absolute z-10 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-gray-800 border border-gray-300 rounded-sm shadow-lg p-2 w-48 mt-2 left-1/2 transform -translate-x-1/2">
-                            <p>Easily add a new UE to the level with just a click</p>
+        <!-- Statistics Section -->
+        <div class="mb-6">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Level Statistics</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {# {% set stats = [
+                        {label: 'Students', count: studentCount, color: 'blue'},
+                        {label: 'UEs', count: ueCount, color: 'green'},
+                        {label: 'ECs', count: ecCount, color: 'yellow'},
+                        {label: 'Responsibles', count: respCount, color: 'purple'}
+                    ] %}
+                    {% for stat in stats %}
+                        <div class="bg-{{ stat.color }}-100 rounded-lg p-4 flex items-center justify-between">
+                            <div>
+                                <p class="text-{{ stat.color }}-800 text-sm font-medium">{{ stat.label }}</p>
+                                <p class="text-{{ stat.color }}-600 text-2xl font-bold">{{ stat.count }}</p>
+                            </div>
+                            <div class="text-{{ stat.color }}-500">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </div>
                         </div>
-                    </div>
-                    <p class="mb-4 text-sm text-gray-600">Click below to add a new UE</p>
+                    {% endfor %} #}
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="flex flex-col lg:flex-row gap-6 flex-grow overflow-hidden h-[calc(90vh-24rem)]">
+            <!-- Left Section: Quick Actions -->
+            <div class="w-full h-4/5  lg:w-1/4 bg-white rounded-lg p-4 flex flex-col shadow-xl overflow-y-auto">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-2">Quick Actions</h2>
+                <p class="mb-8 text-sm text-gray-600">Perform quick actions for this level</p>
+                <div class="space-y-4 flex-grow ">
                     <form action="{{ path('add_ue') }}" method="GET">
                         <input type="hidden" name="level_id" value="{{ level.id }}">
-                        <button class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg mb-4 transition duration-300 ease-in-out transform hover:scale-105">
-                            <svg class="h-5 w-5 inline-block mr-2" fill="none" viewbox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
+                        <button class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-5 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
                             Create UE
+                        </button>
+                    </form>
+                    <form action="{{ path('register_respue') }}" method="GET">
+                        <input type="hidden" name="level_id" value="{{ level.id }}">
+                        <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-5  rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                            Create UE Responsible
+                        </button>
+                    </form>
+                    <form action="#" method="GET">
+                        <input type="hidden" name="level_id" value="{{ level.id }}">
+                        <button class="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-5  rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                            Generate Level PV
+                        </button>
+                    </form>
+                    <form action="#" method="GET">
+                        <input type="hidden" name="level_id" value="{{ level.id }}">
+                        <button class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 px-5  rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                            Generate Releve de Notes
                         </button>
                     </form>
                 </div>
             </div>
 
-            <!-- Right Section: UE List -->
-            <div class="w-full md:flex-1 bg-white rounded-lg p-6 overflow-visible flex flex-col h-auto md:h-[280px] shadow-xl">
-                <div>
-                    <h2 class="text-2xl font-semibold text-gray-800">UE List</h2>
-                    <p class="mb-4 text-xs">Below is the list of UEs for {{ level.name }}</p>
-                </div>
-
+            <!-- Middle Section: UE List -->
+            <div class="w-full h-4/5  lg:w-1/3 bg-white rounded-lg p-6 flex flex-col shadow-xl overflow-hidden">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-2">UE List</h2>
+                <p class="mb-4 text-xs">Below is the list of UEs for {{ level.name }}</p>
                 <div class="overflow-y-auto flex-grow">
                     <table class="min-w-full bg-white">
                         <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal sticky top-0">
@@ -68,38 +104,11 @@
                     </table>
                 </div>
             </div>
-        </div>
-
-        <div class="flex flex-col md:flex-row gap-6 flex-grow overflow-hidden mt-4">
-            <!-- Left Section: Create a UE responsible -->
-            <div class="w-full md:w-1/4 bg-white rounded-lg p-4 h-auto md:h-[280px] flex flex-col justify-center overflow-y-auto shadow-xl">
-                <div class="text-center mb-4">
-                    <div class="group relative">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-2">Create a UE Responsible</h2>
-                        <div class="absolute z-10 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-gray-800 border border-gray-300 rounded-sm shadow-xl p-2 w-48 mt-2 left-1/2 transform -translate-x-1/2">
-                            <p>Add a responsible to manage a specific UE</p>
-                        </div>
-                    </div>
-                    <p class="mb-4 text-sm text-gray-600">Click below to add a UE responsible</p>
-                    <form action="{{ path('register_respue') }}" method="GET">
-                        <input type="hidden" name="level_id" value="{{ level.id }}">
-                        <button class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow mb-4 transition duration-300 ease-in-out transform hover:scale-105">
-                            <svg class="h-5 w-5 inline-block mr-2" fill="none" viewbox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
-                            Create UE Responsible
-                        </button>
-                    </form>
-                </div>
-            </div>
 
             <!-- Right Section: UE Responsible List -->
-            <div class="w-full md:flex-1 bg-white rounded-lg p-6 overflow-hidden flex flex-col h-auto md:h-[280px] shadow-xl">
-                <div>
-                    <h2 class="text-2xl font-semibold text-gray-800">UE Responsibles</h2>
-                    <p class="mb-4 text-xs">Below is the list of UE responsibles for {{ level.name }}</p>
-                </div>
-
+            <div class="w-full h-4/5 lg:w-5/12 bg-white rounded-lg p-6 flex flex-col shadow-xl overflow-hidden">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-2">UE Responsibles</h2>
+                <p class="mb-4 text-xs">Below is the list of UE responsibles for {{ level.name }}</p>
                 <div class="overflow-y-auto flex-grow">
                     <table class="min-w-full bg-white">
                         <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal sticky top-0">
