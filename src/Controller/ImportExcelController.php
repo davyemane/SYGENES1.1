@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Field;
 use App\Entity\Level;
-use App\Entity\School;
 use App\Entity\Student;
 use App\Form\ExcelFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,23 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin')]
 class ImportExcelController extends AbstractController
 {
     #[Route('/import', name: 'import')]
-    public function importExcel(Request $request, SessionInterface $session,EntityManagerInterface $entityManager): Response
+    public function importExcel(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $schoolName = $session->get('school_name');
-        $school = null;
-    
-        if ($schoolName) {
-            // Trouver l'entité School correspondante
-            $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
-        }
-
 
 
 
@@ -40,21 +29,6 @@ class ImportExcelController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        // Vérifier si l'utilisateur a le privilège "List Student"
-        $privilege=[];
-        $hasListStudentPrivilege = false;
-        foreach ($user->getRole() as $role) {
-            foreach ($role->getPrivileges() as $privilege) {
-                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
-                if ($privilege->getName() === 'Add Student') {
-                    $hasListStudentPrivilege = true;
-                    break 2;
-                }
-            }
-        }
-        if (!$hasListStudentPrivilege) {
-            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
-        }        
 
 
         $form = $this->createForm(ExcelFormType::class);
@@ -136,8 +110,6 @@ class ImportExcelController extends AbstractController
         return $this->render('student/import_excel.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
-            'school'=>$school,
-            'privileges' => array_values($privileges), // Convertir en tableau indexé
         ]);
     }
 

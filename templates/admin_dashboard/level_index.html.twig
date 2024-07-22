@@ -14,6 +14,14 @@
 				<p class="text-sm text-gray-500">{{ "now"|date("l, F j, Y") }}</p>
 			</div>
 		</header>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 dark:bg-{{ label == 'success' ? 'green' : 'red' }}-900 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 dark:text-{{ label == 'success' ? 'green' : 'red' }}-100 p-4 mb-6 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md" role="alert">
+                    <p class="font-bold">{{ (label == 'success' ? 'flash.success' : 'flash.error')|trans }}</p>
+                    <p>{{ message|trans }}</p>
+                </div>
+            {% endfor %}
+        {% endfor %}
 
 		<main class="flex-grow container mx-auto">
 			<div

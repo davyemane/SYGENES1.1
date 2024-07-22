@@ -10,6 +10,14 @@
             <h1 class="text-4xl font-bold mb-1">Welcome to {{ level.name }} Dashboard</h1>
             <p class="text-md opacity-80">Today is {{ "now"|date("l, F j, Y") }}</p>
         </header>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 dark:bg-{{ label == 'success' ? 'green' : 'red' }}-900 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 dark:text-{{ label == 'success' ? 'green' : 'red' }}-100 p-4 mb-6 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md" role="alert">
+                    <p class="font-bold">{{ (label == 'success' ? 'flash.success' : 'flash.error')|trans }}</p>
+                    <p>{{ message|trans }}</p>
+                </div>
+            {% endfor %}
+        {% endfor %}
 
 <!-- Statistics Section -->
 <div class="mb-6">
@@ -39,7 +47,7 @@
     </div>
 </div>
         <!-- Main Content Area -->
-        <div class="flex flex-col  gap-6 flex-grow overflow-hidden h-[calc(90vh-24rem)]">
+        <div class="flex flex-row  gap-6 flex-grow overflow-hidden h-[calc(90vh-24rem)]">
             <!-- Left Section: Quick Actions -->
             <div class="w-full h-4/5  lg:w-1/4 bg-white rounded-lg p-4 flex flex-col shadow-xl overflow-y-auto">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-2">Quick Actions</h2>
@@ -63,7 +71,7 @@
                             Generer Level PV
                         </button>
                     </form>
-                    <form action="#" method="GET">
+                    <form action="{{ path('list_student_notes') }}" method="GET">
                         <input type="hidden" name="level_id" value="{{ level.id }}">
                         <button class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold py-3 px-5  rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
                             Generer Releve de Notes
