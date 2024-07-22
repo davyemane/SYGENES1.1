@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\RespUe;
+use App\Entity\Student;
 use App\Entity\User;
 use App\Repository\ECRepository;
 use App\Repository\RespUeRepository;
@@ -11,7 +12,9 @@ use App\Repository\UERepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/adminue')]
@@ -124,4 +127,96 @@ class RespUeController extends AbstractController
         return $this->redirectToRoute('ue_dashboards'); // Remplacez par la route appropriée
     }
 }
+
+
+
+
+#[Route('/list/{page<\d+>?1}/{nbre<\d+>?12}', name: 'list_student_notes')]
+public function home(
+    Request $request,
+    EntityManagerInterface $entityManager,
+    int $page = 1,
+    int $nbre = 12
+): Response {
+    $user = $this->getUser();
+    if (!$user) {
+        return $this->redirectToRoute('app_login');
+    }
+
+    // Vérifier si l'utilisateur est un RespLevel
+    if (!$user->getResplevel()) {
+        return $this->render('student/error.html.twig', ['message' => 'Access denied. You must be a RespLevel.']);
+    }
+    
+    $respLevel = $user->getResplevel();
+    $level = $respLevel->getLevel();
+    $field = $level->getField();
+
+    if (!$field) {
+        return $this->render('student/error.html.twig', ['message' => 'No field associated with this level.']);
+    }
+
+    try {
+        $queryBuilder = $entityManager->getRepository(Student::class)
+            ->createQueryBuilder('s')
+            ->leftJoin('s.notes', 'n')
+            ->leftJoin('n.ec', 'ec')
+            ->addSelect('n')
+            ->addSelect('ec')
+            ->where('s.field = :field')
+            ->andWhere('s.level = :level')
+            ->setParameter('field', $field)
+            ->setParameter('level', $level);
+
+        // Retrieve search parameters from request
+        $name = $request->query->get('name');
+        $nbre = $request->query->getInt('nbre', 12);
+        $page = $request->query->getInt('page', 1);
+
+        // Apply name filter if provided
+        if ($name) {
+            $queryBuilder->andWhere('s.name LIKE :name')
+                ->setParameter('name', '%' . $name . '%');
+        }
+
+        // Count total students
+        $countQuery = clone $queryBuilder;
+        $nbStudent = $countQuery->select('COUNT(DISTINCT s.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        // Calculate total pages
+        $nbPage = ceil($nbStudent / $nbre);
+
+        // Ensure page is within valid limits
+        $page = max(1, min($page, $nbPage));
+
+        // Fetch filtered students with pagination
+        $students = $queryBuilder
+            ->setMaxResults($nbre)
+            ->setFirstResult(($page - 1) * $nbre)
+            ->getQuery()
+            ->getResult();
+
+        if (empty($students)) {
+            throw new NotFoundHttpException('No students found.');
+        }
+
+        return $this->render('student/list1.html.twig', [
+            'user' => $user,
+            'students' => $students,
+            'isPaginated' => $nbStudent > $nbre,
+            'nbPage' => $nbPage,
+            'page' => $page,
+            'nbre' => $nbre,
+            'currentName' => $name,
+            'currentField' => $field->getId(),
+            'currentLevel' => $level->getId(),
+        ]);
+    } catch (NotFoundHttpException $e) {
+        $this->addFlash('error', 'No students found.');
+        return $this->redirectToRoute('ue_dashboards');
+    }
+}
+
 }

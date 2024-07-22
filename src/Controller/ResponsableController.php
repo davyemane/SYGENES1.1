@@ -2,16 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\EC;
 use App\Entity\Field;
+use App\Entity\RespLevel;
 use App\Entity\Responsable;
-use App\Entity\School;
 use App\Entity\Student;
 use App\Entity\UE;
 use App\Entity\User;
 use App\Form\ResponsableType;
 use App\Repository\PrivilegeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,7 +18,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin')]
 class ResponsableController extends AbstractController
@@ -172,136 +169,6 @@ class ResponsableController extends AbstractController
         );
     }
 
-    #[Route('/list/{page<\d+>?1}/{nbre<\d+>?12}', name: 'list_student_notes')]
-    public function home(
-        Request $request,
-        EntityManagerInterface $entityManager,
-        int $page = 1,
-        int $nbre = 12
-    ): Response {
-        $user = $this->getUser();
-        if (!$user) {
-            return $this->redirectToRoute('app_login');
-        }
-
-        // Vérifier si l'utilisateur a le privilège "de valider l'etudiant"
-        $hasListStudentPrivilege = false;
-        foreach ($user->getRole() as $role) {
-            foreach ($role->getPrivileges() as $privilege) {
-                if ($privilege->getName() === 'View Marks') {
-                    $hasListStudentPrivilege = true;
-                    break 2;
-                }
-            }
-        }
-        if (!$hasListStudentPrivilege) {
-            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
-        }
-
-
-        $hasPrivilege = $entityManager->getRepository(User::class)
-            ->createQueryBuilder('u')
-            ->select('COUNT(u.id)')
-            ->join('u.role', 'r')
-            ->join('r.privileges', 'p')
-            ->where('u.id = :userId')
-            ->andWhere('p.id = :privilegeId')
-            ->setParameter('userId', $user->getId())
-            ->setParameter('privilegeId', $privilege->getId())
-            ->getQuery()
-            ->getSingleScalarResult() > 0;
-
-        if (!$hasPrivilege) {
-            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
-        }
-
-        // Récupérer l'école de la session
-        $session = $request->getSession();
-        $schoolName = $session->get('school_name');
-
-        if (!$schoolName) {
-            return $this->render('student/error.html.twig', ['message' => 'No school found in session']);
-        }
-
-        try {
-            $queryBuilder = $entityManager->getRepository(Student::class)
-                ->createQueryBuilder('s')
-                ->leftJoin('s.notes', 'n')
-                ->leftJoin('n.ec', 'ec')
-                ->leftJoin('s.field', 'f')
-                ->leftJoin('f.school', 'sch')
-                ->addSelect('n')
-                ->addSelect('ec')
-                ->andWhere('sch.name = :schoolName')
-                ->setParameter('schoolName', $schoolName);
-
-            // Fetch fields for the specific school
-            $fields = $entityManager->getRepository(Field::class)
-                ->createQueryBuilder('f')
-                ->join('f.school', 's')
-                ->where('s.name = :schoolName')
-                ->setParameter('schoolName', $schoolName)
-                ->getQuery()
-                ->getResult();
-
-            // Retrieve search parameters from request
-            $fieldId = $request->query->get('field');
-            $name = $request->query->get('name');
-            $nbre = $request->query->getInt('nbre', 12);
-            $page = $request->query->getInt('page', 1);
-
-            // Apply filters if provided
-            if ($fieldId) {
-                $queryBuilder->andWhere('s.field = :field')
-                    ->setParameter('field', $fieldId);
-            }
-            if ($name) {
-                $queryBuilder->andWhere('s.name LIKE :name')
-                    ->setParameter('name', '%' . $name . '%');
-            }
-
-            // Count total students
-            $countQuery = clone $queryBuilder;
-            $nbStudent = $countQuery->select('COUNT(DISTINCT s.id)')
-                ->getQuery()
-                ->getSingleScalarResult();
-
-            // Calculate total pages
-            $nbPage = ceil($nbStudent / $nbre);
-
-            // Ensure page is within valid limits
-            $page = max(1, min($page, $nbPage));
-
-            // Fetch filtered students with pagination
-            $students = $queryBuilder
-                ->setMaxResults($nbre)
-                ->setFirstResult(($page - 1) * $nbre)
-                ->getQuery()
-                ->getResult();
-
-            if (empty($students)) {
-                throw new NotFoundHttpException('No students found.');
-            }
-
-            return $this->render('student/list1.html.twig', [
-                'user' => $user,
-                'students' => $students,
-                'isPaginated' => $nbStudent > $nbre,
-                'nbPage' => $nbPage,
-                'page' => $page,
-                'nbre' => $nbre,
-                'currentName' => $name,
-                'currentField' => $fieldId,
-                'fields' => $fields,
-            ]);
-        } catch (NotFoundHttpException $e) {
-            $this->addFlash('error', 'No students found.');
-            return $this->redirectToRoute('list_student_notes', [
-                'page' => 1,
-                'nbre' => $nbre,
-            ]);
-        }
-    }
 
 
 
@@ -311,7 +178,6 @@ class ResponsableController extends AbstractController
     public function fields(
         EntityManagerInterface $entityManager,
         RequestStack $requestStack,
-        PrivilegeRepository $privilegeRepository
     ): Response {
         $user = $this->getUser();
         if (!$user) {

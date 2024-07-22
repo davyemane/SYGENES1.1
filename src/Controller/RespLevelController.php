@@ -8,12 +8,9 @@ use App\Repository\FieldRepository;
 use App\Repository\LevelRepository;
 use App\Repository\RespLevelRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 #[Route('/adminlevel')]
@@ -127,4 +124,11 @@ class RespLevelController extends AbstractController
 
         return $this->redirectToRoute('level_dashboard');
     }
+
+
+
+
+
+
+
 }
