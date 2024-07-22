@@ -368,7 +368,7 @@ class StudentController extends AbstractController
         }
 
         // Rendu HTML
-        $html = $this->renderView('note/releve_notes.html.twig', [
+        $html = $this->renderView('pdf/releve_notes.html.twig', [
             'student' => $student,
             'notes' => $notes,
             'ues' => $ues,
