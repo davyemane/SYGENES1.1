@@ -211,7 +211,7 @@ CREATE TABLE `level` (
   PRIMARY KEY (`id`),
   KEY `IDX_9AEACC13443707B0` (`field_id`),
   CONSTRAINT `FK_9AEACC13443707B0` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,7 +220,7 @@ CREATE TABLE `level` (
 
 LOCK TABLES `level` WRITE;
 /*!40000 ALTER TABLE `level` DISABLE KEYS */;
-INSERT INTO `level` VALUES (6,1,'L1'),(7,2,'L1'),(8,1,'L2');
+INSERT INTO `level` VALUES (7,2,'L1'),(9,1,'L1'),(10,1,'L2'),(11,1,'L3');
 /*!40000 ALTER TABLE `level` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -405,7 +405,7 @@ CREATE TABLE `resp_level` (
   KEY `IDX_68653E4CB03A8386` (`created_by_id`),
   CONSTRAINT `FK_68653E4C5FB14BA7` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`),
   CONSTRAINT `FK_68653E4CB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -414,7 +414,7 @@ CREATE TABLE `resp_level` (
 
 LOCK TABLES `resp_level` WRITE;
 /*!40000 ALTER TABLE `resp_level` DISABLE KEYS */;
-INSERT INTO `resp_level` VALUES (1,3,1,'Eloundou Telesphore','100258963','697379517','mendo@gmail.com','2024-07-16 12:31:06'),(2,7,6,'Emane bile félicien davy','100258963','676469014','desire@gmail.com','2024-07-16 15:45:44'),(3,7,8,'Emane bile félicien davy','100258963','676469014','amougou@gmail.com','2024-07-16 15:46:18');
+INSERT INTO `resp_level` VALUES (1,3,1,'Eloundou Telesphore','100258963','697379517','mendo@gmail.com','2024-07-16 12:31:06'),(2,7,NULL,'Emane bile félicien davy','100258963','676469014','desire@gmail.com','2024-07-16 15:45:44'),(4,7,7,'Tapiba Brandon','100258963','697379517','tapiba@gmail.com','2024-07-20 15:21:37'),(5,7,11,'Bile Brandon','100258963','676469014','mendo@gmail.com','2024-07-22 09:34:56');
 /*!40000 ALTER TABLE `resp_level` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -473,7 +473,7 @@ CREATE TABLE `resp_ue` (
   KEY `IDX_639FCBFFB03A8386` (`created_by_id`),
   CONSTRAINT `FK_639FCBFF62E883B1` FOREIGN KEY (`ue_id`) REFERENCES `ue` (`id`),
   CONSTRAINT `FK_639FCBFFB03A8386` FOREIGN KEY (`created_by_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -624,7 +624,7 @@ CREATE TABLE `student` (
   KEY `IDX_B723AF33443707B0` (`field_id`),
   KEY `IDX_B723AF335FB14BA7` (`level_id`),
   CONSTRAINT `FK_B723AF33443707B0` FOREIGN KEY (`field_id`) REFERENCES `field` (`id`),
-  CONSTRAINT `FK_B723AF335FB14BA7` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`)
+  CONSTRAINT `FK_B723AF335FB14BA7` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -714,8 +714,8 @@ CREATE TABLE `ue` (
   `academic_year` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_2E490A9B5FB14BA7` (`level_id`),
-  CONSTRAINT `FK_2E490A9B5FB14BA7` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  CONSTRAINT `FK_2E490A9B5FB14BA7` FOREIGN KEY (`level_id`) REFERENCES `level` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -724,6 +724,7 @@ CREATE TABLE `ue` (
 
 LOCK TABLES `ue` WRITE;
 /*!40000 ALTER TABLE `ue` DISABLE KEYS */;
+INSERT INTO `ue` VALUES (1,7,'SNA411','Systèmes Numériques Avancées I',5,'Réseaux et Systèmes Multimédias I','1',NULL,NULL),(2,7,'m124','Systèmes Numériques Avancées II',6,'Outils de Management de la Qualité','1',NULL,NULL);
 /*!40000 ALTER TABLE `ue` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -788,7 +789,7 @@ CREATE TABLE `user` (
   CONSTRAINT `FK_8D93D649CB944F1A` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`),
   CONSTRAINT `FK_8D93D649D187767F` FOREIGN KEY (`respschool_id`) REFERENCES `resp_school` (`id`),
   CONSTRAINT `FK_8D93D649D23FE2F9` FOREIGN KEY (`respue_id`) REFERENCES `resp_ue` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -797,7 +798,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (2,NULL,NULL,NULL,NULL,NULL,NULL,'Mavaïwa','[\"ROLE_ADMIN\"]','$2y$13$J5q.OreU06FllJw69afR7.66tXrqvivtbvT3x1Cy0.sh.z2/rkVqC','davyemane2@gmail.com',NULL),(3,NULL,NULL,3,NULL,NULL,NULL,'emane','[\"ROLE_ADMIN\"]','$2y$13$NAncgkaeYrbSm3l0WVCGzuSTWsWBpefOnoaK7AbKkNqjipNR.OW/O','davyemane2@gmail.com',NULL),(4,NULL,NULL,NULL,NULL,NULL,NULL,'superAdmin237','[\"ROLE_SUPER_ADMIN\"]','$2y$13$t2UfYCY8NEDpBRZgvg9kquzCiu051GYf6kZYO5SG4EcCjQmQdMs2.','davyemane2@gmail.com','LogoLM-6694fc4e5cdc5.png'),(7,NULL,3,NULL,NULL,NULL,NULL,'amougou','[\"ROLE_RESPFIELD\"]','$2y$13$6uCqfSVWj030Wln.qDxEeeEK0y7fQoRlNsSvo8mBBxzfYoIT7T8RW','amougou@gmail.com','google1-669649e8ad5d9.png'),(8,NULL,NULL,NULL,1,NULL,NULL,'Eloundou','[\"ROLE_RESPLEVEL\"]','$2y$13$O9COjI2Bjpovam6PFk.U6OHlyYgnAVWg7VjGthNZ8uogkBaV8PLpu','mendo@gmail.com','2-6696680a1ae86.jpg'),(9,NULL,4,NULL,NULL,NULL,NULL,'eyenga','[\"ROLE_RESPFIELD\"]','$2y$13$E.kbnlwCrEP3Ww2vzREgc.uC0JYm6a69pFF2c8m//yFBRD.lKTNAa','davyemane2@gmail.com','2-66967bb3bdf9e.jpg'),(10,NULL,NULL,NULL,2,NULL,NULL,'desire','[\"ROLE_RESPLEVEL\"]','$2y$13$0KXHKXzmm4Pw/m9CeYVbX.84t5q1larIYvFQubQqjoPjG0jWIR7vG','desire@gmail.com','7454d6ad22384ffa839548d7c7fb8238-669695a85b66f.jpg'),(11,NULL,NULL,NULL,3,NULL,NULL,'amougou2','[\"ROLE_RESPLEVEL\"]','$2y$13$hiM4svXtYohh6RgNzQ5ouOT1dnWUAeECgdLH6Qycbccv54Gp2QNyC','amougou@gmail.com','apiRest-669695cace858.png');
+INSERT INTO `user` VALUES (2,NULL,NULL,NULL,NULL,NULL,NULL,'Mavaïwa','[\"ROLE_ADMIN\"]','$2y$13$J5q.OreU06FllJw69afR7.66tXrqvivtbvT3x1Cy0.sh.z2/rkVqC','davyemane2@gmail.com',NULL),(3,NULL,NULL,3,NULL,NULL,NULL,'emane','[\"ROLE_ADMIN\"]','$2y$13$NAncgkaeYrbSm3l0WVCGzuSTWsWBpefOnoaK7AbKkNqjipNR.OW/O','davyemane2@gmail.com',NULL),(4,NULL,NULL,NULL,NULL,NULL,NULL,'superAdmin237','[\"ROLE_SUPER_ADMIN\"]','$2y$13$t2UfYCY8NEDpBRZgvg9kquzCiu051GYf6kZYO5SG4EcCjQmQdMs2.','davyemane2@gmail.com','LogoLM-6694fc4e5cdc5.png'),(7,NULL,3,NULL,NULL,NULL,NULL,'amougou','[\"ROLE_RESPFIELD\"]','$2y$13$6uCqfSVWj030Wln.qDxEeeEK0y7fQoRlNsSvo8mBBxzfYoIT7T8RW','amougou@gmail.com','google1-669649e8ad5d9.png'),(8,NULL,NULL,NULL,1,NULL,NULL,'Eloundou','[\"ROLE_RESPLEVEL\"]','$2y$13$O9COjI2Bjpovam6PFk.U6OHlyYgnAVWg7VjGthNZ8uogkBaV8PLpu','mendo@gmail.com','2-6696680a1ae86.jpg'),(9,NULL,4,NULL,NULL,NULL,NULL,'eyenga','[\"ROLE_RESPFIELD\"]','$2y$13$E.kbnlwCrEP3Ww2vzREgc.uC0JYm6a69pFF2c8m//yFBRD.lKTNAa','davyemane2@gmail.com','2-66967bb3bdf9e.jpg'),(10,NULL,NULL,NULL,2,NULL,NULL,'desire','[\"ROLE_RESPLEVEL\"]','$2y$13$0KXHKXzmm4Pw/m9CeYVbX.84t5q1larIYvFQubQqjoPjG0jWIR7vG','desire@gmail.com','7454d6ad22384ffa839548d7c7fb8238-669695a85b66f.jpg'),(11,NULL,NULL,NULL,NULL,NULL,NULL,'amougou2','[\"ROLE_RESPLEVEL\"]','$2y$13$hiM4svXtYohh6RgNzQ5ouOT1dnWUAeECgdLH6Qycbccv54Gp2QNyC','amougou@gmail.com','apiRest-669695cace858.png'),(12,NULL,NULL,NULL,4,NULL,NULL,'tapiba','[\"ROLE_RESPLEVEL\"]','$2y$13$Oi90gINw8e7AwGCA6JKZCOR2bnuLx6K2i6RbZtDFqrt4Lyi8O5FZ2','tapiba@gmail.com','3-669bd601d08f4.jpg'),(13,NULL,NULL,NULL,NULL,NULL,NULL,'zanga','[\"ROLE_RESPUE\"]','$2y$13$vdHGxsw3wHUO4TpvpnQYWuMKjOmfAAaw7/0XuWrWN/ZVxjtQ1ieNe','zanga@gmail.com',NULL),(15,NULL,NULL,NULL,NULL,NULL,NULL,'zanga2','[\"ROLE_RESPUE\"]','$2y$13$xYm4glNc1T.GVA.0G9T9d.NTkSavClpySj.x/kAesQNSkMzWi4X7u','zanga@gmail.com',NULL),(16,NULL,NULL,NULL,5,NULL,NULL,'bile','[\"ROLE_RESPLEVEL\"]','$2y$13$5UbnLzs0TBaiuoveVe1HbuWgrSeHE5G7j9C8w5obYsKEVZWC0bvDu','mendo@gmail.com','3273a7fd0d02404086fa0640d52c9a83-669e27c0eecd6.jpg');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -810,4 +811,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-19 10:47:36
+-- Dump completed on 2024-07-22 10:35:38
