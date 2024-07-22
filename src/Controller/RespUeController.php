@@ -90,6 +90,13 @@ class RespUeController extends AbstractController
         foreach ($users as $user) {
             $user->setRespue(null);
         }
+        if ($respUe) {
+            // Récupérer l'utilisateur associé au RespUe
+            $userToDelete = $entityManager->getRepository(User::class)->findOneBy(['respue' => $respUe]);
+            if ($userToDelete) {
+                // Supprimer l'utilisateur
+                $entityManager->remove($userToDelete);
+            }
     
         // Si RespUe a des relations avec d'autres entités, gérez-les ici
         // Par exemple, si RespUe est lié à des EC, vous devriez les mettre à jour
@@ -102,4 +109,5 @@ class RespUeController extends AbstractController
     
         return $this->redirectToRoute('ue_dashboards'); // Remplacez par la route appropriée
     }
+}
 }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\RespField;
+use App\Entity\User;
 use App\Repository\FieldRepository;
 use App\Repository\RespFieldRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,26 +45,33 @@ class RespFieldController extends AbstractController
     {
         try {
             $entityManager->beginTransaction();
-
+    
             // Remove the association with Field
             $field = $respField->getField();
             if ($field) {
-                $field->setRespField(null);
+                $respField->setField(null);
             }
-
+    
+            // Récupérer l'utilisateur associé au RespField
+            $userToDelete = $entityManager->getRepository(User::class)->findOneBy(['respfield' => $respField]);
+            if ($userToDelete) {
+                // Supprimer l'utilisateur
+                $entityManager->remove($userToDelete);
+            }
+    
             // Remove the RespField
             $entityManager->remove($respField);
-
+    
             // Apply changes
             $entityManager->flush();
             $entityManager->commit();
-
+    
             $this->addFlash('success', 'The field responsible has been successfully deleted.');
         } catch (\Exception $e) {
             $entityManager->rollback();
             $this->addFlash('error', 'An error occurred during deletion: ' . $e->getMessage());
         }
-
+    
         return $this->redirectToRoute('admin_dashboard');
     }
 }

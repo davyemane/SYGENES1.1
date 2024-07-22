@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RespUeType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name')
@@ -20,15 +20,15 @@ class RespUeType extends AbstractType
             ->add('phone_number')
             ->add('ue', EntityType::class, [
                 'class' => UE::class,
-                'choice_label' => 'id',
-            ])
-        ;
+                'choices' => $options['ue_choices'],
+                'choice_label' => 'name',
+            ]);
     }
-
-    public function configureOptions(OptionsResolver $resolver): void
+    
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => RespUe::class,
+            'ue_choices' => null,
         ]);
-    }
-}
+    }}

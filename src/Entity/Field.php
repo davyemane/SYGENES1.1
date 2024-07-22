@@ -46,6 +46,9 @@ class Field
     #[ORM\ManyToMany(targetEntity: UE::class, mappedBy: 'fields')]
     private Collection $uEs;
 
+    #[ORM\OneToOne(targetEntity: RespField::class, mappedBy: 'field', cascade: ['persist'])]
+    private ?RespField $respField = null;
+
 
 
     public function __construct()
@@ -121,6 +124,23 @@ class Field
             if ($student->getField() === $this) {
                 $student->setField(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getRespField(): ?RespField
+    {
+        return $this->respField;
+    }
+
+    public function setRespField(?RespField $respField): self
+    {
+        $this->respField = $respField;
+
+        // set (or unset) the owning side of the relation if necessary
+        if ($respField !== null && $respField->getField() !== $this) {
+            $respField->setField($this);
         }
 
         return $this;

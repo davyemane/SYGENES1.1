@@ -412,7 +412,6 @@ class RegistrationController extends AbstractController
 
 
 
-
     #[Route('/register/respue/{id<\d+>?0}', name: 'register_respue')]
     public function manageRespUe(
         Request $request,
@@ -423,6 +422,16 @@ class RegistrationController extends AbstractController
         SluggerInterface $slugger,
         $id
     ): Response {
+        $currentUser = $security->getUser();
+        if (!$currentUser instanceof User) {
+            return $this->redirectToRoute('app_login');
+        }
+    
+        $respLevel = $currentUser->getRespLevel();
+        if (!$respLevel) {
+            throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour créer un responsable d\'UE.');
+        }
+    
         $isEdit = false;
         if ($id) {
             $isEdit = true;
@@ -444,7 +453,9 @@ class RegistrationController extends AbstractController
         }
     
         $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->add('respUe', RespUeType::class);
+        $form->add('respUe', RespUeType::class, [
+            'ue_choices' => $ueRepository->findBy(['level' => $respLevel->getLevel()]),
+        ]);
     
         if ($isEdit) {
             $form->remove('plainPassword');
@@ -462,13 +473,7 @@ class RegistrationController extends AbstractController
                 );
                 $user->setRoles(['ROLE_RESPUE']);
                 $respUe->setCreatedAt(new \DateTime());
-    
-                $currentUser = $security->getUser();
-                if ($currentUser instanceof User) {
-                    $respUe->setCreatedBy($currentUser);
-                } else {
-                    return $this->redirectToRoute('app_login');
-                }
+                $respUe->setCreatedBy($currentUser);
             }
             $this->handleProfilePictureUpload($form, $user, $slugger);
     
@@ -480,7 +485,7 @@ class RegistrationController extends AbstractController
             $respUe->setPhoneNumber($form->get('respUe')->get('phone_number')->getData());
             $respUe->setEmail($email);
     
-            $ue = $ueRepository->find($form->get('respUe')->get('ue')->getData());
+            $ue = $form->get('respUe')->get('ue')->getData();
             $respUe->setUe($ue);
     
             $user->setRespUe($respUe);
@@ -489,11 +494,9 @@ class RegistrationController extends AbstractController
             $entityManager->persist($respUe);
             $entityManager->flush();
     
-            if ($isEdit) {
-                $this->addFlash('success', 'UE Responsible information has been successfully updated.');
-            } else {
-                $this->addFlash('success', 'UE Responsible has been successfully registered.');
-            }
+            $this->addFlash('success', $isEdit 
+                ? 'Les informations du responsable d\'UE ont été mises à jour avec succès.' 
+                : 'Le responsable d\'UE a été enregistré avec succès.');
             
             return $this->redirectToRoute('register_respue');
         }
