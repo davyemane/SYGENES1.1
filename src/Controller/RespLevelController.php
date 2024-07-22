@@ -110,6 +110,15 @@ class RespLevelController extends AbstractController
             $level->setRespLevel(null);
         }
 
+        if ($respLevel) {
+            // Récupérer l'utilisateur associé au Resplevel
+            $userToDelete = $entityManager->getRepository(User::class)->findOneBy(['resplevel' => $respLevel]);
+            if ($userToDelete) {
+                // Supprimer l'utilisateur
+                $entityManager->remove($userToDelete);
+            }
+        }
+
         // Supprimer le RespLevel
         $entityManager->remove($respLevel);
         $entityManager->flush();

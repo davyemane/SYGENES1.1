@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Field;
 use App\Entity\School;
+use App\Entity\User;
 use App\Form\FieldType;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -86,31 +88,85 @@ class FieldController extends AbstractController
 
 
     #[Route('/delete_field/{id}', name: 'delete_field')]
-    public function deleteField(Field $field, EntityManagerInterface $entityManager): Response
-    {
+    public function deleteField(
+        EntityManagerInterface $entityManager,
+        LoggerInterface $logger,
+        int $id
+    ): Response {
+        $logger->info('Début de la méthode deleteField', ['field_id' => $id]);
+    
         try {
+            $user = $this->getUser();
+            if (!$user) {
+                $logger->warning('Utilisateur non authentifié');
+                return $this->redirectToRoute('app_login');
+            }
+    
+            $respSchool = $user->getRespschool();
+            if (!$respSchool) {
+                $logger->warning('Utilisateur sans droits RespSchool', ['user_id' => $user->getId()]);
+                throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour supprimer un Field.');
+            }
+    
+            $field = $entityManager->getRepository(Field::class)->find($id);
+            if (!$field) {
+                $logger->warning('Field non trouvé', ['field_id' => $id]);
+                throw $this->createNotFoundException('Field non trouvé');
+            }
+    
+            if ($field->getSchool() !== $respSchool->getSchool()) {
+                $logger->warning('Tentative de suppression d\'un Field non autorisé', ['field_id' => $id, 'user_id' => $user->getId()]);
+                throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour supprimer ce Field.');
+            }
+    
+            $logger->info('Début de la suppression du Field', ['field_id' => $id]);
+    
             $entityManager->beginTransaction();
-
-            // Handle the relationship with RespField
+    
             $respField = $field->getRespField();
             if ($respField) {
-                $respField->setField(null);
+                $userToDelete = $entityManager->getRepository(User::class)->findOneBy(['respfield' => $respField]);
+                if ($userToDelete) {
+                    $logger->info('Suppression de l\'utilisateur associé', ['user_id' => $userToDelete->getId()]);
+                    $entityManager->remove($userToDelete);
+                }
+                $logger->info('Suppression du RespField', ['respfield_id' => $respField->getId()]);
                 $entityManager->remove($respField);
             }
-
-            // Remove the field
+    
+            foreach ($field->getUEs() as $ue) {
+                $logger->info('Suppression de l\'association UE', ['ue_id' => $ue->getId()]);
+                $field->removeUE($ue);
+            }
+    
+            foreach ($field->getLevels() as $level) {
+                $logger->info('Suppression du Level', ['level_id' => $level->getId()]);
+                $entityManager->remove($level);
+            }
+    
+            foreach ($field->getStudents() as $student) {
+                $logger->info('Suppression du Student', ['student_id' => $student->getId()]);
+                $entityManager->remove($student);
+            }
+    
+            $logger->info('Suppression du Field', ['field_id' => $id]);
             $entityManager->remove($field);
-
-            // Apply changes
+    
             $entityManager->flush();
             $entityManager->commit();
-
-            $this->addFlash('success', 'The field has been successfully deleted.');
+    
+            $this->addFlash('success', sprintf('Le Field "%s", son responsable et le compte utilisateur associé ont été supprimés avec succès !', $field->getName()));
+            $logger->info('Field supprimé avec succès', ['field_id' => $id]);
         } catch (\Exception $e) {
             $entityManager->rollback();
-            $this->addFlash('error', 'An error occurred during deletion: ' . $e->getMessage());
+            $logger->error('Erreur lors de la suppression du Field', [
+                'exception' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'field_id' => $id
+            ]);
+            $this->addFlash('error', 'Une erreur est survenue lors de la suppression du Field : ' . $e->getMessage());
         }
-
+    
         return $this->redirectToRoute('admin_dashboard');
     }
 }
