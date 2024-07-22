@@ -9,12 +9,15 @@ use App\Entity\Responsable;
 use App\Entity\RespSchool;
 use App\Entity\RespUe;
 use App\Entity\School;
+use App\Entity\Teacher;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\RespFieldType;
 use App\Form\RespLevelType;
 use App\Form\RespSchoolType;
 use App\Form\RespUeType;
+use App\Form\TeacherType;
+use App\Repository\ECRepository;
 use App\Repository\FieldRepository;
 use App\Repository\LevelRepository;
 use App\Repository\RoleRepository;
@@ -529,6 +532,105 @@ class RegistrationController extends AbstractController
             'isEdit' => $isEdit,
         ]);
     }
+
+    
+    #[Route('/register/respec/{id<\d+>?0}', name: 'register_respec')]
+    public function manageRespEC(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface $entityManager,
+        ECRepository $ecRepository,
+        Security $security,
+        SluggerInterface $slugger,
+        $id
+    ): Response {
+        $currentUser = $security->getUser();
+        if (!$currentUser instanceof User) {
+            return $this->redirectToRoute('app_login');
+        }
+    
+        $respUe = $currentUser->getRespUe();
+        if (!$respUe) {
+            throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour créer un enseignant.');
+        }
+    
+        $isEdit = false;
+        if ($id) {
+            $isEdit = true;
+        }
+    
+        if ($isEdit) {
+            $user = $entityManager->getRepository(User::class)->find($id);
+            if (!$user) {
+                throw $this->createNotFoundException('Utilisateur non trouvé');
+            }
+            $teacher = $user->getTeacher();
+            if (!$teacher) {
+                $teacher = new Teacher();
+                $user->setTeacher($teacher);
+            }
+        } else {
+            $user = new User();
+            $teacher = new Teacher();
+            $user->setTeacher($teacher);
+        }
+    
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->add('teacher', TeacherType::class, [
+            'data' => $teacher,
+            'ec_choices' => $ecRepository->findBy(['ue' => $respUe->getUe()]),
+        ]);
+    
+        if ($isEdit) {
+            $form->remove('plainPassword');
+        }
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!$isEdit) {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+                $user->setRoles(['ROLE_TEACHER']);
+                $teacher->setCreatedAt(new \DateTime());
+                $teacher->setCreatedBy($currentUser);
+            }
+            $this->handleProfilePictureUpload($form, $user, $slugger);
+    
+            $email = $form->get('email')->getData();
+            $user->setEmail($email);
+    
+            $teacherData = $form->get('teacher')->getData();
+            $teacher->setName($teacherData->getName());
+            $teacher->setCni($teacherData->getCni());
+            $teacher->setPhoneNumber($teacherData->getPhoneNumber());
+            $teacher->setEmail($email);
+    
+            foreach ($teacherData->getEcs() as $ec) {
+                $teacher->addEc($ec);
+            }
+    
+            $entityManager->persist($user);
+            $entityManager->persist($teacher);
+            $entityManager->flush();
+    
+            $this->addFlash('success', $isEdit 
+                ? 'Les informations de l\'enseignant ont été mises à jour avec succès.' 
+                : 'L\'enseignant a été enregistré avec succès.');
+            
+            return $this->redirectToRoute('register_respec');
+        }
+    
+        return $this->render('teacher/register_respec.html.twig', [
+            'registrationForm' => $form->createView(),
+            'isEdit' => $isEdit,
+        ]);
+    }
+
 
     private function handleProfilePictureUpload($form, $user, $slugger): void
     {

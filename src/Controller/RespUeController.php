@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Repository\ECRepository;
 use App\Repository\RespUeRepository;
 use App\Repository\StudentRepository;
+use App\Repository\TeacherRepository;
 use App\Repository\UERepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -131,6 +132,12 @@ class RespUeController extends AbstractController
 
 
 
+
+
+
+
+
+
 #[Route('/list/{page<\d+>?1}/{nbre<\d+>?12}', name: 'list_student_notes')]
 public function home(
     Request $request,
@@ -159,8 +166,8 @@ public function home(
     try {
         $queryBuilder = $entityManager->getRepository(Student::class)
             ->createQueryBuilder('s')
-            ->leftJoin('s.notes', 'n')
-            ->leftJoin('n.ec', 'ec')
+            ->leftJoin('s.notescctps', 'n')  // Joindre avec notescctps au lieu de notes
+            ->leftJoin('n.eC', 'ec')  // Utiliser eC au lieu de ec (selon la structure de NoteCcTp)
             ->addSelect('n')
             ->addSelect('ec')
             ->where('s.field = :field')
@@ -218,5 +225,4 @@ public function home(
         return $this->redirectToRoute('ue_dashboards');
     }
 }
-
 }

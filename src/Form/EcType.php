@@ -15,22 +15,22 @@ class EcType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('codeEc', null,[
-                'label' => ' ',
+            ->add('codeEc', TextType::class, [
+                'label' => 'Code EC',
             ])
-            ->add('name', null,[
-                'label' => ' ',
+            ->add('name', TextType::class, [
+                'label' => 'Nom',
             ])
-            // ->add('descrption', TextType::class)
-            ->add('credit', null,[
-                'label' => ' ',
+            ->add('description', TextType::class, [
+                'label' => 'Description',
+                'required' => false,
             ])
-            ->add('ue', null,[
-                'label' => ' ',
+            ->add('credit', NumberType::class, [
+                'label' => 'Crédit',
             ])
-            ->add('submit', SubmitType::class)
-
-        ;
+            ->add('hasTp', null, [
+                'label' => 'A des TP ?',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
