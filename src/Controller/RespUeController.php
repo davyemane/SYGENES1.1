@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\RespUe;
 use App\Entity\User;
+use App\Repository\ECRepository;
 use App\Repository\RespUeRepository;
+use App\Repository\StudentRepository;
 use App\Repository\UERepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +29,9 @@ class RespUeController extends AbstractController
     #[Route('/leveldashboard', name: 'ue_dashboards')]
     public function dashboard(
         UERepository $ueRepository,
-        RespUeRepository $respUERepository
+        RespUeRepository $respUERepository,
+        StudentRepository $studentRepository,
+        ECRepository $ecRepository
     ): Response {
         $user = $this->getUser();
 
@@ -48,8 +52,10 @@ class RespUeController extends AbstractController
             throw $this->createNotFoundException('La filière associée n\'a pas été trouvée.');
         }
 
+        // Récupérer les UEs du niveau
         $ues = $ueRepository->findBy(['level' => $level]);
         $uesData = [];
+        $ecCount = 0;
 
         foreach ($ues as $ue) {
             $respUE = $respUERepository->findOneBy(['ue' => $ue]);
@@ -57,16 +63,24 @@ class RespUeController extends AbstractController
                 'ue' => $ue,
                 'respUE' => $respUE
             ];
+            // Count ECs for each UE and add to total
+            $ecCount += $ue->getECs()->count();
         }
+
+        // Calculer les statistiques
+        $ueCount = count($ues);
+        $studentCount = $studentRepository->countByLevel($level);
 
         return $this->render('admin_dashboard/ue_index.html.twig', [
             'level' => $level,
             'respLevel' => $respLevel,
             'uesData' => $uesData,
             'user' => $user,
+            'ueCount' => $ueCount,
+            'ecCount' => $ecCount,
+            'studentCount' => $studentCount,
         ]);
     }
-
 
     #[Route('/delete_resp_ue/{id}', name: 'delete_respue')]
     public function deleteRespUe(RespUe $respUe, EntityManagerInterface $entityManager): Response
