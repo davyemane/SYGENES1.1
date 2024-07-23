@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\EC;
 use App\Entity\RespUe;
+use App\Entity\Teacher;
 use App\Entity\UE;
 use App\Repository\ECRepository;
 use App\Repository\TeacherRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -30,20 +34,22 @@ class TeacherController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
         $user = $this->getUser();
-    
+
         // Récupérer l'UE du RespUE connecté
         $ue = $user->getRespue()->getUe();
-    
+
         if (!$ue instanceof UE) {
             throw $this->createNotFoundException('Aucune UE associée à ce RespUE.');
         }
-    
+
         // Récupérer les ECs pour cette UE
         $ecs = $ecRepository->findBy(['ue' => $ue]);
-    
+
         // Récupérer les IDs des ECs
-        $ecIds = array_map(function($ec) { return $ec->getId(); }, $ecs);
-    
+        $ecIds = array_map(function ($ec) {
+            return $ec->getId();
+        }, $ecs);
+
         // Récupérer tous les enseignants associés à ces ECs
         $teachers = $teacherRepository->createQueryBuilder('t')
             ->join('t.ecs', 'ec')
@@ -51,13 +57,13 @@ class TeacherController extends AbstractController
             ->setParameter('ecIds', $ecIds)
             ->getQuery()
             ->getResult();
-    
+
         // Préparer les données pour la vue
         $ecData = [];
         $teacherData = [];
         $totalEcs = count($ecs);
         $totalTeachers = count($teachers);
-    
+
         foreach ($ecs as $ec) {
             $ecData[] = [
                 'id' => $ec->getId(),
@@ -65,32 +71,34 @@ class TeacherController extends AbstractController
                 'teacher' => $ec->getTeacher() ? $ec->getTeacher()->getName() : 'Non assigné',
             ];
         }
-    
+
         foreach ($teachers as $teacher) {
-            $teacherEcs = $teacher->getEcs()->filter(function($ec) use ($ue) {
+            $teacherEcs = $teacher->getEcs()->filter(function ($ec) use ($ue) {
                 return $ec->getUe() === $ue;
             });
-            
+
             $ecCount = $teacherEcs->count();
-    
+
             $teacherData[] = [
                 'id' => $teacher->getId(),
                 'name' => $teacher->getName(),
                 'email' => $teacher->getEmail(),
                 'phoneNumber' => $teacher->getPhoneNumber(),
                 'ecCount' => $ecCount,
-                'ecs' => $teacherEcs->map(function($ec) { return $ec->getName(); })->toArray(),
+                'ecs' => $teacherEcs->map(function ($ec) {
+                    return $ec->getName();
+                })->toArray(),
             ];
         }
-    
+
         // Trier les enseignants par nombre d'ECs (décroissant)
-        usort($teacherData, function($a, $b) {
+        usort($teacherData, function ($a, $b) {
             return $b['ecCount'] - $a['ecCount'];
         });
-    
+
         // Calculer les statistiques
         $averageEcsPerTeacher = $totalTeachers > 0 ? $totalEcs / $totalTeachers : 0;
-    
+
         return $this->render('admin_dashboard/respue_dashboard.html.twig', [
             'ecData' => $ecData,
             'teacherData' => $teacherData,
@@ -100,5 +108,48 @@ class TeacherController extends AbstractController
             'user' => $user,
             'ue' => $ue
         ]);
+    }
+
+
+    #[Route('/delete/{id}', name: 'delete_teacher', methods: ['POST'])]
+    public function deleteTeacher(EntityManagerInterface $entityManager, int $id): Response
+    {
+        // Récupérer l'enseignant par son identifiant
+        $teacher = $entityManager->getRepository(Teacher::class)->find($id);
+
+        if (!$teacher) {
+            $this->addFlash('error', 'Enseignant non trouvé.');
+            return $this->redirectToRoute('respue_dashboard');
+        }
+
+        try {
+            $entityManager->beginTransaction();
+
+            // Dissocier l'enseignant de toutes les ECs où il est associé
+            $ecs = $entityManager->getRepository(EC::class)->findBy(['teacher' => $teacher]);
+            foreach ($ecs as $ec) {
+                $ec->setTeacher(null);
+                $entityManager->persist($ec);
+            }
+
+            // Supprimer l'utilisateur associé s'il existe
+            $user = $teacher->getUser();
+            if ($user) {
+                $entityManager->remove($user);
+            }
+
+            // Supprimer l'enseignant lui-même
+            $entityManager->remove($teacher);
+
+            $entityManager->flush();
+            $entityManager->commit();
+
+            $this->addFlash('success', 'Enseignant supprimé avec succès.');
+        } catch (\Exception $e) {
+            $entityManager->rollback();
+            $this->addFlash('error', 'Une erreur est survenue lors de la suppression de l\'enseignant : ' . $e->getMessage());
+        }
+
+        return $this->redirectToRoute('respue_dashboard');
     }
 }

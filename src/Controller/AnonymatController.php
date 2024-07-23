@@ -61,7 +61,7 @@ public function attribuerAnonymats(Request $request, EntityManagerInterface $ent
         $entityManager->flush();
 
         $this->addFlash('success', 'Les anonymats ont été attribués avec succès.');
-        return $this->redirectToRoute('app_dashAdmin');
+        return $this->redirectToRoute('respue_dashboard');
     }
 
     return $this->render('anonymat/attribuer.html.twig', [
@@ -70,4 +70,25 @@ public function attribuerAnonymats(Request $request, EntityManagerInterface $ent
         'ec' => $ec,
         'user' =>$user,
     ]);
-}}
+}
+
+#[Route('/anonymats/view/{ecId<\d+>}', name: 'voir_anonymats')]
+public function voirAnonymats(Request $request, EntityManagerInterface $entityManager, int $ecId): Response
+{
+    $user = $this->getUser();
+    $ec = $entityManager->getRepository(EC::class)->find($ecId);
+    if (!$ec) {
+        throw $this->createNotFoundException('EC non trouvé');
+    }
+
+    // Récupérer les anonymats associés à cet EC
+    $anonymats = $entityManager->getRepository(Anonymat::class)->findBy(['eC' => $ec]);
+
+    return $this->render('anonymat/voir.html.twig', [
+        'anonymats' => $anonymats,
+        'ec' => $ec,
+        'user' => $user,
+    ]);
+}
+
+}

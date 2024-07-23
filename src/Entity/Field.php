@@ -175,7 +175,7 @@ class Field
         return $this;
     }
     
-    /**
+ /**
      * @return Collection<int, UE>
      */
     public function getUEs(): Collection
@@ -183,23 +183,21 @@ class Field
         return $this->uEs;
     }
 
-    public function addUE(UE $uE): static
+    public function addUE(UE $ue): self
     {
-        if (!$this->uEs->contains($uE)) {
-            $this->uEs->add($uE);
-            $uE->addField($this);
+        if (!$this->uEs->contains($ue)) {
+            $this->uEs->add($ue);
+        }
+        return $this;
+    }
+
+    
+    public function removeUE(UE $ue): self
+    {
+        if ($this->uEs->removeElement($ue)) {
+            $ue->removeField($this);
         }
 
         return $this;
     }
-
-    public function removeUE(UE $uE): static
-    {
-        if ($this->uEs->removeElement($uE)) {
-            $uE->removeField($this);
-        }
-
-        return $this;
-    }
-
 }

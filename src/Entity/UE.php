@@ -32,7 +32,7 @@ class UE
     private Collection $eCs;
 
     /**
-     * @var Collection<int, Field>
+     * @var Collection<int, Level>
      */
 
     #[ORM\ManyToOne(inversedBy: 'ues')]
@@ -56,6 +56,7 @@ class UE
      * @var Collection<int, Field>
      */
     #[ORM\ManyToMany(targetEntity: Field::class, inversedBy: 'uEs')]
+    #[ORM\JoinTable(name: 'ue_field')]
     private Collection $fields;
 
     public function __construct()
@@ -200,7 +201,7 @@ class UE
         return $this;
     }
 
-    /**
+ /**
      * @return Collection<int, Field>
      */
     public function getFields(): Collection
@@ -208,16 +209,16 @@ class UE
         return $this->fields;
     }
 
-    public function addField(Field $field): static
+    public function addField(Field $field): self
     {
         if (!$this->fields->contains($field)) {
             $this->fields->add($field);
+            $field->addUE($this);
         }
-
         return $this;
     }
-
-    public function removeField(Field $field): static
+    
+    public function removeField(Field $field): self
     {
         if ($this->fields->removeElement($field)) {
             $field->removeUE($this);
@@ -225,7 +226,6 @@ class UE
 
         return $this;
     }
-
 
     public function removeLevel(Level $level): static
     {

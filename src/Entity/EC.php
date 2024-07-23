@@ -57,6 +57,7 @@ class EC
     private Collection $anonymats;
 
     #[ORM\ManyToOne(inversedBy: 'ecs')]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private ?Teacher $teacher = null;
 
     public function __construct()

@@ -1,0 +1,85 @@
+{% extends "base_super_admin.html.twig" %}
+
+{% block title %}
+    <title>
+        {% if ec is defined and ec is not null and ec.name is defined %}
+            Voir les anonymats - {{ ec.name }}
+        {% else %}
+            Voir les anonymats
+        {% endif %}
+    </title>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<div class="container mx-auto px-4 py-8 bg-gray-100 min-h-screen">
+    <h1 class="text-4xl font-bold mb-6 text-indigo-800 text-center">
+        {% if ec is defined and ec is not null and ec.name is defined %}
+            Voir les anonymats pour {{ ec.name }}
+        {% else %}
+            Voir les anonymats
+        {% endif %}
+    </h1>
+
+    {% if ec is defined and ec is not null %}
+        <div class="mb-8 text-center">
+            {% if ec.ue is defined and ec.ue is not null %}
+                {% if ec.ue.fields is defined and ec.ue.fields|length > 0 %}
+                    <p class="text-lg text-gray-700">
+                        <span class="font-semibold">Filière :</span> {{ ec.ue.fields|first.name }}
+                    </p>
+                {% endif %}
+                <p class="text-lg text-gray-700">
+                    <span class="font-semibold">UE :</span> {{ ec.ue.name }}
+                </p>
+            {% endif %}
+            <p class="text-lg text-gray-700">
+                <span class="font-semibold">EC :</span> {{ ec.name }}
+            </p>
+        </div>
+    {% endif %}
+
+    <div class="bg-white shadow-lg rounded-lg p-8 mb-8">
+        <div class="overflow-x-auto bg-white rounded-lg shadow">
+            <table class="w-full table-auto">
+                <thead>
+                    <tr class="bg-indigo-600 text-white uppercase text-sm leading-normal">
+                        <th class="py-3 px-6 text-left">Étudiant</th>
+                        <th class="py-3 px-6 text-center">Anonymat</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-600 text-sm">
+                {% if anonymats is defined %}
+                    {% for anonymat in anonymats %}
+                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-300">
+                            <td class="py-3 px-6 text-left whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <span class="font-medium">{{ anonymat.student.name }}</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-6 text-center">
+                                <span class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">{{ anonymat.anonymat }}</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="2" class="py-3 px-6 text-center">Aucun anonymat trouvé</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flex justify-end mt-6">
+            <a href="{{ path('attribuer_anonymats', {'ecId': ec.id}) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 transform hover:scale-105">
+                Modifier les anonymats
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

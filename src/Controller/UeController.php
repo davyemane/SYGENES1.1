@@ -10,10 +10,12 @@ use App\Entity\UE;
 use App\Entity\User;
 use App\Form\EcType;
 use App\Form\UeType;
+use App\Repository\FieldRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -33,26 +35,26 @@ class UeController extends AbstractController
         LoggerInterface $logger,
     ): Response {
         $user = $this->getUser();
-    
+
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
-    
+
         $entityManager = $doctrine->getManager();
-    
+
         // Vérifier si l'utilisateur est un RespUe
         $respUe = $entityManager->getRepository(RespUe::class)->findOneBy(['email' => $user->getEmail()]);
         if (!$respUe) {
             $this->addFlash('error', 'Vous n\'êtes pas autorisé à ajouter un EC.');
             return $this->redirectToRoute('app_home_page');
         }
-    
+
         $ue = $respUe->getUe();
         if (!$ue) {
             $this->addFlash('error', 'Aucune UE associée à votre compte.');
             return $this->redirectToRoute('app_home_page');
         }
-    
+
         // Vérifier si un ID d'EC a été fourni pour l'édition
         if ($id) {
             $ec = $entityManager->getRepository(EC::class)->find($id);
@@ -64,18 +66,18 @@ class UeController extends AbstractController
             $ec = new EC();
             $ec->setUe($ue);  // Définir l'UE pour le nouvel EC
         }
-    
+
         $form = $this->createForm(EcType::class, $ec);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $entityManager->persist($ec);
                 $entityManager->flush();
-    
+
                 $message = $id ? 'mis à jour' : 'ajouté';
                 $this->addFlash('success', $ec->getName() . " a été $message avec succès !");
-    
+
                 return $this->redirectToRoute("add_ec");
             } catch (\Exception $e) {
                 $this->addFlash('error', 'Une erreur s\'est produite.');
@@ -83,9 +85,9 @@ class UeController extends AbstractController
                 return $this->redirectToRoute('app_home_page');
             }
         }
-    
+
         $existingECs = $entityManager->getRepository(EC::class)->findBy(['ue' => $ue]);
-    
+
         return $this->render('ue/createEC.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
@@ -94,60 +96,125 @@ class UeController extends AbstractController
             'existingECs' => $existingECs,
         ]);
     }
+
+
+    //delete ec 
+    #[Route('/ec/delete/{id}', name: 'delete_ec', methods: ['POST'])]
+    public function deleteEC(EntityManagerInterface $entityManager, Security $security, int $id): Response
+    {
+        // Vérifier les autorisations de l'utilisateur
+        $currentUser = $security->getUser();
+        if (!$currentUser) {
+            $this->addFlash('error', 'Vous devez être connecté pour effectuer cette action.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Trouver l'EC à supprimer
+        $ec = $entityManager->getRepository(EC::class)->find($id);
+        if (!$ec) {
+            $this->addFlash('error', 'EC non trouvé.');
+            return $this->redirectToRoute('respue_dashboard'); // Assurez-vous d'avoir une route pour la liste des ECs
+        }
+
+        try {
+            $entityManager->beginTransaction();
+
+            // Dissocier l'EC de l'enseignant
+            $teacher = $ec->getTeacher();
+            if ($teacher) {
+                $ec->setTeacher(null);
+            }
+
+            // Dissocier l'EC de l'UE
+            $ue = $ec->getUe();
+            if ($ue) {
+                $ec->setUe(null);
+                $ue->removeEC($ec); // Assurez-vous d'avoir cette méthode dans votre entité UE
+            }
+
+            // Supprimer les NoteCcTps associés
+            foreach ($ec->getNoteCcTps() as $noteCcTp) {
+                $entityManager->remove($noteCcTp);
+            }
+
+            // Supprimer les Anonymats associés
+            foreach ($ec->getAnonymats() as $anonymat) {
+                $entityManager->remove($anonymat);
+            }
+
+            // Supprimer l'EC
+            $entityManager->remove($ec);
+
+            $entityManager->flush();
+            $entityManager->commit();
+
+            $this->addFlash('success', 'EC supprimé avec succès.');
+        } catch (\Exception $e) {
+            $entityManager->rollback();
+            $this->addFlash('error', 'Une erreur est survenue lors de la suppression de l\'EC : ' . $e->getMessage());
+        }
+
+        return $this->redirectToRoute('respue_dashboard'); // Assurez-vous d'avoir une route pour la liste des ECs
+    }
+
+
     #[Route('/add/ue/{id<\d+>?0}', name: 'add_ue')]
     public function AddUe(
         EntityManagerInterface $entityManager,
         Request $request,
+        FieldRepository $fieldRepository,
         int $id = 0
     ): Response {
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
-
+    
         // Récupérer le RespLevel de l'utilisateur connecté
         $respLevel = $user->getRespLevel();
         if (!$respLevel) {
             throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour créer une UE.');
         }
-
+    
         // Récupérer le Level associé au RespLevel
         $level = $respLevel->getLevel();
         if (!$level) {
             throw $this->createNotFoundException('Aucun niveau n\'est associé à ce responsable de niveau.');
         }
-
+    
         // Récupérer toutes les UE du niveau actuel
         $existingUEs = $entityManager->getRepository(UE::class)->findBy(['level' => $level]);
-
+    
         // Fetch or create UE
         $ue = $id
             ? $entityManager->getRepository(UE::class)->find($id)
             : new UE();
-
+    
         if ($id && !$ue) {
             throw $this->createNotFoundException('UE not found');
         }
-
+    
         $form = $this->createForm(UeType::class, $ue);
         $form->handleRequest($request);
+        $field_id = $level->getField()->getId();
 
+        $fields = $fieldRepository->findBy( ['id'=>$field_id]);
+    
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 // Set the Level automatically
                 $ue->setLevel($level);
-
+    
                 // Add the UE to all fields associated with the level
-                foreach ($level->getField() as $field) {
-                    $ue->addField($field);
-                }
-
+                        $ue->addField($fields[0]);
+                        $fields[0]->addUE($ue);
+    
                 $entityManager->persist($ue);
                 $entityManager->flush();
-
+    
                 $message = $id ? 'mise à jour' : 'ajoutée';
                 $this->addFlash('success', sprintf('L\'UE "%s" a été %s avec succès !', $ue->getName(), $message));
-
+    
                 return $this->redirectToRoute('add_ue');
             } catch (\Exception $e) {
                 $this->addFlash('error', $e->getMessage());
@@ -155,7 +222,7 @@ class UeController extends AbstractController
                 error_log($e->getMessage());
             }
         }
-
+    
         return $this->render('ue/createUe.html.twig', [
             'form' => $form->createView(),
             'ue' => $ue,
@@ -163,7 +230,6 @@ class UeController extends AbstractController
             'existingUEs' => $existingUEs, // Passer les UE existantes à la vue
         ]);
     }
-
 
     #[Route('/delete/ue/{id}', name: 'delete_ue')]
     public function deleteUe(

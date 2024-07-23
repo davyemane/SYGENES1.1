@@ -7,7 +7,7 @@
 {% block body %}
     <div class="min-h-screen bg-white p-8 flex flex-col overflow-hidden">
         <header class="text-gray-900 p-5 rounded-lg mb-6 flex flex-col items-center justify-center container mx-auto text-center border-b-4 border-gray-900">
-            <h1 class="text-4xl font-bold mb-1">Welcome to {{ue.name}} Dashboard</h1>
+            <h1 class="text-4xl font-bold mb-1">Welcome to {{ ue.name }} Dashboard</h1>
             <p class="text-md opacity-80">Today is {{ "now"|date("l, F j, Y") }}</p>
         </header>
 
@@ -66,34 +66,51 @@
                 </div>
             </div>
 
-            <!-- EC List Section -->
-            <div class="w-full lg:w-2/5 bg-white rounded-lg p-6 flex flex-col shadow-xl overflow-hidden">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-2">EC List</h2>
-                <p class="mb-4 text-xs">ECs for this UE</p>
-                <div class="overflow-y-auto flex-grow">
-                    <table class="min-w-full bg-white">
-                        <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal sticky top-0">
-                            <tr>
-                                <th class="py-3 px-6 text-left">EC Name</th>
-                                <th class="py-3 px-6 text-left">Teacher</th>
+        <!-- EC List Section -->
+        <div class="w-full lg:w-2/5 bg-white rounded-lg p-6 flex flex-col shadow-xl overflow-hidden">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-2">EC List</h2>
+            <p class="mb-4 text-xs">ECs for this UE</p>
+            <div class="overflow-y-auto flex-grow">
+                <table class="min-w-full bg-white">
+                    <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal sticky top-0">
+                        <tr>
+                            <th class="py-3 px-6 text-left">EC Name</th>
+                            <th class="py-3 px-6 text-left">Teacher</th>
+                            <th class="py-3 px-6 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-600 text-sm font-light">
+                        {% for ec in ecData %}
+                            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                <td class="py-3 px-6 text-left whitespace-nowrap">{{ ec.name }}</td>
+                                <td class="py-3 px-6 text-left">{{ ec.teacher }}</td>
+                                <td class="py-3 px-6 text-center">
+                                    <div class="flex justify-center space-x-2">
+                                        <a href="{{ path('attribuer_anonymats', {'ecId': ec.id}) }}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-2 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                                            Insérer Anonymat
+                                        </a>
+                                        <a href="{{ path('voir_anonymats', {'ecId': ec.id}) }}" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-1 px-2 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                                            Voir Anonymats
+                                        </a>
+                                        <form method="post" action="{{ path('delete_ec', {'id': ec.id}) }}">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ ec.id) }}">
+                                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-2 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody class="text-gray-600 text-sm font-light">
-                            {% for ec in ecData %}
-                                <tr class="border-b border-gray-200 hover:bg-gray-100">
-                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ ec.name }}</td>
-                                    <td class="py-3 px-6 text-left">{{ ec.teacher }}</td>
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="2" class="py-3 px-6 text-center">No ECs found</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                        {% else %}
+                            <tr>
+                                <td colspan="3" class="py-3 px-6 text-center">No ECs found</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-
+        </div>
+        
             <!-- Teacher List Section -->
             <div class="w-full lg:w-2/5 bg-white rounded-lg p-6 flex flex-col shadow-xl overflow-hidden">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-2">Teacher List</h2>
@@ -105,6 +122,7 @@
                                 <th class="py-3 px-6 text-left">Name</th>
                                 <th class="py-3 px-6 text-left">Email</th>
                                 <th class="py-3 px-6 text-center">EC Count</th>
+                                <th class="py-3 px-6 text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm font-light">
@@ -113,10 +131,18 @@
                                     <td class="py-3 px-6 text-left whitespace-nowrap">{{ teacher.name }}</td>
                                     <td class="py-3 px-6 text-left">{{ teacher.email }}</td>
                                     <td class="py-3 px-6 text-center">{{ teacher.ecCount }}</td>
+                                    <td class="py-3 px-6 text-center">
+<form method="post" action="{{ path('delete_teacher', {'id': teacher.id}) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ teacher.id) }}">
+    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-2 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+        Delete
+    </button>
+</form>
+                                    </td>
                                 </tr>
                             {% else %}
                                 <tr>
-                                    <td colspan="3" class="py-3 px-6 text-center">No teachers found</td>
+                                    <td colspan="4" class="py-3 px-6 text-center">No teachers found</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
