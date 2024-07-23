@@ -127,7 +127,7 @@ class SchoolController extends AbstractController
             $this->addFlash('error', 'Une erreur est survenue lors de la suppression : ' . $e->getMessage());
         }
     
-        return $this->redirectToRoute('admin_dashboard'); // Assurez-vous que cette route existe
+        return $this->redirectToRoute('super_admin_dashboard'); // Assurez-vous que cette route existe
     }
 
     #[Route('/dashboard', name: 'super_admin_dashboard')]

@@ -23,16 +23,13 @@ class TeacherController extends AbstractController
     }
 
 
-    #[Route('/teacherecdashboard', name: 'respue_dashboard')]
+    #[Route('/teacheresdashboard', name: 'respue_dashboard')]
     public function teacherEcDashboard(
         TeacherRepository $teacherRepository,
+        ECRepository $ecRepository,
         EntityManagerInterface $entityManager
     ): Response {
         $user = $this->getUser();
-    
-        if (!$user || !$user->getRespue()) {
-            throw $this->createAccessDeniedException('Accès non autorisé.');
-        }
     
         // Récupérer l'UE du RespUE connecté
         $ue = $user->getRespue()->getUe();
@@ -42,20 +39,32 @@ class TeacherController extends AbstractController
         }
     
         // Récupérer les ECs pour cette UE
-        $ecs = $ue->getEcs();
+        $ecs = $ecRepository->findBy(['ue' => $ue]);
+    
+        // Récupérer les IDs des ECs
+        $ecIds = array_map(function($ec) { return $ec->getId(); }, $ecs);
     
         // Récupérer tous les enseignants associés à ces ECs
-        $teachers = $entityManager->createQuery(
-            'SELECT DISTINCT t, ec FROM App\Entity\Teacher t
-             JOIN t.ecs ec
-             WHERE ec.ue = :ue'
-        )
-        ->setParameter('ue', $ue)
-        ->getResult();
+        $teachers = $teacherRepository->createQueryBuilder('t')
+            ->join('t.ecs', 'ec')
+            ->where('ec.id IN (:ecIds)')
+            ->setParameter('ecIds', $ecIds)
+            ->getQuery()
+            ->getResult();
     
         // Préparer les données pour la vue
+        $ecData = [];
         $teacherData = [];
-        $totalEcs = 0;
+        $totalEcs = count($ecs);
+        $totalTeachers = count($teachers);
+    
+        foreach ($ecs as $ec) {
+            $ecData[] = [
+                'id' => $ec->getId(),
+                'name' => $ec->getName(),
+                'teacher' => $ec->getTeacher() ? $ec->getTeacher()->getName() : 'Non assigné',
+            ];
+        }
     
         foreach ($teachers as $teacher) {
             $teacherEcs = $teacher->getEcs()->filter(function($ec) use ($ue) {
@@ -63,7 +72,6 @@ class TeacherController extends AbstractController
             });
             
             $ecCount = $teacherEcs->count();
-            $totalEcs += $ecCount;
     
             $teacherData[] = [
                 'id' => $teacher->getId(),
@@ -72,8 +80,6 @@ class TeacherController extends AbstractController
                 'phoneNumber' => $teacher->getPhoneNumber(),
                 'ecCount' => $ecCount,
                 'ecs' => $teacherEcs->map(function($ec) { return $ec->getName(); })->toArray(),
-                'createdAt' => $teacher->getCreatedAt(),
-                'createdBy' => $teacher->getCreatedBy() ? $teacher->getCreatedBy()->getUsername() : 'N/A',
             ];
         }
     
@@ -83,16 +89,16 @@ class TeacherController extends AbstractController
         });
     
         // Calculer les statistiques
-        $teacherCount = count($teachers);
-        $ecCount = $ecs->count();
-        $averageEcsPerTeacher = $teacherCount > 0 ? $totalEcs / $teacherCount : 0;
+        $averageEcsPerTeacher = $totalTeachers > 0 ? $totalEcs / $totalTeachers : 0;
     
         return $this->render('admin_dashboard/respue_dashboard.html.twig', [
+            'ecData' => $ecData,
             'teacherData' => $teacherData,
-            'teacherCount' => $teacherCount,
-            'ecCount' => $ecCount,
+            'teacherCount' => $totalTeachers,
+            'ecCount' => $totalEcs,
             'averageEcsPerTeacher' => round($averageEcsPerTeacher, 2),
             'user' => $user,
             'ue' => $ue
         ]);
-    }}
+    }
+}

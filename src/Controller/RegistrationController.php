@@ -35,16 +35,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\SchoolRepository;
 use App\Repository\UERepository;
+use Psr\Log\LoggerInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 #[Route('/admin')]
 
 class RegistrationController extends AbstractController
 {
-    public function __construct(private EmailVerifier $emailVerifier)
+    public function __construct(LoggerInterface $logger)
     {
+        $this->logger = $logger;
     }
-
     #[Route('/register', name: 'app_register')]
     public function register(
         Request $request,
@@ -222,7 +223,7 @@ class RegistrationController extends AbstractController
     }
 
 
-//add or modify RespFiléld
+    //add or modify RespFiléld
     #[Route('/register/respfield/{id<\d+>?0}', name: 'app_register_respfield')]
     public function manageRespField(
         Request $request,
@@ -311,7 +312,7 @@ class RegistrationController extends AbstractController
             } else {
                 $this->addFlash('success', 'Field Responsible has been successfully registered.');
             }
-            
+
             // Redirect or render success message
             return $this->redirectToRoute('app_register_respfield');
         }
@@ -343,14 +344,14 @@ class RegistrationController extends AbstractController
         $respField = $currentUser->getRespField();
         $entityManager->refresh($respField);  // Rafraîchir l'entité depuis la base de données
         $respFieldField = $respField->getField();
-        
+
         if (!$respFieldField) {
             throw $this->createNotFoundException('No field found for the connected RESPFIELD.');
         }
 
         // Détacher l'entité Field pour éviter les conflits
         $entityManager->detach($respFieldField);
-        
+
         // Recharger l'entité Field
         $respFieldField = $entityManager->find(Field::class, $respFieldField->getId());
 
@@ -427,7 +428,7 @@ class RegistrationController extends AbstractController
             } else {
                 $this->addFlash('success', 'Level Responsible has been successfully registered.');
             }
-            
+
             return $this->redirectToRoute('app_register_resplevel');
         }
 
@@ -452,17 +453,17 @@ class RegistrationController extends AbstractController
         if (!$currentUser instanceof User) {
             return $this->redirectToRoute('app_login');
         }
-    
+
         $respLevel = $currentUser->getRespLevel();
         if (!$respLevel) {
             throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour créer un responsable d\'UE.');
         }
-    
+
         $isEdit = false;
         if ($id) {
             $isEdit = true;
         }
-    
+
         if ($isEdit) {
             $user = $entityManager->getRepository(User::class)->find($id);
             if (!$user) {
@@ -477,18 +478,18 @@ class RegistrationController extends AbstractController
             $user = new User();
             $respUe = new RespUe();
         }
-    
+
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->add('respUe', RespUeType::class, [
             'ue_choices' => $ueRepository->findBy(['level' => $respLevel->getLevel()]),
         ]);
-    
+
         if ($isEdit) {
             $form->remove('plainPassword');
         }
-    
+
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$isEdit) {
                 $user->setPassword(
@@ -502,39 +503,40 @@ class RegistrationController extends AbstractController
                 $respUe->setCreatedBy($currentUser);
             }
             $this->handleProfilePictureUpload($form, $user, $slugger);
-    
+
             $email = $form->get('email')->getData();
             $user->setEmail($email);
-    
+
             $respUe->setName($form->get('respUe')->get('name')->getData());
             $respUe->setCni($form->get('respUe')->get('cni')->getData());
             $respUe->setPhoneNumber($form->get('respUe')->get('phone_number')->getData());
             $respUe->setEmail($email);
-    
+
             $ue = $form->get('respUe')->get('ue')->getData();
             $respUe->setUe($ue);
-    
+
             $user->setRespUe($respUe);
-    
+
             $entityManager->persist($user);
             $entityManager->persist($respUe);
             $entityManager->flush();
-    
-            $this->addFlash('success', $isEdit 
-                ? 'Les informations du responsable d\'UE ont été mises à jour avec succès.' 
+
+            $this->addFlash('success', $isEdit
+                ? 'Les informations du responsable d\'UE ont été mises à jour avec succès.'
                 : 'Le responsable d\'UE a été enregistré avec succès.');
-            
+
             return $this->redirectToRoute('register_respue');
         }
-    
+
         return $this->render('resp_ue/register_respue.html.twig', [
             'registrationForm' => $form->createView(),
             'isEdit' => $isEdit,
         ]);
     }
 
-    
-    #[Route('/register/respec/{id<\d+>?0}', name: 'register_respec')]
+
+    #[Route('/register/respec', name: 'register_respec')]
+    #[Route('/register/respec/{id}', name: 'register_respec_edit', requirements: ['id' => '\d+'])]
     public function manageRespEC(
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
@@ -542,23 +544,22 @@ class RegistrationController extends AbstractController
         ECRepository $ecRepository,
         Security $security,
         SluggerInterface $slugger,
-        $id
+        $id = null
     ): Response {
+
         $currentUser = $security->getUser();
         if (!$currentUser instanceof User) {
             return $this->redirectToRoute('app_login');
         }
-    
+
         $respUe = $currentUser->getRespUe();
         if (!$respUe) {
             throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour créer un enseignant.');
         }
-    
-        $isEdit = false;
-        if ($id) {
-            $isEdit = true;
-        }
-    
+
+        $isEdit = $id !== null;
+        $this->logger->info('Mode édition : ' . ($isEdit ? 'Oui' : 'Non'));
+
         if ($isEdit) {
             $user = $entityManager->getRepository(User::class)->find($id);
             if (!$user) {
@@ -568,27 +569,41 @@ class RegistrationController extends AbstractController
             if (!$teacher) {
                 $teacher = new Teacher();
                 $user->setTeacher($teacher);
+                $teacher->setUser($user);
             }
         } else {
             $user = new User();
             $teacher = new Teacher();
             $user->setTeacher($teacher);
+            $teacher->setUser($user);
         }
-    
+
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->add('teacher', TeacherType::class, [
             'data' => $teacher,
             'ec_choices' => $ecRepository->findBy(['ue' => $respUe->getUe()]),
         ]);
-    
+
         if ($isEdit) {
             $form->remove('plainPassword');
         }
-    
+
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$isEdit) {
+                $existingUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $form->get('email')->getData()]);
+                if ($existingUser) {
+                    $this->addFlash('error', 'Un utilisateur avec cet email existe déjà.');
+                    return $this->redirectToRoute('register_respec');
+                }
+
+                $existingTeacher = $entityManager->getRepository(Teacher::class)->findOneBy(['cni' => $form->get('teacher')->get('cni')->getData()]);
+                if ($existingTeacher) {
+                    $this->addFlash('error', 'Un enseignant avec cette CNI existe déjà.');
+                    return $this->redirectToRoute('register_respec');
+                }
+
                 $user->setPassword(
                     $userPasswordHasher->hashPassword(
                         $user,
@@ -600,31 +615,33 @@ class RegistrationController extends AbstractController
                 $teacher->setCreatedBy($currentUser);
             }
             $this->handleProfilePictureUpload($form, $user, $slugger);
-    
+
             $email = $form->get('email')->getData();
             $user->setEmail($email);
-    
+
             $teacherData = $form->get('teacher')->getData();
             $teacher->setName($teacherData->getName());
             $teacher->setCni($teacherData->getCni());
             $teacher->setPhoneNumber($teacherData->getPhoneNumber());
             $teacher->setEmail($email);
-    
+
+            // Associer les EC sélectionnés à l'enseignant et mettre à jour la relation
             foreach ($teacherData->getEcs() as $ec) {
-                $teacher->addEc($ec);
+                $ec->setTeacher($teacher); // Met à jour le teacher_id dans EC
+                $entityManager->persist($ec); // Persiste l'EC
             }
-    
+
             $entityManager->persist($user);
             $entityManager->persist($teacher);
             $entityManager->flush();
-    
-            $this->addFlash('success', $isEdit 
-                ? 'Les informations de l\'enseignant ont été mises à jour avec succès.' 
+
+            $this->addFlash('success', $isEdit
+                ? 'Les informations de l\'enseignant ont été mises à jour avec succès.'
                 : 'L\'enseignant a été enregistré avec succès.');
-            
+
             return $this->redirectToRoute('register_respec');
         }
-    
+
         return $this->render('teacher/register_respec.html.twig', [
             'registrationForm' => $form->createView(),
             'isEdit' => $isEdit,
@@ -653,5 +670,4 @@ class RegistrationController extends AbstractController
             }
         }
     }
-
 }

@@ -50,48 +50,9 @@
 
         <!-- Main Content Area -->
         <div class="flex flex-col lg:flex-row gap-6 flex-grow overflow-hidden h-[calc(90vh-24rem)]">
-            <!-- Teacher List Section -->
-            <div class="w-full lg:w-3/4 bg-white rounded-lg p-6 flex flex-col shadow-xl overflow-hidden">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-2">Teacher List</h2>
-                <p class="mb-4 text-xs">Below is the list of teachers and their associated ECs</p>
-                <div class="overflow-y-auto flex-grow">
-                    <table class="min-w-full bg-white">
-                        <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal sticky top-0">
-                            <tr>
-                                <th class="py-3 px-6 text-left">Name</th>
-                                <th class="py-3 px-6 text-left">Email</th>
-                                <th class="py-3 px-6 text-left">Phone Number</th>
-                                <th class="py-3 px-6 text-center">EC Count</th>
-                                <th class="py-3 px-6 text-center">ECs</th>
-                                <th class="py-3 px-6 text-center">Created At</th>
-                                <th class="py-3 px-6 text-center">Created By</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-600 text-sm font-light">
-                            {% for teacher in teacherData %}
-                                <tr class="border-b border-gray-200 hover:bg-gray-100">
-                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ teacher.name }}</td>
-                                    <td class="py-3 px-6 text-left">{{ teacher.email }}</td>
-                                    <td class="py-3 px-6 text-left">{{ teacher.phoneNumber }}</td>
-                                    <td class="py-3 px-6 text-center">{{ teacher.ecCount }}</td>
-                                    <td class="py-3 px-6 text-center">{{ teacher.ecs|join(', ') }}</td>
-                                    <td class="py-3 px-6 text-center">{{ teacher.createdAt|date('Y-m-d H:i:s') }}</td>
-                                    <td class="py-3 px-6 text-center">{{ teacher.createdBy }}</td>
-                                </tr>
-                            {% else %}
-                                <tr>
-                                    <td colspan="7" class="py-3 px-6 text-center">No teachers found</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
             <!-- Quick Actions Section -->
-            <div class="w-full lg:w-1/4 bg-white rounded-lg p-4 flex flex-col shadow-xl overflow-y-auto">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-2">Quick Actions</h2>
-                <p class="mb-8 text-sm text-gray-600">Perform quick actions for teachers and ECs</p>
+            <div class="w-full lg:w-1/5 bg-white rounded-lg p-4 flex flex-col shadow-xl">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Quick Actions</h2>
                 <div class="space-y-4 flex-grow">
                     <a href="{{ path('register_respec') }}" class="block w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-5 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 text-center">
                         Add New Teacher
@@ -102,6 +63,64 @@
                     <a href="#" class="block w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-3 px-5 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 text-center">
                         Generate Teacher Report
                     </a>
+                </div>
+            </div>
+
+            <!-- EC List Section -->
+            <div class="w-full lg:w-2/5 bg-white rounded-lg p-6 flex flex-col shadow-xl overflow-hidden">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-2">EC List</h2>
+                <p class="mb-4 text-xs">ECs for this UE</p>
+                <div class="overflow-y-auto flex-grow">
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal sticky top-0">
+                            <tr>
+                                <th class="py-3 px-6 text-left">EC Name</th>
+                                <th class="py-3 px-6 text-left">Teacher</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-600 text-sm font-light">
+                            {% for ec in ecData %}
+                                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ ec.name }}</td>
+                                    <td class="py-3 px-6 text-left">{{ ec.teacher }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="2" class="py-3 px-6 text-center">No ECs found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Teacher List Section -->
+            <div class="w-full lg:w-2/5 bg-white rounded-lg p-6 flex flex-col shadow-xl overflow-hidden">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-2">Teacher List</h2>
+                <p class="mb-4 text-xs">Teachers associated with this UE</p>
+                <div class="overflow-y-auto flex-grow">
+                    <table class="min-w-full bg-white">
+                        <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal sticky top-0">
+                            <tr>
+                                <th class="py-3 px-6 text-left">Name</th>
+                                <th class="py-3 px-6 text-left">Email</th>
+                                <th class="py-3 px-6 text-center">EC Count</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-600 text-sm font-light">
+                            {% for teacher in teacherData %}
+                                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ teacher.name }}</td>
+                                    <td class="py-3 px-6 text-left">{{ teacher.email }}</td>
+                                    <td class="py-3 px-6 text-center">{{ teacher.ecCount }}</td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="3" class="py-3 px-6 text-center">No teachers found</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

@@ -71,15 +71,15 @@ class SecurityController extends AbstractController
 
         // Vérifier les rôles en utilisant isGranted(), du plus élevé au plus bas
         if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
-            return $this->redirectToRoute('admin_dashboard');
+            return $this->redirectToRoute('super_admin_dashboard');
         } elseif ($this->security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin_dashboard');
         } elseif ($this->security->isGranted('ROLE_RESPSCHOOL')) {
             return $this->redirectToRoute('admin_dashboard');
         } elseif ($this->security->isGranted('ROLE_RESPFIELD')) {
             return $this->redirectToRoute('level_dashboard');
-        } elseif ($this->security->isGranted('ROLE_RESLEVEL')) {
-            return $this->redirectToRoute('app_dashResLevel');
+        } elseif ($this->security->isGranted('ROLE_RESPLEVEL')) {
+            return $this->redirectToRoute('ue_dashboards');
         } elseif ($this->security->isGranted('ROLE_RESPUE')) {
             return $this->redirectToRoute('respue_dashboard');
         } elseif ($this->security->isGranted('ROLE_TEACHER')) {
