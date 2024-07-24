@@ -1,0 +1,118 @@
+{% extends "base_super_admin.html.twig" %}
+
+{% block title %}
+    <title>Assistant Teacher Dashboard</title>
+{% endblock %}
+
+{% block body %}
+    <div class="min-h-screen bg-white p-4 lg:p-8 flex flex-col overflow-hidden">
+        <header class="text-gray-900 p-4 lg:p-6 rounded-lg mb-4 lg:mb-8 flex flex-col items-center justify-center container mx-auto text-center border-b-4 border-gray-900">
+            {# <h1 class="text-2xl lg:text-4xl font-bold mb-2">Welcome, Assistant {{ assistant.name }}</h1> #}
+            <p class="text-sm lg:text-lg opacity-80">Today is {{ "now"|date("l, F j, Y") }}</p>
+        </header>
+
+        <!-- Flash Messages -->
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 p-4 lg:p-6 mb-4 lg:mb-8 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md" role="alert">
+                    <p class="font-bold text-lg">{{ label|capitalize }}</p>
+                    <p class="text-base">{{ message }}</p>
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <!-- Main Content -->
+        <div class="flex flex-col bg-gray-100 overflow-hidden h-[calc(100vh-200px)] lg:h-[calc(100vh-250px)]">
+            <!-- Dashboard Statistics -->
+            <div class="mb-6 p-4 lg:p-6">
+                <div class="bg-white rounded-lg shadow-md p-4 lg:p-6">
+                    <h2 class="text-xl lg:text-2xl font-semibold text-gray-800 mb-4">Marking Overview</h2>
+                    <div class="flex flex-wrap justify-between gap-4 lg:gap-6">
+                        {# {% set stats = [
+                            {label: 'Pending CC Marks', count: pendingCCMarks, color: 'blue', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01'},
+                            {label: 'Pending TP Marks', count: pendingTPMarks, color: 'green', icon: 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z'},
+                            {label: 'Pending EE Marks', count: pendingEEMarks, color: 'yellow', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'}
+                        ] %}
+                        {% for stat in stats %}
+                            <div class="bg-{{ stat.color }}-100 rounded-lg p-4 lg:p-6 flex items-center justify-between flex-grow basis-[30%]">
+                                <div>
+                                    <p class="text-{{ stat.color }}-800 text-sm lg:text-base font-medium">{{ stat.label }}</p>
+                                    <p class="text-{{ stat.color }}-600 text-xl lg:text-2xl font-bold">{{ stat.count }}</p>
+                                </div>
+                                <div class="text-{{ stat.color }}-500">
+                                    <svg class="w-8 h-8 lg:w-10 lg:h-10" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ stat.icon }}"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        {% endfor %} #}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="flex flex-col lg:flex-row gap-6 p-4 lg:p-6 flex-grow">
+                <!-- Quick Actions Section -->
+                <div class="bg-white rounded-lg p-4 lg:p-6 shadow-xl flex flex-col lg:w-1/4">
+                    <h2 class="text-lg lg:text-xl font-semibold text-gray-800 mb-4">Quick Actions</h2>
+                    <div class="space-y-4 flex-grow">
+                        <a href="#" class="block w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 ease-in-out text-center text-sm lg:text-base">
+                            Insert CC Marks
+                        </a>
+                        <a href="#" class="block w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 ease-in-out text-center text-sm lg:text-base">
+                            Insert TP Marks
+                        </a>
+                        <a href="#" class="block w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 ease-in-out text-center text-sm lg:text-base">
+                            Insert EE/Anonymous Marks
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Assigned Courses Section -->
+                <div class="bg-white rounded-lg p-4 lg:p-6 shadow-xl overflow-hidden lg:w-3/4">
+                    <h2 class="text-lg lg:text-xl font-semibold text-gray-800 mb-4">Assigned Courses</h2>
+                    <div class="overflow-auto" style="max-height: calc(100vh - 400px);">
+                        <table class="min-w-full bg-white">
+                            <thead class="bg-gray-200 text-gray-600 uppercase text-xs lg:text-sm leading-normal sticky top-0">
+                                <tr>
+                                    <th class="py-3 px-4 text-left">Course Code</th>
+                                    <th class="py-3 px-4 text-left">Course Name</th>
+                                    <th class="py-3 px-4 text-center">CC Status</th>
+                                    <th class="py-3 px-4 text-center">TP Status</th>
+                                    <th class="py-3 px-4 text-center">EE Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 text-sm">
+                                {# {% for course in assignedCourses %}
+                                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                        <td class="py-3 px-4 text-left whitespace-nowrap">{{ course.code }}</td>
+                                        <td class="py-3 px-4 text-left">{{ course.name }}</td>
+                                        <td class="py-3 px-4 text-center">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ course.ccStatus == 'Completed' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                {{ course.ccStatus }}
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-4 text-center">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ course.tpStatus == 'Completed' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                {{ course.tpStatus }}
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-4 text-center">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ course.eeStatus == 'Completed' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                {{ course.eeStatus }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5" class="py-3 px-4 text-center">No courses assigned</td>
+                                    </tr>
+                                {% endfor %} #}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
