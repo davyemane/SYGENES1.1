@@ -546,20 +546,18 @@ class RegistrationController extends AbstractController
         SluggerInterface $slugger,
         $id = null
     ): Response {
-
         $currentUser = $security->getUser();
         if (!$currentUser instanceof User) {
             return $this->redirectToRoute('app_login');
         }
-
+    
         $respUe = $currentUser->getRespUe();
         if (!$respUe) {
             throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour créer un enseignant.');
         }
-
+    
         $isEdit = $id !== null;
-        $this->logger->info('Mode édition : ' . ($isEdit ? 'Oui' : 'Non'));
-
+    
         if ($isEdit) {
             $user = $entityManager->getRepository(User::class)->find($id);
             if (!$user) {
@@ -577,19 +575,19 @@ class RegistrationController extends AbstractController
             $user->setTeacher($teacher);
             $teacher->setUser($user);
         }
-
+    
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->add('teacher', TeacherType::class, [
             'data' => $teacher,
             'ec_choices' => $ecRepository->findBy(['ue' => $respUe->getUe()]),
         ]);
-
+    
         if ($isEdit) {
             $form->remove('plainPassword');
         }
-
+    
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$isEdit) {
                 $existingUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $form->get('email')->getData()]);
@@ -597,13 +595,19 @@ class RegistrationController extends AbstractController
                     $this->addFlash('error', 'Un utilisateur avec cet email existe déjà.');
                     return $this->redirectToRoute('register_respec');
                 }
-
+    
                 $existingTeacher = $entityManager->getRepository(Teacher::class)->findOneBy(['cni' => $form->get('teacher')->get('cni')->getData()]);
                 if ($existingTeacher) {
                     $this->addFlash('error', 'Un enseignant avec cette CNI existe déjà.');
                     return $this->redirectToRoute('register_respec');
                 }
-
+    
+                $existingTeacherByEmail = $entityManager->getRepository(Teacher::class)->findOneBy(['email' => $form->get('email')->getData()]);
+                if ($existingTeacherByEmail) {
+                    $this->addFlash('error', 'Un enseignant avec cet email existe déjà.');
+                    return $this->redirectToRoute('register_respec');
+                }
+    
                 $user->setPassword(
                     $userPasswordHasher->hashPassword(
                         $user,
@@ -614,35 +618,43 @@ class RegistrationController extends AbstractController
                 $teacher->setCreatedAt(new \DateTime());
                 $teacher->setCreatedBy($currentUser);
             }
+    
             $this->handleProfilePictureUpload($form, $user, $slugger);
-
+    
             $email = $form->get('email')->getData();
             $user->setEmail($email);
-
+    
             $teacherData = $form->get('teacher')->getData();
             $teacher->setName($teacherData->getName());
             $teacher->setCni($teacherData->getCni());
             $teacher->setPhoneNumber($teacherData->getPhoneNumber());
             $teacher->setEmail($email);
-
-            // Associer les EC sélectionnés à l'enseignant et mettre à jour la relation
+    
             foreach ($teacherData->getEcs() as $ec) {
-                $ec->setTeacher($teacher); // Met à jour le teacher_id dans EC
-                $entityManager->persist($ec); // Persiste l'EC
+                if ($ec->getTeacher() !== null && $ec->getTeacher() !== $teacher) {
+                    $this->addFlash('error', "L'EC '{$ec->getName()}' est déjà assigné à un autre enseignant.");
+                    return $this->redirectToRoute('register_respec');
+                }
+                $ec->setTeacher($teacher);
+                $entityManager->persist($ec);
             }
-
-            $entityManager->persist($user);
-            $entityManager->persist($teacher);
-            $entityManager->flush();
-
-            $this->addFlash('success', $isEdit
-                ? 'Les informations de l\'enseignant ont été mises à jour avec succès.'
-                : 'L\'enseignant a été enregistré avec succès.');
-
-            return $this->redirectToRoute('register_respec');
+    
+            try {
+                $entityManager->persist($user);
+                $entityManager->persist($teacher);
+                $entityManager->flush();
+    
+                $this->addFlash('success', $isEdit
+                    ? 'Les informations de l\'enseignant ont été mises à jour avec succès.'
+                    : 'L\'enseignant a été enregistré avec succès.');
+    
+                return $this->redirectToRoute('register_respec');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Une erreur est survenue lors de l\'enregistrement : ' . $e->getMessage());
+                return $this->redirectToRoute('register_respec');
+            }
         }
-
-        return $this->render('teacher/register_respec.html.twig', [
+            return $this->render('teacher/register_respec.html.twig', [
             'registrationForm' => $form->createView(),
             'isEdit' => $isEdit,
         ]);

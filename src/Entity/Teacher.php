@@ -37,11 +37,12 @@ class Teacher
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $created_at = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?User $created_by = null;
-
+    
     #[ORM\OneToOne(mappedBy: 'teacher', cascade: ['persist', 'remove'])]
     private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'teachers')]
+    private ?User $created_by = null;
 
     public function __construct()
     {
@@ -143,18 +144,6 @@ class Teacher
         return $this;
     }
 
-    public function getCreatedBy(): ?User
-    {
-        return $this->created_by;
-    }
-
-    public function setCreatedBy(?User $created_by): static
-    {
-        $this->created_by = $created_by;
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -173,6 +162,18 @@ class Teacher
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->created_by;
+    }
+
+    public function setCreatedBy(?User $created_by): static
+    {
+        $this->created_by = $created_by;
 
         return $this;
     }

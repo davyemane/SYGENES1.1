@@ -98,65 +98,65 @@ class UeController extends AbstractController
     }
 
 
-    //delete ec 
-    #[Route('/ec/delete/{id}', name: 'delete_ec', methods: ['POST'])]
-    public function deleteEC(EntityManagerInterface $entityManager, Security $security, int $id): Response
-    {
-        // Vérifier les autorisations de l'utilisateur
-        $currentUser = $security->getUser();
-        if (!$currentUser) {
-            $this->addFlash('error', 'Vous devez être connecté pour effectuer cette action.');
-            return $this->redirectToRoute('app_login');
-        }
-
-        // Trouver l'EC à supprimer
-        $ec = $entityManager->getRepository(EC::class)->find($id);
-        if (!$ec) {
-            $this->addFlash('error', 'EC non trouvé.');
-            return $this->redirectToRoute('respue_dashboard'); // Assurez-vous d'avoir une route pour la liste des ECs
-        }
-
-        try {
-            $entityManager->beginTransaction();
-
-            // Dissocier l'EC de l'enseignant
-            $teacher = $ec->getTeacher();
-            if ($teacher) {
-                $ec->setTeacher(null);
-            }
-
-            // Dissocier l'EC de l'UE
-            $ue = $ec->getUe();
-            if ($ue) {
-                $ec->setUe(null);
-                $ue->removeEC($ec); // Assurez-vous d'avoir cette méthode dans votre entité UE
-            }
-
-            // Supprimer les NoteCcTps associés
-            foreach ($ec->getNoteCcTps() as $noteCcTp) {
-                $entityManager->remove($noteCcTp);
-            }
-
-            // Supprimer les Anonymats associés
-            foreach ($ec->getAnonymats() as $anonymat) {
-                $entityManager->remove($anonymat);
-            }
-
-            // Supprimer l'EC
-            $entityManager->remove($ec);
-
-            $entityManager->flush();
-            $entityManager->commit();
-
-            $this->addFlash('success', 'EC supprimé avec succès.');
-        } catch (\Exception $e) {
-            $entityManager->rollback();
-            $this->addFlash('error', 'Une erreur est survenue lors de la suppression de l\'EC : ' . $e->getMessage());
-        }
-
-        return $this->redirectToRoute('respue_dashboard'); // Assurez-vous d'avoir une route pour la liste des ECs
+//delete ec 
+#[Route('/ec/delete/{id}', name: 'delete_ec', methods: ['POST'])]
+public function deleteEC(EntityManagerInterface $entityManager, Security $security, int $id): Response
+{
+    // Vérifier les autorisations de l'utilisateur
+    $currentUser = $security->getUser();
+    if (!$currentUser) {
+        $this->addFlash('error', 'Vous devez être connecté pour effectuer cette action.');
+        return $this->redirectToRoute('app_login');
     }
 
+    // Trouver l'EC à supprimer
+    $ec = $entityManager->getRepository(EC::class)->find($id);
+    if (!$ec) {
+        $this->addFlash('error', 'EC non trouvé.');
+        return $this->redirectToRoute('respue_dashboard');
+    }
+
+    try {
+        $entityManager->beginTransaction();
+
+        // Dissocier l'EC de l'enseignant
+        $teacher = $ec->getTeacher();
+        if ($teacher) {
+            $ec->setTeacher(null);
+            $teacher->removeEc($ec);
+        }
+
+        // Dissocier l'EC de l'UE
+        $ue = $ec->getUe();
+        if ($ue) {
+            $ec->setUe(null);
+            $ue->removeEC($ec);
+        }
+
+        // Supprimer les NoteCcTps associés
+        foreach ($ec->getNoteCcTps() as $noteCcTp) {
+            $entityManager->remove($noteCcTp);
+        }
+
+        // Supprimer les Anonymats associés
+        foreach ($ec->getAnonymats() as $anonymat) {
+            $entityManager->remove($anonymat);
+        }
+
+        // Supprimer l'EC
+        $entityManager->remove($ec);
+
+        $entityManager->flush();
+        $entityManager->commit();
+
+        $this->addFlash('success', 'EC et toutes ses notes associées supprimés avec succès.');
+    } catch (\Exception $e) {
+        $entityManager->rollback();
+        $this->addFlash('error', 'Une erreur est survenue lors de la suppression : ' . $e->getMessage());
+    }
+
+    return $this->redirectToRoute('respue_dashboard');
+}
 
     #[Route('/add/ue/{id<\d+>?0}', name: 'add_ue')]
     public function AddUe(
