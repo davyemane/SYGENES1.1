@@ -96,6 +96,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Teacher $teacher = null;
 
+    /**
+     * @var Collection<int, Teacher>
+     */
+    #[ORM\OneToMany(targetEntity: Teacher::class, mappedBy: 'created_by')]
+    private Collection $teachers;
+
     public function __construct()
     {
         $this->noteCcTps = new ArrayCollection();
@@ -104,6 +110,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->respFields = new ArrayCollection();
         $this->respLevels = new ArrayCollection();
         $this->respUes = new ArrayCollection();
+        $this->teachers = new ArrayCollection();
     }
 
 
@@ -460,6 +467,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTeacher(?Teacher $teacher): static
     {
         $this->teacher = $teacher;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Teacher>
+     */
+    public function getTeachers(): Collection
+    {
+        return $this->teachers;
+    }
+
+    public function addTeacher(Teacher $teacher): static
+    {
+        if (!$this->teachers->contains($teacher)) {
+            $this->teachers->add($teacher);
+            $teacher->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeacher(Teacher $teacher): static
+    {
+        if ($this->teachers->removeElement($teacher)) {
+            // set the owning side to null (unless already changed)
+            if ($teacher->getCreatedBy() === $this) {
+                $teacher->setCreatedBy(null);
+            }
+        }
 
         return $this;
     }

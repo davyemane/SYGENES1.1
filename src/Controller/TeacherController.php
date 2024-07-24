@@ -34,36 +34,47 @@ class TeacherController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
         $user = $this->getUser();
-
+    
         // Récupérer l'UE du RespUE connecté
         $ue = $user->getRespue()->getUe();
-
+    
         if (!$ue instanceof UE) {
             throw $this->createNotFoundException('Aucune UE associée à ce RespUE.');
         }
-
+    
         // Récupérer les ECs pour cette UE
         $ecs = $ecRepository->findBy(['ue' => $ue]);
-
+    
         // Récupérer les IDs des ECs
         $ecIds = array_map(function ($ec) {
             return $ec->getId();
         }, $ecs);
-
+    
         // Récupérer tous les enseignants associés à ces ECs
-        $teachers = $teacherRepository->createQueryBuilder('t')
+        $teachersWithEcs = $teacherRepository->createQueryBuilder('t')
             ->join('t.ecs', 'ec')
             ->where('ec.id IN (:ecIds)')
             ->setParameter('ecIds', $ecIds)
             ->getQuery()
             ->getResult();
-
+    
+        // Récupérer tous les enseignants créés par ce RespUE
+        $allTeachers = $teacherRepository->findBy(['created_by' => $user]);
+    
+        // Identifier les enseignants sans EC
+        $teachersWithoutEcs = array_filter($allTeachers, function($teacher) use ($teachersWithEcs) {
+            return !in_array($teacher, $teachersWithEcs);
+        });
+    
+        // Fusionner les deux listes d'enseignants
+        $teachers = array_merge($teachersWithEcs, $teachersWithoutEcs);
+    
         // Préparer les données pour la vue
         $ecData = [];
         $teacherData = [];
         $totalEcs = count($ecs);
         $totalTeachers = count($teachers);
-
+    
         foreach ($ecs as $ec) {
             $ecData[] = [
                 'id' => $ec->getId(),
@@ -71,14 +82,14 @@ class TeacherController extends AbstractController
                 'teacher' => $ec->getTeacher() ? $ec->getTeacher()->getName() : 'Non assigné',
             ];
         }
-
+    
         foreach ($teachers as $teacher) {
             $teacherEcs = $teacher->getEcs()->filter(function ($ec) use ($ue) {
                 return $ec->getUe() === $ue;
             });
-
+    
             $ecCount = $teacherEcs->count();
-
+    
             $teacherData[] = [
                 'id' => $teacher->getId(),
                 'name' => $teacher->getName(),
@@ -90,15 +101,15 @@ class TeacherController extends AbstractController
                 })->toArray(),
             ];
         }
-
+    
         // Trier les enseignants par nombre d'ECs (décroissant)
         usort($teacherData, function ($a, $b) {
             return $b['ecCount'] - $a['ecCount'];
         });
-
+    
         // Calculer les statistiques
         $averageEcsPerTeacher = $totalTeachers > 0 ? $totalEcs / $totalTeachers : 0;
-
+    
         return $this->render('admin_dashboard/respue_dashboard.html.twig', [
             'ecData' => $ecData,
             'teacherData' => $teacherData,
@@ -109,7 +120,6 @@ class TeacherController extends AbstractController
             'ue' => $ue
         ]);
     }
-
 
     #[Route('/delete/{id}', name: 'delete_teacher', methods: ['POST'])]
     public function deleteTeacher(EntityManagerInterface $entityManager, int $id): Response
