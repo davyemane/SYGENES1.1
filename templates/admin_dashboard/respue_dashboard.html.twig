@@ -5,151 +5,150 @@
 {% endblock %}
 
 {% block body %}
-    <div class="min-h-screen bg-white p-8 flex flex-col overflow-hidden">
-        <header class="text-gray-900 p-5 rounded-lg mb-6 flex flex-col items-center justify-center container mx-auto text-center border-b-4 border-gray-900">
-            <h1 class="text-3xl font-bold mb-1">Welcome to {{ ue.name }} Dashboard</h1>
-            <p class="text-md opacity-80">Today is {{ "now"|date("l, F j, Y") }}</p>
+    <div class="min-h-screen bg-white p-4 md:p-8 flex flex-col overflow-hidden">
+        <header class="text-gray-900 p-4 md:p-5 rounded-lg mb-4 md:mb-6 flex flex-col items-center justify-center container mx-auto text-center border-b-4 border-gray-900">
+            <h1 class="text-2xl md:text-3xl font-bold mb-1">Welcome to {{ ue.name }} Dashboard</h1>
+            <p class="text-sm md:text-md opacity-80">Today is {{ "now"|date("l, F j, Y") }}</p>
         </header>
 
         <!-- Flash Messages -->
         {% for label, messages in app.flashes %}
             {% for message in messages %}
-                <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 p-4 mb-6 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md" role="alert">
+                <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 p-3 md:p-4 mb-4 md:mb-6 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md" role="alert">
                     <p class="font-bold">{{ label|capitalize }}</p>
                     <p>{{ message }}</p>
                 </div>
             {% endfor %}
         {% endfor %}
 
-        <!-- Statistics Section -->
-    <div class=" flex flex-col  p-4 bg-gray-100 overflow-hidden h-[70vh]">
-    <!-- Dashboard Statistics -->
-    <div class="mb-4">
-        <div class="bg-white rounded-lg shadow-md p-4">
-            <h2 class="text-xl font-semibold text-gray-800 mb-2">Dashboard Statistics</h2>
-            <div class="grid grid-cols-3 gap-4 lg:flex-row">
-                {% set stats = [
-                    {label: 'Teachers', count: teacherCount, color: 'blue', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'},
-                    {label: 'ECs', count: ecCount, color: 'green', icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10'},
-                    {label: 'Avg ECs/Teacher', count: averageEcsPerTeacher, color: 'yellow', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01'}
-                ] %}
-                {% for stat in stats %}
-                    <div class="bg-{{ stat.color }}-100 rounded-lg p-2 flex items-center justify-between">
-                        <div>
-                            <p class="text-{{ stat.color }}-800 text-xs font-medium">{{ stat.label }}</p>
-                            <p class="text-{{ stat.color }}-600 text-lg font-bold">{{ stat.count }}</p>
-                        </div>
-                        <div class="text-{{ stat.color }}-500">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ stat.icon }}"></path>
-                            </svg>
-                        </div>
+        <!-- Main Content -->
+        <div class="flex flex-col bg-gray-100 overflow-hidden h-[70vh]">
+            <!-- Dashboard Statistics -->
+            <div class="mb-4 p-4">
+                <div class="bg-white rounded-lg shadow-md p-4">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-2">Dashboard Statistics</h2>
+                    <div class="flex flex-wrap justify-between gap-4">
+                        {% set stats = [
+                            {label: 'Teachers', count: teacherCount, color: 'blue', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'},
+                            {label: 'ECs', count: ecCount, color: 'green', icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10'},
+                            {label: 'Avg ECs/Teacher', count: averageEcsPerTeacher, color: 'yellow', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01'}
+                        ] %}
+                        {% for stat in stats %}
+                            <div class="bg-{{ stat.color }}-100 rounded-lg p-2 flex items-center justify-between flex-grow basis-[30%]">
+                                <div>
+                                    <p class="text-{{ stat.color }}-800 text-xs font-medium">{{ stat.label }}</p>
+                                    <p class="text-{{ stat.color }}-600 text-lg font-bold">{{ stat.count }}</p>
+                                </div>
+                                <div class="text-{{ stat.color }}-500">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ stat.icon }}"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Main Content Area -->
-    <div class="flex-grow grid grid-cols-12 gap-4 h-3/4">
-        <!-- Quick Actions Section -->
-        <div class="col-span-2 bg-white rounded-lg p-4 shadow-xl flex flex-col">
-            <h2 class="text-lg font-semibold text-gray-800 mb-2">Quick Actions</h2>
-            <p class="text-xs text-gray-800 mb-8 "> Below are the quick actions</p>
-            <div class="space-y-4 ">
-                <a href="{{ path('register_respec') }}" class="block w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-3 rounded-lg transition duration-300 ease-in-out text-center text-sm">
-                    Add New Teacher
-                </a>
-                <a href="{{ path('add_ec') }}" class="block w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-3 rounded-lg transition duration-300 ease-in-out text-center text-sm">
-                    Create New EC
-                </a>
-                <a href="#" class="block w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-3 rounded-lg transition duration-300 ease-in-out text-center text-sm">
-                    Generate Report
-                </a>
-            </div>
-        </div>
+            <!-- Main Content Area -->
+            <div class="flex flex-col md:flex-row gap-4 p-4 flex-grow">
+                <!-- Quick Actions Section -->
+                <div class="bg-white rounded-lg p-4 shadow-xl flex flex-col md:w-1/6">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-2">Quick Actions</h2>
+                    <p class="text-xs text-gray-800 mb-4 md:mb-8">Below are the quick actions</p>
+                    <div class="space-y-4 flex-grow">
+                        <a href="{{ path('register_respec') }}" class="block w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-3 rounded-lg transition duration-300 ease-in-out text-center text-sm">
+                            Add New Teacher
+                        </a>
+                        <a href="{{ path('add_ec') }}" class="block w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-3 rounded-lg transition duration-300 ease-in-out text-center text-sm">
+                            Create New EC
+                        </a>
+                        <a href="#" class="block w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-3 rounded-lg transition duration-300 ease-in-out text-center text-sm">
+                            Generate Report
+                        </a>
+                    </div>
+                </div>
 
-        <!-- EC List Section -->
-       <div class="col-span-7 bg-white rounded-lg p-4 shadow-xl overflow-hidden">
-            <h2 class="text-lg font-semibold text-gray-800 mb-2">EC List</h2>
-            <div class="overflow-auto" style="max-height: calc(100vh - 200px);">
-                <table class="min-w-full bg-white">
-                    <thead class="bg-gray-200 text-gray-600 uppercase text-xs leading-normal sticky top-0">
-                        <tr>
-                            <th class="py-2 px-3 text-left">EC Name</th>
-                            <th class="py-2 px-3 text-left">Teacher</th>
-                            <th class="py-2 px-3 text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-600 text-xs">
-                        {% for ec in ecData %}
-                            <tr class="border-b border-gray-200 hover:bg-gray-100">
-                                <td class="py-2 px-3 text-left whitespace-nowrap">{{ ec.name }}</td>
-                                <td class="py-2 px-3 text-left">{{ ec.teacher }}</td>
-                                <td class="py-2 px-3 text-center">
-                                    <div class="flex justify-center space-x-1">
-                                        <a href="{{ path('attribuer_anonymats', {'ecId': ec.id}) }}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-2 rounded-lg transition duration-300 ease-in-out text-xs">
-                                            Insérer anonymats
-                                        </a>
-                                        <a href="{{ path('voir_anonymats', {'ecId': ec.id}) }}" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-1 px-2 rounded-lg transition duration-300 ease-in-out text-xs">
-                                            Voir anonymats
-                                        </a>
-                                        <form method="post" action="{{ path('delete_ec', {'id': ec.id}) }}" class="inline">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ ec.id) }}">
-                                            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-2 rounded-lg transition duration-300 ease-in-out text-xs">
-                                                Delete EC
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="3" class="py-2 px-3 text-center">No ECs found</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- Teacher List Section -->
-        <div class="col-span-3 bg-white rounded-lg p-4 shadow-xl overflow-hidden">
-            <h2 class="text-lg font-semibold text-gray-800 mb-2">Teacher List</h2>
-            <div class="overflow-auto" style="max-height: calc(100vh - 300px);">
-                <table class="min-w-full bg-white">
-                    <thead class="bg-gray-200 text-gray-600 uppercase text-xs leading-normal sticky top-0">
-                        <tr>
-                            <th class="py-2 px-3 text-left">Name</th>
-                            <th class="py-2 px-3 text-center">EC Count</th>
-                            <th class="py-2 px-3 text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-600 text-xs">
-                        {% for teacher in teacherData %}
-                            <tr class="border-b border-gray-200 hover:bg-gray-100">
-                                <td class="py-2 px-3 text-left whitespace-nowrap">{{ teacher.name }}</td>
-                                <td class="py-2 px-3 text-center">{{ teacher.ecCount }}</td>
-                                <td class="py-2 px-3 text-center">
-                                    <form method="post" action="{{ path('delete_teacher', {'id': teacher.id}) }}">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ teacher.id) }}">
-                                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-2 rounded-lg transition duration-300 ease-in-out text-xs">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="3" class="py-2 px-3 text-center">No teachers found</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <!-- EC List Section -->
+                <div class="bg-white rounded-lg p-4 shadow-xl overflow-hidden md:w-1/2">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-2">EC List</h2>
+                    <div class="overflow-auto" style="max-height: calc(100vh - 300px);">
+                        <table class="min-w-full bg-white">
+                            <thead class="bg-gray-200 text-gray-600 uppercase text-xs leading-normal sticky top-0">
+                                <tr>
+                                    <th class="py-2 px-3 text-left">EC Name</th>
+                                    <th class="py-2 px-3 text-left">Teacher</th>
+                                    <th class="py-2 px-3 text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 text-xs">
+                                {% for ec in ecData %}
+                                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                        <td class="py-2 px-3 text-left whitespace-nowrap">{{ ec.name }}</td>
+                                        <td class="py-2 px-3 text-left">{{ ec.teacher }}</td>
+                                        <td class="py-2 px-3 text-center">
+                                            <div class="flex justify-center space-x-1">
+                                                <a href="{{ path('attribuer_anonymats', {'ecId': ec.id}) }}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-2 rounded-lg transition duration-300 ease-in-out text-xs">
+                                                    Insérer anonymats
+                                                </a>
+                                                <a href="{{ path('voir_anonymats', {'ecId': ec.id}) }}" class="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-1 px-2 rounded-lg transition duration-300 ease-in-out text-xs">
+                                                    Voir anonymats
+                                                </a>
+                                                <form method="post" action="{{ path('delete_ec', {'id': ec.id}) }}" class="inline">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ ec.id) }}">
+                                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-2 rounded-lg transition duration-300 ease-in-out text-xs">
+                                                        Delete EC
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="3" class="py-2 px-3 text-center">No ECs found</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Teacher List Section -->
+                <div class="bg-white rounded-lg p-4 shadow-xl overflow-hidden md:w-1/3">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-2">Teacher List</h2>
+                    <div class="overflow-auto" style="max-height: calc(100vh - 300px);">
+                        <table class="min-w-full bg-white">
+                            <thead class="bg-gray-200 text-gray-600 uppercase text-xs leading-normal sticky top-0">
+                                <tr>
+                                    <th class="py-2 px-3 text-left">Name</th>
+                                    <th class="py-2 px-3 text-center">EC Count</th>
+                                    <th class="py-2 px-3 text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 text-xs">
+                                {% for teacher in teacherData %}
+                                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                        <td class="py-2 px-3 text-left whitespace-nowrap">{{ teacher.name }}</td>
+                                        <td class="py-2 px-3 text-center">{{ teacher.ecCount }}</td>
+                                        <td class="py-2 px-3 text-center">
+                                            <form method="post" action="{{ path('delete_teacher', {'id': teacher.id}) }}">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ teacher.id) }}">
+                                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-2 rounded-lg transition duration-300 ease-in-out text-xs">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="3" class="py-2 px-3 text-center">No teachers found</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    </div>
-</div>
-</div>
 {% endblock %}
