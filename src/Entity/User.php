@@ -102,6 +102,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Teacher::class, mappedBy: 'created_by')]
     private Collection $teachers;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?AssistantTeacher $assistantTeacher = null;
+
     public function __construct()
     {
         $this->noteCcTps = new ArrayCollection();
@@ -497,6 +500,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $teacher->setCreatedBy(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAssistantTeacher(): ?AssistantTeacher
+    {
+        return $this->assistantTeacher;
+    }
+
+    public function setAssistantTeacher(?AssistantTeacher $assistantTeacher): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($assistantTeacher === null && $this->assistantTeacher !== null) {
+            $this->assistantTeacher->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($assistantTeacher !== null && $assistantTeacher->getUser() !== $this) {
+            $assistantTeacher->setUser($this);
+        }
+
+        $this->assistantTeacher = $assistantTeacher;
 
         return $this;
     }

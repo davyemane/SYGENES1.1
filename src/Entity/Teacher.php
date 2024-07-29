@@ -44,9 +44,16 @@ class Teacher
     #[ORM\ManyToOne(inversedBy: 'teachers')]
     private ?User $created_by = null;
 
+    /**
+     * @var Collection<int, AssistantTeacher>
+     */
+    #[ORM\OneToMany(targetEntity: AssistantTeacher::class, mappedBy: 'teacher')]
+    private Collection $assistantTeachers;
+
     public function __construct()
     {
         $this->ecs = new ArrayCollection();
+        $this->assistantTeachers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -174,6 +181,36 @@ class Teacher
     public function setCreatedBy(?User $created_by): static
     {
         $this->created_by = $created_by;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AssistantTeacher>
+     */
+    public function getAssistantTeachers(): Collection
+    {
+        return $this->assistantTeachers;
+    }
+
+    public function addAssistantTeacher(AssistantTeacher $assistantTeacher): static
+    {
+        if (!$this->assistantTeachers->contains($assistantTeacher)) {
+            $this->assistantTeachers->add($assistantTeacher);
+            $assistantTeacher->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssistantTeacher(AssistantTeacher $assistantTeacher): static
+    {
+        if ($this->assistantTeachers->removeElement($assistantTeacher)) {
+            // set the owning side to null (unless already changed)
+            if ($assistantTeacher->getTeacher() === $this) {
+                $assistantTeacher->setTeacher(null);
+            }
+        }
 
         return $this;
     }

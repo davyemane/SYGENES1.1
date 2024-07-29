@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\AssistantTeacher;
 use App\Entity\Field;
 use App\Entity\RespField;
 use App\Entity\RespLevel;
@@ -11,6 +12,7 @@ use App\Entity\RespUe;
 use App\Entity\School;
 use App\Entity\Teacher;
 use App\Entity\User;
+use App\Form\AssistantTeacherType;
 use App\Form\RegistrationFormType;
 use App\Form\RespFieldType;
 use App\Form\RespLevelType;
@@ -34,6 +36,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Repository\SchoolRepository;
+use App\Repository\TeacherRepository;
 use App\Repository\UERepository;
 use Psr\Log\LoggerInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
@@ -661,6 +664,99 @@ class RegistrationController extends AbstractController
     }
 
 
+    #[Route('/register/assistant-teacher', name: 'register_assistant_teacher')]
+    #[Route('/register/assistant-update/{id}', name: 'update_assistant_teacher', requirements: ['id' => '\d+'])]
+    
+    public function manageAssistantTeacher(
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface $entityManager,
+        SluggerInterface $slugger,
+        ?int $id = null
+    ): Response {
+        $currentUser = $this->getUser();
+        if (!$currentUser instanceof User) {
+            return $this->redirectToRoute('app_login');
+        }
+    
+        if (!$this->isGranted('ROLE_TEACHER')) {
+            throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour créer un assistant enseignant.');
+        }
+    
+        $isEdit = $id !== null;
+    
+        if ($isEdit) {
+            $user = $entityManager->getRepository(User::class)->find($id);
+            if (!$user) {
+                throw $this->createNotFoundException('Utilisateur non trouvé');
+            }
+            $assistantTeacher = $user->getAssistantTeacher();
+            if (!$assistantTeacher) {
+                $assistantTeacher = new AssistantTeacher();
+                $user->setAssistantTeacher($assistantTeacher);
+            }
+        } else {
+            $user = new User();
+            $assistantTeacher = new AssistantTeacher();
+        }
+    
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->add('assistantTeacher', AssistantTeacherType::class);
+    
+        if ($isEdit) {
+            $form->remove('plainPassword');
+        }
+    
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!$isEdit) {
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+                $user->setRoles(['ROLE_ASSISTANT_TEACHER']);
+                $assistantTeacher->setCreatedAt(new \DateTime());
+                $assistantTeacher->addCreatedBy($currentUser);
+            }
+            $this->handleProfilePictureUpload($form, $user, $slugger);
+    
+            $email = $form->get('email')->getData();
+            $user->setEmail($email);
+    
+            $assistantTeacher->setName($form->get('assistantTeacher')->get('name')->getData());
+            $assistantTeacher->setCni($form->get('assistantTeacher')->get('cni')->getData());
+            $assistantTeacher->setPhoneNumber($form->get('assistantTeacher')->get('phoneNumber')->getData());
+    
+            // Définir le Teacher comme étant l'utilisateur actuel
+            $teacher = $currentUser->getTeacher();
+            if (!$teacher) {
+                throw new \LogicException('L\'utilisateur actuel n\'est pas un enseignant.');
+            }
+            $assistantTeacher->setTeacher($teacher);
+    
+            $user->setAssistantTeacher($assistantTeacher);
+    
+            $entityManager->persist($user);
+            $entityManager->persist($assistantTeacher);
+            $entityManager->flush();
+    
+            $this->addFlash('success', $isEdit
+                ? 'Les informations de l\'assistant enseignant ont été mises à jour avec succès.'
+                : 'L\'assistant enseignant a été enregistré avec succès.');
+    
+            return $this->redirectToRoute('register_assistant_teacher');
+        }
+    
+        return $this->render('assistant_teacher/manage.html.twig', [
+            'registrationForm' => $form->createView(),
+            'isEdit' => $isEdit,
+        ]);
+    }
+        
+    
     private function handleProfilePictureUpload($form, $user, $slugger): void
     {
         /** @var UploadedFile $profilePictureFile */

@@ -83,7 +83,7 @@ class SecurityController extends AbstractController
         } elseif ($this->security->isGranted('ROLE_RESPUE')) {
             return $this->redirectToRoute('respue_dashboard');
         } elseif ($this->security->isGranted('ROLE_TEACHER')) {
-            return $this->redirectToRoute('app_dashTeacher');
+            return $this->redirectToRoute('teacher_ec_dashboard');
         } elseif ($this->security->isGranted('ROLE_STUDENT')) {
             return $this->redirectToRoute('app_dashStudent');
         } else {
