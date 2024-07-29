@@ -20,7 +20,7 @@ class HomePageController extends AbstractController
     {
         $user = $this->getUser();
         return $this->render('super_admin_dashboard/index.html.twig', [
-            'controller_name' => 'HomePageController', 'user'=>$user
+            'controller_name' => 'HomePageController', 'user' => $user
         ]);
     }
 
@@ -29,34 +29,38 @@ class HomePageController extends AbstractController
     {
         $user = $this->getUser();
         return $this->render('home_page/index.html.twig', [
-            'controller_name' => 'HomePageController', 'user'=>$user
+            'controller_name' => 'HomePageController', 'user' => $user
         ]);
     }
 
 
     #[Route('/about', name: 'app_about_page')]
-    public function about(){
+    public function about()
+    {
         return $this->render('home_page/about.html.twig', [
             'controller_name' => 'HomePageController',
         ]);
     }
 
     #[Route('/contact_us', name: 'app_contact_us_page')]
-    public function contactUs(){
+    public function contactUs()
+    {
         return $this->render('home_page/contact_us.html.twig', [
             'controller_name' => 'HomePageController',
         ]);
     }
 
     #[Route('/documentation', name: 'app_documentation_page')]
-    public function documentation(){
+    public function documentation()
+    {
         return $this->render('home_page/documentation.html.twig', [
             'controller_name' => 'HomePageController',
         ]);
     }
 
     #[Route('/test', name: 'app_login_page')]
-    public function login(){
+    public function login()
+    {
         return $this->render('home_page/index.html.twig', [
             'controller_name' => 'HomePageController',
         ]);
@@ -70,7 +74,7 @@ class HomePageController extends AbstractController
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
-    
+
         // Collecter tous les privilèges uniques de l'utilisateur
         $privileges = [];
         foreach ($user->getRole() as $role) {
@@ -78,85 +82,82 @@ class HomePageController extends AbstractController
                 $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
             }
         }
-    
+
         $schoolName = $session->get('school_name');
         $school = null;
-    
+
         if ($schoolName) {
             // Trouver l'entité School correspondante
             $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
         }
-    
+
         return $this->render('responsable_dashboard/dashboardAdmin.html.twig', [
             "user" => $user,
             'school' => $school,
             'privileges' => array_values($privileges), // Convertir en tableau indexé
         ]);
-    }    
-    
-#[Route('/student/dashboard', name: 'app_dashStudent')]
-public function StudentDashboard(SessionInterface $session, EntityManagerInterface $entityManager): Response
-{
-    try {
+    }
+
+    #[Route('/student/dashboard', name: 'app_dashStudent')]
+    public function StudentDashboard(SessionInterface $session, EntityManagerInterface $entityManager): Response
+    {
+        try {
+            $user = $this->getUser();
+            if (!$user) {
+                throw new \Exception('Vous devez être connecté pour accéder à cette page.');
+            }
+
+            $student = $user->getStudent();
+            if (!$student) {
+                throw new \Exception('Aucun étudiant associé à cet utilisateur.');
+            }
+
+            // Collecter tous les privilèges uniques de l'utilisateur
+            $privileges = [];
+            foreach ($user->getRole() as $role) {
+                foreach ($role->getPrivileges() as $privilege) {
+                    $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
+                }
+            }
+
+            $schoolName = $session->get('school_name');
+            $school = null;
+
+            if ($schoolName) {
+                // Trouver l'entité School correspondante
+                $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
+            }
+
+            return $this->render('student_dashboard/index.html.twig', [
+                'user' => $user,
+                'student' => $student,
+                'school' => $school,
+                'privileges' => array_values($privileges), // Convertir en tableau indexé
+            ]);
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+            return $this->redirectToRoute('app_login');
+        }
+    }
+
+    public function someAction(): Response
+    {
         $user = $this->getUser();
         if (!$user) {
-            throw new \Exception('Vous devez être connecté pour accéder à cette page.');
+            return $this->redirectToRoute('app_login');
         }
 
-        $student = $user->getStudent();
-        if (!$student) {
-            throw new \Exception('Aucun étudiant associé à cet utilisateur.');
-        }
-
-        // Collecter tous les privilèges uniques de l'utilisateur
+        // Collect all unique privileges of the user
         $privileges = [];
         foreach ($user->getRole() as $role) {
             foreach ($role->getPrivileges() as $privilege) {
-                $privileges[$privilege->getId()] = $privilege; // Utiliser l'ID comme clé pour éviter les doublons
+                $privileges[$privilege->getId()] = $privilege; // Use ID as key to avoid duplicates
             }
         }
 
-        $schoolName = $session->get('school_name');
-        $school = null;
-    
-        if ($schoolName) {
-            // Trouver l'entité School correspondante
-            $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
-        }
-
-        return $this->render('student_dashboard/index.html.twig', [
-            'user' => $user,
-            'student' => $student,
-            'school' => $school,
-            'privileges' => array_values($privileges), // Convertir en tableau indexé
+        return $this->render('base_new.html.twig', [
+            "user" => $user,
+            'privileges' => array_values($privileges), // This line is important
         ]);
-
-    } catch (\Exception $e) {
-        $this->addFlash('error', $e->getMessage());
-        return $this->redirectToRoute('app_login');
     }
 }
-
-public function someAction(): Response
-{
-    $user = $this->getUser();
-    if (!$user) {
-        return $this->redirectToRoute('app_login');
-    }
-    
-    // Collect all unique privileges of the user
-    $privileges = [];
-    foreach ($user->getRole() as $role) {
-        foreach ($role->getPrivileges() as $privilege) {
-            $privileges[$privilege->getId()] = $privilege; // Use ID as key to avoid duplicates
-        }
-    }
-    
-    return $this->render('base_new.html.twig', [
-        "user" => $user,
-        'privileges' => array_values($privileges), // This line is important
-    ]);
-}
-
-}
-

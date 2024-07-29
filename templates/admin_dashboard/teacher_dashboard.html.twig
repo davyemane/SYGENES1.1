@@ -7,7 +7,7 @@
 {% block body %}
     <div class="min-h-screen bg-white p-4 lg:p-8 flex flex-col">
         <header class="text-gray-900 p-4 lg:p-6 rounded-lg mb-4 lg:mb-8 flex flex-col items-center justify-center container mx-auto text-center border-b-4 border-gray-900">
-            <h1 class="text-2xl lg:text-4xl font-bold mb-2">Welcome to {{ ue.name }} Dashboard</h1>
+            {# <h1 class="text-2xl lg:text-4xl font-bold mb-2">Welcome to {{ ue.name }} Dashboard</h1> #}
             <p class="text-sm lg:text-lg opacity-80">Today is {{ "now"|date("l, F j, Y") }}</p>
         </header>
 
@@ -28,12 +28,12 @@
                 <div class="bg-white rounded-lg shadow-md p-4 lg:p-6">
                     <h2 class="text-xl lg:text-2xl font-semibold text-gray-800 mb-4">Dashboard Statistics</h2>
                     <div class="flex flex-wrap justify-between gap-4 lg:gap-6">
-                        {% set stats = [
+                        {# {% set stats = [
                             {label: 'Passed Students', count: passedStudents, color: 'green', icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'},
                             {label: 'Failed Students', count: failedStudents, color: 'red', icon: 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'},
                             {label: 'Registered Students', count: registeredStudents, color: 'blue', icon: 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z'}
-                        ] %}
-                        {% for stat in stats %}
+                        ] %} #}
+                        {# {% for stat in stats %}
                             <div class="bg-{{ stat.color }}-100 rounded-lg p-4 lg:p-6 flex items-center justify-between flex-grow basis-[30%]">
                                 <div>
                                     <p class="text-{{ stat.color }}-800 text-sm lg:text-base font-medium">{{ stat.label }}</p>
@@ -45,7 +45,7 @@
                                     </svg>
                                 </div>
                             </div>
-                        {% endfor %}
+                        {% endfor %} #}
                     </div>
                 </div>
             </div>
@@ -120,7 +120,7 @@
                                 </tr>
                             </thead>
                             <tbody class="text-gray-600 text-sm">
-                                {% for assistant in assistants %}
+                                {# {% for assistant in assistants %}
                                     <tr class="border-b border-gray-200 hover:bg-gray-100">
                                         <td class="py-3 px-4 text-left whitespace-nowrap">{{ assistant.name }}</td>
                                         <td class="py-3 px-4 text-center">{{ assistant.subject }}</td>
@@ -137,7 +137,7 @@
                                     <tr>
                                         <td colspan="3" class="py-3 px-4 text-center">No assistants found</td>
                                     </tr>
-                                {% endfor %}
+                                {% endfor %} #}
                             </tbody>
                         </table>
                     </div>

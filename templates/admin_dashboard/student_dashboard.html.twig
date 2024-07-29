@@ -1,105 +1,107 @@
 {% extends "base_super_admin.html.twig" %}
 
 {% block title %}
-    <title>Student Dashboard</title>
+	<title>Student Dashboard</title>
 {% endblock %}
 
 {% block body %}
-    <div class="min-h-screen bg-white p-4 lg:p-8 flex flex-col overflow-hidden">
-        <header class="text-gray-900 p-4 lg:p-6 rounded-lg mb-4 lg:mb-8 flex flex-col items-center justify-center container mx-auto text-center border-b-4 border-gray-900">
-            {# <h1 class="text-2xl lg:text-4xl font-bold mb-2">Welcome, {{ student.name }}</h1> #}
-            <p class="text-sm lg:text-lg opacity-80">Today is {{ "now"|date("l, F j, Y") }}</p>
-        </header>
+	<div class="min-h-screen bg-white p-4 lg:p-8 flex flex-col overflow-hidden">
+		<header
+			class="text-gray-900 p-4 lg:p-6 rounded-lg mb-4 lg:mb-8 flex flex-col items-center justify-center container mx-auto text-center border-b-4 border-gray-900">
+			{# <h1 class="text-2xl lg:text-4xl font-bold mb-2">Welcome, {{ student.name }}</h1> #}
+			<p class="text-sm lg:text-lg opacity-80">Today is
+				{{ "now"|date("l, F j, Y") }}</p>
+		</header>
 
-        <!-- Flash Messages -->
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 p-4 lg:p-6 mb-4 lg:mb-8 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md" role="alert">
-                    <p class="font-bold text-lg">{{ label|capitalize }}</p>
-                    <p class="text-base">{{ message }}</p>
-                </div>
-            {% endfor %}
-        {% endfor %}
+		<!-- Flash Messages -->
+		{% for label, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="bg-{{ label == 'success' ? 'green' : 'red' }}-100 border-l-4 border-{{ label == 'success' ? 'green' : 'red' }}-500 text-{{ label == 'success' ? 'green' : 'red' }}-700 p-4 lg:p-6 mb-4 lg:mb-8 rounded-md shadow-sm transition-all duration-300 ease-in-out hover:shadow-md" role="alert">
+					<p class="font-bold text-lg">{{ label|capitalize }}</p>
+					<p class="text-base">{{ message }}</p>
+				</div>
+			{% endfor %}
+		{% endfor %}
 
-        <!-- Main Content -->
-        <div class="flex flex-col bg-gray-100 overflow-hidden h-[calc(100vh-200px)] lg:h-[calc(100vh-250px)]">
-            <!-- Dashboard Statistics -->
-            <!-- Dashboard Statistics -->
-<div class="mb-6 p-4 lg:p-6">
-    <div class="bg-white rounded-lg shadow-md p-4 lg:p-6">
-        <h2 class="text-xl lg:text-2xl font-semibold text-gray-800 mb-4">Academic Overview</h2>
-        {% for level, stats in student.academicStats %}
-            <h3 class="text-lg font-semibold text-gray-700 mt-4 mb-3">Year {{ level }}</h3>
-            <div class="flex flex-wrap justify-between gap-4 lg:gap-6 mb-6">
-                {% set statColors = ['blue', 'green', 'yellow'] %}
-                {% set statIcons = [
+		<!-- Main Content -->
+		<div class="flex flex-col bg-gray-100 overflow-hidden h-[calc(100vh-200px)] lg:h-[calc(100vh-250px)]">
+			<!-- Dashboard Statistics -->
+				<div class="mb-6 p-4 lg:p-6"> <div class="bg-white rounded-lg shadow-md p-4 lg:p-6">
+					<h2 class="text-xl lg:text-2xl font-semibold text-gray-800 mb-4">Academic Overview</h2>
+					{% for level, stats in student.academicStats %}
+						<h3 class="text-lg font-semibold text-gray-700 mt-4 mb-3">Year
+							{{ level }}</h3>
+						<div class="flex flex-wrap justify-between gap-4 lg:gap-6 mb-6">
+							{% set statColors = ['blue', 'green', 'yellow'] %}
+							{% set statIcons = [
                     'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
                     'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z',
                     'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'
                 ] %}
-                {% for label, value in stats %}
-                    <div class="bg-{{ statColors[loop.index0] }}-100 rounded-lg p-4 lg:p-6 flex items-center justify-between flex-grow basis-[30%]">
-                        <div>
-                            <p class="text-{{ statColors[loop.index0] }}-800 text-sm lg:text-base font-medium">{{ label }}</p>
-                            <p class="text-{{ statColors[loop.index0] }}-600 text-xl lg:text-2xl font-bold">{{ value }}</p>
-                        </div>
-                        <div class="text-{{ statColors[loop.index0] }}-500">
-                            <svg class="w-8 h-8 lg:w-10 lg:h-10" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ statIcons[loop.index0] }}"></path>
-                            </svg>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p class="text-center text-gray-500">No academic statistics available</p>
-        {% endfor %}
-    </div>
-</div>
+							{% for label, value in stats %}
+								<div class="bg-{{ statColors[loop.index0] }}-100 rounded-lg p-4 lg:p-6 flex items-center justify-between flex-grow basis-[30%]">
+									<div>
+										<p class="text-{{ statColors[loop.index0] }}-800 text-sm lg:text-base font-medium">{{ label }}</p>
+										<p class="text-{{ statColors[loop.index0] }}-600 text-xl lg:text-2xl font-bold">{{ value }}</p>
+									</div>
+									<div class="text-{{ statColors[loop.index0] }}-500">
+										<svg class="w-8 h-8 lg:w-10 lg:h-10" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ statIcons[loop.index0] }}"></path>
+										</svg>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					{% else %}
+						<p class="text-center text-gray-500">No academic statistics available</p>
+					{% endfor %}
+				</div>
+			</div>
 
-            <!-- Main Content Area -->
-            <div class="flex flex-col lg:flex-row gap-6 p-4 lg:p-6 flex-grow">
-                <!-- Student Information Section -->
-                <div class="bg-white rounded-lg p-4 lg:p-6 shadow-xl flex flex-col lg:w-1/3">
-                    <h2 class="text-lg lg:text-xl font-semibold text-gray-800 mb-4">Student Information</h2>
-                    <div class="space-y-4 flex-grow">
-                        {# <p><strong>Name:</strong> {{ student.name }}</p>
-                        <p><strong>Student ID:</strong> {{ student.id }}</p>
-                        <p><strong>Department:</strong> {{ student.department }}</p>
-                        <p><strong>Year of Study:</strong> {{ student.yearOfStudy }}</p>
-                        <p><strong>Advisor:</strong> {{ student.advisor }}</p> #}
-                    </div>
-                </div>
+			<!-- Main Content Area -->
+			<div
+				class="flex flex-col lg:flex-row gap-6 p-4 lg:p-6 flex-grow">
+				<!-- Student Information Section -->
+				<div class="bg-white rounded-lg p-4 lg:p-6 shadow-xl flex flex-col lg:w-1/3">
+					<h2 class="text-lg lg:text-xl font-semibold text-gray-800 mb-4">Student Information</h2>
+					<div
+						class="space-y-4 flex-grow">{# <p><strong>Name:</strong> {{ student.name }}</p>
+							                        <p><strong>Student ID:</strong> {{ student.id }}</p>
+							                        <p><strong>Department:</strong> {{ student.department }}</p>
+							                        <p><strong>Year of Study:</strong> {{ student.yearOfStudy }}</p>
+							                        <p><strong>Advisor:</strong> {{ student.advisor }}</p> #}
+					</div>
+				</div>
 
-                <!-- Grades and Marks Section -->
-                <div class="bg-white rounded-lg p-4 lg:p-6 shadow-xl overflow-hidden lg:w-2/3">
-                    <h2 class="text-lg lg:text-xl font-semibold text-gray-800 mb-4">Grades and Marks</h2>
-                    <div class="overflow-auto" style="max-height: calc(100vh - 400px);">
-                        <table class="min-w-full bg-white">
-                            <thead class="bg-gray-200 text-gray-600 uppercase text-xs lg:text-sm leading-normal sticky top-0">
-                                <tr>
-                                    <th class="py-3 px-4 text-left">Subject</th>
-                                    <th class="py-3 px-4 text-center">Grade</th>
-                                    <th class="py-3 px-4 text-center">Credits</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-gray-600 text-sm">
-                                {# {% for subject in student.subjects %}
-                                    <tr class="border-b border-gray-200 hover:bg-gray-100">
-                                        <td class="py-3 px-4 text-left whitespace-nowrap">{{ subject.name }}</td>
-                                        <td class="py-3 px-4 text-center">{{ subject.grade }}</td>
-                                        <td class="py-3 px-4 text-center">{{ subject.credits }}</td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="3" class="py-3 px-4 text-center">No grades available</td>
-                                    </tr>
-                                {% endfor %} #}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+				<!-- Grades and Marks Section -->
+				<div class="bg-white rounded-lg p-4 lg:p-6 shadow-xl overflow-hidden lg:w-2/3">
+					<h2 class="text-lg lg:text-xl font-semibold text-gray-800 mb-4">Grades and Marks</h2>
+					<div class="overflow-auto" style="max-height: calc(100vh - 400px);">
+						<table class="min-w-full bg-white">
+							<thead class="bg-gray-200 text-gray-600 uppercase text-xs lg:text-sm leading-normal sticky top-0">
+								<tr>
+									<th class="py-3 px-4 text-left">Subject</th>
+									<th class="py-3 px-4 text-center">Grade</th>
+									<th class="py-3 px-4 text-center">Credits</th>
+								</tr>
+							</thead>
+							<tbody
+								class="text-gray-600 text-sm">{# {% for subject in student.subjects %}
+									                                    <tr class="border-b border-gray-200 hover:bg-gray-100">
+									                                        <td class="py-3 px-4 text-left whitespace-nowrap">{{ subject.name }}</td>
+									                                        <td class="py-3 px-4 text-center">{{ subject.grade }}</td>
+									                                        <td class="py-3 px-4 text-center">{{ subject.credits }}</td>
+									                                    </tr>
+									                                {% else %}
+									                                    <tr>
+									                                        <td colspan="3" class="py-3 px-4 text-center">No grades available</td>
+									                                    </tr>
+									                                {% endfor %} #}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
