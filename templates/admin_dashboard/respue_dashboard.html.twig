@@ -1,4 +1,4 @@
-{% extends "base_super_admin.html.twig" %}
+{% extends "base_new.html.twig" %}
 
 {% block title %}
     <title>Teacher EC Dashboard</title>
@@ -6,10 +6,10 @@
 
 {% block body %}
     <div class="min-h-screen bg-white p-4 lg:p-8 flex flex-col overflow-hidden">
-        <header class="text-gray-900 p-4 lg:p-6 rounded-lg mb-4 lg:mb-8 flex flex-col items-center justify-center container mx-auto text-center border-b-4 border-gray-900">
+        {# <header class="text-gray-900 p-4 lg:p-6 rounded-lg mb-4 lg:mb-8 flex flex-col items-center justify-center container mx-auto text-center border-b-4 border-gray-900">
             <h1 class="text-2xl lg:text-4xl font-bold mb-2">Welcome to {{ ue.name }} Dashboard</h1>
             <p class="text-sm lg:text-lg opacity-80">Today is {{ "now"|date("l, F j, Y") }}</p>
-        </header>
+        </header> #}
 
         <!-- Flash Messages -->
         {% for label, messages in app.flashes %}
