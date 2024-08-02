@@ -1,137 +1,142 @@
 {% extends 'base.html.twig' %}
 
 {% block head %}
-  {% block title %}<title>{{ 'login_page.title'|trans }}</title>{% endblock %}
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% block title %}
+		<title>{{ 'login_page.title'|trans }}</title>
+	{% endblock %}
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% endblock %}
 
 {% block body %}
-  <div class="flex min-h-screen flex-col justify-center px-4 py-12 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-100 to-orange-100 dark:from-gray-800 dark:to-gray-900">
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-      <img class="mx-auto h-24 w-auto sm:h-32 light-mode-logo" src="{{ asset('/images/uiecc_logo.png') }}" alt="{{ 'login_page.logo_alt'|trans }}">
-      <img class="mx-auto h-24 w-auto sm:h-32 dark-mode-logo hidden" src="{{ asset('/images/uiecc_logo_dark.svg') }}" alt="{{ 'login_page.logo_alt'|trans }}">   
-      <h2 class="mt-6 text-center text-2xl font-extrabold text-text dark:text-text-light sm:text-3xl">{{ 'login_page.heading'|trans }}</h2>
-    </div>
+	<div class="min-h-screen flex items-center justify-center bg-background dark:bg-background text-text dark:text-text p-4">
+		<div class="container max-w-7xl  bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden">
+			<div
+				class="flex flex-col md:flex-row">
+				<!-- Left section with logo and text -->
+				<div class="w-full md:w-1/2 p-8 flex flex-col justify-center items-center bg-gradient-to-br from-blue-100 to-orange-100 dark:from-gray-700 dark:to-gray-900">
+					<img class="h-64 w-auto light-mode-logo" src="{{ asset('/images/uiecc_logo.png') }}" alt="{{ 'login_page.logo_alt'|trans }}">
+					<img class="h-64 w-auto dark-mode-logo hidden" src="{{ asset('/images/uiecc_logo_dark.svg') }}" alt="{{ 'login_page.logo_alt'|trans }}">
+					<h1 class="mt-8 text-3xl font-bold text-center ">{{ 'login_page.welcome_message'|trans }}</h1>
+					<p class="mt-4 text-center text-lg">{{ 'login_page.slogan'|trans }}</p>
+				</div>
 
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-      <div class="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <form class="space-y-6" method="post" action="{{ path('app_login') }}">
-          <div>
-            <label for="inputUsername" class="block text-sm font-medium text-text dark:text-text-light">{{ 'login_page.username_label'|trans }}</label>
-            <div class="mt-1">
-              <input id="inputUsername" name="username" value="{{ last_username }}" type="text" autocomplete="username" required autofocus class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-            </div>
-          </div>
+				<!-- Right section with login form -->
+				<div class="w-full md:w-1/2 p-32">
+					<h2 class="text-4xl font-bold mb-10 text-center">{{ 'login_page.heading'|trans }}</h2>
+					<form class="space-y-6" method="post" action="{{ path('app_login') }}">
+						<div>
+							<label for="inputUsername" class="block text-sm font-medium">{{ 'login_page.username_label'|trans }}</label>
+							<input id="inputUsername" name="username" value="{{ last_username }}" type="text" autocomplete="username" required autofocus class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+						</div>
 
-          <div>
-            <label for="inputPassword" class="block text-sm font-medium text-text dark:text-text-light">{{ 'login_page.password_label'|trans }}</label>
-            <div class="mt-1 relative">
-              <input id="inputPassword" name="password" type="password" autocomplete="current-password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-              <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                <svg class="h-5 w-5 text-gray-500" fill="none" id="eye-icon" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-                <svg class="h-5 w-5 text-gray-500 hidden" fill="none" id="eye-off-icon" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                </svg>
-              </button>
-            </div>
-          </div>
+						<div>
+							<label for="inputPassword" class="block text-sm font-medium">{{ 'login_page.password_label'|trans }}</label>
+							<div class="mt-1 relative">
+								<input id="inputPassword" name="password" type="password" autocomplete="current-password" required class="block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary">
+								<button type="button" id="toggle-password" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+									<svg class="h-5 w-5 text-gray-500" fill="none" id="eye-icon" viewbox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+									</svg>
+									<svg class="h-5 w-5 text-gray-500 hidden" fill="none" id="eye-off-icon" viewbox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+									</svg>
+								</button>
+							</div>
+						</div>
 
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <input id="remember_me" name="_remember_me" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
-              <label for="remember_me" class="ml-2 block text-sm text-text dark:text-text-light">
-                {{ 'login_page.remember_me'|trans }}
-              </label>
-            </div>
+						<div class="flex items-center justify-between">
+							<div class="flex items-center">
+								<input id="remember_me" name="_remember_me" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+								<label for="remember_me" class="ml-2 block text-sm">
+									{{ 'login_page.remember_me'|trans }}
+								</label>
+							</div>
+							<a href="#" class="text-sm font-medium text-primary hover:text-primary-light">
+								{{ 'login_page.forgot_password'|trans }}
+							</a>
+						</div>
 
-            <div class="text-sm">
-              <a href="#" class="font-medium text-primary hover:text-primary-light">
-                {{ 'login_page.forgot_password'|trans }}
-              </a>
-            </div>
-          </div>
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-          <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+						<div class="relative inline-block transition-transform duration-300 hover:scale-105 group w-full">
+							<button type="submit" class="relative z-10 w-full flex justify-center py-3 px-5 rounded-md text-md font-semibold text-white bg-primary transition-transform duration-300">
+								{{ 'login_page.sign_in_button'|trans }}
+							</button>
+							<div class="absolute top-0 left-0 w-full h-full bg-black rounded-md transition-all duration-300 transform translate-x-[5px] translate-y-[5px] group-hover:translate-x-[7px] group-hover:translate-y-[7px]"></div>
+						</div>
+					</form>
 
-          <div>
-            <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-              {{ 'login_page.sign_in_button'|trans }}
-            </button>
-          </div>
-        </form>
+					{% if error %}
+						<div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+							<span class="block sm:inline">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+						</div>
+					{% endif %}
 
-        {% if error %}
-          <div class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <span class="block sm:inline">{{ error.messageKey|trans(error.messageData, 'security') }}</span>
-          </div>
-        {% endif %}
+					{% if app.user %}
+						<div class="mt-4 text-sm">
+							{{ 'login_page.logged_in_as'|trans({'%username%': app.user.userIdentifier}) }}
+							<a href="{{ path('app_logout') }}" class="font-medium text-primary hover:text-primary-light">{{ 'login_page.logout'|trans }}</a>
+						</div>
+					{% endif %}
 
-        {% if app.user %}
-          <div class="mt-4 text-sm text-text dark:text-text-light">
-            {{ 'login_page.logged_in_as'|trans({'%username%': app.user.userIdentifier}) }} 
-            <a href="{{ path('app_logout') }}" class="font-medium text-primary hover:text-primary-light">{{ 'login_page.logout'|trans }}</a>
-          </div>
-        {% endif %}
+					{# <p class="mt-6 text-center text-sm">
+					          {{ 'login_page.no_account'|trans }}
+					          <a href="#" class="font-medium text-primary hover:text-primary-light">
+					            {{ 'login_page.sign_up'|trans }}
+					          </a>
+					        </p> #}
+				</div>
+			</div>
+		</div>
+	</div>
 
-        <p class="mt-6 text-center text-sm text-text dark:text-text-light">
-          {{ 'login_page.no_account'|trans }}
-          <a href="#" class="font-medium text-primary hover:text-primary-light">
-            {{ 'login_page.sign_up'|trans }}
-          </a>
-        </p>
-      </div>
-    </div>
-  </div>
+	<script>
+		// Password toggle functionality
+document.getElementById('toggle-password').addEventListener('click', function () {
+var passwordInput = document.getElementById('inputPassword');
+var eyeIcon = document.getElementById('eye-icon');
+var eyeOffIcon = document.getElementById('eye-off-icon');
+if (passwordInput.type === 'password') {
+passwordInput.type = 'text';
+eyeIcon.classList.add('hidden');
+eyeOffIcon.classList.remove('hidden');
+} else {
+passwordInput.type = 'password';
+eyeIcon.classList.remove('hidden');
+eyeOffIcon.classList.add('hidden');
+}
+});
 
-  <script>
-    // Password toggle functionality
-    document.getElementById('toggle-password').addEventListener('click', function() {
-      var passwordInput = document.getElementById('inputPassword');
-      var eyeIcon = document.getElementById('eye-icon');
-      var eyeOffIcon = document.getElementById('eye-off-icon');
-      if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        eyeIcon.classList.add('hidden');
-        eyeOffIcon.classList.remove('hidden');
-      } else {
-        passwordInput.type = 'password';
-        eyeIcon.classList.remove('hidden');
-        eyeOffIcon.classList.add('hidden');
-      }
-    });
+// Logo switching functionality
+function updateLogo() {
+const lightLogo = document.querySelector('.light-mode-logo');
+const darkLogo = document.querySelector('.dark-mode-logo');
 
-    // Logo switching functionality
-    function updateLogo() {
-      const lightLogo = document.querySelector('.light-mode-logo');
-      const darkLogo = document.querySelector('.dark-mode-logo');
-      
-      if (document.documentElement.classList.contains('dark')) {
-        lightLogo.classList.add('hidden');
-        darkLogo.classList.remove('hidden');
-      } else {
-        lightLogo.classList.remove('hidden');
-        darkLogo.classList.add('hidden');
-      }
-    }
+if (document.documentElement.classList.contains('dark')) {
+lightLogo.classList.add('hidden');
+darkLogo.classList.remove('hidden');
+} else {
+lightLogo.classList.remove('hidden');
+darkLogo.classList.add('hidden');
+}
+}
 
-    // Initial logo update
-    updateLogo();
+// Initial logo update
+updateLogo();
 
-    // Watch for theme changes
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-          updateLogo();
-        }
-      });
-    });
+// Watch for theme changes
+const observer = new MutationObserver((mutations) => {
+mutations.forEach((mutation) => {
+if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+updateLogo();
+}
+});
+});
 
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-  </script>
+observer.observe(document.documentElement, {
+attributes: true,
+attributeFilter: ['class']
+});
+	</script>
 {% endblock %}

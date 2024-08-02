@@ -1,140 +1,141 @@
-{% extends "base_super_admin.html.twig" %}
-{% block title %}
-    <title>{{ 'UIECC Dashboard' | trans }}</title>
-{% endblock %}
+    {% extends "base_new.html.twig" %}
+    {% block title %}
+        <title>{{ 'school_manager.UIECC Dashboard' | trans }}</title>
+    {% endblock %}
 
-{% block body %}
-    <div class="min-h-screen bg-white p-8 flex flex-col overflow-hidden">
-        <header class="text-gray-900 p-5 rounded-lg mb-6 flex flex-col items-center justify-center container mx-auto text-center border-b-4 border-gray-900">
-            <h1 class="text-4xl font-bold mb-1">{{ 'Welcome to UIECC' | trans }}</h1>
-            <p class="text-md opacity-80">{{ 'Today is' | trans }} {{ "now"|date("l, F j, Y") }}</p>
-        </header>
-
-        <div class="flex flex-col md:flex-row gap-6 flex-grow overflow-hidden -mb-10">
-            <!-- Left Section: Create a school -->
-            <div class="w-full md:w-1/4 bg-white rounded-lg p-4 h-auto md:h-[280px] flex flex-col justify-center overflow-y-auto shadow-xl">
-                <div class="text-center place-items-center">
-                    <div class="group relative justify-center">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ 'Create a School' | trans }}</h2>
-                        <div class="absolute z-10 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-gray-800 border border-gray-300 rounded-sm shadow-lg p-2 w-48 mt-2 left-1/2 transform -translate-x-1/2">
-                            <p>{{ 'Easily add a new school to the university with just a click' | trans }}</p>
+    {% block body %}
+        <div class="min-h-screen p-2  lg:pr-4 lg:pl-4 lg:pb-8 flex flex-col overflow-hidden">
+            <!-- Statistics Section -->
+            <div class="p-1 sm:p-2 mb-2 ">
+                <h2 class="text-lg sm:text-xl font-normal text-gray-800 mb-4">{{ 'school_manager.Dashboard Statistics' | trans }}</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {# {% set stats = [
+                        {label: 'Schools', count: schoolCount, color: 'blue', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'},
+                        {label: 'Authorities', count: authorityCount, color: 'green', icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'},
+                        {label: 'Avg Authorities/School', count: averageAuthoritiesPerSchool, color: 'yellow', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01'}
+                    ] %}
+                    {% for stat in stats %}
+                        <div class="bg-{{ stat.color }}-100 rounded-lg p-4 flex items-center justify-between">
+                            <div>
+                                <p class="text-{{ stat.color }}-800 text-sm sm:text-base font-medium">{{ stat.label }}</p>
+                                <p class="text-{{ stat.color }}-600 text-lg sm:text-xl font-bold">{{ stat.count }}</p>
+                            </div>
+                            <div class="text-{{ stat.color }}-500">
+                                <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ stat.icon }}"></path>
+                                </svg>
+                            </div>
                         </div>
-                    </div>
-                    <p class="mb-4 text-sm text-gray-600">{{ 'Click below to add a school to the university' | trans }}</p>
-                    <form action="{{ path('school_new') }}" method="GET">
-                        <button class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg mb-4 transition duration-300 ease-in-out transform hover:scale-105">
-                            <svg class="h-5 w-5 inline-block mr-2" fill="none" viewbox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
-                            {{ 'Create School' | trans }}
-                        </button>
-                    </form>
+                    {% endfor %}   #}
                 </div>
             </div>
 
-            <!-- Right Section: School List -->
-            <div class="w-full md:flex-1 bg-white rounded-lg p-6 overflow-visible flex flex-col h-auto md:h-[280px] shadow-xl">
-                <div>
-                    <h2 class="text-2xl font-semibold text-gray-800">{{ 'School List' | trans }}</h2>
-                    <p class="mb-4 text-xs">{{ 'Below is the list of schools you\'ve created so far' | trans }}</p>
+            <!-- Quick Actions Section -->
+            <div class="mb-2 p-1 sm:p-2">
+                <h2 class="text-lg sm:text-xl font-normal text-gray-800 mb-4">{{ 'school_manager.Quick Actions' | trans }}</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="relative inline-block  group">
+                        <a href="{{ path('school_new') }}" class="relative z-10 inline-block bg-blue-500 text-background rounded-md px-1 py-2 text-md sm:text-lg font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary w-full text-center">
+                            <span class="mr-2">🏫</span>
+                            {{ 'school_manager.Create School' | trans }}
+                        </a>
+                        {# <div class="absolute top-0 left-0 w-full h-full bg-black rounded-md transition-all duration-300 transform translate-x-[5px] translate-y-[5px] group-hover:translate-x-[7px] group-hover:translate-y-[7px] -z-10"></div> #}
+                    </div>
+
+                    <div class="relative inline-block  group">
+                        <a href="{{ path('new_school_resp') }}" class="relative z-10 inline-block bg-green-500 text-background rounded-md px-1 py-2 text-md sm:text-lg font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary  w-full text-center">
+                            <span class="mr-2">👤</span>
+                            {{ 'school_manager.Create Authority' | trans }}
+                        </a>
+                        {# <div class="absolute top-0 left-0 w-full h-full bg-black rounded-md transition-all duration-300 transform translate-x-[5px] translate-y-[5px] group-hover:translate-x-[7px] group-hover:translate-y-[7px] -z-10"></div> #}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toggle Buttons and Tables Section -->
+            <div class=" rounded-lg p-1 sm:p-2 mb-2 max-h-[500px]">
+            <h2 class="text-lg sm:text-xl font-normal text-gray-800 mb-2">Lists</h2>
+                <div class="flex justify-start mb-4">
+                    <button id="showSchoolList" class="relative inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-l transition-transform duration-300 hover:scale-105 text-sm sm:text-base">
+                        {{ 'school_manager.School List' | trans }}
+                    </button>
+                    <button id="showResponsibleList" class="relative inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-r transition-transform duration-300 hover:scale-105 text-sm sm:text-base">
+                        {{ 'school_manager.School Responsibles' | trans }}
+                    </button>
                 </div>
 
-                <div class="overflow-y-auto flex-grow">
-                    <table class="min-w-full bg-white">
-                        <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal sticky top-0">
+                <!-- School List Table -->
+                <div id="schoolListTable" class="overflow-x-auto ">
+                    <table class="min-w-full bg-white ">
+                        <thead class="bg-gray-200 text-gray-700 uppercase text-xs sm:text-sm leading-normal">
                             <tr>
-                                <th class="py-3 px-6 text-left">{{ 'Name' | trans }}</th>
-                                <th class="py-3 px-6 text-left">{{ 'Address' | trans }}</th>
-                                <th class="py-3 px-6 text-left">{{ 'Phone Number' | trans }}</th>
-                                <th class="py-3 px-6 text-left">{{ 'Email' | trans }}</th>
-                                <th class="py-3 px-6 text-left">{{ 'Logo' | trans }}</th>
-                                <th class="py-3 px-6 text-center">{{ 'Actions' | trans }}</th>
+                                <th class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ 'school_manager.Name' | trans }}</th>
+                                <th class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ 'school_manager.Address' | trans }}</th>
+                                <th class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ 'school_manager.Phone Number' | trans }}</th>
+                                <th class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ 'school_manager.Email' | trans }}</th>
+                                <th class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ 'school_manager.Logo' | trans }}</th>
+                                <th class="py-2 px-3 sm:py-3 sm:px-4 text-center">{{ 'school_manager.Actions' | trans }}</th>
                             </tr>
                         </thead>
-                        <tbody class="text-gray-600 text-sm font-light">
+                        <tbody class="text-gray-600 text-xs sm:text-sm">
                             {% for school in school %}
                                 <tr class="border-b border-gray-200 hover:bg-gray-100">
-                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ school.name }}</td>
-                                    <td class="py-3 px-6 text-left">{{ school.address }}</td>
-                                    <td class="py-3 px-6 text-left">{{ school.phoneNumber }}</td>
-                                    <td class="py-3 px-6 text-left">{{ school.email }}</td>
-                                    <td class="py-3 px-6 text-left">
+                                    <td class="py-2 px-3 sm:py-3 sm:px-4 text-left whitespace-nowrap">{{ school.name }}</td>
+                                    <td class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ school.address }}</td>
+                                    <td class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ school.phoneNumber }}</td>
+                                    <td class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ school.email }}</td>
+                                    <td class="py-2 px-3 sm:py-3 sm:px-4 text-left">
                                         {% if school.logo %}
-                                            <img src="{{ asset('uploads/logos/' ~ school.logo) }}" alt="{{ 'Logo' | trans }}" class="h-5 w-5 object-cover rounded-full">
+                                            <img src="{{ asset('uploads/logos/' ~ school.logo) }}" alt="{{ 'school_manager.Logo' | trans }}" class="h-6 w-6 sm:h-8 sm:w-8 object-cover rounded-full">
                                         {% else %}
-                                            {{ 'No logo' | trans }}
+                                            {{ 'school_manager.No logo' | trans }}
                                         {% endif %}
                                     </td>
-                                    <td class="py-3 px-6 text-center">
-                                        <a href="{{ path('delete_school', {'id': school.id}) }}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-xs" onclick="return confirm('{{ 'Are you sure you want to delete this school?' | trans }}');">{{ 'Delete' | trans }}</a>
+                                    <td class="py-2 px-3 sm:py-3 sm:px-4 text-center">
+                                        <div class="relative inline-block transition-transform duration-300 hover:scale-105 group">
+                                            <a href="{{ path('delete_school', {'id': school.id}) }}" class="relative z-10 inline-block bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 sm:py-2 sm:px-3 rounded text-xs sm:text-sm transition-transform duration-300" onclick="return confirm('{{ 'school_manager.Are you sure you want to delete this school?' | trans }}');">{{ 'school_manager.Delete' | trans }}</a>
+                                            <div class="absolute top-0 left-0 w-full h-full bg-black rounded transition-all duration-300 transform translate-x-[2px] translate-y-[2px] group-hover:translate-x-[3px] group-hover:translate-y-[3px] -z-10"></div>
+                                        </div>
                                     </td>
                                 </tr>
                             {% else %}
                                 <tr>
-                                    <td colspan="6" class="py-3 px-6 text-center">{{ 'No schools found' | trans }}</td>
+                                    <td colspan="6" class="py-2 px-3 sm:py-3 sm:px-4 text-center">{{ 'school_manager.No schools found' | trans }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
 
-        <!-- Adjust the margin-top for this div -->
-        <div class="flex flex-col md:flex-row gap-6 flex-grow overflow-hidden mt-4">
-            <!-- Left Section: Create an authority -->
-            <div class="w-full md:w-1/4 bg-white rounded-lg p-4 h-auto md:h-[280px] flex flex-col justify-center overflow-y-auto shadow-xl">
-                <div class="text-center mb-4">
-                    <div class="group relative">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ 'Create an Authority' | trans }}</h2>
-                        <div class="absolute z-10 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white text-gray-800 border border-gray-300 rounded-sm shadow-xl p-2 w-48 mt-2 left-1/2 transform -translate-x-1/2">
-                            <p>{{ 'Add an authority with specific privileges to manage schools' | trans }}</p>
-                        </div>
-                    </div>
-                    <p class="mb-4 text-sm text-gray-600">{{ 'Click below to add an authority with privileges' | trans }}</p>
-                    <form action="{{ path('new_school_resp') }}" method="GET">
-                        <button class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow mb-4 transition duration-300 ease-in-out transform hover:scale-105">
-                            <svg class="h-5 w-5 inline-block mr-2" fill="none" viewbox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
-                            {{ 'Create Authority' | trans }}
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Right Section: Responsible List -->
-            <div class="w-full md:flex-1 bg-white rounded-lg p-6 overflow-hidden flex flex-col h-auto md:h-[280px] shadow-xl">
-                <div>
-                    <h2 class="text-2xl font-semibold text-gray-800">{{ 'School Responsibles' | trans }}</h2>
-                    <p class="mb-4 text-xs">{{ 'Below is the list of school responsibles' | trans }}</p>
-                </div>
-
-                <div class="overflow-y-auto flex-grow">
+                <!-- School Responsibles Table -->
+                <div id="responsibleListTable" class="overflow-x-auto" style="display: none;">
                     <table class="min-w-full bg-white">
-                        <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal sticky top-0">
+                        <thead class="bg-gray-200 text-gray-700 uppercase text-xs sm:text-sm leading-normal">
                             <tr>
-                                <th class="py-3 px-6 text-left">{{ 'Name' | trans }}</th>
-                                <th class="py-3 px-6 text-left">{{ 'School' | trans }}</th>
-                                <th class="py-3 px-6 text-left">{{ 'Phone Number' | trans }}</th>
-                                <th class="py-3 px-6 text-left">{{ 'Email' | trans }}</th>
-                                <th class="py-3 px-6 text-center">{{ 'Actions' | trans }}</th>
+                                <th class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ 'school_manager.Name' | trans }}</th>
+                                <th class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ 'school_manager.School' | trans }}</th>
+                                <th class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ 'school_manager.Phone Number' | trans }}</th>
+                                <th class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ 'school_manager.Email' | trans }}</th>
+                                <th class="py-2 px-3 sm:py-3 sm:px-4 text-center">{{ 'school_manager.Actions' | trans }}</th>
                             </tr>
                         </thead>
-                        <tbody class="text-gray-600 text-sm font-light">
+                        <tbody class="text-gray-600 text-xs sm:text-sm">
                             {% for resp_school in resp_schools %}
                                 <tr class="border-b border-gray-200 hover:bg-gray-100">
-                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ resp_school.name }}</td>
-                                    <td class="py-3 px-6 text-left">{{ resp_school.school.name }}</td>
-                                    <td class="py-3 px-6 text-left">{{ resp_school.phoneNumber }}</td>
-                                    <td class="py-3 px-6 text-left">{{ resp_school.email }}</td>
-                                    <td class="py-3 px-6 text-center">
-                                        <a href="{{ path('delete_resp_school', {'id': resp_school.id}) }}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-xs" onclick="return confirm('{{ 'Are you sure you want to delete this responsible?' | trans }}');">{{ 'Delete' | trans }}</a>
+                                    <td class="py-2 px-3 sm:py-3 sm:px-4 text-left whitespace-nowrap">{{ resp_school.name }}</td>
+                                    <td class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ resp_school.school.name }}</td>
+                                    <td class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ resp_school.phoneNumber }}</td>
+                                    <td class="py-2 px-3 sm:py-3 sm:px-4 text-left">{{ resp_school.email }}</td>
+                                    <td class="py-2 px-3 sm:py-3 sm:px-4 text-center">
+                                        <div class="relative inline-block transition-transform duration-300 hover:scale-105 group">
+                                            <a href="{{ path('delete_resp_school', {'id': resp_school.id}) }}" class="relative z-10 inline-block bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 sm:py-2 sm:px-3 rounded text-xs sm:text-sm transition-transform duration-300" onclick="return confirm('{{ 'school_manager.Are you sure you want to delete this responsible?' | trans }}');">{{ 'school_manager.Delete' | trans }}</a>
+                                            <div class="absolute top-0 left-0 w-full h-full bg-black rounded transition-all duration-300 transform translate-x-[2px] translate-y-[2px] group-hover:translate-x-[3px] group-hover:translate-y-[3px] -z-10"></div>
+                                        </div>
                                     </td>
                                 </tr>
                             {% else %}
                                 <tr>
-                                    <td colspan="5" class="py-3 px-6 text-center">{{ 'No responsibles found' | trans }}</td>
+                                    <td colspan="5" class="py-2 px-3 sm:py-3 sm:px-4 text-center">{{ 'school_manager.No responsibles found' | trans }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -142,33 +143,31 @@
                 </div>
             </div>
         </div>
-    </div>
-{% endblock %}
 
-
-{% block javascripts %}
     <script>
-        const createAuthorityBtn = document.getElementById('createAuthorityBtn');
-        const authorityFormPopup = document.getElementById('authorityFormPopup');
-        const authorityForm = document.getElementById('authorityForm');
-        const closeAuthorityForm = document.getElementById('closeAuthorityForm');
+        document.addEventListener('DOMContentLoaded', function () {
+            const showSchoolList = document.getElementById('showSchoolList');
+            const showResponsibleList = document.getElementById('showResponsibleList');
+            const schoolListTable = document.getElementById('schoolListTable');
+            const responsibleListTable = document.getElementById('responsibleListTable');
 
-        createAuthorityBtn.addEventListener('click', () => {
-            authorityFormPopup.classList.remove('hidden');
-        });
+            showSchoolList.addEventListener('click', function () {
+                schoolListTable.style.display = 'block';
+                responsibleListTable.style.display = 'none';
+                showSchoolList.classList.add('bg-blue-600');
+                showSchoolList.classList.remove('bg-blue-500');
+                showResponsibleList.classList.add('bg-green-500');
+                showResponsibleList.classList.remove('bg-green-600');
+            });
 
-        closeAuthorityForm.addEventListener('click', () => {
-            authorityFormPopup.classList.add('hidden');
-        });
-
-        authorityForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const formData = new FormData(authorityForm);
-
-            // Here you would typically send the data to the server
-            // For now, we'll just close the popup and reset the form
-            authorityFormPopup.classList.add('hidden');
-            authorityForm.reset();
+            showResponsibleList.addEventListener('click', function () {
+                schoolListTable.style.display = 'none';
+                responsibleListTable.style.display = 'block';
+                showResponsibleList.classList.add('bg-green-600');
+                showResponsibleList.classList.remove('bg-green-500');
+                showSchoolList.classList.add('bg-blue-500');
+                showSchoolList.classList.remove('bg-blue-600');
+            });
         });
     </script>
 {% endblock %}
