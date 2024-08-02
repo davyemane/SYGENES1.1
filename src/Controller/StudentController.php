@@ -279,7 +279,7 @@ class StudentController extends AbstractController
 
     // src/Controller/StudentController.php
 
-    #[Route('/pdf/{id}', name: "pdf_student")]
+    #[Route('/pdf/{id}', name: "transcript")]
     public function generatePdf($id, ManagerRegistry $doctrine, Dompdf $domPdf)
     {
         $user = $this->getUser();

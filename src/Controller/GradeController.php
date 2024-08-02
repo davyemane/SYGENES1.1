@@ -24,7 +24,7 @@ class GradeController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/student/{id}/transcript', name: 'student_transcript')]
+    #[Route('/student/{id}/transcript', name: 'pdf_student')]
     public function generateTranscript(int $id): Response
     {
         $user = $this->getUser();
