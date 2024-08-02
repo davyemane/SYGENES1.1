@@ -1,0 +1,24 @@
+<!doctype html>
+<html class="h-full" lang="{{ app.request.locale }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{{ asset('images/uiecc_logo.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    <script src="{{ asset('build/app.js') }}"></script>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+    {% block script %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+
+    {% block head %}{% block title %}<title>{{ 'home_header.app.title'|trans }}</title>{% endblock %}{% endblock %}
+</head>
+ 
+<body>
+   {% block body %}
+        
+    {% endblock %}
+</body>

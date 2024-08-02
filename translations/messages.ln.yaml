@@ -111,6 +111,7 @@ welcome_page:
 # Language choice page text
 language_choice_page:
   language-message: "Poná lokota na yo"
+  language-desc: ""
   english-language: "Lingelesi"
   french-language: "Falansé"
   spanish-language: "Lispania"

@@ -1,1 +1,204 @@
-{% extends 'base.html.twig' %}
+{% if privileges is defined and privileges is not empty %}
+				{% set student_privileges = ['Add Student', 'List Students', 'Detail Student', 'Validate Student', 'Generate PV', 'Generate Transcript of notes'] %}
+				{% if privileges|filter(p => p.name in student_privileges)|length > 0 %}
+				<li class="menu-item text-white text-sm cursor-pointer mt-2">
+					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
+						<img src="/icons/students.png" alt="students" class="w-4 h-4 ml-3">
+						<span class="text-base font-medium flex-1">Students</span>
+						<i class="fas fa-chevron-down transition-transform duration-300"></i>
+					</div>
+					<ul class="submenu ml-6 mt-2">
+						{# {% if privileges|filter(p => p.name == 'Add Student')|length > 0 %}
+						{# <a href="{{ path('add_student', {id: student.id}) }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add new student data
+							</li>
+						</a> #}
+						 {# <a href="{{ path('add_student')}}"> 
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Modify a student
+								data</li>
+						</a> 
+						{% endif %} #} 
+						{% if privileges|filter(p => p.name == 'Add Student')|length > 0 %}
+						<a href="{{ path('import') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Import excel file
+							</li>
+						</a>
+						{% endif %}
+						{% if privileges|filter(p => p.name == 'List Students')|length > 0 %}
+						<a href="{{ path('fields_index') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List students</li>
+						</a>
+						{% endif %}
+						
+					</ul>
+				</li>
+				{% endif %}
+
+				{% set field_privileges = ['Add Field', 'List Fields'] %}
+				{% if privileges|filter(p => p.name in field_privileges)|length > 0 %}
+				<li class="menu-item text-white text-sm cursor-pointer">
+					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
+						<img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
+						<span class="text-base font-medium flex-1">Field</span>
+						<i class="fas fa-chevron-down transition-transform duration-300"></i>
+					</div>
+					<ul class="submenu ml-6 mt-2">
+						{% if privileges|filter(p => p.name == 'Add Field')|length > 0 %}
+						<a href="{{ path('field_new') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add A Field</li>
+						</a>
+						{% endif %}
+						{# {% if privileges|filter(p => p.name == 'List Fields')|length > 0 %}
+						<a href="{{ path('') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List Fields</li>
+						</a>
+						{% endif %} #}
+					</ul>
+				</li>
+				{% endif %}
+
+				{% set profile_privileges = ['Add Profile', 'List Profile'] %}
+				{% if privileges|filter(p => p.name in profile_privileges)|length > 0 %}
+				<li class="menu-item text-white text-sm cursor-pointer">
+					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
+						<img src="/icons/grades.png" alt="grades" class="w-4 h-4 ml-3">
+						<span class="text-base font-medium flex-1">Profile</span>
+						<i class="fas fa-chevron-down transition-transform duration-300"></i>
+					</div>
+					<ul class="submenu ml-6 mt-2">
+						{% if privileges|filter(p => p.name == 'Add Profile')|length > 0 %}
+						<a href="{{path('role_new')}}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add/Edit A Profile</li>
+						</a>
+						{% endif %}
+						{% if privileges|filter(p => p.name == 'List Profile')|length > 0 %}
+						{# <a href="{{path('role_new')}}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Edit a Profile</li>
+						</a> #}
+						{% endif %}
+						{% if privileges|filter(p => p.name == 'List Profile')|length > 0 %}
+						{# <a href="#">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List Profiles</li>
+						</a> #}
+						{% endif %}
+
+					</ul>
+				</li>
+				{% endif %}
+
+
+				{% set marks_privileges = ['Add Mark', 'View Marks'] %}
+				{% if privileges|filter(p => p.name in marks_privileges)|length > 0 %}
+				<li class="menu-item text-white text-sm cursor-pointer">
+					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
+						<img src="/icons/grades.png" alt="grades" class="w-4 h-4 ml-3">
+						<span class="text-base font-medium flex-1">Marks</span>
+						<i class="fas fa-chevron-down transition-transform duration-300"></i>
+					</div>
+					<ul class="submenu ml-6 mt-2">
+						{# {% if privileges|filter(p => p.name == 'Add Mark')|length > 0 %}
+						<a href="{{ path('add_note') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add a student's
+								marks</li>
+						</a>
+						{% endif %} #}
+						{% if privileges|filter(p => p.name == 'Add Mark')|length > 0 %}
+						<a href="{{path('cc_filieres')}}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add CC Mark
+								</li>
+						</a>
+						{% endif %}
+						{% if privileges|filter(p => p.name == 'Add Mark')|length > 0 %}
+						<a href="{{ path('ee_filieres') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add EE Mark
+								</li>
+						</a>
+						{% endif %}
+						{% if privileges|filter(p => p.name == 'Add Mark')|length > 0 %}
+						<a href="{{ path('rattrapage_filieres') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add Rattrapage Mark
+								</li>
+						</a>
+						{% endif %}
+						{% if privileges|filter(p => p.name == 'View Marks')|length > 0 %}
+						<a href="{{ path('choix_ec') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View students marks
+							</li>
+						</a>
+						{% endif %}
+					</ul>
+				</li>
+				{% endif %}
+
+				{% set ue_ec_privileges = ['Add UE', 'Add EC', 'List EC', 'List UE'] %}
+				{% if privileges|filter(p => p.name in ue_ec_privileges)|length > 0 %}
+				<li class="menu-item text-white text-sm cursor-pointer">
+					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
+						<img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
+						<span class="text-base font-medium flex-1">UE & EC</span>
+						<i class="fas fa-chevron-down transition-transform duration-300"></i>
+					</div>
+					<ul class="submenu ml-6 mt-2">
+						{% if privileges|filter(p => p.name == 'Add UE')|length > 0 %}
+						<a href="{{ path('add_ue') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add an UE</li>
+						</a>
+						{% endif %}
+						{% if privileges|filter(p => p.name == 'Add EC')|length > 0 %}
+						<a href="{{ path('add_ec') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add an EC</li>
+						</a>
+						{% endif %}
+						{% if privileges|filter(p => p.name == 'List EC')|length > 0 or privileges|filter(p => p.name == 'List UE')|length > 0 %}
+						<a href="{{ path('choix_ec') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List of UE & EC</li>
+						</a>
+						{% endif %}
+
+					</ul>
+				</li>
+				{% endif %}
+
+				{% set school_privileges = ['Add user','Add School','View statistics','Add Level'] %}
+				{% if privileges|filter(p => p.name in school_privileges)|length > 0 %}
+				<li class="menu-item text-white text-sm cursor-pointer">
+					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
+						<img src="/icons/responsable.png" alt="grades" class="w-4 h-4 ml-3">
+						<span class="text-base font-medium flex-1">School</span>
+						<i class="fas fa-chevron-down transition-transform duration-300"></i>
+					</div>
+					<ul class="submenu ml-6 mt-2">
+						{% if privileges|filter(p => p.name == 'Add School')|length > 0 %}
+						{# <a href="{{ path("school_new") }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add School</li>
+						</a> #}
+						{% endif %}
+						{% if privileges|filter(p => p.name == 'Add Level')|length > 0 %}
+						<a href="{{ path("level_new") }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add Level</li>
+						</a>
+						{% endif %}
+
+						{# {% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
+						<a href="{{ path('add_responsable') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add user</li>
+						</a>
+						{% endif %}  #}
+						{% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
+						<a href="{{ path('app_register') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add user </li>
+						</a>
+						{% endif %}
+						{% if privileges|filter(p => p.name == 'View statistics')|length > 0 %}
+						<a href="{{ path('resp_statistics') }}">
+							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View statistics</li>
+						</a>
+						{% endif %}
+					</ul>
+				</li>
+				{% endif %}
+			</ul>
+			{% else %}
+			
+			{% endif %}
+			</ul>

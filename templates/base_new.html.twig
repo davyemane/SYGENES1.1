@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{app.request.locale}}">
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Admin Dashboard</title>
-	
+	<title>{{'super_admin_dash.title'|trans}}</title>
+
 	<link rel="shortcut icon" href="/images/uiecc_logo.png" type="image/x-icon">
-	<script src="https://cdn.tailwindcss.com"></script>
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 	{% block stylesheets %}
 	{{ encore_entry_link_tags('app') }}
 	{% endblock %}
@@ -16,6 +15,11 @@
 
 
 	<style>
+		#sidebarDiv.w-20 img[alt="uiecc_logo"] {
+			width: 2.5rem;
+			height: auto;
+		}
+
 		#searchInput::placeholder {
 			color: var(--text-color);
 			opacity: 0.7;
@@ -93,297 +97,353 @@
 				margin-top: 1rem;
 			}
 		}
+
+		.sidebar-item {
+			@apply flex items-center justify-center gap-x-4 cursor-pointer p-2 hover:bg-gray-700 rounded-md transition-colors duration-200;
+		}
+
+		.sidebar-text {
+			@apply text-white text-sm font-medium flex-1 transition-opacity duration-200 text-center;
+		}
+
+		#sidebarDiv.w-20 .sidebar-text,
+		#sidebarDiv.w-20 #sidebarTitle {
+			@apply hidden;
+		}
+
+		#sidebarDiv.w-20 .sidebar-item {
+			@apply justify-center;
+		}
+
+		#sidebarDiv.w-20 #sygenes_logo {
+			@apply w-10 mb-0;
+		}
+
+		body {
+			overflow: hidden;
+		}
+
+		#main-container {
+			display: flex;
+			height: 100vh;
+		}
+
+		#content-wrapper {
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+		}
+
+		#header {
+			position: sticky;
+			top: 0;
+			z-index: 10;
+			background-color: white;
+			border-bottom: 2px solid #e5e7eb;
+		}
+
+		#main-content {
+			flex-grow: 1;
+			overflow-y: auto;
+			padding: 1rem;
+		}
+
+		@media (max-width: 768px) {
+			#dashboard-title {
+				font-size: 1.2rem;
+			}
+		}
 	</style>
 </head>
 
-<body class="font-sans antialiased leading-none h-full bg-white	 w-full overflow-x-hidden ">
+<body class="font-sans antialiased leading-none h-full bg-white w-full">
 	<div class="flex h-full z-10">
 		<div id="sidebarDiv"
-			class="inset-y-0 left-0 fixed bg-gray-900 shadow-xl p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
-			<img id="toggleBtn" src="/icons/previous.png" alt="previous"
-				class="w-7 h-auto absolute -right-3 top-9 cursor-pointer bg-white rounded-full p-1 transition-transform duration-300">
-			<div class="inline-flex items-center">
-				<img src="/icons/uiecc.svg" alt="uiecc_logo" class="w-12 h-auto cursor-pointer mr-4">
-				<h1 id="sidebarTitle" class="text-white text-2xl font-bold transition-opacity duration-300">SYGENES</h1>
-				
+			class="inset-y-0 m-5 rounded-lg fixed bg-gray-900 shadow-xl p-5 pt-8 w-72 transition-all duration-300 flex flex-col">
+			<div class="flex flex-col items-center ">
+				<img id="sygenes_logo" src="/icons/uiecc.svg" alt="uiecc_logo" class="w-16 h-auto cursor-pointer mb-5">
+				<h1 id="sidebarTitle" class="text-white text-xl font-bold transition-opacity duration-300">
+					{{'super_admin_dash.app_title'|trans}}</h1>
 			</div>
-			<div id="searchContainer"
+			{# <div id="searchContainer"
 				class="flex items-center rounded-md bg-secondary mt-6 transition-all duration-300">
 				<img id="searchIcon" src="/icons/search.png" alt="search"
 					class="w-4 h-4 ml-3 cursor-pointer transition-all duration-300">
 				<input type="search" id="searchInput"
 					class="text-base bg-transparent w-full text-text border-none focus:outline-none px-3 py-2"
 					placeholder="Search">
-			</div>
-			<ul class="pt-2 flex-grow overflow-y-auto">
-				<a href="{{ path('app_dashAdmin') }}">
+			</div> #}
+			<ul class="flex-grow space-y-4 overflow-y-auto flex flex-col  justify-center ">
+
+				{% if is_granted('ROLE_SUPER_ADMIN') %}
+				<a href="{{ path('super_admin_dashboard') }}">
 					<li
-						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondaryHover rounded-md mt-2">
+						class="menu-item text-text text-md flex justify-center items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
 						<img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
-						
-						<span class="text-white text-md font-medium flex-1">Dashboard</span>
+						<span class="text-white text-md font-medium flex-1">{{'super_admin_dash.home'|trans}}</span>
 					</li>
 				</a>
-				{% if privileges is defined and privileges is not empty %}
-				{% set student_privileges = ['Add Student', 'List Students', 'Detail Student', 'Validate Student', 'Generate PV', 'Generate Transcript of notes'] %}
-				{% if privileges|filter(p => p.name in student_privileges)|length > 0 %}
-				<li class="menu-item text-white text-sm cursor-pointer mt-2">
-					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
-						<img src="/icons/students.png" alt="students" class="w-4 h-4 ml-3">
-						<span class="text-base font-medium flex-1">Students</span>
-						<i class="fas fa-chevron-down transition-transform duration-300"></i>
-					</div>
-					<ul class="submenu ml-6 mt-2">
-						{# {% if privileges|filter(p => p.name == 'Add Student')|length > 0 %}
-						{# <a href="{{ path('add_student', {id: student.id}) }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add new student data
-							</li>
-						</a> #}
-						 {# <a href="{{ path('add_student')}}"> 
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Modify a student
-								data</li>
-						</a> 
-						{% endif %} #} 
-						{% if privileges|filter(p => p.name == 'Add Student')|length > 0 %}
-						<a href="{{ path('import') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Import excel file
-							</li>
-						</a>
-						{% endif %}
-						{% if privileges|filter(p => p.name == 'List Students')|length > 0 %}
-						<a href="{{ path('fields_index') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List students</li>
-						</a>
-						{% endif %}
-						
-					</ul>
-				</li>
+				<a href="{{ path('school_new') }}">
+					<li
+						class="menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/add.png" alt="home" class="w-4 h-4 ml-3">
+						<span
+							class="text-white text-md font-medium flex-1">{{'super_admin_dash.new_school'|trans}}</span>
+					</li>
+				</a>
+				<a href="{{ path('new_school_resp') }}">
+					<li
+						class="menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/add_user.png" alt="home" class="w-4 h-4 ml-3">
+						<span class="text-white text-md font-medium flex-1">{{'super_admin_dash.new_user'|trans}}</span>
+					</li>
+				</a>
+
+
+				{% elseif is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('admin_dashboard') }}">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
+						<span class="text-white text-md font-medium flex-1">{{'super_admin_dash.home'|trans}}</span>
+					</li>
+				</a>
+				<a href="{{ path('field_new') }}">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/add.png" alt="home" class="w-4 h-4 ml-3">
+						<span
+							class="text-white text-md font-medium flex-1">{{'super_admin_dash.new_field'|trans}}</span>
+					</li>
+				</a>
+				<a href="{{ path('app_register_respfield') }}">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/add_user.png" alt="home" class="w-4 h-4 ml-3">
+						<span
+							class="text-white text-md font-medium flex-1">{{'super_admin_dash.new_field_man'|trans}}</span>
+					</li>
+				</a>
+
+
+				{% elseif is_granted('ROLE_RESPFIELD') %}
+				<a href="{{ path('level_dashboard') }}">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
+						<span class="text-white text-md font-medium flex-1">{{'super_admin_dash.home'|trans}}</span>
+					</li>
+				</a>
+				<a href="{{ path('level_new') }}">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/add.png" alt="home" class="w-4 h-4 ml-3">
+						<span
+							class="text-white text-md font-medium flex-1">{{'super_admin_dash.new_level'|trans}}</span>
+					</li>
+				</a>
+				<a href="{{ path('app_register_resplevel') }}">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/add_user.png" alt="home" class="w-4 h-4 ml-3">
+						<span
+							class="text-white text-md font-medium flex-1">{{'super_admin_dash.new_level_man'|trans}}</span>
+					</li>
+				</a>
+
+
+				{% elseif is_granted('ROLE_RESLEVEL') %}
+				<a href="#">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
+						<span class="text-white text-md font-medium flex-1">{{'super_admin_dash.home'|trans}}</span>
+					</li>
+				</a>
+
+				<a href="#">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/add.png" alt="home" class="w-4 h-4 ml-3">
+						<span class="text-white text-md font-medium flex-1">{{'super_admin_dash.new_ue'|trans}}</span>
+					</li>
+				</a>
+				<a href="#">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/add_user.png" alt="home" class="w-4 h-4 ml-3">
+						<span
+							class="text-white text-md font-medium flex-1">{{'super_admin_dash.new_ue_man'|trans}}</span>
+					</li>
+				</a>
+
+				{% elseif is_granted('ROLE_RESPUE') %}
+				<a href="#">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
+						<span class="text-white text-md font-medium flex-1">{{'super_admin_dash.home'|trans}}</span>
+					</li>
+				</a>
+				<a href="#">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/add.png" alt="home" class="w-4 h-4 ml-3">
+						<span class="text-white text-md font-medium flex-1">{{'super_admin_dash.new_ec'|trans}}</span>
+					</li>
+				</a>
+				<a href="#">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/add_user.png" alt="home" class="w-4 h-4 ml-3">
+						<span
+							class="text-white text-md font-medium flex-1">{{'super_admin_dash.new_ec_man'|trans}}</span>
+					</li>
+				</a>
+
+
+				{% elseif is_granted('ROLE_TEACHER') %}
+				<a href="#">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
+						<span class="text-white text-md font-medium flex-1">{{'super_admin_dash.home'|trans}}</span>
+					</li>
+				</a>
+				<a href="#">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/add.png" alt="home" class="w-4 h-4 ml-3">
+						<span
+							class="text-white text-md font-medium flex-1">{{'super_admin_dash.add_marks'|trans}}</span>
+					</li>
+				</a>
+				<a href="#">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/ue_ec.png" alt="home" class="w-4 h-4 ml-3">
+						<span
+							class="text-white text-md font-medium flex-1">{{'super_admin_dash.add_anony'|trans}}</span>
+					</li>
+				</a>
+
+
+				{% elseif is_granted('ROLE_STUDENT') %}
+				<a href="#">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
+						<span class="text-white text-md font-medium flex-1">{{'super_admin_dash.home'|trans}}</span>
+					</li>
+				</a>
+				<a href="#">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/icons/home.png" alt="home" class="w-4 h-4 ml-3">
+						<span
+							class="text-white text-md font-medium flex-1">{{'super_admin_dash.my_grades'|trans}}</span>
+					</li>
+				</a>
+				<a href="#">
+					<li
+						class=" menu-item text-text text-md flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondaryHover rounded-md mt-2">
+						<img src="/ic	header.classList.toggle('ml-40', !isOpen);
+							header.classList.toggle('ml-80', isOpen);ons/home.png" alt="home" class="w-4 h-4 ml-3">
+						<span
+							class="text-white text-md font-medium flex-1">{{'super_admin_dash.my_courses'|trans}}</span>
+					</li>
+				</a>
+
 				{% endif %}
 
-				{% set field_privileges = ['Add Field', 'List Fields'] %}
-				{% if privileges|filter(p => p.name in field_privileges)|length > 0 %}
-				<li class="menu-item text-white text-sm cursor-pointer">
-					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
-						<img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
-						<span class="text-base font-medium flex-1">Field</span>
-						<i class="fas fa-chevron-down transition-transform duration-300"></i>
-					</div>
-					<ul class="submenu ml-6 mt-2">
-						{% if privileges|filter(p => p.name == 'Add Field')|length > 0 %}
-						<a href="{{ path('field_new') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add A Field</li>
-						</a>
-						{% endif %}
-						{# {% if privileges|filter(p => p.name == 'List Fields')|length > 0 %}
-						<a href="{{ path('') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List Fields</li>
-						</a>
-						{% endif %} #}
-					</ul>
-				</li>
-				{% endif %}
-
-				{% set profile_privileges = ['Add Profile', 'List Profile'] %}
-				{% if privileges|filter(p => p.name in profile_privileges)|length > 0 %}
-				<li class="menu-item text-white text-sm cursor-pointer">
-					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
-						<img src="/icons/grades.png" alt="grades" class="w-4 h-4 ml-3">
-						<span class="text-base font-medium flex-1">Profile</span>
-						<i class="fas fa-chevron-down transition-transform duration-300"></i>
-					</div>
-					<ul class="submenu ml-6 mt-2">
-						{% if privileges|filter(p => p.name == 'Add Profile')|length > 0 %}
-						<a href="{{path('role_new')}}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add/Edit A Profile</li>
-						</a>
-						{% endif %}
-						{% if privileges|filter(p => p.name == 'List Profile')|length > 0 %}
-						{# <a href="{{path('role_new')}}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Edit a Profile</li>
-						</a> #}
-						{% endif %}
-						{% if privileges|filter(p => p.name == 'List Profile')|length > 0 %}
-						{# <a href="#">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List Profiles</li>
-						</a> #}
-						{% endif %}
-
-					</ul>
-				</li>
-				{% endif %}
-
-
-				{% set marks_privileges = ['Add Mark', 'View Marks'] %}
-				{% if privileges|filter(p => p.name in marks_privileges)|length > 0 %}
-				<li class="menu-item text-white text-sm cursor-pointer">
-					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
-						<img src="/icons/grades.png" alt="grades" class="w-4 h-4 ml-3">
-						<span class="text-base font-medium flex-1">Marks</span>
-						<i class="fas fa-chevron-down transition-transform duration-300"></i>
-					</div>
-					<ul class="submenu ml-6 mt-2">
-						{# {% if privileges|filter(p => p.name == 'Add Mark')|length > 0 %}
-						<a href="{{ path('add_note') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add a student's
-								marks</li>
-						</a>
-						{% endif %} #}
-						{% if privileges|filter(p => p.name == 'Add Mark')|length > 0 %}
-						<a href="{{path('cc_filieres')}}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add CC Mark
-								</li>
-						</a>
-						{% endif %}
-						{% if privileges|filter(p => p.name == 'Add Mark')|length > 0 %}
-						<a href="{{ path('ee_filieres') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add EE Mark
-								</li>
-						</a>
-						{% endif %}
-						{% if privileges|filter(p => p.name == 'Add Mark')|length > 0 %}
-						<a href="{{ path('rattrapage_filieres') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add Rattrapage Mark
-								</li>
-						</a>
-						{% endif %}
-						{% if privileges|filter(p => p.name == 'View Marks')|length > 0 %}
-						<a href="{{ path('choix_ec') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View students marks
-							</li>
-						</a>
-						{% endif %}
-					</ul>
-				</li>
-				{% endif %}
-
-				{% set ue_ec_privileges = ['Add UE', 'Add EC', 'List EC', 'List UE'] %}
-				{% if privileges|filter(p => p.name in ue_ec_privileges)|length > 0 %}
-				<li class="menu-item text-white text-sm cursor-pointer">
-					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
-						<img src="/icons/ue_ec.png" alt="grades" class="w-4 h-4 ml-3">
-						<span class="text-base font-medium flex-1">UE & EC</span>
-						<i class="fas fa-chevron-down transition-transform duration-300"></i>
-					</div>
-					<ul class="submenu ml-6 mt-2">
-						{% if privileges|filter(p => p.name == 'Add UE')|length > 0 %}
-						<a href="{{ path('add_ue') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add an UE</li>
-						</a>
-						{% endif %}
-						{% if privileges|filter(p => p.name == 'Add EC')|length > 0 %}
-						<a href="{{ path('add_ec') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add an EC</li>
-						</a>
-						{% endif %}
-						{% if privileges|filter(p => p.name == 'List EC')|length > 0 or privileges|filter(p => p.name == 'List UE')|length > 0 %}
-						<a href="{{ path('choix_ec') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">List of UE & EC</li>
-						</a>
-						{% endif %}
-
-					</ul>
-				</li>
-				{% endif %}
-
-				{% set school_privileges = ['Add user','Add School','View statistics','Add Level'] %}
-				{% if privileges|filter(p => p.name in school_privileges)|length > 0 %}
-				<li class="menu-item text-white text-sm cursor-pointer">
-					<div class="flex items-center gap-x-4 p-2 hover:bg-secondary rounded-md submenu-trigger">
-						<img src="/icons/responsable.png" alt="grades" class="w-4 h-4 ml-3">
-						<span class="text-base font-medium flex-1">School</span>
-						<i class="fas fa-chevron-down transition-transform duration-300"></i>
-					</div>
-					<ul class="submenu ml-6 mt-2">
-						{% if privileges|filter(p => p.name == 'Add School')|length > 0 %}
-						{# <a href="{{ path("school_new") }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add School</li>
-						</a> #}
-						{% endif %}
-						{% if privileges|filter(p => p.name == 'Add Level')|length > 0 %}
-						<a href="{{ path("level_new") }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add Level</li>
-						</a>
-						{% endif %}
-
-						{# {% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
-						<a href="{{ path('add_responsable') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add user</li>
-						</a>
-						{% endif %}  #}
-						{% if privileges|filter(p => p.name == 'Add user')|length > 0 %}
-						<a href="{{ path('app_register') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">Add user </li>
-						</a>
-						{% endif %}
-						{% if privileges|filter(p => p.name == 'View statistics')|length > 0 %}
-						<a href="{{ path('resp_statistics') }}">
-							<li class="submenu-item p-2 hover:bg-secondary rounded-md duration-300">View statistics</li>
-						</a>
-						{% endif %}
-					</ul>
-				</li>
-				{% endif %}
 			</ul>
-			{% else %}
-			
-			{% endif %}
-			</ul>
-			<div class="border-t border-gray-600 pt-4 mt-4 text-white">
-				<ul class="text-white">
-					<a href="{{path('app_profile_show')}}">
+
+			<div class="mt-auto border-t border-gray-600 pt-4">
+				<ul class="space-y-4">
+					<!-- <li
+						class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondary rounded-md relative">
+						<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+							xmlns="http://www.w3.org/2000/svg">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129">
+							</path>
+						</svg>
+						<span id="languageToggle" class="text-white font-medium flex-1">{{ app.request.locale|upper
+							}}</span>
+						<div id="languageMenu"
+							class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+							<a href="{{ path('change_language', {'locale': 'en'}) }}"
+								class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">English</a>
+							<a href="{{ path('change_language', {'locale': 'fr'}) }}"
+								class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Français</a>
+							<a href="{{ path('change_language', {'locale': 'es'}) }}"
+								class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Español</a>
+							<a href="{{ path('change_language', {'locale': 'ln'}) }}"
+								class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Lingala</a>
+						</div>
+					</li> -->
+					<li
+						class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
+						<svg id="themeToggleIcon" class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+							viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+							</path>
+						</svg>
+						<span id="themeToggleText"
+							class="text-white font-medium flex-1">{{'super_admin_dash.light_mode'|trans}}</span>
+					</li>
+					<a href="{{ path('app_profile_show') }}">
 						<li
-							class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
-							<i class="fas fa-user-circle w-4 h-4 ml-3 text-white"></i>
-							<span class="text-white font-medium flex-1">Profile</span>
-						</li>
-					</a>
-					<a href="#">
-						<li
-							class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
-							<i class="fas fa-cog w-4 h-4 ml-3 text-white"></i>
-							<span class="text-white font-medium flex-1">Settings</span>
-						</li>
-					</a>
-					<a href="#">
-						<li
-							class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
-							<i id="themeToggleIcon" class="fas fa-sun w-4 h-4 text-white"></i>
-							<span id="themeToggleText" class="text-white font-medium flex-1">Light Mode</span>
+							class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondary rounded-md">
+							<img class="w-6 h-6 rounded-full"
+								src="{{ user.profilePicture ? asset('uploads/profile_pictures/' ~ user.profilePicture) : asset('images/user.png') }}"
+								alt="Profile Picture">
+							<span class="text-white font-medium flex-1">{{ user.username }}</span>
 						</li>
 					</a>
 					<a href="{{ path('app_logout') }}">
 						<li
-							class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-secondary rounded-md">
-							<i class="fas fa-sign-out-alt w-4 h-4 ml-3 text-white	"></i>
-							<span class="text-white font-medium flex-1">Logout</span>
+							class="menu-item text-text text-sm flex items-center gap-x-4 cursor-pointer p-3 hover:bg-secondary rounded-md">
+							<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+								xmlns="http://www.w3.org/2000/svg">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+								</path>
+							</svg>
+							<span class="text-white font-medium flex-1">{{'super_admin_dash.logout'|trans}}</span>
 						</li>
 					</a>
 				</ul>
 			</div>
 		</div>
-		<div id="contentDiv" class="flex-1 bg-white">
+		<div id="contentDiv" class="flex-1 bg-white overflow-hidden">
 			<!-- Top Navigation -->
-			<header class="bg-white shadow p-4 flex justify-end items-end">
-				<div class="flex items-center space-x-4 mr-8">
-					<a href="{{path('app_profile_show')}}" class="flex space-x-4 items-center">
-						<div class="text-gray-900">{{ user.username }}</div>
-						{% if user.profilePicture %}
-						<img class="w-8 h-8 rounded-full"
-							src="{{ asset('uploads/profile_pictures/' ~ user.profilePicture) }}"
-							alt="Profile Picture" />
-						{% else %}
-						<img class="w-8 h-8 rounded-full" src="{{ asset('images/user.png') }}"
-							alt="Default Profile Picture" />
-						{% endif %}
-					</a>
-				</div>
-			</header>
+			<div class=" bg-white rounded-l pb-2 pt-4 pl-4 pr-4">
+				<header id="header_id"
+					class="bg-white ml-5 rounded-l p-4 border-b-2 border-gray-900 flex justify-between items-center">
+					<span
+						class="text-3xl font-bold text-gray-800 ml-[280px]">{{'super_admin_dash.dashboard'|trans}}</span>
+					<div class="flex items-center space-x-4 mr-8">
+						<a href="{{ path('app_documentation_page') }}" class="flex space-x-4 items-center">
+							<svg class="w-6 h-6 text-gray-900 -mr-2" fill="none" stroke="currentColor"
+								viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+								</path>
+							</svg>
+							<span>{{'super_admin_dash.help'|trans}}</span>
+						</a>
+					</div>
+				</header>
+			</div>
 
-			<div id="bodyDiv" class="p-7  bg-white flex-1 ">
-				<div class="flex-grow flex flex-col bg-white ">
+			<div id="bodyDiv" class="pl-10 pr-7 ml-5 mb-5 rounded-lg bg-white flex-1 overflow-hidden">
+				<div class="flex-grow flex flex-col bg-white">
 					<!-- Main Content Area -->
-					<main class="flex-grow p-4 overflow-x-hidden bg-white">
-						<div id="main_content_area" class="bg-white rounded-lg shadow-md h-full ml-64 p-6 ">
+					<main class="flex-grow p-3 overflow-hidden bg-white">
+						<div id="main_content_area" class="bg-white rounded-lg  h-full ml-64 overflow-hidden">
 							{% block body %}
 							{% block page_header %}{% endblock %}
 							{% endblock %}
@@ -392,6 +452,7 @@
 				</div>
 			</div>
 		</div>
+
 	</div>
 
 	<script>
@@ -406,8 +467,9 @@
 		const submenuItems = document.querySelectorAll('.submenu-item');
 		const themeToggleIcon = document.getElementById('themeToggleIcon');
 		const themeToggleText = document.getElementById('themeToggleText');
+		const header = document.getElementById('header_id');
 		let isOpen = true;
-		let isDarkMode = true;
+		let isDarkMode = document.documentElement.classList.contains('dark');
 
 		function toggleSidebar() {
 			isOpen = !isOpen;
@@ -485,15 +547,13 @@
 				const chevron = trigger.querySelector('.fa-chevron-down');
 
 				submenu.classList.toggle('active');
-				chevron.style.transform = submenu.classList.contains('active') ? 'rotate(180deg)' :
-					'rotate(0)';
+				chevron.style.transform = submenu.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
 
 				// Close other open submenus
 				submenus.forEach((otherSubmenu, otherIndex) => {
 					if (otherIndex !== index && otherSubmenu.classList.contains('active')) {
 						otherSubmenu.classList.remove('active');
-						const otherChevron = otherSubmenu.previousElementSibling.querySelector(
-							'.fa-chevron-down');
+						const otherChevron = otherSubmenu.previousElementSibling.querySelector('.fa-chevron-down');
 						otherChevron.style.transform = 'rotate(0)';
 					}
 				});
@@ -519,36 +579,93 @@
 		}
 
 
-		// Theme toggle functionality
 		function toggleTheme() {
 			isDarkMode = !isDarkMode;
 			document.documentElement.classList.toggle('dark', isDarkMode);
+			localStorage.setItem('color-theme', isDarkMode ? 'dark' : 'light');
 
 			if (isDarkMode) {
-				document.documentElement.style.setProperty;
-				themeToggleIcon.classList.replace('fa-moon', 'fa-sun');
+				themeToggleIcon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        `;
 				themeToggleText.textContent = 'Light Mode';
 			} else {
-				themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
+				themeToggleIcon.innerHTML = `
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        `;
 				themeToggleText.textContent = 'Dark Mode';
 			}
 		}
 
+		// Set initial theme
+		if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+			document.documentElement.classList.add('dark');
+			isDarkMode = true;
+			themeToggleIcon.innerHTML = `
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+    `;
+			themeToggleText.textContent = 'Light Mode';
+		} else {
+			document.documentElement.classList.remove('dark');
+			isDarkMode = false;
+			themeToggleIcon.innerHTML = `
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+    `;
+			themeToggleText.textContent = 'Dark Mode';
+		}
+
 		themeToggleIcon.parentElement.addEventListener('click', toggleTheme);
+
+		// Language menu toggle
+		const languageToggle = document.getElementById('languageToggle');
+		const languageMenu = document.getElementById('languageMenu');
+
+		languageToggle.addEventListener('click', function (e) {
+			e.stopPropagation();
+			languageMenu.classList.toggle('hidden');
+		});
+
+		document.addEventListener('click', function () {
+			languageMenu.classList.add('hidden');
+		});
+
+		// Adjust icons and text in shrink mode
+		function adjustShrinkMode() {
+			const isShrinked = sidebarDiv.classList.contains('w-20');
+			const icons = document.querySelectorAll('.sidebar-item svg, .sidebar-item img');
+
+			icons.forEach(icon => {
+				if (isShrinked) {
+					icon.classList.remove('w-6', 'h-6');
+					icon.classList.add('w-8', 'h-8');
+				} else {
+					icon.classList.remove('w-8', 'h-8');
+					icon.classList.add('w-6', 'h-6');
+				}
+			});
+		}
+
+
+		// Call this function after toggling the sidebar
+		toggleBtn.addEventListener('click', () => {
+			toggleSidebar();
+			adjustShrinkMode();
+		});
 
 		// // Initialize theme based on system preference
 		// if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-		// 	document.documentElement.classList.add('dark');
+		// document.documentElement.classList.add('dark');
 		// } else {
-		// 	isDarkMode = false;
-		// 	themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
-		// 	themeToggleText.textContent = 'Dark Mode';
+		// isDarkMode = false;
+		// themeToggleIcon.classList.replace('fa-sun', 'fa-moon');
+		// themeToggleText.textContent = 'Dark Mode';
 		// }
 
 		// Set active state based on the current page
 		const currentPage = window.location.pathname.split('/').pop();
 		setActiveMenuItem(currentPage);
 	</script>
+</body>
 </body>
 
 </html>

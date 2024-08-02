@@ -111,6 +111,7 @@ welcome_page:
 # Language choice page text
 language_choice_page:
   language-message: "Veuillez choisir votre langue"
+  language-desc: "Choisissez le langage que vous preferez"
   english-language: "Anglais"
   french-language: "Français"
   spanish-language: "Espagnol"
@@ -266,3 +267,28 @@ admin_dash:
 
 student_dash:
   'Student Dashboard': 'Tableau de bord étudiant'
+
+
+
+super_admin_dash:
+  title: 'Tableau de bord Super Admin'
+  app_title: "SYGENES"
+  home: 'Accueil'
+  new_school: 'Créer une nouvelle école'
+  new_user: 'Créer un nouveau gestionnaire'
+  new_field: 'Créer un nouveau domaine'
+  new_field_man: 'Créer un nouveau gestionnaire de domaine'
+  new_level: 'Créer un nouveau niveau'
+  new_level_man: 'Créer un nouveau gestionnaire de niveau'
+  new_ue: 'Créer une nouvelle UE'
+  new_ec: 'Créer une nouvelle EC'
+  new_ue_man: 'Créer un nouveau gestionnaire de UE'
+  new_ec_man: 'Créer un nouveau gestionnaire de EC'
+  add_marks: 'Ajouter des notes'
+  add_anony: 'Ajouter des anonymats'
+  my_grades: 'Mes notes'
+  my_courses: 'Mes cours'
+  light_mode: 'Mode clair'
+  logout: "Déconnexion"
+  dashboard: 'Tableau de bord'
+  help: 'Aide'

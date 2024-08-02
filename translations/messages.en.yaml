@@ -33,7 +33,7 @@ home_page:
   documentation_prompt: 'Consult our documentation if you are lost.'
   read_more: 'Read more'
   welcome: 'Welcome to'
-  description: 'Your all in one Marks Management System, made for and by the International Advanced School of Digital Engineering.'
+  description: 'Effortlessly manage student marks and academic performance with our intuitive Marks Management System'
   sign_up: 'Sign Up'
   log_in: 'Log in'
   register_prompt: 'New to the School? Register Now.'
@@ -41,6 +41,7 @@ home_page:
   student_registration: 'Student Registration'
   learn_more: 'Learn more'
   app_screenshot: 'App screenshot'
+  get_started: 'Get Started'
 
   about:
     title: 'About'
@@ -115,6 +116,7 @@ welcome_page:
 # Language choice page text
 language_choice_page:
   language-message: "Please choose your language"
+  language-desc: "Select below the language that you prefer"
   english-language: "English"
   french-language: "French"
   spanish-language: "Spanish"
@@ -229,8 +231,10 @@ register_page:
 # Login Page variables text
 login_page:
   title: 'Login'
+  welcome_message: ""
+  slogan: ""
   logo_alt: 'UIECC Logo'
-  heading: 'Sign in to your account'
+  heading: 'Login'
   username_label: 'Username'
   password_label: 'Password'
   forgot_password: 'Forgot password?'
@@ -285,6 +289,63 @@ student_dash:
   'Student Dashboard': 'Student Dashboard'
 
 
+
+
+
+super_admin_dash:
+  title: 'Super Admin Dashboard'
+  app_title: "SYGENES"
+  home: 'Home'
+  new_school: 'Create a new school'
+  new_user: 'Create a new manager'
+  new_field: 'Create a new field'
+  new_field_man: 'Create a new field manager'
+  new_level: 'Create a new level'
+  new_level_man: 'Create a new level manager'
+  new_ue: 'Create a new UE'
+  new_ec: 'Create a new EC'
+  new_ue_man: 'Create a new UE manager'
+  new_ec_man: 'Create a new EC manager'
+  add_marks: 'Add marks'
+  add_anony: 'Add anonymats'
+  my_grades: 'My grades'
+  my_courses: 'My courses'
+  light_mode: 'Light mode'
+  logout: "Logout"
+  dashboard: 'UIECC Dashboard'
+  help: 'Help'
+
+# translations/messages.en.yaml
+
+flash:
+  success: "Success!"
+  error: "Error!"
+
+field_manager:
+  UIECC Dashboard: "UIECC Dashboard"
+  Dashboard Statistics: "Dashboard Statistics"
+  Fields: "Fields"
+  Field Responsibles: "Field Responsibles"
+  Avg Responsibles/Field: "Avg Responsibles/Field"
+  Quick Actions: "Quick Actions"
+  Create Field: "Create Field"
+  Create Field Responsible: "Create Field Responsible"
+  Lists: "Lists"
+  Field List: "Field List"
+  Field managers: "Field Responsibles"
+  Name: "Name"
+  Description: "Description"
+  Actions: "Actions"
+  Phone Number: "Phone Number"
+  Email: "Email"
+  Are you sure you want to delete this field?: "Are you sure you want to delete this field?"
+  Are you sure you want to delete this responsible?: "Are you sure you want to delete this responsible?"
+  Delete: "Delete"
+  No fields found: "No fields found"
+  No responsibles found: "No responsibles found"
+
+  
+
 # Student Dashboard Page and subpages
 
 #register school gestionnaire page
@@ -305,12 +366,12 @@ register_responsible:
 # school manager dashboard
 school_manager:
   UIECC Dashboard: "UIECC Dashboard"
-  Welcome to UIECC: "Welcome to UIECC"
+  Welcome to UIECC: "UIECC"
   Today is: "Today is"
   Create a School: "Create a School"
   Easily add a new school to the university with just a click: "Easily add a new school to the university with just a click"
   Click below to add a school to the university: "Click below to add a school to the university"
-  Create School: "Create School"
+  Create School: "Create a School"
   School List: "School List"
   Below is the list of schools you've created so far: "Below is the list of schools you've created so far"
   Name: "Name"
@@ -322,12 +383,44 @@ school_manager:
   Delete: "Delete"
   Are you sure you want to delete this school?: "Are you sure you want to delete this school?"
   No schools found: "No schools found"
-  Create an Authority: "Create an Authority"
+  Create an Authority: "Create a manager"
   Add an authority with specific privileges to manage schools: "Add an authority with specific privileges to manage schools"
   Click below to add an authority with privileges: "Click below to add an authority with privileges"
-  Create Authority: "Create Authority"
-  School Responsibles: "School Responsibles"
+  Create Authority: "Create a manager"
+  School Responsibles: "School Managers"
   Below is the list of school responsibles: "Below is the list of school responsibles"
   Are you sure you want to delete this responsible?: "Are you sure you want to delete this responsible?"
   No responsibles found: "No responsibles found"
+  Dashboard Statistics: "Statistics"
+  Quick Actions: "Quick Actions"
+
+
+
+# translations/level_manager.en.yaml
+level_manager:
+  UIECC Dashboard - : "UIECC Dashboard - "
+  Dashboard Statistics: "Dashboard Statistics"
+  Students: "Students"
+  UEs: "UEs"
+  ECs: "ECs"
+  Levels: "Levels"
+  Create Level: "Create Level"
+  Create Level Responsible: "Create Level Responsible"
+  Level List: "Level List"
+  Level managers: "Level managers"
+  Level Name: "Level Name"
+  Actions: "Actions"
+  Delete: "Delete"
+  No levels found: "No levels found"
+  Are you sure you want to delete this level?: "Are you sure you want to delete this level?"
+  Name: "Name"
+  Level: "Level"
+  Phone Number: "Phone Number"
+  Email: "Email"
+  No responsibles found: "No responsibles found"
+  Are you sure you want to delete this responsible?: "Are you sure you want to delete this responsible?"
+  Quick Actions: 'Quick Actions'
+  flash:
+    success: "Success"
+    error: "Error"
 

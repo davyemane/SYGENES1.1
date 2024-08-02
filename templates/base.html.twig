@@ -17,8 +17,8 @@
   {% block head %}{% block title %}<title>{{ 'home_header.app.title'|trans }}</title>{% endblock %}{% endblock %}
 </head>
 
-<body class="h-full bg-background dark:bg-background text-text dark:text-text">
-  <header class="bg-background dark:bg-background text-text dark:text-text">
+<body class="h-full bg-background dark:bg-background text-text dark:text-text overflow-hidden">
+  {# <header class="bg-background dark:bg-background text-text dark:text-text">
     <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
       <div class="flex items-center lg:flex-1">
         <a href="{{ path('app_home_page') }}" class="-m-1.5 p-1.5 flex items-center hover:text-secondary">
@@ -169,14 +169,14 @@
         </div>
       </div>
     </div>
-  </header>
+  </header> #}
 
   <div class="pt-16 lg:pt-0">
     {% block body %} {% endblock %}
   </div>
   <div class="flex flex-col">
     <footer class="footer py-3 my-4 mt-auto z-20">
-      <ul class="flex justify-center border-b pb-3 mb-3" style="border-color: rgba(71, 71, 71, 0.1);">
+      {# <ul class="flex justify-center border-b pb-3 mb-3" style="border-color: rgba(71, 71, 71, 0.1);">
         <li class="nav-item">
           <a class="hover:text-secondary px-2" href="{{ path('app_home_page') }}">{{ 'home_header.nav.home'|trans }}</a>
         </li>
@@ -190,7 +190,7 @@
           <a class="hover:text-secondary px-2"
             href="{{ path('app_documentation_page') }}">{{ 'home_header.nav.documentation'|trans }}</a>
         </li>
-      </ul>
+      </ul> #}
       <p class="text-center">{{ 'home_header.footer.copyright'|trans({'%year%': 'now'|date('Y')}) }}</p>
     </footer>
   </div>
