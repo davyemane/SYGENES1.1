@@ -2,11 +2,10 @@
 
 namespace App\EventListener;
 
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\School;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class AuthenticationSuccessListener
 {
@@ -48,9 +47,25 @@ class AuthenticationSuccessListener
         }
         // Vérifier si l'utilisateur est un Teacher
         elseif ($user->getTeacher()) {
-            // Supposons que Teacher ait une relation avec School
-            $school = $user->getTeacher()->getSchool();
+            $ecs = $user->getTeacher()->getEcs();
+            if (!$ecs->isEmpty()) {
+                $firstEc = $ecs->first();
+                $school = $firstEc->getUe()->getLevel()->getField()->getSchool();
+            }
+
+            
         }
+
+        elseif ($user->getAssistantTeacher()) {
+            $ecs = $user->getAssistantTeacher()->getTeacher()->getEcs();
+            if (!$ecs->isEmpty()) {
+                $firstEc = $ecs->first();
+                $school = $firstEc->getUe()->getLevel()->getField()->getSchool();
+            }
+
+            
+        }
+
         // Vérifier si l'utilisateur est un Student
         elseif ($user->getStudent()) {
             $school = $user->getStudent()->getLevel()->getField()->getSchool();

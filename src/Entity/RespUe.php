@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\RespUeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,6 +36,17 @@ class RespUe
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $created_at = null;
+
+    /**
+     * @var Collection<int, AssistantRespue>
+     */
+    #[ORM\OneToMany(targetEntity: AssistantRespue::class, mappedBy: 'Respue')]
+    private Collection $assistantRespues;
+
+    public function __construct()
+    {
+        $this->assistantRespues = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +133,36 @@ class RespUe
     public function setCreatedAt(?\DateTimeInterface $created_at): static
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AssistantRespue>
+     */
+    public function getAssistantRespues(): Collection
+    {
+        return $this->assistantRespues;
+    }
+
+    public function addAssistantRespue(AssistantRespue $assistantRespue): static
+    {
+        if (!$this->assistantRespues->contains($assistantRespue)) {
+            $this->assistantRespues->add($assistantRespue);
+            $assistantRespue->setRespue($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssistantRespue(AssistantRespue $assistantRespue): static
+    {
+        if ($this->assistantRespues->removeElement($assistantRespue)) {
+            // set the owning side to null (unless already changed)
+            if ($assistantRespue->getRespue() === $this) {
+                $assistantRespue->setRespue(null);
+            }
+        }
 
         return $this;
     }

@@ -32,24 +32,6 @@ class EeController extends AbstractController
 
         $user = $this->getUser();
         // Collect all unique privileges of the user
-        $privileges = [];
-        foreach ($user->getRole() as $role) {
-            foreach ($role->getPrivileges() as $privilege) {
-                $privileges[$privilege->getId()] = $privilege; // Use ID as key to avoid duplicates
-            }
-        }
-        // Récupérer la session de l'utilisateur
-        $session = $request->getSession();
-        $schoolName = $session->get('school_name');
-
-        if (!$schoolName) {
-            throw $this->createAccessDeniedException('Aucune école sélectionnée dans la session.');
-        }
-
-        $school = $entityManager->getRepository(School::class)->findOneBy(['name' => $schoolName]);
-        if (!$school) {
-            throw $this->createNotFoundException('École non trouvée.');
-        }
 
         $ec = $entityManager->getRepository(EC::class)->find($ecId);
         if (!$ec) {
@@ -64,13 +46,7 @@ class EeController extends AbstractController
             throw $this->createNotFoundException('Aucun champ trouvé pour cette UE.');
         }
 
-        $belongsToSchool = $fields->exists(function ($key, $field) use ($school) {
-            return $field->getSchool() === $school;
-        });
 
-        if (!$belongsToSchool) {
-            throw $this->createAccessDeniedException('Vous n\'avez pas accès à cet EC dans l\'école actuelle.');
-        }
 
         // Récupérer le nom de la première filière (supposons qu'il n'y en a qu'une)
         $field = $fields->first();
@@ -103,7 +79,7 @@ class EeController extends AbstractController
                 }
 
                 // Convertir la note sur 20
-                $convertedMark = ($originalMark / $totalPoints) * 20;
+                $convertedMark = ($originalMark / $totalPoints) * 70;
                 $ee->setMark($convertedMark);
 
                 // Calculer et définir le grade (exemple simplifié)
@@ -126,7 +102,6 @@ class EeController extends AbstractController
             'ue' => $ue,
             'fieldName' => $fieldName,
             'user' => $user,
-            'privileges' => $privileges,
         ]);
     }
 

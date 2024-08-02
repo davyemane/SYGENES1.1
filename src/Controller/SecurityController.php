@@ -83,10 +83,14 @@ class SecurityController extends AbstractController
         } elseif ($this->security->isGranted('ROLE_RESPUE')) {
             return $this->redirectToRoute('respue_dashboard');
         } elseif ($this->security->isGranted('ROLE_TEACHER')) {
-            return $this->redirectToRoute('app_dashTeacher');
-        } elseif ($this->security->isGranted('ROLE_STUDENT')) {
-            return $this->redirectToRoute('app_dashStudent');
-        } else {
+            return $this->redirectToRoute('teacher_ec_dashboard');
+        } elseif ($this->security->isGranted('ROLE_ASSISTANT_TEACHER')) {
+            return $this->redirectToRoute('assistant_teacher_dashboard');
+        }  elseif ($this->security->isGranted('ROLE_STUDENT')) {
+        return $this->redirectToRoute('#');
+    }
+        
+        else {
             // Si aucun rôle correspondant n'est trouvé, rediriger vers la page d'accueil
             return $this->redirectToRoute('app_home');
         }

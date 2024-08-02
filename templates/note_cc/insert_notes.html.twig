@@ -8,9 +8,6 @@
 
     <div class="mb-8 text-center">
         <p class="text-lg text-gray-700">
-            <span class="font-semibold">Filière :</span> {{ field.name }}
-        </p>
-        <p class="text-lg text-gray-700">
             <span class="font-semibold">UE :</span> {{ ue.name }}
         </p>
         <p class="text-lg text-gray-700">
@@ -33,21 +30,13 @@
             </div>
 
             <div class="mb-6">
-                <label for="cc_max" class="block text-gray-700 text-sm font-bold mb-2">Note maximale CC :</label>
-                <select id="cc_max" name="cc_max" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 transition duration-300">
-                    {% for i in range(20, 100, 10) %}
-                        <option value="{{ i }}">{{ i }}</option>
-                    {% endfor %}
-                </select>
+                {{ form_label(form.ccMax, 'Note maximale CC :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                {{ form_widget(form.ccMax, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 transition duration-300'}}) }}
             </div>
 
             <div class="mb-6" id="tp_max_container">
-                <label for="tp_max" class="block text-gray-700 text-sm font-bold mb-2">Note maximale TP :</label>
-                <select id="tp_max" name="tp_max" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 transition duration-300">
-                    {% for i in range(20, 100, 10) %}
-                        <option value="{{ i }}">{{ i }}</option>
-                    {% endfor %}
-                </select>
+                {{ form_label(form.tpMax, 'Note maximale TP :', {'label_attr': {'class': 'block text-gray-700 text-sm font-bold mb-2'}}) }}
+                {{ form_widget(form.tpMax, {'attr': {'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 transition duration-300'}}) }}
             </div>
 
             <div class="overflow-x-auto bg-white rounded-lg shadow">
@@ -99,8 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const tpMaxContainer = document.getElementById('tp_max_container');
     const tpInputs = document.querySelectorAll('.tp-input');
     const ccInputs = document.querySelectorAll('.cc-input');
-    const ccMaxSelect = document.getElementById('cc_max');
-    const tpMaxSelect = document.getElementById('tp_max');
+    const ccMaxSelect = document.querySelector('select[name="form[ccMax]"]');
+    const tpMaxSelect = document.querySelector('select[name="form[tpMax]"]');
 
     function toggleTpFields() {
         if (hasTpCheckbox.checked) {
