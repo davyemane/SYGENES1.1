@@ -89,7 +89,6 @@ class NoteCCController extends AbstractController
         }
 
         // Récupérer la filière associée à ce niveau
-
         foreach ($level as $levels) {
             $level = $levels;
         }
@@ -102,12 +101,10 @@ class NoteCCController extends AbstractController
             $field = $fields;
         }
 
-
         if (!$field) {
             throw $this->createNotFoundException('Filière non trouvée pour ce niveau');
         }
 
-        // Rechercher les étudiants correspondant à ce niveau et cette filière
         // Rechercher les étudiants correspondant à ce niveau et cette filière
         $students = $entityManager->getRepository(Student::class)
             ->createQueryBuilder('s')
@@ -129,12 +126,23 @@ class NoteCCController extends AbstractController
                 'multiple' => false,
                 'label' => 'Cet EC a-t-il un TP ?'
             ])
+            ->add('ccMax', ChoiceType::class, [
+                'choices' => array_combine(range(20, 100, 10), range(20, 100, 10)),
+                'label' => 'Note maximale CC'
+            ])
+            ->add('tpMax', ChoiceType::class, [
+                'choices' => array_combine(range(20, 100, 10), range(20, 100, 10)),
+                'label' => 'Note maximale TP',
+                'required' => false,
+            ])
             ->getForm();
 
         $form->handleRequest($request);
 
         if ($request->isMethod('POST')) {
             $hasTp = $form->get('hasTp')->getData();
+            $ccMax = $form->get('ccMax')->getData();
+            $tpMax = $form->get('tpMax')->getData();
             $ec->setHasTp($hasTp);
 
             $data = $request->request->all();
@@ -160,11 +168,21 @@ class NoteCCController extends AbstractController
                 $noteCcTp->setHasTp($hasTp);
 
                 $ccNote = $data['cc_' . $student->getId()] ?? null;
-                $noteCcTp->setCc($ccNote ? floatval($ccNote) : null);
+                if ($ccNote !== null) {
+                    $ccNoteConverted = (floatval($ccNote) * 30) / $ccMax; // Conversion based on selected max CC points
+                    $noteCcTp->setCc($ccNoteConverted);
+                } else {
+                    $noteCcTp->setCc(null);
+                }
 
                 if ($hasTp) {
                     $tpNote = $data['tp_' . $student->getId()] ?? null;
-                    $noteCcTp->setTp($tpNote ? floatval($tpNote) : null);
+                    if ($tpNote !== null) {
+                        $tpNoteConverted = (floatval($tpNote) * 20) / $tpMax; // Conversion based on selected max TP points
+                        $noteCcTp->setTp($tpNoteConverted);
+                    } else {
+                        $noteCcTp->setTp(null);
+                    }
                 }
 
                 $entityManager->persist($noteCcTp);
@@ -181,6 +199,69 @@ class NoteCCController extends AbstractController
             'students' => $students,
             'user' => $user,
             'ue' => $ue
+        ]);
+    }
+
+
+
+    //affichage des notes de cc
+    #[Route('/display-notes/{ecId}', name: 'displayNotesCc')]
+    public function displayNotes(Request $request, EntityManagerInterface $entityManager, int $ecId): Response
+    {
+        // Récupérer l'EC à partir de l'ID
+        $ec = $entityManager->getRepository(EC::class)->find($ecId);
+        if (!$ec) {
+            throw $this->createNotFoundException('EC non trouvé');
+        }
+
+        $user = $this->getUser();
+        // Récupérer l'UE associée à cet EC
+        $ue = $ec->getUe();
+        if (!$ue) {
+            throw $this->createNotFoundException('UE non trouvée pour cet EC');
+        }
+
+        // Récupérer le niveau associé à cette UE
+        $level = $ue->getLevel();
+        if (!$level) {
+            throw $this->createNotFoundException('Niveau non trouvé pour cette UE');
+        }
+
+        // Récupérer la filière associée à ce niveau
+        $field = $level->getField();
+        if (!$field) {
+            throw $this->createNotFoundException('Filière non trouvée pour ce niveau');
+        }
+
+        // Rechercher les étudiants correspondant à ce niveau et cette filière
+        $students = $entityManager->getRepository(Student::class)
+            ->createQueryBuilder('s')
+            ->where('s.field = :field')
+            ->andWhere('s.level = :level')
+            ->setParameter('field', $field)
+            ->setParameter('level', $level)
+            ->getQuery()
+            ->getResult();
+
+        // Récupérer les notes pour chaque étudiant
+        $studentNotes = [];
+        foreach ($students as $student) {
+            $note = $entityManager->getRepository(NoteCcTp::class)->findOneBy([
+                'student' => $student,
+                'eC' => $ec
+            ]);
+
+            $studentNotes[] = [
+                'student' => $student,
+                'note' => $note
+            ];
+        }
+
+        return $this->render('note_cc/display_notes.html.twig', [
+            'ec' => $ec,
+            'ue' => $ue,
+            'studentNotes' => $studentNotes,
+            'user' => $user
         ]);
     }
 

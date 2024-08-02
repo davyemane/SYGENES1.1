@@ -225,12 +225,6 @@ class StudentController extends AbstractController
             $studentDirectory = 'uploads/certificates';
         } else {
             // Check if the user has ROLE_ADMIN
-            if (!$this->isGranted('ROLE_RPA')) {
-                // Redirect to a custom error page
-                return $this->render('student/error.html.twig', [
-                    'message' => 'Access Denied'
-                ], new Response('', Response::HTTP_FORBIDDEN));
-            }
             $student = new Student();
         }
 
@@ -294,19 +288,6 @@ class StudentController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        // Vérifier si l'utilisateur a le privilège "List Student"
-        $hasListStudentPrivilege = false;
-        foreach ($user->getRole() as $role) {
-            foreach ($role->getPrivileges() as $privilege) {
-                if ($privilege->getName() === 'Add Student') {
-                    $hasListStudentPrivilege = true;
-                    break 2;
-                }
-            }
-        }
-        if (!$hasListStudentPrivilege) {
-            return $this->render('student/error.html.twig', ['message' => 'Access denied']);
-        }
 
 
         $studentRepository = $doctrine->getRepository(Student::class);

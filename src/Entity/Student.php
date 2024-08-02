@@ -73,6 +73,7 @@ class Student
     {
         $this->notes = new ArrayCollection();
         $this->notescctps = new ArrayCollection();
+        $this->anonymats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -305,6 +306,12 @@ class Student
     #[ORM\OneToOne(mappedBy: 'student', cascade: ['persist', 'remove'])]
     private ?Anonymat $anonymat = null;
 
+    /**
+     * @var Collection<int, Anonymat>
+     */
+    #[ORM\OneToMany(targetEntity: Anonymat::class, mappedBy: 'student')]
+    private Collection $anonymats;
+
 
     public function setFullGrades(array $fullGrades): self
     {
@@ -375,6 +382,36 @@ class Student
             $this->level = null;
         }
     
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Anonymat>
+     */
+    public function getAnonymats(): Collection
+    {
+        return $this->anonymats;
+    }
+
+    public function addAnonymat(Anonymat $anonymat): static
+    {
+        if (!$this->anonymats->contains($anonymat)) {
+            $this->anonymats->add($anonymat);
+            $anonymat->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnonymat(Anonymat $anonymat): static
+    {
+        if ($this->anonymats->removeElement($anonymat)) {
+            // set the owning side to null (unless already changed)
+            if ($anonymat->getStudent() === $this) {
+                $anonymat->setStudent(null);
+            }
+        }
+
         return $this;
     }
     

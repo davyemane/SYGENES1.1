@@ -16,12 +16,13 @@ class Anonymat
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $anonymat = null;
 
-    #[ORM\OneToOne(inversedBy: 'anonymat', cascade: ['persist', 'remove'])]
-    private ?Student $student = null;
 
 
     #[ORM\ManyToOne(inversedBy: 'anonymats')]
     private ?EC $eC = null;
+
+    #[ORM\ManyToOne(inversedBy: 'anonymats')]
+    private ?Student $student = null;
 
     public function getId(): ?int
     {
@@ -40,17 +41,6 @@ class Anonymat
         return $this;
     }
 
-    public function getStudent(): ?Student
-    {
-        return $this->student;
-    }
-
-    public function setStudent(?Student $student): static
-    {
-        $this->student = $student;
-
-        return $this;
-    }
 
 
     public function getEC(): ?EC
@@ -61,6 +51,18 @@ class Anonymat
     public function setEC(?EC $eC): static
     {
         $this->eC = $eC;
+
+        return $this;
+    }
+
+    public function getStudent(): ?Student
+    {
+        return $this->student;
+    }
+
+    public function setStudent(?Student $student): static
+    {
+        $this->student = $student;
 
         return $this;
     }

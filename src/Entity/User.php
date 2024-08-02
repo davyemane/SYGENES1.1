@@ -105,6 +105,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?AssistantTeacher $assistantTeacher = null;
 
+    /**
+     * @var Collection<int, AssistantRespue>
+     */
+    #[ORM\OneToMany(targetEntity: AssistantRespue::class, mappedBy: 'created_by')]
+    private Collection $assistantRespues;
+
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?AssistantRespue $assistantRespue = null;
+
     public function __construct()
     {
         $this->noteCcTps = new ArrayCollection();
@@ -114,6 +123,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->respLevels = new ArrayCollection();
         $this->respUes = new ArrayCollection();
         $this->teachers = new ArrayCollection();
+        $this->assistantRespues = new ArrayCollection();
     }
 
 
@@ -522,6 +532,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->assistantTeacher = $assistantTeacher;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AssistantRespue>
+     */
+    public function getAssistantRespues(): Collection
+    {
+        return $this->assistantRespues;
+    }
+
+    public function addAssistantRespue(AssistantRespue $assistantRespue): static
+    {
+        if (!$this->assistantRespues->contains($assistantRespue)) {
+            $this->assistantRespues->add($assistantRespue);
+            $assistantRespue->setCreatedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssistantRespue(AssistantRespue $assistantRespue): static
+    {
+        if ($this->assistantRespues->removeElement($assistantRespue)) {
+            // set the owning side to null (unless already changed)
+            if ($assistantRespue->getCreatedBy() === $this) {
+                $assistantRespue->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAssistantRespue(): ?AssistantRespue
+    {
+        return $this->assistantRespue;
+    }
+
+    public function setAssistantRespue(?AssistantRespue $assistantRespue): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($assistantRespue === null && $this->assistantRespue !== null) {
+            $this->assistantRespue->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($assistantRespue !== null && $assistantRespue->getUser() !== $this) {
+            $assistantRespue->setUser($this);
+        }
+
+        $this->assistantRespue = $assistantRespue;
 
         return $this;
     }

@@ -52,7 +52,12 @@ class RespECController extends AbstractController
         $failedStudents = $ecRepository->countStudentsByTeacherAndStatus($teacher, 'failed');
         $registeredStudents = $ecRepository->countStudentsByTeacher($teacher);
         
-        $assistants = []; // You'll need to implement this based on your data structure
+        $assistants = []; 
+        $i =0;
+        foreach ($teacher->getAssistantTeachers() as $assistant) {
+            $assistants[$i]= $assistant;
+            $i +=1; 
+        }
         
         return $this->render('admin_dashboard/teacher_dashboard.html.twig', [
             'ecs' => $ecs,

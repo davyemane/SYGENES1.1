@@ -20,16 +20,11 @@ class ImportExcelController extends AbstractController
     #[Route('/import', name: 'import')]
     public function importExcel(Request $request, EntityManagerInterface $entityManager): Response
     {
-
-
-
         $user = $this->getUser();
 
         if (!$user) {
             return $this->redirectToRoute('app_login');
         }
-
-
 
         $form = $this->createForm(ExcelFormType::class);
         $form->handleRequest($request);
@@ -46,45 +41,46 @@ class ImportExcelController extends AbstractController
 
                     $sheet = $spreadsheet->getActiveSheet();
 
-                    foreach ($sheet->getRowIterator() as $row) {
+                    foreach ($sheet->getRowIterator(2) as $row) {  // Start from row 2 to skip header
+                        $cellIterator = $row->getCellIterator();
+                        $cellIterator->setIterateOnlyExistingCells(false);
                         $userData = [];
-                        foreach ($row->getCellIterator() as $cell) {
+                        foreach ($cellIterator as $cell) {
                             $userData[] = $cell->getValue();
                         }
 
-                        // Recherche ou création de l'entité Field
-                        $fieldName = $userData[0]; // Assumption: Field name is in the first column of Excel
-                        $field = $entityManager->getRepository(Field::class)->findOneBy(['code' => $fieldName]);
+                        // Recherche de l'entité Field
+                        $fieldCode = $userData[0];
+                        $field = $entityManager->getRepository(Field::class)->findOneBy(['code' => $fieldCode]);
 
                         if (!$field) {
-                            $field = new Field();
-                            $field->setCode($fieldName);
-                            // Définir d'autres propriétés de Field si nécessaire
-                            $entityManager->persist($field);
+                            $this->addFlash('warning', "La filière avec le code '$fieldCode' n'existe pas dans la base de données.");
+                            continue;  // Skip this row and continue with the next
                         }
 
-                        // Recherche ou création de l'entité Level
-                        $levelName = $userData[1]; // Assumption: Level name is in the second column of Excel
-                        $level = $entityManager->getRepository(Level::class)->findOneBy(['name' => $levelName]);
+                        // Recherche de l'entité Level
+                        $levelName = $userData[1];
+                        $level = $entityManager->getRepository(Level::class)->findOneBy([
+                            'name' => $levelName,
+                            'field' => $field
+                        ]);
 
                         if (!$level) {
-                            $level = new Level();
-                            $level->setName($levelName);
-                            // Définir d'autres propriétés de Level si nécessaire
-                            $entityManager->persist($level);
+                            $this->addFlash('warning', "Le niveau '$levelName' n'existe pas pour la filière '$fieldCode'.");
+                            continue;  // Skip this row and continue with the next
                         }
 
                         // Conversion de la date de naissance
-                        $dateOfBirth = $this->convertToDate($userData[5]); // Assumption: Date of birth is in the sixth column of Excel
+                        $dateOfBirth = $this->convertToDate($userData[5]);
 
                         // Création d'un nouvel étudiant et assignation des entités Field et Level
                         $student = new Student();
-                        $student->setField($field); // Assignation de l'entité Field
-                        $student->setLevel($level); // Assignation de l'entité Level
+                        $student->setField($field);
+                        $student->setLevel($level);
                         $student->setName($userData[2]);
                         $student->setEmail($userData[3]);
                         $student->setPhoneNumber($userData[4]);
-                        $student->setDateOfBirth($dateOfBirth); // Assignation de la date de naissance convertie
+                        $student->setDateOfBirth($dateOfBirth);
                         $student->setPlaceOfBirth($userData[6]);
                         $student->setSexe($userData[7]);
                         $student->setCni($userData[8]);
@@ -113,13 +109,6 @@ class ImportExcelController extends AbstractController
         ]);
     }
 
-    /**
-     * Convertit une chaîne de caractères en objet DateTimeInterface.
-     *
-     * @param string|null $dateString La chaîne de caractères représentant la date.
-     * @return \DateTimeInterface|null L'objet DateTimeInterface ou null si la chaîne est vide.
-     * @throws \Exception Si la chaîne de caractères ne peut pas être convertie en objet DateTimeInterface.
-     */
     private function convertToDate(?string $dateString): ?\DateTimeInterface
     {
         if (!$dateString) {
@@ -130,7 +119,7 @@ class ImportExcelController extends AbstractController
             $date = \DateTime::createFromFormat('d/m/y', $dateString);
             
             if (!$date) {
-                return null; // Retourne null si la conversion échoue
+                return null;
             }
     
             return $date->setTime(0, 0);
@@ -138,4 +127,4 @@ class ImportExcelController extends AbstractController
             throw new \Exception("Erreur lors de la conversion de la date : " . $e->getMessage());
         }
     }
-    }
+}

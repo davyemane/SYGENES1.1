@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\AssistantRespue;
 use App\Entity\AssistantTeacher;
 use App\Entity\Field;
 use App\Entity\RespField;
@@ -12,6 +13,7 @@ use App\Entity\RespUe;
 use App\Entity\School;
 use App\Entity\Teacher;
 use App\Entity\User;
+use App\Form\AssistantRespueType;
 use App\Form\AssistantTeacherType;
 use App\Form\RegistrationFormType;
 use App\Form\RespFieldType;
@@ -756,6 +758,97 @@ class RegistrationController extends AbstractController
         ]);
     }
         
+
+    #[Route('/register/assistant-respue', name: 'register_assistant_respue')]
+#[Route('/register/assistant-respue-update/{id}', name: 'update_assistant_respue', requirements: ['id' => '\d+'])]
+public function manageAssistantRespue(
+    Request $request,
+    UserPasswordHasherInterface $userPasswordHasher,
+    EntityManagerInterface $entityManager,
+    SluggerInterface $slugger,
+    ?int $id = null
+): Response {
+    $currentUser = $this->getUser();
+    if (!$currentUser instanceof User) {
+        return $this->redirectToRoute('app_login');
+    }
+
+    if (!$this->isGranted('ROLE_RESPUE')) {
+        throw $this->createAccessDeniedException('Vous n\'avez pas les droits pour créer un assistant RespUe.');
+    }
+
+    $isEdit = $id !== null;
+
+    if ($isEdit) {
+        $user = $entityManager->getRepository(User::class)->find($id);
+        if (!$user) {
+            throw $this->createNotFoundException('Utilisateur non trouvé');
+        }
+        $assistantRespue = $user->getAssistantRespue();
+        if (!$assistantRespue) {
+            $assistantRespue = new AssistantRespue();
+            $user->setAssistantRespue($assistantRespue);
+        }
+    } else {
+        $user = new User();
+        $assistantRespue = new AssistantRespue();
+    }
+
+    $form = $this->createForm(RegistrationFormType::class, $user);
+    $form->add('assistantRespue', AssistantRespueType::class);
+
+    if ($isEdit) {
+        $form->remove('plainPassword');
+    }
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        if (!$isEdit) {
+            $user->setPassword(
+                $userPasswordHasher->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            $user->setRoles(['ROLE_ASSISTANT_RESPUE']);
+            $assistantRespue->setCreatedBy($currentUser);
+        }
+        $this->handleProfilePictureUpload($form, $user, $slugger);
+
+        $email = $form->get('email')->getData();
+        $user->setEmail($email);
+
+        $assistantRespue->setName($form->get('assistantRespue')->get('name')->getData());
+        $assistantRespue->setCni($form->get('assistantRespue')->get('cni')->getData());
+        $assistantRespue->setPhoneNumber($form->get('assistantRespue')->get('phoneNumber')->getData());
+        $assistantRespue->setEmail($email);
+
+        // Définir le RespUe comme étant l'utilisateur actuel
+        $respUe = $currentUser->getRespUe();
+        if (!$respUe) {
+            throw new \LogicException('L\'utilisateur actuel n\'est pas un responsable d\'UE.');
+        }
+        $assistantRespue->setRespue($respUe);
+
+        $user->setAssistantRespue($assistantRespue);
+
+        $entityManager->persist($user);
+        $entityManager->persist($assistantRespue);
+        $entityManager->flush();
+
+        $this->addFlash('success', $isEdit
+            ? 'Les informations de l\'assistant RespUe ont été mises à jour avec succès.'
+            : 'L\'assistant RespUe a été enregistré avec succès.');
+
+        return $this->redirectToRoute('register_assistant_respue');
+    }
+
+    return $this->render('assistant_respue/manage.html.twig', [
+        'registrationForm' => $form->createView(),
+        'isEdit' => $isEdit,
+    ]);
+}
     
     private function handleProfilePictureUpload($form, $user, $slugger): void
     {

@@ -52,7 +52,20 @@ class AuthenticationSuccessListener
                 $firstEc = $ecs->first();
                 $school = $firstEc->getUe()->getLevel()->getField()->getSchool();
             }
+
+            
         }
+
+        elseif ($user->getAssistantTeacher()) {
+            $ecs = $user->getAssistantTeacher()->getTeacher()->getEcs();
+            if (!$ecs->isEmpty()) {
+                $firstEc = $ecs->first();
+                $school = $firstEc->getUe()->getLevel()->getField()->getSchool();
+            }
+
+            
+        }
+
         // Vérifier si l'utilisateur est un Student
         elseif ($user->getStudent()) {
             $school = $user->getStudent()->getLevel()->getField()->getSchool();

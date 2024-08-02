@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\AssistantRespue;
 use App\Entity\EC;
 use App\Entity\RespUe;
 use App\Entity\Teacher;
 use App\Entity\UE;
+use App\Repository\AssistantRespueRepository;
 use App\Repository\ECRepository;
 use App\Repository\TeacherRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,25 +33,26 @@ class TeacherController extends AbstractController
     public function teacherEcDashboard(
         TeacherRepository $teacherRepository,
         ECRepository $ecRepository,
+        AssistantRespueRepository $assistantRepository,
         EntityManagerInterface $entityManager
     ): Response {
         $user = $this->getUser();
-    
+
         // Récupérer l'UE du RespUE connecté
         $ue = $user->getRespue()->getUe();
-    
+
         if (!$ue instanceof UE) {
             throw $this->createNotFoundException('Aucune UE associée à ce RespUE.');
         }
-    
+
         // Récupérer les ECs pour cette UE
         $ecs = $ecRepository->findBy(['ue' => $ue]);
-    
+
         // Récupérer les IDs des ECs
         $ecIds = array_map(function ($ec) {
             return $ec->getId();
         }, $ecs);
-    
+
         // Récupérer tous les enseignants associés à ces ECs
         $teachersWithEcs = $teacherRepository->createQueryBuilder('t')
             ->join('t.ecs', 'ec')
@@ -57,24 +60,28 @@ class TeacherController extends AbstractController
             ->setParameter('ecIds', $ecIds)
             ->getQuery()
             ->getResult();
-    
+
         // Récupérer tous les enseignants créés par ce RespUE
         $allTeachers = $teacherRepository->findBy(['created_by' => $user]);
-    
+
         // Identifier les enseignants sans EC
-        $teachersWithoutEcs = array_filter($allTeachers, function($teacher) use ($teachersWithEcs) {
+        $teachersWithoutEcs = array_filter($allTeachers, function ($teacher) use ($teachersWithEcs) {
             return !in_array($teacher, $teachersWithEcs);
         });
-    
+
         // Fusionner les deux listes d'enseignants
         $teachers = array_merge($teachersWithEcs, $teachersWithoutEcs);
-    
+
+        // Récupérer tous les assistants du RespUE
+        $assistants = $assistantRepository->findBy(['Respue' => $user->getRespue()]);
+
         // Préparer les données pour la vue
         $ecData = [];
         $teacherData = [];
+        $assistantData = [];
         $totalEcs = count($ecs);
         $totalTeachers = count($teachers);
-    
+
         foreach ($ecs as $ec) {
             $ecData[] = [
                 'id' => $ec->getId(),
@@ -82,14 +89,14 @@ class TeacherController extends AbstractController
                 'teacher' => $ec->getTeacher() ? $ec->getTeacher()->getName() : 'Non assigné',
             ];
         }
-    
+
         foreach ($teachers as $teacher) {
             $teacherEcs = $teacher->getEcs()->filter(function ($ec) use ($ue) {
                 return $ec->getUe() === $ue;
             });
-    
+
             $ecCount = $teacherEcs->count();
-    
+
             $teacherData[] = [
                 'id' => $teacher->getId(),
                 'name' => $teacher->getName(),
@@ -101,18 +108,27 @@ class TeacherController extends AbstractController
                 })->toArray(),
             ];
         }
-    
+
+        foreach ($assistants as $assistant) {
+            $assistantData[] = [
+                'id' => $assistant->getId(),
+                'name' => $assistant->getName(),
+                'email' => $assistant->getEmail(),
+            ];
+        }
+
         // Trier les enseignants par nombre d'ECs (décroissant)
         usort($teacherData, function ($a, $b) {
             return $b['ecCount'] - $a['ecCount'];
         });
-    
+
         // Calculer les statistiques
         $averageEcsPerTeacher = $totalTeachers > 0 ? $totalEcs / $totalTeachers : 0;
-    
+
         return $this->render('admin_dashboard/respue_dashboard.html.twig', [
             'ecData' => $ecData,
             'teacherData' => $teacherData,
+            'assistantData' => $assistantData,
             'teacherCount' => $totalTeachers,
             'ecCount' => $totalEcs,
             'averageEcsPerTeacher' => round($averageEcsPerTeacher, 2),
@@ -121,6 +137,19 @@ class TeacherController extends AbstractController
         ]);
     }
 
+    #[Route('/delete-assistant/{id}', name: 'delete_assistant')]
+    public function deleteAssistant(AssistantRespue $assistant, EntityManagerInterface $entityManager): Response
+    {
+        // Vérifier si l'utilisateur actuel est autorisé à supprimer cet assistant
+        $this->denyAccessUnlessGranted('DELETE', $assistant);
+
+        $entityManager->remove($assistant);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'L\'assistant a été supprimé avec succès.');
+
+        return $this->redirectToRoute('respue_dashboard');
+    }
     #[Route('/delete/{id}', name: 'delete_teacher', methods: ['POST'])]
     public function deleteTeacher(EntityManagerInterface $entityManager, int $id): Response
     {
@@ -162,9 +191,4 @@ class TeacherController extends AbstractController
 
         return $this->redirectToRoute('respue_dashboard');
     }
-
-
-
-
-
 }
