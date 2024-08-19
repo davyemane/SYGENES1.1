@@ -1,98 +1,81 @@
 <!DOCTYPE html>
 <html lang="{{ app.request.locale }}">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ 'welcome_page.title'|trans }}</title>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>{{ 'welcome_page.title'|trans }}</title>
 
-    {% block stylesheets %}
-    {{
+		{% block stylesheets %}
+			{{
       encore_entry_link_tags("app")
     }}
-    {% endblock %} {% block script %}
-    {{
+		{% endblock %}
+		{% block script %}
+			{{
       encore_entry_script_tags("app")
     }}
-    {% endblock %}
-    <style>
-      .text-shadow {
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-      }
-      .btn {
-        background-color: #f97316;
-        color: white;
-        transition: background-color 0.3s, transform 0.3s;
-      }
-      .btn:hover {
-        background-color: #1a73e8;
-        transform: scale(1.05);
-      }
-      .btn-secondary {
-        border: 2px solid white;
-        color: white;
-        transition: background-color 0.3s, color 0.3s;
-      }
-      .btn-secondary:hover {
-        background-color: white;
-        color: orange;
-      }
-    </style>
-  </head>
-  <body
-    class="bg-background text-text min-h-screen flex flex-col relative"
-  >
-    <main class="flex-grow flex items-center justify-center px-4">
-      <div class="text-center">
-        <img
-          src="images/uiecc_logo.png"
-          alt={{ 'welcome_page.logo_alt'|trans }}
-          class="mx-auto mb-6 w-48"
-        />
-        <h1 class="text-6xl font-bold mb-6">{{ 'welcome_page.name'|trans }}</h1>
-        <p class="text-xl mb-12 max-w-2xl mx-auto">
-            {{ 'welcome_page.description'|trans }}
-        </p>
-        <div
-          class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6"
-        >
-          <a
-            href="{{ path('language_choice') }}"
-            class="btn font-semibold py-3 px-8 rounded-full"
-            >{{ 'welcome_page.language_choice'|trans }}</a
-          >
-        </div>
-      </div>
-      <div
-        class="absolute inset-x-0 bottom-0 -z-10 transform-gpu overflow-hidden blur-3xl"
-        aria-hidden="true"
-      >
-        <div
-          class="relative left-1/2 aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#1a73e8] to-[#f97316] opacity-30 sm:w-[72.1875rem]"
-          style="
-            clip-path: polygon(
-              74.1% 44.1%,
-              100% 61.6%,
-              97.5% 26.9%,
-              85.5% 0.1%,
-              80.7% 2%,
-              72.5% 32.5%,
-              60.2% 62.4%,
-              52.4% 68.1%,
-              47.5% 58.3%,
-              45.2% 34.5%,
-              27.5% 76.7%,
-              0.1% 64.9%,
-              17.9% 100%,
-              27.6% 76.8%,
-              76.1% 97.7%,
-              74.1% 44.1%
-            );
-          "
-        ></div>
-      </div>
-    </main>
-    <footer class="p-6 text-center">
-      <p class="text-sm opacity-75">&copy;{{ 'welcome_page.all_rights'|trans }}.</p>
-    </footer>
-  </body>
+		{% endblock %}
+		<style>
+			.text-shadow {
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+			}
+			.btn {
+				background-color: #f97316;
+				color: white;
+				transition: background-color 0.3s, transform 0.3s;
+			}
+			.btn:hover {
+				background-color: #1a73e8;
+				transform: scale(1.05);
+			}
+			.btn-secondary {
+				border: 2px solid white;
+				color: white;
+				transition: background-color 0.3s, color 0.3s;
+			}
+			.btn-secondary:hover {
+				background-color: white;
+				color: orange;
+			}
+		</style>
+	</head>
+	<body class="bg-background text-text min-h-screen flex flex-col relative">
+		<main class="flex-grow flex items-center justify-center px-4">
+			<div class="text-center">
+				<img src="images/uiecc_logo.png" alt={{ 'welcome_page.logo_alt'|trans }} class="mx-auto mb-6 w-48"/>
+				<h1 class="text-6xl font-bold mb-6">{{ 'welcome_page.name'|trans }}</h1>
+				<p class="text-xl mb-12 max-w-2xl mx-auto">
+					{{ 'welcome_page.description'|trans }}
+				</p>
+				<div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+					<a href="{{ path('language_choice') }}" class="btn font-semibold py-3 px-8 rounded-full">{{ 'welcome_page.language_choice'|trans }}</a>
+				</div>
+			</div>
+			<div class="absolute inset-x-0 bottom-0 -z-10 transform-gpu overflow-hidden blur-3xl" aria-hidden="true">
+				<div class="relative left-1/2 aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#1a73e8] to-[#f97316] opacity-30 sm:w-[72.1875rem]" style="
+					            clip-path: polygon(
+					              74.1% 44.1%,
+					              100% 61.6%,
+					              97.5% 26.9%,
+					              85.5% 0.1%,
+					              80.7% 2%,
+					              72.5% 32.5%,
+					              60.2% 62.4%,
+					              52.4% 68.1%,
+					              47.5% 58.3%,
+					              45.2% 34.5%,
+					              27.5% 76.7%,
+					              0.1% 64.9%,
+					              17.9% 100%,
+					              27.6% 76.8%,
+					              76.1% 97.7%,
+					              74.1% 44.1%
+					            );
+					          "></div>
+			</div>
+		</main>
+		<footer class="p-6 text-center">
+			<p class="text-sm opacity-75">&copy;{{ 'welcome_page.all_rights'|trans }}.</p>
+		</footer>
+	</body>
 </html>
