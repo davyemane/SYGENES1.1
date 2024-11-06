@@ -148,6 +148,7 @@ create_school_page:
   back: "Back"
   message: ""
   browse: "Browse for pictures..."
+  create-description: "Create a new school for your institution below"
 
 
 # Create Field Page 
@@ -241,11 +242,12 @@ login_page:
   show_password: 'Show password'
   hide_password: 'Hide password'
   remember_me: 'Remember me'
-  sign_in_button: 'Sign in'
+  sign_in_button: 'Log in'
   logged_in_as: 'You are logged in as %username%,'
   logout: 'Log out'
   no_account: 'Have no account?'
   sign_up: 'Sign Up'
+  description: "Enter your credentials below"
 
 
 # Error Page

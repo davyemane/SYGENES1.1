@@ -24,7 +24,7 @@ class HomePageController extends AbstractController
         ]);
     }
 
-    #[Route('/welcome', name: 'app_home_page')]
+    #[Route('/', name: 'app_home_page')]
     public function index(): Response
     {
         $user = $this->getUser();

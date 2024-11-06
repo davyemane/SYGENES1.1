@@ -140,6 +140,7 @@ create_school_page:
   back: "Retour"
   message: ""
   browse: "Parcourir pour des photos..."
+  create-description: "Creez une nouvelle ecole pour votre institution ci dessous"
 
 # Create Field Page 
 field_page: 
@@ -229,6 +230,7 @@ login_page:
   logout: 'Déconnexion'
   no_account: 'Pas de compte?'
   sign_up: 'Inscription'
+  description: "Entrez vos identifiants ci dessous"
 
 # Error Page
 error_page:
