@@ -38,7 +38,7 @@ class GradeCalculationService
                 'anonymat' => $anonymat
             ]);
 
-            if ($ee) {
+            if ($ee && $ee->getMark() !== null) {
                 return $ee->getMark();
             }
         }
@@ -56,10 +56,6 @@ class GradeCalculationService
     public function calculateStudentECGrade(EC $ec, Student $student): ?float
     {
         $eeGrade = $this->getStudentEEGrade($ec, $student);
-        if ($eeGrade === null) {
-            return null;
-        }
-
         $noteCcTp = $this->entityManager->getRepository(NoteCcTp::class)->findOneBy([
             'eC' => $ec,
             'student' => $student
@@ -70,28 +66,43 @@ class GradeCalculationService
         }
 
         $totalGrade = 0;
+        $totalWeight = 0;
 
+        // Calcul de la note EE (examen)
+        if ($eeGrade !== null) {
+            $eeWeight = $noteCcTp->hasTp() ? 50 : 70; // 50 points si TP, sinon 70 points
+            $totalGrade += $eeGrade * ($eeWeight / 100);
+            $totalWeight += $eeWeight;
+        }
+
+        // Calcul de la note CC (contrôle continu)
+        $ccGrade = $noteCcTp->getCc();
+        if ($ccGrade !== null) {
+            $ccWeight = 30; // 30 points pour CC
+            $totalGrade += $ccGrade * ($ccWeight / 100);
+            $totalWeight += $ccWeight;
+        }
+
+        // Calcul de la note TP (travaux pratiques)
         if ($noteCcTp->hasTp()) {
-            // Si NoteCcTp a une note de TP
-            // EE sur 50, TP sur 20, CC sur 30
-            $totalGrade += ($eeGrade / 70) * 50; // Ramener la note EE sur 50
-            if ($noteCcTp->getTp() !== null) {
-                $totalGrade += $noteCcTp->getTp() * (20 / 100);
-            }
-            if ($noteCcTp->getCc() !== null) {
-                $totalGrade += $noteCcTp->getCc() * (30 / 100);
-            }
-        } else {
-            // Si NoteCcTp n'a pas de TP
-            // EE sur 70, CC sur 30
-            $totalGrade += $eeGrade; // La note EE reste sur 70
-            if ($noteCcTp->getCc() !== null) {
-                $totalGrade += $noteCcTp->getCc() * (30 / 100);
+            $tpGrade = $noteCcTp->getTp();
+            if ($tpGrade !== null) {
+                $tpWeight = 20; // 20 points pour TP
+                $totalGrade += $tpGrade * ($tpWeight / 100);
+                $totalWeight += $tpWeight;
             }
         }
 
-        // Convertir la note totale sur une échelle de 20
-        return round(($totalGrade / 100) * 20, 2);
+        // Si aucune note n'a été trouvée, retourner null
+        if ($totalWeight == 0) {
+            return null;
+        }
+
+        // Convertir la note sur 20
+        $finalGrade = ($totalGrade / $totalWeight) * 20;
+
+        // Arrondir à deux décimales
+        return round($finalGrade, 2);
     }
     /**
      * Calcule la moyenne de l'UE pour un étudiant en fonction des notes de toutes les ECs.
@@ -103,23 +114,67 @@ class GradeCalculationService
     public function calculateStudentUEAverage(UE $ue, Student $student): ?float
     {
         $totalGrade = 0;
-        $totalCredits = 0;
+        $ecCount = 0;
 
         foreach ($ue->getECs() as $ec) {
             $ecGrade = $this->calculateStudentECGrade($ec, $student);
-            if ($ecGrade === null) {
-                return null;
+            if ($ecGrade !== null) {
+                // Assurons-nous que la note est bien sur 20
+                $ecGrade = min(max($ecGrade, 0), 20);
+                $totalGrade += $ecGrade;
+                $ecCount++;
             }
-
-            $ecCredit = floatval($ec->getCredit());
-            $totalGrade += $ecGrade * $ecCredit;
-            $totalCredits += $ecCredit;
         }
 
-        if ($totalCredits === 0) {
+        if ($ecCount === 0) {
             return null;
         }
 
-        return round($totalGrade / $totalCredits, 2);
+        $average = $totalGrade / $ecCount;
+
+        // Assurons-nous que la moyenne finale est bien sur 20
+        $average = min(max($average, 0), 20);
+
+        return round($average, 2);
+    }
+    /**
+     * Convertit une note numérique en grade littéral.
+     *
+     * @param float|null $average La note moyenne
+     * @return string Le grade littéral correspondant
+     */
+    public function getGradeFromAverage(?float $average): string
+    {
+        if ($average === null) {
+            return 'N/A';
+        }
+
+        if ($average >= 16) return 'A';
+        if ($average >= 14) return 'B';
+        if ($average >= 12) return 'C';
+        if ($average >= 10) return 'D';
+        return 'E';
+    }
+
+    /**
+     * Convertit un grade littéral en points de grade.
+     *
+     * @param string $grade Le grade littéral
+     * @return int Les points de grade correspondants
+     */
+    public function getGradePoint(string $grade): int
+    {
+        switch ($grade) {
+            case 'A':
+                return 4;
+            case 'B':
+                return 3;
+            case 'C':
+                return 2;
+            case 'D':
+                return 1;
+            default:
+                return 0;
+        }
     }
 }

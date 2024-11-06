@@ -43,7 +43,7 @@ class UeController extends AbstractController
         $entityManager = $doctrine->getManager();
 
         // Vérifier si l'utilisateur est un RespUe
-        $respUe = $entityManager->getRepository(RespUe::class)->findOneBy(['email' => $user->getEmail()]);
+        $respUe = $user->getRespue();
         if (!$respUe) {
             $this->addFlash('error', 'Vous n\'êtes pas autorisé à ajouter un EC.');
             return $this->redirectToRoute('app_home_page');
